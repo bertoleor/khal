@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { appointmentSchema, canTransitionAppointment } from "@khal/validations";
+import {
+  appointmentSchema,
+  calendarExceptionInputSchema,
+  canTransitionAppointment,
+} from "@khal/validations";
 
 describe("canTransitionAppointment", () => {
   it("allows pending -> confirmed, canceled, no-show", () => {
@@ -43,6 +47,26 @@ describe("appointmentSchema", () => {
       time: "14:30",
       status: "pagado",
       priceCents: 4500000,
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("calendarExceptionInputSchema", () => {
+  it("accepts a full-day holiday block", () => {
+    const result = calendarExceptionInputSchema.safeParse({
+      title: "Feriado",
+      type: "holiday",
+      date: "2026-12-25",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects an invalid exception type", () => {
+    const result = calendarExceptionInputSchema.safeParse({
+      title: "X",
+      type: "cierre",
+      date: "2026-12-25",
     });
     expect(result.success).toBe(false);
   });

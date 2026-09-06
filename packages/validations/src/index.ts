@@ -89,3 +89,33 @@ export const clientSchema = z.object({
 });
 
 export type Client = z.infer<typeof clientSchema>;
+
+export const exceptionTypeSchema = z.enum([
+  "holiday",
+  "vacation",
+  "event",
+  "block",
+]);
+
+export type ExceptionType = z.infer<typeof exceptionTypeSchema>;
+
+export const calendarExceptionSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1),
+  type: exceptionTypeSchema,
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  startTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+    .optional(),
+  endTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+    .optional(),
+});
+
+export type CalendarException = z.infer<typeof calendarExceptionSchema>;
+
+export const calendarExceptionInputSchema = calendarExceptionSchema.omit({
+  id: true,
+});

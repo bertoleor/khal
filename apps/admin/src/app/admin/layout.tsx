@@ -21,6 +21,9 @@ export default function AdminLayout({
           <Link href="/admin/servicios" className="text-sm text-slate-600">
             Servicios
           </Link>
+          <Link href="/admin/bloqueos" className="text-sm text-slate-600">
+            Bloqueos
+          </Link>
         </nav>
       </header>
       {children}
