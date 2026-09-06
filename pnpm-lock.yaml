@@ -148,6 +148,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@khal/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@khal/validations':
+        specifier: workspace:*
+        version: link:../../packages/validations
       next:
         specifier: 15.5.6
         version: 15.5.6(@playwright/test@1.63.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
