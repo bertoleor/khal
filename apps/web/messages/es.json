@@ -1,6 +1,10 @@
 {
-  "common": {
-    "title": "Agendá tu turno",
-    "tagline": "Estudio de estética — pestañas, uñas, cejas y spa."
+  "catalog": {
+    "title": "Nuestros servicios",
+    "tagline": "Elegí tu servicio y agendá tu turno.",
+    "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
+    "book": "Agendar Cita",
+    "duration": "Duración",
+    "deposit": "Seña"
   }
 }

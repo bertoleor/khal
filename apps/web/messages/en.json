@@ -1,6 +1,10 @@
 {
-  "common": {
-    "title": "Book your appointment",
-    "tagline": "Beauty studio — lashes, nails, brows and spa."
+  "catalog": {
+    "title": "Our services",
+    "tagline": "Pick a service and book your appointment.",
+    "empty": "No services available yet. Check back soon.",
+    "book": "Book Appointment",
+    "duration": "Duration",
+    "deposit": "Deposit"
   }
 }
