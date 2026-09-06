@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { cn, formatCents } from "@khal/utils";
 import type { Service } from "@khal/validations";
 import { createBooking, type BookingState } from "@/lib/actions/booking";
+import { PaymentStep, type PaymentInfo } from "@/components/payment/payment-step";
+import { Field } from "@/components/shared/field";
 
 export interface DaySlot {
   date: string;
@@ -28,37 +30,14 @@ function errorKeyFor(code: BookingState["code"]): ErrorKey {
   }
 }
 
-function Field({
-  label,
-  name,
-  type,
-  autoComplete,
-}: {
-  label: string;
-  name: string;
-  type: React.ComponentProps<"input">["type"];
-  autoComplete?: string;
-}) {
-  return (
-    <label className="block">
-      <span className="text-sm font-medium text-slate-700">{label}</span>
-      <input
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        required
-        className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-slate-900 outline-none focus:border-slate-400"
-      />
-    </label>
-  );
-}
-
 export function BookingForm({
   service,
   days,
+  payment,
 }: {
   service: Service;
   days: DaySlot[];
+  payment: PaymentInfo;
 }) {
   const t = useTranslations("booking");
   const [selectedDate, setSelectedDate] = useState(days[0]?.date ?? "");
@@ -70,13 +49,14 @@ export function BookingForm({
 
   const activeDay = days.find((day) => day.date === selectedDate) ?? days[0];
 
-  if (state.ok && state.bookingId) {
+  if (state.ok && state.bookingId && selectedSlot && selectedDate) {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
-        <p className="font-semibold text-emerald-800">{t("pendingTitle")}</p>
-        <p className="mt-2 text-sm text-emerald-700">{t("pendingBody")}</p>
-        <p className="mt-1 text-xs text-slate-400">{state.bookingId}</p>
-      </div>
+      <PaymentStep
+        payment={payment}
+        serviceName={service.name}
+        date={selectedDate}
+        slot={selectedSlot}
+      />
     );
   }
 

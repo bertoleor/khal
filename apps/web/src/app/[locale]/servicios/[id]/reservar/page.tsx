@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import { computeAvailableSlots, parseClock } from "@khal/db";
-import { formatCents } from "@khal/utils";
+import { computeAmountDueCents, formatCents } from "@khal/utils";
 import { BookingForm, type DaySlot } from "@/components/booking/booking-form";
 import { Header } from "@/components/shared/header";
+import type { PaymentInfo } from "@/components/payment/payment-step";
 import { getService } from "@/lib/actions/catalog";
+import { storePaymentSettings } from "@/lib/mocks/settings";
 import {
   blockedPeriodsFor,
   businessHoursFor,
@@ -60,6 +62,23 @@ export default async function ReservarPage({
     });
   }
 
+  const isDeposit =
+    service.deposit_mode === "fixed" || service.deposit_mode === "percentage";
+  const payment: PaymentInfo = {
+    alias: storePaymentSettings.alias,
+    cvu: storePaymentSettings.cvu,
+    whatsappPhone: storePaymentSettings.whatsappPhone,
+    amountDueCents: computeAmountDueCents(
+      service.price_cents,
+      service.deposit_mode,
+      service.deposit_fixed_cents,
+      service.deposit_percentage_bp,
+    ),
+    totalCents: service.price_cents,
+    currencyCode: service.currency_code,
+    isDeposit,
+  };
+
   return (
     <div className="min-h-dvh bg-white">
       <Header />
@@ -71,7 +90,7 @@ export default async function ReservarPage({
           {formatCents(service.price_cents, service.currency_code)}
         </p>
         <div className="mt-6">
-          <BookingForm service={service} days={days} />
+          <BookingForm service={service} days={days} payment={payment} />
         </div>
       </main>
     </div>

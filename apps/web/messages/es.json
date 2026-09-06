@@ -24,5 +24,15 @@
       "duplicate": "Ya tenés un turno pendiente. Completalo antes de agendar otro.",
       "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno."
     }
+  },
+  "payment": {
+    "amountDue": "A pagar",
+    "remainderAtStore": "Resto {amount} en el local",
+    "alias": "Alias",
+    "cvu": "CVU",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "sendComprobante": "Ya transferí. Enviar comprobante por WhatsApp",
+    "whatsappMessage": "Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
   }
 }

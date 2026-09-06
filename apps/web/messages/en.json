@@ -24,5 +24,15 @@
       "duplicate": "You already have a pending booking. Complete it before booking again.",
       "blacklisted": "Contact us on WhatsApp to manage your next appointment."
     }
+  },
+  "payment": {
+    "amountDue": "Amount due",
+    "remainderAtStore": "{amount} remaining at the studio",
+    "alias": "Alias",
+    "cvu": "CVU",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "sendComprobante": "I transferred. Send proof via WhatsApp",
+    "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof."
   }
 }
