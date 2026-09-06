@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# builds
+dist/
+build/
+*.tsbuildinfo
+
+# turbo
+.turbo/
+
+# env — never commit real values (SEC-01)
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# test
+coverage/
+playwright-report/
+test-results/
+
+# agent tooling (regenerated, not project source)
+.atl/
+
+# misc
+.DS_Store
+*.log
