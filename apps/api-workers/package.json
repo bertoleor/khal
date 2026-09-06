@@ -2,10 +2,20 @@
   "name": "@khal/api-workers",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "@types/node": "^22.14.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.1.1"
   }
 }
