@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { centsToDigits, computeAmountDueCents, formatCents } from "@khal/utils";
+import {
+  centsToDigits,
+  computeAmountDueCents,
+  formatCents,
+  increaseCentsByBp,
+} from "@khal/utils";
 
 describe("money", () => {
   it("formats integer cents as currency via Intl.NumberFormat", () => {
@@ -35,5 +40,15 @@ describe("computeAmountDueCents", () => {
   it("rounds half-up without float drift on sub-cent fractions", () => {
     // 0.5% of 100 cents = 0.5 -> HALF_UP rounds to 1
     expect(computeAmountDueCents(100, "percentage", undefined, 50)).toBe(1);
+  });
+});
+
+describe("increaseCentsByBp", () => {
+  it("computes a 10% increase with integer HALF_UP", () => {
+    expect(increaseCentsByBp(4500000, 1000)).toBe(450000);
+  });
+
+  it("rounds sub-cent increases half-up", () => {
+    expect(increaseCentsByBp(15, 1000)).toBe(2);
   });
 });

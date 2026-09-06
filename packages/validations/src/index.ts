@@ -78,3 +78,14 @@ export const appointmentSchema = z.object({
 });
 
 export type Appointment = z.infer<typeof appointmentSchema>;
+
+export const clientSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  phone: z.string().min(6),
+  tags: z.array(z.string()),
+  noShowCount: z.number().int().nonnegative(),
+  isBlacklisted: z.boolean(),
+});
+
+export type Client = z.infer<typeof clientSchema>;

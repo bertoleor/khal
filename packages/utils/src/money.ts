@@ -33,3 +33,8 @@ export function computeAmountDueCents(
   }
   return priceCents;
 }
+
+// ROUND_HALF_UP increase amount in cents for a basis-point delta (e.g. 10% = 1000bp).
+export function increaseCentsByBp(cents: number, bp: number): number {
+  return Math.floor((cents * bp + 5000) / 10000);
+}
