@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { computeAvailableSlots, parseClock } from "@khal/db";
 import { computeAmountDueCents, formatCents } from "@khal/utils";
-import { BookingForm, type DaySlot } from "@/components/booking/booking-form";
+import { BookingForm } from "@/components/booking/booking-form";
+import type { DaySlot } from "@/components/booking/slot-picker";
 import { Header } from "@/components/shared/header";
 import type { PaymentInfo } from "@/components/payment/payment-step";
 import { getService } from "@/lib/actions/catalog";

@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
-import { cn, formatCents } from "@khal/utils";
+import { formatCents } from "@khal/utils";
 import type { Service } from "@khal/validations";
 import { createBooking, type BookingState } from "@/lib/actions/booking";
 import {
@@ -10,13 +10,7 @@ import {
   type PaymentInfo,
 } from "@/components/payment/payment-step";
 import { Field } from "@/components/shared/field";
-
-export interface DaySlot {
-  date: string;
-  label: string;
-  closed: boolean;
-  slots: string[];
-}
+import { SlotPicker, type DaySlot } from "@/components/booking/slot-picker";
 
 const initialBookingState: BookingState = { ok: false };
 
@@ -50,8 +44,6 @@ export function BookingForm({
     initialBookingState,
   );
 
-  const activeDay = days.find((day) => day.date === selectedDate) ?? days[0];
-
   if (state.ok && state.bookingId && selectedSlot && selectedDate) {
     return (
       <PaymentStep
@@ -65,70 +57,20 @@ export function BookingForm({
 
   const error = !state.ok && state.code ? t(errorKeyFor(state.code)) : null;
 
+  function handleSelectDate(date: string) {
+    setSelectedDate(date);
+    setSelectedSlot(null);
+  }
+
   return (
     <div className="space-y-6">
-      <section>
-        <h2 className="text-sm font-medium text-slate-500">{t("pickDay")}</h2>
-        <div className="mt-2 flex gap-2 overflow-x-auto pb-2">
-          {days.map((day) => {
-            const isActive = day.date === selectedDate;
-            return (
-              <button
-                key={day.date}
-                type="button"
-                onClick={() => {
-                  setSelectedDate(day.date);
-                  setSelectedSlot(null);
-                }}
-                disabled={day.closed}
-                aria-pressed={isActive}
-                className={cn(
-                  "shrink-0 rounded-xl border px-3 py-2 text-sm",
-                  day.closed
-                    ? "cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300"
-                    : isActive
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-200 bg-white text-slate-700",
-                )}
-              >
-                {day.label}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {activeDay && !activeDay.closed ? (
-        <section>
-          <h2 className="text-sm font-medium text-slate-500">
-            {t("pickSlot")}
-          </h2>
-          {activeDay.slots.length === 0 ? (
-            <p className="mt-2 text-sm text-slate-500">{t("noSlots")}</p>
-          ) : (
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {activeDay.slots.map((slot) => (
-                <button
-                  key={slot}
-                  type="button"
-                  onClick={() => setSelectedSlot(slot)}
-                  aria-pressed={selectedSlot === slot}
-                  className={cn(
-                    "rounded-xl border px-3 py-2 text-sm",
-                    selectedSlot === slot
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-200 bg-white text-slate-700",
-                  )}
-                >
-                  {slot}
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
-      ) : (
-        <p className="text-sm text-slate-500">{t("closed")}</p>
-      )}
+      <SlotPicker
+        days={days}
+        selectedDate={selectedDate}
+        selectedSlot={selectedSlot}
+        onSelectDate={handleSelectDate}
+        onSelectSlot={setSelectedSlot}
+      />
 
       {selectedSlot ? (
         <form action={formAction} className="space-y-3">
