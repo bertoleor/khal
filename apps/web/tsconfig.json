@@ -18,7 +18,9 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "allowJs": false,
+    "strict": true
   },
   "include": [
     "next-env.d.ts",

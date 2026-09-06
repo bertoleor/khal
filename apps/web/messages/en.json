@@ -6,5 +6,23 @@
     "book": "Book Appointment",
     "duration": "Duration",
     "deposit": "Deposit"
+  },
+  "booking": {
+    "pickDay": "Pick a day",
+    "pickSlot": "Pick a time",
+    "noSlots": "No times available that day.",
+    "closed": "Closed.",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "confirm": "Confirm booking",
+    "submitting": "Submitting…",
+    "pendingTitle": "Booked",
+    "pendingBody": "Your booking is pending confirmation. We will contact you on WhatsApp.",
+    "error": {
+      "invalid": "Check your details.",
+      "duplicate": "You already have a pending booking. Complete it before booking again.",
+      "blacklisted": "Contact us on WhatsApp to manage your next appointment."
+    }
   }
 }

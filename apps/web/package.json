@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@khal/db": "workspace:*",
     "@khal/utils": "workspace:*",
     "@khal/validations": "workspace:*",
     "next": "15.5.6",

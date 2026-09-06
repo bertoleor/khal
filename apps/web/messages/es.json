@@ -6,5 +6,23 @@
     "book": "Agendar Cita",
     "duration": "Duración",
     "deposit": "Seña"
+  },
+  "booking": {
+    "pickDay": "Elegí el día",
+    "pickSlot": "Elegí el horario",
+    "noSlots": "No hay horarios disponibles ese día.",
+    "closed": "Cerrado.",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "confirm": "Confirmar turno",
+    "submitting": "Enviando…",
+    "pendingTitle": "Turno agendado",
+    "pendingBody": "Tu turno quedó pendiente de confirmación. Te contactamos por WhatsApp.",
+    "error": {
+      "invalid": "Revisá los datos ingresados.",
+      "duplicate": "Ya tenés un turno pendiente. Completalo antes de agendar otro.",
+      "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno."
+    }
   }
 }
