@@ -7,7 +7,10 @@ import { formatCents } from "@khal/utils";
 import type { Service } from "@khal/validations";
 
 function depositLabel(service: Service): string | null {
-  if (service.deposit_mode === "percentage" && service.deposit_percentage_bp != null) {
+  if (
+    service.deposit_mode === "percentage" &&
+    service.deposit_percentage_bp != null
+  ) {
     return `${service.deposit_percentage_bp / 100}%`;
   }
   if (service.deposit_mode === "fixed" && service.deposit_fixed_cents != null) {

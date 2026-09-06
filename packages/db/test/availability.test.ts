@@ -14,12 +14,7 @@ const range = (start: string, end: string): TimeRange => ({
 describe("computeAvailableSlots", () => {
   it("fits slots within the open window including duration + buffer", () => {
     // 09:00-10:00, 30min service + 15min buffer = 45min block → only 09:00, 09:15
-    const slots = computeAvailableSlots(
-      range("09:00", "10:00"),
-      [],
-      30,
-      15,
-    );
+    const slots = computeAvailableSlots(range("09:00", "10:00"), [], 30, 15);
     expect(slots).toEqual(["09:00", "09:15"]);
   });
 
@@ -50,11 +45,11 @@ describe("computeAvailableSlots", () => {
 
 describe("rangesOverlap", () => {
   it("detects half-open overlap", () => {
-    expect(rangesOverlap(range("09:00", "10:00"), range("09:30", "11:00"))).toBe(
-      true,
-    );
-    expect(rangesOverlap(range("09:00", "09:30"), range("09:30", "10:00"))).toBe(
-      false,
-    );
+    expect(
+      rangesOverlap(range("09:00", "10:00"), range("09:30", "11:00")),
+    ).toBe(true);
+    expect(
+      rangesOverlap(range("09:00", "09:30"), range("09:30", "10:00")),
+    ).toBe(false);
   });
 });

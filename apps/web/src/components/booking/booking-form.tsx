@@ -5,7 +5,10 @@ import { useTranslations } from "next-intl";
 import { cn, formatCents } from "@khal/utils";
 import type { Service } from "@khal/validations";
 import { createBooking, type BookingState } from "@/lib/actions/booking";
-import { PaymentStep, type PaymentInfo } from "@/components/payment/payment-step";
+import {
+  PaymentStep,
+  type PaymentInfo,
+} from "@/components/payment/payment-step";
 import { Field } from "@/components/shared/field";
 
 export interface DaySlot {
@@ -97,7 +100,9 @@ export function BookingForm({
 
       {activeDay && !activeDay.closed ? (
         <section>
-          <h2 className="text-sm font-medium text-slate-500">{t("pickSlot")}</h2>
+          <h2 className="text-sm font-medium text-slate-500">
+            {t("pickSlot")}
+          </h2>
           {activeDay.slots.length === 0 ? (
             <p className="mt-2 text-sm text-slate-500">{t("noSlots")}</p>
           ) : (
@@ -130,7 +135,12 @@ export function BookingForm({
           <input type="hidden" name="serviceId" value={service.id} />
           <input type="hidden" name="date" value={selectedDate} />
           <input type="hidden" name="slotStart" value={selectedSlot} />
-          <Field label={t("name")} name="name" type="text" autoComplete="name" />
+          <Field
+            label={t("name")}
+            name="name"
+            type="text"
+            autoComplete="name"
+          />
           <Field
             label={t("phone")}
             name="phone"

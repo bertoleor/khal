@@ -54,7 +54,9 @@ export function computeAvailableSlots(
       start: fromMinutes(start),
       end: fromMinutes(start + block),
     };
-    const conflicts = blocked.some((period) => rangesOverlap(candidate, period));
+    const conflicts = blocked.some((period) =>
+      rangesOverlap(candidate, period),
+    );
     if (!conflicts) {
       result.push(formatClock(start));
     }

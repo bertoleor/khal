@@ -1,0 +1,17 @@
+node_modules
+.next
+.turbo
+dist
+build
+coverage
+playwright-report
+test-results
+.out
+pnpm-lock.yaml
+next-env.d.ts
+*.md
+.atl
+supabase
+.git
+.github
+openspec

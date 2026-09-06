@@ -6,10 +6,7 @@ import { Header } from "@/components/shared/header";
 import type { PaymentInfo } from "@/components/payment/payment-step";
 import { getService } from "@/lib/actions/catalog";
 import { storePaymentSettings } from "@/lib/mocks/settings";
-import {
-  blockedPeriodsFor,
-  businessHoursFor,
-} from "@/lib/mocks/schedule";
+import { blockedPeriodsFor, businessHoursFor } from "@/lib/mocks/schedule";
 
 function toIsoDate(date: Date): string {
   const y = date.getFullYear();
