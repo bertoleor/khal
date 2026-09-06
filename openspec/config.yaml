@@ -1,0 +1,31 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js App Router (React 19+), TypeScript strict, Tailwind CSS v4, Shadcn/Radix, React Query, React Hook Form + Zod
+  Architecture: src/ App Router, path aliases (@/), Server Actions as public endpoints, Supabase (RLS, UTC, soft deletes, audit logs)
+  Testing: Vitest (unit), Testing Library (integration), Playwright + axe-core (E2E), 80% coverage baseline, sad paths mandatory
+  Source of truth: DOCS/AGENT CONSTITUTION.MD v3.1 (154 rules, 43 sections)
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes (ROLL-01/02/03)
+    - Justify any new npm dependency (CQ-05)
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns (ARCH-02 structure, 150-line limit CQ-03, no any/escape hatches CQ-06)
+    tdd: false           # strict TDD disabled until a test runner is scaffolded
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 80   # TEST-01 baseline
+  archive:
+    - Warn before merging destructive deltas
