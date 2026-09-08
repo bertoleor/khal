@@ -1,0 +1,19 @@
+change: limpiar-codigo-errores-warnings-tree
+phase: tasks
+status: complete
+artifacts:
+  proposal: openspec/changes/limpiar-codigo-errores-warnings-tree/proposal.md
+  spec:
+    - openspec/changes/limpiar-codigo-errores-warnings-tree/specs/security/spec.md
+    - openspec/changes/limpiar-codigo-errores-warnings-tree/specs/i18n/spec.md
+    - openspec/changes/limpiar-codigo-errores-warnings-tree/specs/error-handling/spec.md
+    - openspec/changes/limpiar-codigo-errores-warnings-tree/specs/cleanup/spec.md
+    - openspec/changes/limpiar-codigo-errores-warnings-tree/specs/sql-prep/spec.md
+  design: openspec/changes/limpiar-codigo-errores-warnings-tree/design.md
+  tasks: openspec/changes/limpiar-codigo-errores-warnings-tree/tasks.md
+  engram:
+    - sdd/limpiar-codigo-errores-warnings-tree/proposal
+    - sdd/limpiar-codigo-errores-warnings-tree/spec
+    - sdd/limpiar-codigo-errores-warnings-tree/design
+    - sdd/limpiar-codigo-errores-warnings-tree/tasks
+next: sdd-apply

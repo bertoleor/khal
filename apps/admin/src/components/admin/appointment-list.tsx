@@ -1,12 +1,17 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { formatCents } from "@khal/utils";
 import {
   VALID_APPOINTMENT_TRANSITIONS,
   type Appointment,
   type AppointmentStatus,
 } from "@khal/validations";
-import { transitionAppointment } from "@/lib/actions/appointments";
+import { transitionAppointment as transitionAppointmentAction } from "@/lib/actions/appointments";
+
+function handleTransition(formData: FormData): void {
+  void transitionAppointmentAction(formData);
+}
 
 const STATUS_DOT: Record<AppointmentStatus, string> = {
   pendiente: "bg-amber-400",
@@ -15,10 +20,10 @@ const STATUS_DOT: Record<AppointmentStatus, string> = {
   no_asistio: "bg-red-500",
 };
 
-const ACTION_LABEL: Record<string, string> = {
-  confirmado: "Confirmar",
-  cancelado: "Cancelar",
-  no_asistio: "No asistió",
+const ACTION_KEY: Record<string, string> = {
+  confirmado: "appointments.confirm",
+  cancelado: "appointments.cancel",
+  no_asistio: "appointments.noShow",
 };
 
 export function AppointmentList({
@@ -26,8 +31,10 @@ export function AppointmentList({
 }: {
   appointments: Appointment[];
 }) {
+  const t = useTranslations("Admin");
+
   if (appointments.length === 0) {
-    return <p className="mt-6 text-slate-500">No hay turnos para hoy.</p>;
+    return <p className="mt-6 text-slate-500">{t("appointments.empty")}</p>;
   }
 
   return (
@@ -54,7 +61,7 @@ export function AppointmentList({
           </span>
           <div className="flex gap-1">
             {VALID_APPOINTMENT_TRANSITIONS[appointment.status].map((to) => (
-              <form key={to} action={transitionAppointment}>
+              <form key={to} action={handleTransition}>
                 <input type="hidden" name="id" value={appointment.id} />
                 <input type="hidden" name="to" value={to} />
                 <button
@@ -65,7 +72,7 @@ export function AppointmentList({
                       : "rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700"
                   }
                 >
-                  {ACTION_LABEL[to]}
+                  {t(ACTION_KEY[to])}
                 </button>
               </form>
             ))}

@@ -25,6 +25,17 @@
       "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno."
     }
   },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Intentá de nuevo.",
+    "retry": "Intentar de nuevo",
+    "home": "Ir al inicio"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscás no existe o fue movida.",
+    "home": "Ir al inicio"
+  },
   "payment": {
     "amountDue": "A pagar",
     "remainderAtStore": "Resto {amount} en el local",

@@ -1,8 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { formatCents } from "@khal/utils";
 import type { Client } from "@khal/validations";
-import { toggleBlacklisted } from "@/lib/actions/clients";
+import { toggleBlacklisted as toggleBlacklistedAction } from "@/lib/actions/clients";
+
+function handleToggleBlacklisted(formData: FormData): void {
+  void toggleBlacklistedAction(formData);
+}
 
 export interface ClientRow {
   client: Client;
@@ -10,8 +15,10 @@ export interface ClientRow {
 }
 
 export function ClientList({ rows }: { rows: ClientRow[] }) {
+  const t = useTranslations("Admin");
+
   if (rows.length === 0) {
-    return <p className="mt-6 text-slate-500">No hay clientas aún.</p>;
+    return <p className="mt-6 text-slate-500">{t("clients.empty")}</p>;
   }
 
   return (
@@ -26,7 +33,7 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               <p className="truncate text-sm text-slate-500">{client.phone}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-slate-400">LTV</p>
+              <p className="text-xs text-slate-400">{t("clients.ltv")}</p>
               <p className="font-medium text-slate-900">
                 {formatCents(ltvCents, "ARS")}
               </p>
@@ -44,12 +51,12 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
             ))}
             {client.noShowCount > 0 ? (
               <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-600">
-                No asistió ×{client.noShowCount}
+                {t("clients.noShow", { count: client.noShowCount })}
               </span>
             ) : null}
           </div>
 
-          <form action={toggleBlacklisted} className="mt-3">
+          <form action={handleToggleBlacklisted} className="mt-3">
             <input type="hidden" name="id" value={client.id} />
             <button
               type="submit"
@@ -59,7 +66,9 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
                   : "rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-600"
               }
             >
-              {client.isBlacklisted ? "Quitar de lista negra" : "Bloquear"}
+              {client.isBlacklisted
+                ? t("clients.removeBlacklist")
+                : t("clients.blacklist")}
             </button>
           </form>
         </li>

@@ -1,10 +1,24 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { formatCents } from "@khal/utils";
 import type { Service } from "@khal/validations";
-import { bulkIncrease, toggleVisibility } from "@/lib/actions/services";
+import {
+  bulkIncrease as bulkIncreaseAction,
+  toggleVisibility as toggleVisibilityAction,
+} from "@/lib/actions/services";
+
+function handleToggleVisibility(formData: FormData): void {
+  void toggleVisibilityAction(formData);
+}
+
+function handleBulkIncrease(formData: FormData): void {
+  void bulkIncreaseAction(formData);
+}
 
 export function ServiceList({ services }: { services: Service[] }) {
+  const t = useTranslations("Admin");
+
   return (
     <form className="mt-4 space-y-2">
       {services.map((service) => (
@@ -32,23 +46,23 @@ export function ServiceList({ services }: { services: Service[] }) {
             </p>
           </div>
           <button
-            formAction={toggleVisibility}
+            formAction={handleToggleVisibility}
             name="id"
             value={service.id}
             type="submit"
             className="shrink-0 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700"
           >
-            {service.is_visible ? "Ocultar" : "Mostrar"}
+            {service.is_visible ? t("services.hide") : t("services.show")}
           </button>
         </div>
       ))}
 
       <button
-        formAction={bulkIncrease}
+        formAction={handleBulkIncrease}
         type="submit"
         className="mt-4 w-full rounded-full bg-slate-900 py-3 text-sm font-medium text-white"
       >
-        Subir 10% a seleccionados
+        {t("services.bulkIncrease")}
       </button>
     </form>
   );
