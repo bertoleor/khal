@@ -1,0 +1,61 @@
+{
+  "Admin": {
+    "nav": {
+      "brand": "Khal Admin",
+      "agenda": "Schedule",
+      "clientes": "Clients",
+      "servicios": "Services",
+      "bloqueos": "Blocks"
+    },
+    "appointments": {
+      "title": "Today's schedule",
+      "empty": "No appointments for today.",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "noShow": "No-show"
+    },
+    "services": {
+      "title": "Services",
+      "description": "Select services and apply the inflation increase.",
+      "hide": "Hide",
+      "show": "Show",
+      "bulkIncrease": "Increase 10% for selected"
+    },
+    "clients": {
+      "title": "Clients",
+      "empty": "No clients yet.",
+      "ltv": "LTV",
+      "noShow": "No-show ×{count}",
+      "removeBlacklist": "Remove from blacklist",
+      "blacklist": "Block"
+    },
+    "exceptions": {
+      "title": "Schedule blocks",
+      "description": "Holidays, vacations, or closures that reduce availability.",
+      "empty": "No blocks defined.",
+      "addTitle": "Reason (e.g. Holiday)",
+      "addType": {
+        "holiday": "Holiday",
+        "vacation": "Vacation",
+        "event": "Event",
+        "block": "Block"
+      },
+      "addButton": "Block day"
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Please try again.",
+      "retry": "Try again",
+      "home": "Go to dashboard"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "home": "Go to dashboard"
+    },
+    "login": {
+      "title": "Khal · Admin",
+      "button": "Sign in as administrator"
+    }
+  }
+}

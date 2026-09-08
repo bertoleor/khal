@@ -1,28 +1,31 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("Admin.nav");
+
   return (
     <div className="min-h-dvh bg-white">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
         <nav className="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3">
           <span className="font-semibold tracking-tight text-slate-900">
-            Khal Admin
+            {t("brand")}
           </span>
           <Link href="/admin" className="text-sm text-slate-600">
-            Agenda
+            {t("agenda")}
           </Link>
           <Link href="/admin/clientes" className="text-sm text-slate-600">
-            Clientes
+            {t("clientes")}
           </Link>
           <Link href="/admin/servicios" className="text-sm text-slate-600">
-            Servicios
+            {t("servicios")}
           </Link>
           <Link href="/admin/bloqueos" className="text-sm text-slate-600">
-            Bloqueos
+            {t("bloqueos")}
           </Link>
         </nav>
       </header>

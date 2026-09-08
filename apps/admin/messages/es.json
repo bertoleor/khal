@@ -1,0 +1,61 @@
+{
+  "Admin": {
+    "nav": {
+      "brand": "Khal Admin",
+      "agenda": "Agenda",
+      "clientes": "Clientes",
+      "servicios": "Servicios",
+      "bloqueos": "Bloqueos"
+    },
+    "appointments": {
+      "title": "Agenda de hoy",
+      "empty": "No hay turnos para hoy.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "noShow": "No asistió"
+    },
+    "services": {
+      "title": "Servicios",
+      "description": "Seleccioná servicios y aplicá el aumento por inflación.",
+      "hide": "Ocultar",
+      "show": "Mostrar",
+      "bulkIncrease": "Subir 10% a seleccionados"
+    },
+    "clients": {
+      "title": "Clientes",
+      "empty": "No hay clientas aún.",
+      "ltv": "LTV",
+      "noShow": "No asistió ×{count}",
+      "removeBlacklist": "Quitar de lista negra",
+      "blacklist": "Bloquear"
+    },
+    "exceptions": {
+      "title": "Bloqueos de agenda",
+      "description": "Feriados, vacaciones o cierres que se restan de la disponibilidad.",
+      "empty": "No hay bloqueos definidos.",
+      "addTitle": "Motivo (ej. Feriado)",
+      "addType": {
+        "holiday": "Feriado",
+        "vacation": "Vacaciones",
+        "event": "Evento",
+        "block": "Bloqueo"
+      },
+      "addButton": "Bloquear día"
+    },
+    "error": {
+      "title": "Algo salió mal",
+      "description": "Ocurrió un error inesperado. Intentá de nuevo.",
+      "retry": "Intentar de nuevo",
+      "home": "Ir al panel"
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "description": "La página que buscás no existe o fue movida.",
+      "home": "Ir al panel"
+    },
+    "login": {
+      "title": "Khal · Admin",
+      "button": "Entrar como administradora"
+    }
+  }
+}
