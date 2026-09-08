@@ -1,3 +1,5 @@
+"use server";
+
 import type { Service } from "@khal/validations";
 import { mockServices } from "@/lib/mocks/services";
 

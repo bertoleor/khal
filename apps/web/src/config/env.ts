@@ -19,4 +19,17 @@ const envSchema = z.object({
   QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
 });
 
-export const env = envSchema.parse(process.env);
+function parseEnv() {
+  const result = envSchema.safeParse(process.env);
+  if (!result.success) {
+    const missing = result.error.issues
+      .map((issue) => `  ${issue.path.join(".")}: ${issue.message}`)
+      .join("\n");
+    throw new Error(
+      `Invalid environment variables:\n${missing}\n\nExpected format: set each variable in .env.local`,
+    );
+  }
+  return result.data;
+}
+
+export const env = parseEnv();
