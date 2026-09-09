@@ -6,6 +6,42 @@ context: |
   Testing: Vitest (unit), Testing Library (integration), Playwright + axe-core (E2E), 80% coverage baseline, sad paths mandatory
   Source of truth: DOCS/AGENT CONSTITUTION.MD v3.1 (154 rules, 43 sections)
 
+strict_tdd: false
+
+testing:
+  unit: vitest run            # pnpm test — includes packages/**/test and apps/**/test
+  e2e: playwright test        # pnpm e2e — testDir apps/web/e2e
+  lint: eslint . --max-warnings 0
+  typecheck: turbo run typecheck
+  format: prettier
+  coverage: none              # no coverage config; 80% baseline declared but not enforced
+
+projects:
+  - path: apps/web
+    stack: Next.js 15 (React 19, next-intl v3)
+    test_command: ""          # no unit test script; covered by root vitest glob
+  - path: apps/admin
+    stack: Next.js 15 (React 19, next-intl v4)
+    test_command: ""          # no unit test script; covered by root vitest glob
+  - path: apps/api-workers
+    stack: TypeScript module
+    test_command: "vitest run"
+  - path: packages/db
+    stack: TypeScript module
+    test_command: "vitest run"
+  - path: packages/types
+    stack: TypeScript module
+    test_command: ""
+  - path: packages/ui
+    stack: TypeScript module
+    test_command: ""
+  - path: packages/utils
+    stack: TypeScript module
+    test_command: "vitest run"
+  - path: packages/validations
+    stack: TypeScript module (Zod)
+    test_command: "vitest run"
+
 rules:
   proposal:
     - Include rollback plan for risky changes (ROLL-01/02/03)
@@ -21,11 +57,9 @@ rules:
     - Keep tasks completable in one session
   apply:
     - Follow existing code patterns (ARCH-02 structure, 150-line limit CQ-03, no any/escape hatches CQ-06)
-    tdd: false           # strict TDD disabled until a test runner is scaffolded
-    test_command: ""
   verify:
-    test_command: ""
-    build_command: ""
+    test_command: "pnpm test"
+    build_command: "pnpm build"
     coverage_threshold: 80   # TEST-01 baseline
   archive:
     - Warn before merging destructive deltas

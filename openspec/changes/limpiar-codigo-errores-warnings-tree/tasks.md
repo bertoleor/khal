@@ -46,28 +46,28 @@ Chain strategy: stacked-to-main
 
 ## Phase 2: Security Hardening
 
-- [ ] 2.1 Add `AuthContext` type and `requireAuth()` helper to `apps/admin/src/lib/auth.ts` — reads `khal_role` cookie via `cookies()`, returns `{ userId, role }` or throws; structurally ready for Supabase JWT swap
-- [ ] 2.2 Add cookie security flags to `apps/admin/src/app/login/page.tsx` — `httpOnly: true`, `secure: NODE_ENV === 'production'`, `sameSite: 'lax'`, `maxAge: 86400`
-- [ ] 2.3 Refactor `apps/admin/src/lib/actions/appointments.ts` — add `requireAuth()` call, Zod validation via `appointmentStatusSchema` for `to` field, structured `ActionResult` return type, try/catch with `{ success: false, error }` shape
-- [ ] 2.4 Refactor `apps/admin/src/lib/actions/services.ts` — add `requireAuth()` call, Zod validation for `ids` (array of UUIDs), structured `ActionResult` return type, try/catch
-- [ ] 2.5 Refactor `apps/admin/src/lib/actions/clients.ts` — add `requireAuth()` call, validate `id` is UUID string, structured `ActionResult` return type, try/catch
-- [ ] 2.6 Refactor `apps/admin/src/lib/actions/exceptions.ts` — add `requireAuth()` call, structured `ActionResult` return type, try/catch (Zod already present via `calendarExceptionInputSchema`)
+- [x] 2.1 Add `AuthContext` type and `requireAuth()` helper to `apps/admin/src/lib/auth.ts` — reads `khal_role` cookie via `cookies()`, returns `{ userId, role }` or throws; structurally ready for Supabase JWT swap
+- [x] 2.2 Add cookie security flags to `apps/admin/src/app/login/page.tsx` — `httpOnly: true`, `secure: NODE_ENV === 'production'`, `sameSite: 'lax'`, `maxAge: 86400`
+- [x] 2.3 Refactor `apps/admin/src/lib/actions/appointments.ts` — add `requireAuth()` call, Zod validation via `appointmentStatusSchema` for `to` field, structured `ActionResult` return type, try/catch with `{ success: false, error }` shape
+- [x] 2.4 Refactor `apps/admin/src/lib/actions/services.ts` — add `requireAuth()` call, Zod validation for `ids` (array of UUIDs), structured `ActionResult` return type, try/catch
+- [x] 2.5 Refactor `apps/admin/src/lib/actions/clients.ts` — add `requireAuth()` call, validate `id` is UUID string, structured `ActionResult` return type, try/catch
+- [x] 2.6 Refactor `apps/admin/src/lib/actions/exceptions.ts` — add `requireAuth()` call, structured `ActionResult` return type, try/catch (Zod already present via `calendarExceptionInputSchema`)
 
 **Verification**: Run `npx turbo typecheck` — no errors. Manually verify `requireAuth()` reads cookies. Check that unauthenticated calls to actions would throw.
 
 ## Phase 3: i18n Setup + Server Components
 
-- [ ] 3.1 Add `next-intl` dependency to `apps/admin/package.json` — match web's version
-- [ ] 3.2 Wrap `next.config.ts` in admin with `createNextIntlPlugin()` — mirror web's `apps/web/next.config.ts` pattern, add `@khal/ui` to transpilePackages
+- [x] 3.1 Add `next-intl` dependency to `apps/admin/package.json` — match web's version
+- [x] 3.2 Wrap `next.config.ts` in admin with `createNextIntlPlugin()` — mirror web's `apps/web/next.config.ts` pattern, add `@khal/ui` to transpilePackages
 - [ ] 3.3 Create `apps/admin/src/i18n/routing.ts` — `defineRouting({ locales: ["es"], defaultLocale: "es" })`
-- [ ] 3.4 Create `apps/admin/src/i18n/request.ts` — `getRequestConfig` loading `../../messages/${locale}.json`
-- [ ] 3.5 Create `apps/admin/src/i18n/navigation.ts` — `createNavigation(routing)` exporting Link, redirect, usePathname, useRouter, getPathname
-- [ ] 3.6 Create `apps/admin/messages/es.json` — all admin strings from design's Translation Key Structure (nav, auth, appointments, services, clients, exceptions, errors, notFound)
-- [ ] 3.7 Modify `apps/admin/src/app/layout.tsx` — wrap children with `NextIntlClientProvider`, set `locale="es"`
-- [ ] 3.8 Modify `apps/admin/src/app/admin/layout.tsx` — replace hardcoded nav strings ("Agenda", "Clientes", "Servicios", "Bloqueos") with `getTranslations("nav")`
-- [ ] 3.9 Modify `apps/admin/src/app/admin/page.tsx` — replace "Agenda de hoy" with `getTranslations("appointments")`
+- [x] 3.4 Create `apps/admin/src/i18n/request.ts` — `getRequestConfig` loading `../../messages/${locale}.json`
+- [x] 3.5 Create `apps/admin/src/i18n/navigation.ts` — `createNavigation(routing)` exporting Link, redirect, usePathname, useRouter, getPathname
+- [x] 3.6 Create `apps/admin/messages/es.json` — all admin strings from design's Translation Key Structure (nav, auth, appointments, services, clients, exceptions, errors, notFound)
+- [x] 3.7 Modify `apps/admin/src/app/layout.tsx` — wrap children with `NextIntlClientProvider`, set `locale="es"`
+- [x] 3.8 Modify `apps/admin/src/app/admin/layout.tsx` — replace hardcoded nav strings ("Agenda", "Clientes", "Servicios", "Bloqueos") with `getTranslations("nav")`
+- [x] 3.9 Modify `apps/admin/src/app/admin/page.tsx` — replace "Agenda de hoy" with `getTranslations("appointments")`
 - [ ] 3.10 Modify `apps/admin/src/app/admin/servicios/page.tsx` — replace "Servicios" heading + description with `getTranslations("services")`
-- [ ] 3.11 Modify `apps/admin/src/app/admin/clientes/page.tsx` — replace "Clientes" heading with `getTranslations("clients")`
+- [x] 3.11 Modify `apps/admin/src/app/admin/clientes/page.tsx` — replace "Clientes" heading with `getTranslations("clients")`
 - [ ] 3.12 Modify `apps/admin/src/app/admin/bloqueos/page.tsx` — replace heading + description with `getTranslations("exceptions")`
 
 **Verification**: Run `npx turbo build` — admin builds with next-intl. Check `apps/admin/messages/es.json` exists and is valid JSON.
@@ -85,9 +85,9 @@ Chain strategy: stacked-to-main
 
 - [ ] 5.1 Create `apps/admin/src/app/error.tsx` — error boundary with styled UI, "Try Again" button using `reset()`, log error to console, no stack traces shown
 - [ ] 5.2 Create `apps/admin/src/app/not-found.tsx` — 404 page with "Página no encontrada" message + link to `/admin`
-- [ ] 5.3 Create `apps/web/src/app/[locale]/error.tsx` — error boundary with styled UI, "Try Again" button, log error to console
+- [x] 5.3 Create `apps/web/src/app/[locale]/error.tsx` — error boundary with styled UI, "Try Again" button, log error to console
 - [ ] 5.4 Create `apps/web/src/app/[locale]/not-found.tsx` — 404 page with message + link to home (`/${locale}`)
-- [ ] 5.5 Create `DOCS/supabase-migration.md` — migration guide covering: schema creation, RLS policies (SELECT/INSERT/UPDATE/DELETE with auth.uid()), auth mapping (cookie→Supabase Auth, mock role→JWT claim, requireAuth→supabase.auth.getUser), env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET), seed data patterns
+- [x] 5.5 Create `DOCS/supabase-migration.md` — migration guide covering: schema creation, RLS policies (SELECT/INSERT/UPDATE/DELETE with auth.uid()), auth mapping (cookie→Supabase Auth, mock role→JWT claim, requireAuth→supabase.auth.getUser), env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET), seed data patterns
 
 **Verification**: Run `npx turbo build` — both apps build with error/not-found pages. Navigate to invalid URL to verify 404 renders. Trigger error to verify boundary catches it. Review DOCS/supabase-migration.md for completeness.
 
