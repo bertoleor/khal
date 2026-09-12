@@ -22,7 +22,9 @@
     "error": {
       "invalid": "Check your details.",
       "duplicate": "You already have a pending booking. Complete it before booking again.",
-      "blacklisted": "Contact us on WhatsApp to manage your next appointment."
+      "blacklisted": "Contact us on WhatsApp to manage your next appointment.",
+      "conflict": "That time is no longer available. Pick another.",
+      "unavailable": "That time is not available. Pick another."
     }
   },
   "error": {
@@ -38,12 +40,19 @@
   },
   "payment": {
     "amountDue": "Amount due",
+    "depositAmountLabel": "Deposit to transfer",
+    "totalLabel": "Total: {amount}",
     "remainderAtStore": "{amount} remaining at the studio",
+    "transferTo": "Transfer to",
+    "instructions": "Transfer {amount} by CBU or alias, then send the receipt on WhatsApp to confirm your booking.",
+    "depositPendingTitle": "Deposit pending",
+    "depositPendingBody": "Your booking is reserved. Transfer {amount} and send the receipt on WhatsApp to confirm it.",
+    "depositConfirmedTitle": "Deposit confirmed",
     "alias": "Alias",
-    "cvu": "CVU",
+    "cvu": "CBU/CVU",
     "copy": "Copy",
     "copied": "Copied!",
-    "sendComprobante": "I transferred. Send proof via WhatsApp",
+    "sendComprobante": "Send receipt via WhatsApp",
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof."
   }
 }

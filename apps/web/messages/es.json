@@ -22,7 +22,9 @@
     "error": {
       "invalid": "Revisá los datos ingresados.",
       "duplicate": "Ya tenés un turno pendiente. Completalo antes de agendar otro.",
-      "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno."
+      "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno.",
+      "conflict": "Ese horario ya no está disponible. Elegí otro.",
+      "unavailable": "Ese horario no está disponible. Elegí otro."
     }
   },
   "error": {
@@ -38,12 +40,19 @@
   },
   "payment": {
     "amountDue": "A pagar",
+    "depositAmountLabel": "Seña a transferir",
+    "totalLabel": "Total: {amount}",
     "remainderAtStore": "Resto {amount} en el local",
+    "transferTo": "Transferir a",
+    "instructions": "Transferí {amount} por CBU o alias y después enviá el comprobante por WhatsApp para confirmar tu turno.",
+    "depositPendingTitle": "Seña pendiente",
+    "depositPendingBody": "Tu turno está reservado. Transferí {amount} y enviá el comprobante por WhatsApp para confirmarlo.",
+    "depositConfirmedTitle": "Seña confirmada",
     "alias": "Alias",
-    "cvu": "CVU",
+    "cvu": "CBU/CVU",
     "copy": "Copiar",
     "copied": "¡Copiado!",
-    "sendComprobante": "Ya transferí. Enviar comprobante por WhatsApp",
+    "sendComprobante": "Enviar comprobante por WhatsApp",
     "whatsappMessage": "Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
   }
 }

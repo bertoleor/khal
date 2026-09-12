@@ -11,7 +11,12 @@ import { useActionState, useState } from 'react';
 
 const initialBookingState: BookingState = { ok: false };
 
-type ErrorKey = 'error.invalid' | 'error.duplicate' | 'error.blacklisted';
+type ErrorKey =
+  | 'error.invalid'
+  | 'error.duplicate'
+  | 'error.blacklisted'
+  | 'error.conflict'
+  | 'error.unavailable';
 
 function errorKeyFor(code: BookingState['code']): ErrorKey {
   switch (code) {
@@ -19,6 +24,10 @@ function errorKeyFor(code: BookingState['code']): ErrorKey {
       return 'error.duplicate';
     case 'blacklisted':
       return 'error.blacklisted';
+    case 'conflict':
+      return 'error.conflict';
+    case 'unavailable':
+      return 'error.unavailable';
     default:
       return 'error.invalid';
   }

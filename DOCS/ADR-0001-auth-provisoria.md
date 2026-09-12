@@ -1,12 +1,21 @@
-# ADR-0001 — Provisional admin auth (cookie role mock)
+# ADR-0001 — Provisional admin auth (cookie role mock) -> Supabase JWT claims
 
-- Status: accepted (temporary).
+- Status: accepted (temporary) — **UNVERIFIED** until a Supabase project is linked.
 - Context: no Supabase Auth linked yet; admin needs a role gate now.
-- Decision: `apps/admin/src/lib/auth.ts` gates on `khal_role` cookie;
-  single swap point (`requireAuth` / `getRole`) for Supabase JWT
-  custom claims (`auth.jwt() -> app_metadata.role`).
-- Consequences: NOT production-safe (client-settable cookie). Migration
-  `0001_initial_schema.sql` already defines `app_org_id()` /
-  `app_role()` helpers expecting the JWT claims — RLS assumes them.
-- Exit criteria: Supabase project linked + JWT claims issued +
-  `requireAuth` verifying JWT + E2E login test. (UNVERIFIED)
+- Decision (G1 P0 migration, CODE READY-TO-APPLY):
+  - `apps/admin/src/lib/auth.ts` now verifies the session via `@supabase/ssr`
+    (`auth.getUser()`) and resolves role from the server-issued JWT custom claim
+    `app_metadata.role` (never `user_metadata` — user-editable, unsafe).
+  - `apps/admin/src/lib/supabase/server.ts` builds the canonical per-request
+    `createServerClient` with the Next.js cookie store.
+  - Migration `supabase/migrations/0002_auth_roles.sql` adds `current_role()`
+    (allow-list resolver for `admin`/`manager`) and a `security_invoker`
+    `my_auth_context` view, plus minimal grant/revoke hardening.
+  - **Fallback:** when `NEXT_PUBLIC_SUPABASE_URL` / `_ANON_KEY` are absent
+    (no project provisioned), `requireAuth`/`getRole` degrade to the previous
+    `khal_role` cookie mock so local dev does not break.
+- Consequences: the cookie mock is NOT production-safe (client-settable). Until
+  Supabase is provisioned and JWT claims are issued by the auth service, the
+  fallback path is active and the real JWT path is UNVERIFIED.
+- Exit criteria: Supabase project linked + JWT `app_metadata.role` claims issued
+  + `requireAuth` verifying JWT (fallback removed) + E2E login test. (UNVERIFIED)

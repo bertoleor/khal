@@ -67,6 +67,7 @@ export default async function ReservarPage({
     totalCents: service.price_cents,
     currencyCode: service.currency_code,
     isDeposit,
+    depositStatus: 'pending',
   };
 
   return (
