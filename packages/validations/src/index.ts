@@ -1,15 +1,15 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const phoneSchema = z
   .string()
   .trim()
-  .min(6, "Invalid phone")
-  .max(24, "Invalid phone")
-  .regex(/^\+?[0-9\s-]+$/, "Invalid phone format");
+  .min(6, 'Invalid phone')
+  .max(24, 'Invalid phone')
+  .regex(/^\+?[0-9\s-]+$/, 'Invalid phone format');
 
 export const emailSchema = z.string().trim().email().max(320);
 
-export const depositModeSchema = z.enum(["full", "fixed", "percentage"]);
+export const depositModeSchema = z.enum(['full', 'fixed', 'percentage']);
 
 export const serviceSchema = z.object({
   id: z.string().uuid(),
@@ -41,29 +41,23 @@ export const bookingInputSchema = z.object({
 export type BookingInput = z.infer<typeof bookingInputSchema>;
 
 export const appointmentStatusSchema = z.enum([
-  "pendiente",
-  "confirmado",
-  "cancelado",
-  "no_asistio",
+  'pendiente',
+  'confirmado',
+  'cancelado',
+  'no_asistio',
 ]);
 
 export type AppointmentStatus = z.infer<typeof appointmentStatusSchema>;
 
 // ECOM-03 — strict state machine; no arbitrary jumps.
-export const VALID_APPOINTMENT_TRANSITIONS: Record<
-  AppointmentStatus,
-  AppointmentStatus[]
-> = {
-  pendiente: ["confirmado", "cancelado", "no_asistio"],
-  confirmado: ["cancelado", "no_asistio"],
+export const VALID_APPOINTMENT_TRANSITIONS: Record<AppointmentStatus, AppointmentStatus[]> = {
+  pendiente: ['confirmado', 'cancelado', 'no_asistio'],
+  confirmado: ['cancelado', 'no_asistio'],
   cancelado: [],
   no_asistio: [],
 };
 
-export function canTransitionAppointment(
-  from: AppointmentStatus,
-  to: AppointmentStatus,
-): boolean {
+export function canTransitionAppointment(from: AppointmentStatus, to: AppointmentStatus): boolean {
   return VALID_APPOINTMENT_TRANSITIONS[from].includes(to);
 }
 
@@ -90,12 +84,7 @@ export const clientSchema = z.object({
 
 export type Client = z.infer<typeof clientSchema>;
 
-export const exceptionTypeSchema = z.enum([
-  "holiday",
-  "vacation",
-  "event",
-  "block",
-]);
+export const exceptionTypeSchema = z.enum(['holiday', 'vacation', 'event', 'block']);
 
 export type ExceptionType = z.infer<typeof exceptionTypeSchema>;
 

@@ -1,0 +1,58 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill in the details below.
+  - type: input
+    id: version
+    attributes:
+      label: Version/Commit
+      description: What version or commit are you on?
+      placeholder: "main / v1.2.3 / commit sha"
+    required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect?
+    required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal steps to reproduce the bug
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See error
+    required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Messages
+      description: Paste any relevant logs, stack traces, or error messages
+      render: shell
+    required: false
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical (data loss, security, payments broken)
+        - High (major feature broken)
+        - Medium (minor feature broken, workaround exists)
+        - Low (cosmetic, enhancement)
+    required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues for duplicates
+          required: true
+        - label: I have provided a minimal reproduction
+          required: true

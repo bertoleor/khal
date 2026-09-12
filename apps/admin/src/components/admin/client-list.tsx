@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useTranslations } from "next-intl";
-import { formatCents } from "@khal/utils";
-import type { Client } from "@khal/validations";
-import { toggleBlacklisted as toggleBlacklistedAction } from "@/lib/actions/clients";
+import { toggleBlacklisted as toggleBlacklistedAction } from '@/lib/actions/clients';
+import { formatCents } from '@khal/utils';
+import type { Client } from '@khal/validations';
+import { useTranslations } from 'next-intl';
 
 function handleToggleBlacklisted(formData: FormData): void {
   void toggleBlacklistedAction(formData);
@@ -15,10 +15,10 @@ export interface ClientRow {
 }
 
 export function ClientList({ rows }: { rows: ClientRow[] }) {
-  const t = useTranslations("Admin");
+  const t = useTranslations('Admin');
 
   if (rows.length === 0) {
-    return <p className="mt-6 text-slate-500">{t("clients.empty")}</p>;
+    return <p className="mt-6 text-slate-500">{t('clients.empty')}</p>;
   }
 
   return (
@@ -27,16 +27,12 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
         <li key={client.id} className="rounded-2xl border border-slate-200 p-4">
           <div className="flex items-center justify-between">
             <div className="min-w-0">
-              <p className="truncate font-medium text-slate-900">
-                {client.name}
-              </p>
+              <p className="truncate font-medium text-slate-900">{client.name}</p>
               <p className="truncate text-sm text-slate-500">{client.phone}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-slate-400">{t("clients.ltv")}</p>
-              <p className="font-medium text-slate-900">
-                {formatCents(ltvCents, "ARS")}
-              </p>
+              <p className="text-xs text-slate-400">{t('clients.ltv')}</p>
+              <p className="font-medium text-slate-900">{formatCents(ltvCents, 'ARS')}</p>
             </div>
           </div>
 
@@ -51,7 +47,7 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
             ))}
             {client.noShowCount > 0 ? (
               <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-600">
-                {t("clients.noShow", { count: client.noShowCount })}
+                {t('clients.noShow', { count: client.noShowCount })}
               </span>
             ) : null}
           </div>
@@ -62,13 +58,11 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               type="submit"
               className={
                 client.isBlacklisted
-                  ? "rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700"
-                  : "rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-600"
+                  ? 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700'
+                  : 'rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-600'
               }
             >
-              {client.isBlacklisted
-                ? t("clients.removeBlacklist")
-                : t("clients.blacklist")}
+              {client.isBlacklisted ? t('clients.removeBlacklist') : t('clients.blacklist')}
             </button>
           </form>
         </li>

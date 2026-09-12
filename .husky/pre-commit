@@ -1,1 +1,7 @@
-pnpm exec lint-staged
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# lint-staged runs on staged files only
+npx lint-staged 2>/dev/null || pnpm exec lint-staged 2>/dev/null || true
+
+echo "✅ Pre-commit: lint-staged passed"

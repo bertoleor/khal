@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const workerEnvSchema = z.object({
   N8N_WEBHOOK_URL: z.string().url(),
@@ -12,8 +12,6 @@ export const workerEnvSchema = z.object({
 export type WorkerEnv = z.infer<typeof workerEnvSchema>;
 
 // ENV-01 — validate at worker boot; refuse to start with missing/malformed vars.
-export function loadWorkerEnv(
-  source: NodeJS.ProcessEnv = process.env,
-): WorkerEnv {
+export function loadWorkerEnv(source: NodeJS.ProcessEnv = process.env): WorkerEnv {
   return workerEnvSchema.parse(source);
 }

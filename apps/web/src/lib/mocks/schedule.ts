@@ -1,4 +1,4 @@
-import type { TimeRange } from "@khal/db";
+import type { TimeRange } from '@khal/db';
 
 export interface DayHours {
   open: string;
@@ -8,14 +8,14 @@ export interface DayHours {
 // Provisional fixtures (CQ-04). Replaced by provider_schedules/business_hours
 // and confirmed appointments from Supabase once linked.
 export function businessHoursFor(weekday: number): DayHours | null {
-  return weekday === 0 ? null : { open: "09:00", close: "18:00" };
+  return weekday === 0 ? null : { open: '09:00', close: '18:00' };
 }
 
 export function blockedPeriodsFor(date: string, weekday: number): TimeRange[] {
   if (weekday === 0) {
     return [];
   }
-  const [y, m, d] = date.split("-").map(Number);
+  const [y, m, d] = date.split('-').map(Number);
   const target = new Date(y, m - 1, d);
   const now = new Date();
   const isToday =

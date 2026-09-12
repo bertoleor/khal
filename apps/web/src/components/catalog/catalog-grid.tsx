@@ -1,7 +1,7 @@
-import { Link } from "@/i18n/navigation";
-import { formatCents } from "@khal/utils";
-import type { Service } from "@khal/validations";
-import { EmptyState } from "@/components/shared/empty-state";
+import { EmptyState } from '@/components/shared/empty-state';
+import { Link } from '@/i18n/navigation';
+import { formatCents } from '@khal/utils';
+import type { Service } from '@khal/validations';
 
 export function CatalogGrid({
   services,
@@ -26,9 +26,7 @@ export function CatalogGrid({
             {service.name.slice(0, 1)}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-semibold text-slate-900">
-              {service.name}
-            </h3>
+            <h3 className="truncate font-semibold text-slate-900">{service.name}</h3>
             <p className="text-sm text-slate-500">
               {formatCents(service.price_cents, service.currency_code)}
             </p>

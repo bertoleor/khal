@@ -59,16 +59,16 @@ Chain strategy: stacked-to-main
 
 - [x] 3.1 Add `next-intl` dependency to `apps/admin/package.json` — match web's version
 - [x] 3.2 Wrap `next.config.ts` in admin with `createNextIntlPlugin()` — mirror web's `apps/web/next.config.ts` pattern, add `@khal/ui` to transpilePackages
-- [ ] 3.3 Create `apps/admin/src/i18n/routing.ts` — `defineRouting({ locales: ["es"], defaultLocale: "es" })`
+- [x] 3.3 Create `apps/admin/src/i18n/routing.ts` — `defineRouting({ locales: ["es"], defaultLocale: "es" })`
 - [x] 3.4 Create `apps/admin/src/i18n/request.ts` — `getRequestConfig` loading `../../messages/${locale}.json`
 - [x] 3.5 Create `apps/admin/src/i18n/navigation.ts` — `createNavigation(routing)` exporting Link, redirect, usePathname, useRouter, getPathname
 - [x] 3.6 Create `apps/admin/messages/es.json` — all admin strings from design's Translation Key Structure (nav, auth, appointments, services, clients, exceptions, errors, notFound)
 - [x] 3.7 Modify `apps/admin/src/app/layout.tsx` — wrap children with `NextIntlClientProvider`, set `locale="es"`
 - [x] 3.8 Modify `apps/admin/src/app/admin/layout.tsx` — replace hardcoded nav strings ("Agenda", "Clientes", "Servicios", "Bloqueos") with `getTranslations("nav")`
 - [x] 3.9 Modify `apps/admin/src/app/admin/page.tsx` — replace "Agenda de hoy" with `getTranslations("appointments")`
-- [ ] 3.10 Modify `apps/admin/src/app/admin/servicios/page.tsx` — replace "Servicios" heading + description with `getTranslations("services")`
+- [x] 3.10 Modify `apps/admin/src/app/admin/servicios/page.tsx` — replace "Servicios" heading + description with `getTranslations("services")`
 - [x] 3.11 Modify `apps/admin/src/app/admin/clientes/page.tsx` — replace "Clientes" heading with `getTranslations("clients")`
-- [ ] 3.12 Modify `apps/admin/src/app/admin/bloqueos/page.tsx` — replace heading + description with `getTranslations("exceptions")`
+- [x] 3.12 Modify `apps/admin/src/app/admin/bloqueos/page.tsx` — replace heading + description with `getTranslations("exceptions")`
 
 **Verification**: Run `npx turbo build` — admin builds with next-intl. Check `apps/admin/messages/es.json` exists and is valid JSON.
 
@@ -83,10 +83,10 @@ Chain strategy: stacked-to-main
 
 ## Phase 5: Error Boundaries + SQL Prep
 
-- [ ] 5.1 Create `apps/admin/src/app/error.tsx` — error boundary with styled UI, "Try Again" button using `reset()`, log error to console, no stack traces shown
-- [ ] 5.2 Create `apps/admin/src/app/not-found.tsx` — 404 page with "Página no encontrada" message + link to `/admin`
+- [x] 5.1 Create `apps/admin/src/app/error.tsx` — error boundary with styled UI, "Try Again" button using `reset()`, log error to console, no stack traces shown
+- [x] 5.2 Create `apps/admin/src/app/not-found.tsx` — 404 page with "Página no encontrada" message + link to `/admin`
 - [x] 5.3 Create `apps/web/src/app/[locale]/error.tsx` — error boundary with styled UI, "Try Again" button, log error to console
-- [ ] 5.4 Create `apps/web/src/app/[locale]/not-found.tsx` — 404 page with message + link to home (`/${locale}`)
+- [x] 5.4 Create `apps/web/src/app/[locale]/not-found.tsx` — 404 page with message + link to home (`/${locale}`)
 - [x] 5.5 Create `DOCS/supabase-migration.md` — migration guide covering: schema creation, RLS policies (SELECT/INSERT/UPDATE/DELETE with auth.uid()), auth mapping (cookie→Supabase Auth, mock role→JWT claim, requireAuth→supabase.auth.getUser), env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET), seed data patterns
 
 **Verification**: Run `npx turbo build` — both apps build with error/not-found pages. Navigate to invalid URL to verify 404 renders. Trigger error to verify boundary catches it. Review DOCS/supabase-migration.md for completeness.

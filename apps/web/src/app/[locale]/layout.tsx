@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
-import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
-import "../globals.css";
+import { routing } from '@/i18n/routing';
+import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { notFound } from 'next/navigation';
+import '../globals.css';
 
 export const metadata: Metadata = {
-  title: "Khal — Agenda",
-  description: "Agenda virtual para estudios de estética",
+  title: 'Khal — Agenda',
+  description: 'Agenda virtual para estudios de estética',
 };
 
 export default async function RootLayout({

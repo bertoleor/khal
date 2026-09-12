@@ -1,19 +1,19 @@
-import { notFound } from "next/navigation";
-import { computeAvailableSlots, parseClock } from "@khal/db";
-import { computeAmountDueCents, formatCents, toIsoDate } from "@khal/utils";
-import { BookingForm } from "@/components/booking/booking-form";
-import type { DaySlot } from "@/components/booking/slot-picker";
-import { Header } from "@/components/shared/header";
-import type { PaymentInfo } from "@/components/payment/payment-step";
-import { getService } from "@/lib/actions/catalog";
-import { storePaymentSettings } from "@/lib/mocks/settings";
-import { blockedPeriodsFor, businessHoursFor } from "@/lib/mocks/schedule";
+import { BookingForm } from '@/components/booking/booking-form';
+import type { DaySlot } from '@/components/booking/slot-picker';
+import type { PaymentInfo } from '@/components/payment/payment-step';
+import { Header } from '@/components/shared/header';
+import { getService } from '@/lib/actions/catalog';
+import { blockedPeriodsFor, businessHoursFor } from '@/lib/mocks/schedule';
+import { storePaymentSettings } from '@/lib/mocks/settings';
+import { computeAvailableSlots, parseClock } from '@khal/db';
+import { computeAmountDueCents, formatCents, toIsoDate } from '@khal/utils';
+import { notFound } from 'next/navigation';
 
 function dayLabel(date: Date, locale: string): string {
   return new Intl.DateTimeFormat(locale, {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
   }).format(date);
 }
 
@@ -42,7 +42,7 @@ export default async function ReservarPage({
           { start: parseClock(hours.open), end: parseClock(hours.close) },
           blockedPeriodsFor(isoDate, weekday),
           service.duration_minutes,
-          service.buffer_minutes,
+          service.buffer_minutes
         )
       : [];
     days.push({
@@ -53,8 +53,7 @@ export default async function ReservarPage({
     });
   }
 
-  const isDeposit =
-    service.deposit_mode === "fixed" || service.deposit_mode === "percentage";
+  const isDeposit = service.deposit_mode === 'fixed' || service.deposit_mode === 'percentage';
   const payment: PaymentInfo = {
     alias: storePaymentSettings.alias,
     cvu: storePaymentSettings.cvu,
@@ -63,7 +62,7 @@ export default async function ReservarPage({
       service.price_cents,
       service.deposit_mode,
       service.deposit_fixed_cents,
-      service.deposit_percentage_bp,
+      service.deposit_percentage_bp
     ),
     totalCents: service.price_cents,
     currencyCode: service.currency_code,
@@ -74,9 +73,7 @@ export default async function ReservarPage({
     <div className="min-h-dvh bg-white">
       <Header />
       <main className="mx-auto max-w-md px-4 py-6">
-        <h1 className="text-xl font-semibold tracking-tight text-slate-900">
-          {service.name}
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight text-slate-900">{service.name}</h1>
         <p className="mt-1 text-slate-500">
           {formatCents(service.price_cents, service.currency_code)}
         </p>

@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import type { Service } from "@khal/validations";
-import { mockServices } from "@/lib/mocks/services";
+import { mockServices } from '@/lib/mocks/services';
+import type { Service } from '@khal/validations';
 
 // Server-only catalog reads. Currently sourced from mocks (CQ-04); swapped for
 // typed Supabase queries (is_visible filter + sort_order) once linked.

@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { requireAuth } from "@/lib/auth";
-import { servicesStore } from "@/lib/mocks/services";
+import { requireAuth } from '@/lib/auth';
+import { servicesStore } from '@/lib/mocks/services';
+import { revalidatePath } from 'next/cache';
 
 export async function bulkIncrease(formData: FormData): Promise<{
   error?: string;
@@ -10,9 +10,9 @@ export async function bulkIncrease(formData: FormData): Promise<{
   const auth = await requireAuth();
   if (!auth.ok) return { error: auth.error };
 
-  const ids = formData.getAll("ids").map(String);
+  const ids = formData.getAll('ids').map(String);
   servicesStore.bulkIncrease(ids, 1000);
-  revalidatePath("/admin/servicios");
+  revalidatePath('/admin/servicios');
   return {};
 }
 
@@ -22,8 +22,8 @@ export async function toggleVisibility(formData: FormData): Promise<{
   const auth = await requireAuth();
   if (!auth.ok) return { error: auth.error };
 
-  const id = String(formData.get("id") ?? "");
+  const id = String(formData.get('id') ?? '');
   servicesStore.toggleVisibility(id);
-  revalidatePath("/admin/servicios");
+  revalidatePath('/admin/servicios');
   return {};
 }

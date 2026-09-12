@@ -1,0 +1,40 @@
+name: Security Issue
+description: Report a security vulnerability (use private advisory instead if possible)
+title: "[Security]: "
+labels: ["security", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **For critical security issues, please use GitHub Private Security Advisory instead of this form.**
+        
+        See [SECURITY.md](../../SECURITY.md) for our security policy.
+  - type: textarea
+    id: description
+    attributes:
+      label: Vulnerability Description
+      description: Describe the vulnerability and its impact
+    required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: What systems/data are affected?
+    required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity (CVSS)
+      options:
+        - Critical (9.0-10.0)
+        - High (7.0-8.9)
+        - Medium (4.0-6.9)
+        - Low (0.1-3.9)
+    required: true
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Responsible Disclosure
+      options:
+        - label: I agree to responsible disclosure (no public disclosure until fix)
+          required: true

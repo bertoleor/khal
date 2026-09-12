@@ -1,5 +1,5 @@
 change: limpiar-codigo-errores-warnings-tree
-phase: tasks
+phase: verify
 status: complete
 artifacts:
   proposal: openspec/changes/limpiar-codigo-errores-warnings-tree/proposal.md
@@ -16,4 +16,4 @@ artifacts:
     - sdd/limpiar-codigo-errores-warnings-tree/spec
     - sdd/limpiar-codigo-errores-warnings-tree/design
     - sdd/limpiar-codigo-errores-warnings-tree/tasks
-next: sdd-apply
+next: sdd-verify

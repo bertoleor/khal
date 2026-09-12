@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from 'react';
 
 export function Field({
   label,
@@ -8,7 +8,7 @@ export function Field({
 }: {
   label: string;
   name: string;
-  type: ComponentProps<"input">["type"];
+  type: ComponentProps<'input'>['type'];
   autoComplete?: string;
 }) {
   return (

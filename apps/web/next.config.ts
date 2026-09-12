@@ -1,10 +1,10 @@
-import createNextIntlPlugin from "next-intl/plugin";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@khal/utils", "@khal/types", "@khal/validations"],
+  transpilePackages: ['@khal/utils', '@khal/types', '@khal/validations'],
 };
 
 export default withNextIntl(nextConfig);

@@ -1,42 +1,42 @@
-import type { Service } from "@khal/validations";
-import { increaseCentsByBp } from "@khal/utils";
+import { increaseCentsByBp } from '@khal/utils';
+import type { Service } from '@khal/validations';
 
 const seed: Service[] = [
   {
-    id: "11111111-1111-4111-8111-111111111111",
-    name: "Lifting de Pestañas",
+    id: '11111111-1111-4111-8111-111111111111',
+    name: 'Lifting de Pestañas',
     price_cents: 4500000,
-    currency_code: "ARS",
+    currency_code: 'ARS',
     duration_minutes: 60,
     buffer_minutes: 15,
     is_visible: true,
     sort_order: 1,
   },
   {
-    id: "22222222-2222-4222-8222-222222222222",
-    name: "Esmaltado Semipermanente",
+    id: '22222222-2222-4222-8222-222222222222',
+    name: 'Esmaltado Semipermanente',
     price_cents: 3800000,
-    currency_code: "ARS",
+    currency_code: 'ARS',
     duration_minutes: 75,
     buffer_minutes: 15,
     is_visible: true,
     sort_order: 2,
   },
   {
-    id: "33333333-3333-4333-8333-333333333333",
-    name: "Diseño de Cejas",
+    id: '33333333-3333-4333-8333-333333333333',
+    name: 'Diseño de Cejas',
     price_cents: 2800000,
-    currency_code: "ARS",
+    currency_code: 'ARS',
     duration_minutes: 45,
     buffer_minutes: 10,
     is_visible: true,
     sort_order: 3,
   },
   {
-    id: "44444444-4444-4444-8444-444444444444",
-    name: "Spa de Uñas Completo",
+    id: '44444444-4444-4444-8444-444444444444',
+    name: 'Spa de Uñas Completo',
     price_cents: 5500000,
-    currency_code: "ARS",
+    currency_code: 'ARS',
     duration_minutes: 90,
     buffer_minutes: 15,
     is_visible: false,

@@ -1,14 +1,10 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
 // WEBHOOKS-01 layer 3 — HMAC-SHA256 signature validation with constant-time
 // comparison. This is the only case where a non-200 response is returned.
-export function isValidSignature(
-  payload: string,
-  signature: string,
-  secret: string,
-): boolean {
-  const expected = createHmac("sha256", secret).update(payload).digest();
-  const provided = Buffer.from(signature, "hex");
+export function isValidSignature(payload: string, signature: string, secret: string): boolean {
+  const expected = createHmac('sha256', secret).update(payload).digest();
+  const provided = Buffer.from(signature, 'hex');
   if (expected.length !== provided.length) {
     return false;
   }

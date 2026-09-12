@@ -1,26 +1,20 @@
-import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Khal — Admin",
-  description: "Backoffice de la agenda virtual",
+  title: 'Khal — Admin',
+  description: 'Backoffice de la agenda virtual',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages();
 
   return (
     <html lang="es">
       <body>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

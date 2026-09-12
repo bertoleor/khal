@@ -1,0 +1,29 @@
+# Global owners (all files)
+* @bertoleor
+
+# Admin panels - security critical
+/src/app/admin/ @bertoleor
+/src/app/api/admin/ @bertoleor
+
+# Payments & financial - security critical
+/src/app/api/payments/ @bertoleor
+/src/app/api/webhooks/ @bertoleor
+/src/lib/payments/ @bertoleor
+
+# Database & auth
+/src/lib/supabase/ @bertoleor
+/src/lib/auth/ @bertoleor
+/src/middleware.ts @bertoleor
+
+# Config & infra
+/next.config.* @bertoleor
+/eslint.config.* @bertoleor
+/.prettierrc* @bertoleor
+/tailwind.config.* @bertoleor
+/tsconfig*.json @bertoleor
+/package.json @bertoleor
+/pnpm-lock.yaml @bertoleor
+/.github/ @bertoleor
+
+# Security
+SECURITY.md @bertoleor

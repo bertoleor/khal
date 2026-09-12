@@ -1,29 +1,26 @@
-"use client";
+'use client';
 
-import { useActionState, useState } from "react";
-import { useTranslations } from "next-intl";
-import { formatCents } from "@khal/utils";
-import type { Service } from "@khal/validations";
-import { createBooking, type BookingState } from "@/lib/actions/booking";
-import {
-  PaymentStep,
-  type PaymentInfo,
-} from "@/components/payment/payment-step";
-import { Field } from "@/components/shared/field";
-import { SlotPicker, type DaySlot } from "@/components/booking/slot-picker";
+import { SlotPicker, type DaySlot } from '@/components/booking/slot-picker';
+import { PaymentStep, type PaymentInfo } from '@/components/payment/payment-step';
+import { Field } from '@/components/shared/field';
+import { createBooking, type BookingState } from '@/lib/actions/booking';
+import { formatCents } from '@khal/utils';
+import type { Service } from '@khal/validations';
+import { useTranslations } from 'next-intl';
+import { useActionState, useState } from 'react';
 
 const initialBookingState: BookingState = { ok: false };
 
-type ErrorKey = "error.invalid" | "error.duplicate" | "error.blacklisted";
+type ErrorKey = 'error.invalid' | 'error.duplicate' | 'error.blacklisted';
 
-function errorKeyFor(code: BookingState["code"]): ErrorKey {
+function errorKeyFor(code: BookingState['code']): ErrorKey {
   switch (code) {
-    case "duplicate":
-      return "error.duplicate";
-    case "blacklisted":
-      return "error.blacklisted";
+    case 'duplicate':
+      return 'error.duplicate';
+    case 'blacklisted':
+      return 'error.blacklisted';
     default:
-      return "error.invalid";
+      return 'error.invalid';
   }
 }
 
@@ -36,13 +33,10 @@ export function BookingForm({
   days: DaySlot[];
   payment: PaymentInfo;
 }) {
-  const t = useTranslations("booking");
-  const [selectedDate, setSelectedDate] = useState(days[0]?.date ?? "");
+  const t = useTranslations('booking');
+  const [selectedDate, setSelectedDate] = useState(days[0]?.date ?? '');
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [state, formAction, isPending] = useActionState(
-    createBooking,
-    initialBookingState,
-  );
+  const [state, formAction, isPending] = useActionState(createBooking, initialBookingState);
 
   if (state.ok && state.bookingId && selectedSlot && selectedDate) {
     return (
@@ -77,31 +71,16 @@ export function BookingForm({
           <input type="hidden" name="serviceId" value={service.id} />
           <input type="hidden" name="date" value={selectedDate} />
           <input type="hidden" name="slotStart" value={selectedSlot} />
-          <Field
-            label={t("name")}
-            name="name"
-            type="text"
-            autoComplete="name"
-          />
-          <Field
-            label={t("phone")}
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-          />
-          <Field
-            label={t("email")}
-            name="email"
-            type="email"
-            autoComplete="email"
-          />
+          <Field label={t('name')} name="name" type="text" autoComplete="name" />
+          <Field label={t('phone')} name="phone" type="tel" autoComplete="tel" />
+          <Field label={t('email')} name="email" type="email" autoComplete="email" />
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
           <button
             type="submit"
             disabled={isPending}
             className="w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending ? t("submitting") : t("confirm")}
+            {isPending ? t('submitting') : t('confirm')}
           </button>
         </form>
       ) : null}

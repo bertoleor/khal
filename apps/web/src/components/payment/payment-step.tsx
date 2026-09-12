@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { buildWhatsAppLink, formatCents } from "@khal/utils";
+import { buildWhatsAppLink, formatCents } from '@khal/utils';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 export interface PaymentInfo {
   alias: string;
@@ -15,7 +15,7 @@ export interface PaymentInfo {
 }
 
 function CopyRow({ label, value }: { label: string; value: string }) {
-  const t = useTranslations("payment");
+  const t = useTranslations('payment');
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -39,7 +39,7 @@ function CopyRow({ label, value }: { label: string; value: string }) {
         onClick={handleCopy}
         className="shrink-0 rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-700"
       >
-        {copied ? t("copied") : t("copy")}
+        {copied ? t('copied') : t('copy')}
       </button>
     </div>
   );
@@ -56,31 +56,31 @@ export function PaymentStep({
   date: string;
   slot: string;
 }) {
-  const t = useTranslations("payment");
-  const message = t("whatsappMessage", { service: serviceName, date, slot });
+  const t = useTranslations('payment');
+  const message = t('whatsappMessage', { service: serviceName, date, slot });
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
 
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-slate-200 p-5 text-center">
-        <p className="text-sm text-slate-500">{t("amountDue")}</p>
+        <p className="text-sm text-slate-500">{t('amountDue')}</p>
         <p className="mt-1 text-3xl font-bold text-slate-900">
           {formatCents(payment.amountDueCents, payment.currencyCode)}
         </p>
         {payment.isDeposit ? (
           <p className="mt-2 text-xs text-slate-500">
-            {t("remainderAtStore", {
+            {t('remainderAtStore', {
               amount: formatCents(
                 payment.totalCents - payment.amountDueCents,
-                payment.currencyCode,
+                payment.currencyCode
               ),
             })}
           </p>
         ) : null}
       </div>
 
-      <CopyRow label={t("alias")} value={payment.alias} />
-      <CopyRow label={t("cvu")} value={payment.cvu} />
+      <CopyRow label={t('alias')} value={payment.alias} />
+      <CopyRow label={t('cvu')} value={payment.cvu} />
 
       <a
         href={link}
@@ -88,7 +88,7 @@ export function PaymentStep({
         rel="noreferrer"
         className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white"
       >
-        {t("sendComprobante")}
+        {t('sendComprobante')}
       </a>
     </div>
   );

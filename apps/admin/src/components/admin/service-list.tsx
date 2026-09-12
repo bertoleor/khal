@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useTranslations } from "next-intl";
-import { formatCents } from "@khal/utils";
-import type { Service } from "@khal/validations";
 import {
   bulkIncrease as bulkIncreaseAction,
   toggleVisibility as toggleVisibilityAction,
-} from "@/lib/actions/services";
+} from '@/lib/actions/services';
+import { formatCents } from '@khal/utils';
+import type { Service } from '@khal/validations';
+import { useTranslations } from 'next-intl';
 
 function handleToggleVisibility(formData: FormData): void {
   void toggleVisibilityAction(formData);
@@ -17,7 +17,7 @@ function handleBulkIncrease(formData: FormData): void {
 }
 
 export function ServiceList({ services }: { services: Service[] }) {
-  const t = useTranslations("Admin");
+  const t = useTranslations('Admin');
 
   return (
     <form className="mt-4 space-y-2">
@@ -36,7 +36,7 @@ export function ServiceList({ services }: { services: Service[] }) {
           <div className="min-w-0 flex-1">
             <p
               className={`truncate font-medium ${
-                service.is_visible ? "text-slate-900" : "text-slate-400"
+                service.is_visible ? 'text-slate-900' : 'text-slate-400'
               }`}
             >
               {service.name}
@@ -52,7 +52,7 @@ export function ServiceList({ services }: { services: Service[] }) {
             type="submit"
             className="shrink-0 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700"
           >
-            {service.is_visible ? t("services.hide") : t("services.show")}
+            {service.is_visible ? t('services.hide') : t('services.show')}
           </button>
         </div>
       ))}
@@ -62,7 +62,7 @@ export function ServiceList({ services }: { services: Service[] }) {
         type="submit"
         className="mt-4 w-full rounded-full bg-slate-900 py-3 text-sm font-medium text-white"
       >
-        {t("services.bulkIncrease")}
+        {t('services.bulkIncrease')}
       </button>
     </form>
   );

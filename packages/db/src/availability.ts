@@ -18,11 +18,11 @@ export function fromMinutes(total: number): ClockTime {
 
 export function formatClock(totalMinutes: number): string {
   const { hours, minutes } = fromMinutes(totalMinutes);
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 }
 
 export function parseClock(value: string): ClockTime {
-  const [hours, minutes] = value.split(":").map(Number);
+  const [hours, minutes] = value.split(':').map(Number);
   return { hours, minutes };
 }
 
@@ -42,7 +42,7 @@ export function computeAvailableSlots(
   blocked: TimeRange[],
   durationMinutes: number,
   bufferMinutes: number,
-  stepMinutes = 15,
+  stepMinutes = 15
 ): string[] {
   const block = durationMinutes + bufferMinutes;
   const openStart = toMinutes(open.start);
@@ -54,9 +54,7 @@ export function computeAvailableSlots(
       start: fromMinutes(start),
       end: fromMinutes(start + block),
     };
-    const conflicts = blocked.some((period) =>
-      rangesOverlap(candidate, period),
-    );
+    const conflicts = blocked.some((period) => rangesOverlap(candidate, period));
     if (!conflicts) {
       result.push(formatClock(start));
     }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const envSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
@@ -23,10 +23,10 @@ function parseEnv() {
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
     const missing = result.error.issues
-      .map((issue) => `  ${issue.path.join(".")}: ${issue.message}`)
-      .join("\n");
+      .map((issue) => `  ${issue.path.join('.')}: ${issue.message}`)
+      .join('\n');
     throw new Error(
-      `Invalid environment variables:\n${missing}\n\nExpected format: set each variable in .env.local`,
+      `Invalid environment variables:\n${missing}\n\nExpected format: set each variable in .env.local`
     );
   }
   return result.data;

@@ -1,11 +1,11 @@
-import type { CalendarException } from "@khal/validations";
+import type { CalendarException } from '@khal/validations';
 
 const seed: CalendarException[] = [
   {
-    id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
-    title: "Feriado nacional",
-    type: "holiday",
-    date: "2026-12-25",
+    id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+    title: 'Feriado nacional',
+    type: 'holiday',
+    date: '2026-12-25',
   },
 ];
 
@@ -18,7 +18,7 @@ class ExceptionStore {
     return [...this.items];
   }
 
-  add(input: Omit<CalendarException, "id">): CalendarException {
+  add(input: Omit<CalendarException, 'id'>): CalendarException {
     const item: CalendarException = { id: crypto.randomUUID(), ...input };
     this.items.push(item);
     return item;

@@ -32,4 +32,5 @@ test-results/
 
 # misc
 .DS_Store
-*.log
+*.log.changeset/
+.husky/
