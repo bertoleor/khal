@@ -52,6 +52,10 @@
     "cvu": "CBU/CVU",
     "copy": "Copiar",
     "copied": "¡Copiado!",
+    "payOnlineTitle": "O pagá online con Mercado Pago",
+    "payOnline": "Pagar online",
+    "redirecting": "Redirigiendo…",
+    "checkoutError": "No pudimos iniciar el pago online. Probá de nuevo o pagá por transferencia.",
     "sendComprobante": "Enviar comprobante por WhatsApp",
     "whatsappMessage": "Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
   }

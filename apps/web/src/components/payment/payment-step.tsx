@@ -1,5 +1,6 @@
 'use client';
 
+import { createCheckoutPreference } from '@/lib/actions/payment';
 import { buildWhatsAppLink, formatCents } from '@khal/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -54,17 +55,44 @@ export function PaymentStep({
   serviceName,
   date,
   slot,
+  bookingId,
+  serviceId,
 }: {
   payment: PaymentInfo;
   serviceName: string;
   date: string;
   slot: string;
+  bookingId?: string;
+  serviceId?: string;
 }) {
   const t = useTranslations('payment');
   const message = t('whatsappMessage', { service: serviceName, date, slot });
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
   const remainder = formatCents(payment.totalCents - payment.amountDueCents, payment.currencyCode);
+  const [payerEmail, setPayerEmail] = useState('');
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  async function handlePayOnline() {
+    if (!bookingId || !serviceId || isRedirecting) {
+      return;
+    }
+    setCheckoutError(null);
+    setIsRedirecting(true);
+    try {
+      const result = await createCheckoutPreference(bookingId, serviceId, payerEmail.trim());
+      if (result.ok && result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
+        return;
+      }
+      setCheckoutError(t('checkoutError'));
+    } catch {
+      setCheckoutError(t('checkoutError'));
+    } finally {
+      setIsRedirecting(false);
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -105,6 +133,36 @@ export function PaymentStep({
       </div>
 
       <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
+
+      {bookingId && serviceId ? (
+        <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
+          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-slate-700">
+            {t('payOnlineTitle')}
+          </label>
+          <input
+            id="mp-payer-email"
+            type="email"
+            autoComplete="email"
+            value={payerEmail}
+            onChange={(event) => setPayerEmail(event.target.value)}
+            placeholder="tu@email.com"
+            className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+          />
+          <button
+            type="button"
+            onClick={handlePayOnline}
+            disabled={isRedirecting || payerEmail.trim().length === 0}
+            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isRedirecting ? t('redirecting') : t('payOnline')}
+          </button>
+          {checkoutError ? (
+            <p role="alert" className="text-sm text-red-600">
+              {checkoutError}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       <a
         href={link}
