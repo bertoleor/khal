@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import '../globals.css';
+import BackgroundMesh from '@/components/BackgroundMesh';
 
 export const metadata: Metadata = {
   title: 'Khal — Agenda',
@@ -23,7 +24,8 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body>
+      <body className="bg-black">
+        <BackgroundMesh />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
