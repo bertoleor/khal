@@ -54,8 +54,6 @@ export function BookingForm({
         serviceName={service.name}
         date={selectedDate}
         slot={selectedSlot}
-        bookingId={state.bookingId}
-        serviceId={service.id}
       />
     );
   }
@@ -96,7 +94,7 @@ export function BookingForm({
         </form>
       ) : null}
 
-      <p className="pb-4 text-xs text-slate-400">
+      <p className="pb-4 text-xs text-slate-600">
         {formatCents(service.price_cents, service.currency_code)}
       </p>
     </div>

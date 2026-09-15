@@ -3,7 +3,7 @@
     "title": "Nuestros servicios",
     "tagline": "Elegí tu servicio y agendá tu turno.",
     "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
-    "book": "Agendar Cita",
+    "book": "Agendar cita",
     "duration": "Duración",
     "deposit": "Seña"
   },
@@ -57,6 +57,6 @@
     "redirecting": "Redirigiendo…",
     "checkoutError": "No pudimos iniciar el pago online. Probá de nuevo o pagá por transferencia.",
     "sendComprobante": "Enviar comprobante por WhatsApp",
-    "whatsappMessage": "Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
+    "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
   }
 }
