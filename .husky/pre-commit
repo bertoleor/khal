@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
+# # >>> gitleaks-pre-commit
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --exit-code 1 || { echo "❌ SECRETO detectado por gitleaks — corregí y re-staged"; exit 1; }
+else
+  echo "⚠️ gitleaks no instalado localmente — cubierto por CI (job Gitleaks). Instalá con: https://github.com/gitleaks/gitleaks"
+fi
+# <= gitleaks-pre-commit
 . "$(dirname -- "$0")/_/husky.sh"
 
 # lint-staged runs on staged files only
