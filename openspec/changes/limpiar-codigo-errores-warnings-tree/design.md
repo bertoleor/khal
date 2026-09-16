@@ -62,7 +62,7 @@ Auth: `login/page.tsx` sets `khal_role` cookie with flags → middleware reads v
 | `apps/admin/src/app/not-found.tsx` | Create | 404 page with link to dashboard |
 | `apps/web/src/app/[locale]/error.tsx` | Create | Error boundary with styled UI + recovery action |
 | `apps/web/src/app/[locale]/not-found.tsx` | Create | 404 page with link to home |
-| `DOCS/supabase-migration.md` | Create | Migration guide: schema, RLS, auth mapping, env vars |
+| `docs/supabase-migration.md` | Create | Migration guide: schema, RLS, auth mapping, env vars |
 | `packages/utils/src/index.ts` | Modify | Add `toIsoDate()` export |
 | `packages/utils/src/dates.ts` | Create | `toIsoDate()` implementation |
 
@@ -109,7 +109,7 @@ async function requireAuth(): Promise<AuthContext>;
 
 ## Migration / Rollout
 
-No database migration required. The `DOCS/supabase-migration.md` documents the *future* migration path. All changes are backward-compatible — existing tests pass without modification. The `requireAuth()` helper is the single swap point for Supabase JWT verification.
+No database migration required. The `docs/supabase-migration.md` documents the *future* migration path. All changes are backward-compatible — existing tests pass without modification. The `requireAuth()` helper is the single swap point for Supabase JWT verification.
 
 ## Open Questions
 

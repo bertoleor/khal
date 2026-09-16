@@ -39,7 +39,7 @@ Chain strategy: stacked-to-main
 
 **Additional PR1 tasks completed**:
 - [x] Remove `@khal/ui` from `apps/web/next.config.ts` transpilePackages
-- [x] Add `DOCS/automations.md` to git tracking
+- [x] Add `docs/automations.md` to git tracking
 - [x] Clean up `packages/ui/tsconfig.json` (removed jsx config)
 
 **Verification**: ✅ pnpm test: 33/33. ✅ pnpm lint: 0 warnings. ✅ pnpm typecheck: 8/8 packages. ✅ pnpm build: 2/2 apps.
@@ -87,9 +87,9 @@ Chain strategy: stacked-to-main
 - [x] 5.2 Create `apps/admin/src/app/not-found.tsx` — 404 page with "Página no encontrada" message + link to `/admin`
 - [x] 5.3 Create `apps/web/src/app/[locale]/error.tsx` — error boundary with styled UI, "Try Again" button, log error to console
 - [x] 5.4 Create `apps/web/src/app/[locale]/not-found.tsx` — 404 page with message + link to home (`/${locale}`)
-- [x] 5.5 Create `DOCS/supabase-migration.md` — migration guide covering: schema creation, RLS policies (SELECT/INSERT/UPDATE/DELETE with auth.uid()), auth mapping (cookie→Supabase Auth, mock role→JWT claim, requireAuth→supabase.auth.getUser), env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET), seed data patterns
+- [x] 5.5 Create `docs/supabase-migration.md` — migration guide covering: schema creation, RLS policies (SELECT/INSERT/UPDATE/DELETE with auth.uid()), auth mapping (cookie→Supabase Auth, mock role→JWT claim, requireAuth→supabase.auth.getUser), env vars (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET), seed data patterns
 
-**Verification**: Run `npx turbo build` — both apps build with error/not-found pages. Navigate to invalid URL to verify 404 renders. Trigger error to verify boundary catches it. Review DOCS/supabase-migration.md for completeness.
+**Verification**: Run `npx turbo build` — both apps build with error/not-found pages. Navigate to invalid URL to verify 404 renders. Trigger error to verify boundary catches it. Review docs/supabase-migration.md for completeness.
 
 ## Dependency Graph
 

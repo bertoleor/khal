@@ -1,6 +1,6 @@
 -- Khal — Virtual Appointment Agenda
 -- Initial schema. Greenfield migration; not yet linked to a live Supabase project.
--- Convention sources: DOCS/AGENT CONSTITUTION.MD (DB-01..DB-07, MONEY-01, IDX-01,
+-- Convention sources: docs/agent-constitution.md (DB-01..DB-07, MONEY-01, IDX-01,
 -- SCH-01/02/03, ECOM-03, DB-04 soft deletes) and openspec/changes/virtual-agenda/design.md §1.
 --
 -- Applied via `supabase db push` when the project is provisioned. Do not run against

@@ -59,5 +59,5 @@ pnpm exec prettier --check .
 ```
 
 Copiar `.env.example` a `.env.local`. Detalle de conexión Supabase:
-`DOCS/supabase-migration.md`. Conexión de automatizaciones:
-`DOCS/automations.md`.
+`docs/supabase-migration.md`. Conexión de automatizaciones:
+`docs/automations.md`.

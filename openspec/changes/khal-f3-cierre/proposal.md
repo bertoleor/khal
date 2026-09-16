@@ -5,7 +5,7 @@
 La tarjeta kanban `t_daa7c1df` ("F3 fixes a11y + tono es-AR") figura `done`,
 pero la verificación contra el árbol muestra que solo aterrizó **A3**
 (commit `d7c7e54`). El resto de los fixes auditados en
-`DOCS/auditoria-a11y-tono-es-ar-2026-09-14.md` (A1, A2, C1–C4, T1–T3)
+`docs/auditoria-a11y-tono-es-ar-2026-09-14.md` (A1, A2, C1–C4, T1–T3)
 sigue pendiente en el código. Este cambio los completa con TDD rojo-primero.
 
 ## Scope (solo fixes, sin redesign — veredicto de la auditoría)

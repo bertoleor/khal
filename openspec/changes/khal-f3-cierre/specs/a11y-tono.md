@@ -1,6 +1,6 @@
 # Spec: KHAL F3 — fixes a11y + tono es-AR
 
-Fuente normativa: `DOCS/auditoria-a11y-tono-es-ar-2026-09-14.md` §2–§4.
+Fuente normativa: `docs/auditoria-a11y-tono-es-ar-2026-09-14.md` §2–§4.
 Criterio WCAG 2.x AA: texto normal ≥ 4.5:1.
 
 ## Escenarios

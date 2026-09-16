@@ -1,7 +1,7 @@
 # KHAL — docs/ (baseline verificada 2026-09-15)
 
 > Solo documentación. No se tocó código. Todo lo afirmado sale de lectura
-> estática del repo en `E:/sitios web E/khal` (README, `DOCS/`, `openspec/`,
+> estática del repo en `E:/sitios web E/khal` (README, `docs/`, `openspec/`,
 > `apps/web/src`, `packages/*`, `supabase/migrations`). Lo no comprobado
 > contra DB viva / deploy real se marca **UNVERIFIED**.
 
@@ -19,7 +19,7 @@
 ## Fuentes canónicas (ya existían, no se duplican)
 
 - `README.md` — quickstart + gates en la raíz.
-- `DOCS/` (mayúsculas) — auditorías y guías operativas:
+- `docs/` — auditorías y guías operativas:
   `auditoria-nocturna-2026-09-12.md`, `reporte-producto-marketing-estilo-2026-09-12.md`,
   `auditoria-a11y-tono-es-ar-2026-09-14.md`, `supabase-migration.md`,
   `automations.md`, `ADR-0001-auth-provisoria.md`.

@@ -63,7 +63,7 @@ Package exports are raw `./src/index.ts` (`"exports": { ".": "./src/index.ts" }`
 
 ## Conventions reference (authoritative source)
 
-`DOCS/AGENT CONSTITUTION.MD` and `openspec/changes/virtual-agenda/design.md` +
+`docs/AGENT CONSTITUTION.MD` and `openspec/changes/virtual-agenda/design.md` +
 `openspec/config.yaml` (OpenSpec). The migration `supabase/migrations/*.sql` inlines
 the DB/IDX/SLOG/WEBHOOKS conventions. Prefer these files over any summary here for
 a conflicting detail.

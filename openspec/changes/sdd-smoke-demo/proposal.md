@@ -5,7 +5,7 @@ Change dir: `openspec/changes/sdd-smoke-demo/`
 Date: 2026-09-15
 
 ## Why
-Smoke-test the SDD chain (`openspec.config.yaml` → proposal → spec → tasks → `DOCS/01-07`)
+Smoke-test the SDD chain (`openspec.config.yaml` → proposal → spec → tasks → `docs/01-07`)
 with one minimal example feature. Proves the chain is traversable end to end.
 
 ## What (micro-feature)

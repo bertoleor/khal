@@ -10,7 +10,7 @@ Remove dead files, unused exports, and configuration inconsistencies to reduce t
 - Remove empty `packages/ui/src/index.ts` barrel export (or scaffold minimal UI package)
 - Remove unused types from `packages/types/src/index.ts` (UUID, ISODateTime, CurrencyCode, Cents)
 - Delete dead `apps/admin/src/index.ts` file
-- Track `DOCS/automations.md` in git (currently untracked)
+- Track `docs/automations.md` in git (currently untracked)
 - Add missing `"use server"` directive to `apps/web/src/lib/actions/catalog.ts`
 - Improve `apps/web/src/config/env.ts` error handling with try/catch wrapper
 - Standardize Spanish UI strings in admin app (evaluate i18n scope)
@@ -44,7 +44,7 @@ None. No spec-level behavior changes.
 | `packages/ui/src/index.ts` | Removed | Empty barrel export |
 | `packages/types/src/index.ts` | Modified | Remove 4 unused type exports |
 | `apps/admin/src/index.ts` | Removed | Dead file with no purpose |
-| `DOCS/automations.md` | Modified | Add to git tracking |
+| `docs/automations.md` | Modified | Add to git tracking |
 | `apps/web/src/lib/actions/catalog.ts` | Modified | Add `"use server"` directive |
 | `apps/web/src/config/env.ts` | Modified | Improve error handling |
 | `apps/admin/` components | Modified | Potential i18n migration (scope TBD) |
@@ -74,7 +74,7 @@ None. No spec-level behavior changes.
 - [ ] Zero empty barrel exports in packages
 - [ ] All unused type exports removed
 - [ ] Dead files eliminated from file tree
-- [ ] DOCS/automations.md tracked in git
+- [ ] docs/automations.md tracked in git
 - [ ] Missing "use server" directive added
 - [ ] Env validation error handling improved
 - [ ] All existing tests still pass (33/33)

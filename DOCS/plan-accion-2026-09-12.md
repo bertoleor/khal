@@ -1,6 +1,6 @@
 # KHAL — Plan de acción 2026-09-12 (UNVERIFIED)
 
-> Fuente: consolidado 2026-09-12 + `DOCS/reporte-producto-marketing-estilo-2026-09-12.md`. Sin Supabase vivo ni deploy comprobado; mocks en memoria. Nada aplicado sin OK de la dueña.
+> Fuente: consolidado 2026-09-12 + `docs/reporte-producto-marketing-estilo-2026-09-12.md`. Sin Supabase vivo ni deploy comprobado; mocks en memoria. Nada aplicado sin OK de la dueña.
 
 ## Fase 1 — Auth real + DB viva · due 2026-09-19 · dueño: Backend Developer senior + Security Engineer senior
 - G1: cookie `khal_role` seteable por cliente → JWT Supabase (aplicar ADR-0001).

@@ -7,8 +7,8 @@
 - [x] 1.4 tasks.md (this file)
 
 ## 2. Verify (docs-only, no code)
-- [x] 2.1 Chain check: `openspec.config.yaml` → proposal → spec → tasks → `DOCS/01-07` all resolvable
-- [x] 2.2 Tone check: copy consistent with `DOCS/05-marketing-tono.md`
+- [x] 2.1 Chain check: `openspec.config.yaml` → proposal → spec → tasks → `docs/01-07` all resolvable
+- [x] 2.2 Tone check: copy consistent with `docs/05-marketing-tono.md`
 
 ## 3. Implement (Strict TDD — formatReminderEsAR)
 - [x] 3.1 RED: `packages/utils/test/reminder.test.ts` written first — 3 tests failed before impl (spec copy, slot interpolation, `REMINDER_LIVE_ROLE === "status"`)

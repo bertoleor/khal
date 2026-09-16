@@ -5,8 +5,8 @@ All notable changes. Format follows Keep a Changelog (summarized).
 ## Unreleased (UNVERIFIED)
 
 - Prettier formatting pass across repo (style only, no logic change).
-- Docs: added `README.md`, `CHANGELOG.md`, `DOCS/ADR-0001-auth-provisoria.md`.
-- Audit: `DOCS/auditoria-nocturna-2026-09-12.md` (baseline + gates + gaps + kanban dry-run).
+- Docs: added `README.md`, `CHANGELOG.md`, `docs/ADR-0001-auth-provisoria.md`.
+- Audit: `docs/auditoria-nocturna-2026-09-12.md` (baseline + gates + gaps + kanban dry-run).
 
 ## 2026-09 (committed, per git log)
 

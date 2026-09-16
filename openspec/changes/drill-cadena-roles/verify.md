@@ -70,4 +70,4 @@ Comandos F3 (exits reales, 2026-09-15):
 - Acotado por path, sin push. Archivos del drill: helper, test, barrel `index.ts` (1 línea F2),
   `openspec/changes/drill-cadena-roles/` (proposal, tasks tildado, spec, este verify).
 - Excluidos a propósito (NO son del drill): `.github/workflows/ci.yml`, `.husky/pre-commit`,
-  `pnpm-lock.yaml`, `DOCS/`, `AGENTS.md`, `plan-accion-2026-09-12.md`, `supabase/.temp/`, `.worktrees/`.
+  `pnpm-lock.yaml`, `docs/`, `AGENTS.md`, `plan-accion-2026-09-12.md`, `supabase/.temp/`, `.worktrees/`.

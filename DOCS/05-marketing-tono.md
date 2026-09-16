@@ -1,6 +1,6 @@
 # 05 — Marketing y tono
 
-Fuente: `DOCS/reporte-... §2`, auditoría 2026-09-14, mensajes i18n
+Fuente: `docs/reporte-... §2`, auditoría 2026-09-14, mensajes i18n
 (`apps/*/messages/es.json` + `en.json`), proposal (landing link-in-bio).
 
 ## Posicionamiento

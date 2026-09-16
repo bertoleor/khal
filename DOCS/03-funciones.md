@@ -1,6 +1,6 @@
 # 03 — Funciones
 
-Fuente: `DOCS/reporte-producto-marketing-estilo-2026-09-12.md` §1 +
+Fuente: `docs/reporte-producto-marketing-estilo-2026-09-12.md` §1 +
 `openspec/changes/virtual-agenda/proposal.md` + lectura de
 `apps/web/src` y `packages/*`. Datos en memoria hasta linkear Supabase.
 
@@ -36,7 +36,7 @@ Fuente: `DOCS/reporte-producto-marketing-estilo-2026-09-12.md` §1 +
 | Bloqueos | `holiday/vacation/event/block` — se restan de la disponibilidad |
 | Auth | `requireAuth` + JWT `app_metadata.role` (**código listo**, fallback a cookie `khal_role` mock hasta provisionar — ver ADR-0001) |
 
-## Automatizaciones (`apps/api-workers` + `DOCS/automations.md`)
+## Automatizaciones (`apps/api-workers` + `docs/automations.md`)
 
 - **Recordatorio 24h:** Supabase Database Webhook (`INSERT appointments`
   `status='confirmado'`) → n8n → WhatsApp Business API. QStash para entrega

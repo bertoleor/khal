@@ -39,7 +39,7 @@ strictly at boot (`apps/web/src/config/env.ts`).
 
 ## Docs
 
-- `DOCS/` — constitution, automations, Supabase migration notes.
-- `DOCS/auditoria-nocturna-2026-09-12.md` — latest full audit (UNVERIFIED).
+- `docs/` — constitution, automations, Supabase migration notes.
+- `docs/auditoria-nocturna-2026-09-12.md` — latest full audit (UNVERIFIED).
 - `openspec/` — specs (`virtual-agenda`, `limpiar-codigo-errores-warnings-tree`).
 - `SECURITY.md` — disclosure policy.

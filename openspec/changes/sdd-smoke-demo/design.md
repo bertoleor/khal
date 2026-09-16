@@ -1,8 +1,8 @@
 # Design: sdd-smoke-demo — Reservation Reminder Copy
 
 ## Context
-Docs-only example. No architecture impact. References `DOCS/05-marketing-tono.md`
-(es-AR tone) and `DOCS/03-funciones.md` (booking domain).
+Docs-only example. No architecture impact. References `docs/05-marketing-tono.md`
+(es-AR tone) and `docs/03-funciones.md` (booking domain).
 
 ## Decision
 Define the reminder as pure content + semantics:

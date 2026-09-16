@@ -2,7 +2,7 @@
 
 Fuente: `apps/web/src/app/globals.css`, `components/shared/header.tsx`,
 `components/BackgroundMesh.tsx`, `components/catalog/*`,
-`components/payment/payment-step.tsx`, y `DOCS/reporte-... §3`.
+`components/payment/payment-step.tsx`, y `docs/reporte-... §3`.
 
 ## Marca
 
@@ -40,7 +40,7 @@ Fuente: `apps/web/src/app/globals.css`, `components/shared/header.tsx`,
 - `error.tsx` / `not-found.tsx` en ambas apps, con foco visible
   (`focus-visible:outline-2`).
 
-## Accesibilidad (ver auditoría 2026-09-14, `DOCS/auditoria-a11y-tono-es-ar-2026-09-14.md`)
+## Accesibilidad (ver auditoría 2026-09-14, `docs/auditoria-a11y-tono-es-ar-2026-09-14.md`)
 
 - ✅ Bien: botones nativos, `aria-pressed`, labels implícitos, foco visible.
 - ⚠️ Hallazgos abiertos: `aria-current` en nav admin, `aria-live` del botón

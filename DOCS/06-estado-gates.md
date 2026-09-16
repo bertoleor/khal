@@ -1,7 +1,7 @@
 # 06 — Estado y gates (baseline 2026-09-15)
 
 Todo **UNVERIFIED** contra DB viva / deploy real salvo que se indique.
-Mediciones de `DOCS/auditoria-nocturna-2026-09-12.md`; correcciones de la
+Mediciones de `docs/auditoria-nocturna-2026-09-12.md`; correcciones de la
 auditoría a11y/tono 2026-09-14 y del reporte de producto.
 
 ## Baseline medida (2026-09-12)

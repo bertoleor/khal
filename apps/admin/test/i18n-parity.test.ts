@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
  *  - mismos conjuntos de claves (en ambas direcciones),
  *  - mismos placeholders de interpolación ({count}, …) por clave.
  *
- * Fuente: DOCS/auditoria-nocturna-2026-09-12.md → G7 "Paridad i18n es/en sin test".
+ * Fuente: docs/auditoria-nocturna-2026-09-12.md → G7 "Paridad i18n es/en sin test".
  */
 
 const MESSAGES_DIR = join(__dirname, '..', 'messages');
