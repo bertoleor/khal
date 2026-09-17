@@ -52,6 +52,10 @@
     "cvu": "CBU/CVU",
     "copy": "Copy",
     "copied": "Copied!",
+    "payOnlineTitle": "Or pay online with Mercado Pago",
+    "payOnline": "Pay online",
+    "redirecting": "Redirecting…",
+    "checkoutError": "We couldn't start the online payment. Try again or pay by bank transfer.",
     "sendComprobante": "Send receipt via WhatsApp",
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof."
   }
