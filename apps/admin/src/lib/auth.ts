@@ -1,19 +1,18 @@
 import { getSupabaseServerClient } from '@/lib/supabase/server';
-import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
 /**
- * Auth layer (G1 P0 — UNVERIFIED until a Supabase project is linked).
+ * Auth layer (G1 P0 — ORN-79: mock removed, Supabase JWT is the only path).
  *
  * Reads the authenticated session's JWT and resolves the caller's role from
  * the server-issued custom claim `app_metadata.role` (never `user_metadata`,
- * which is user-editable and unsafe for authorization). This replaces the old
- * client-settable `khal_role` cookie mock (CQ-04).
+ * which is user-editable and unsafe for authorization). The old client-
+ * settable `khal_role` cookie mock (CQ-04) is gone: no cookie grants any
+ * role, anywhere.
  *
- * Fallback: when Supabase env vars are absent (no project provisioned yet),
- * `requireAuth` / `getRole` degrade to the previous mock cookie behaviour so
- * local development keeps working. That path is explicitly marked and is the
- * ONLY thing keeping this file from being production-safe.
+ * Fail-closed: any error (env misconfig, network, invalid session) denies.
+ * A previous version degraded to the mock cookie on error — that turned an
+ * infra outage into an open admin door, and is exactly what ORN-144 closed.
  */
 export type Role = 'admin' | 'manager' | 'anon';
 
@@ -23,10 +22,6 @@ export type AuthContext = {
 };
 
 export type AuthResult = { ok: true; ctx: AuthContext } | { ok: false; error: string };
-
-function extractRole(cookieStore: { get: (name: string) => { value: string } | undefined }): Role {
-  return cookieStore.get('khal_role')?.value === 'admin' ? 'admin' : 'anon';
-}
 
 /**
  * Resolves the caller's role from the session JWT `app_metadata.role` claim.
@@ -43,30 +38,20 @@ function roleFromClaims(appMetadata: Record<string, unknown> | undefined): Role 
 /**
  * Middleware variant — reads from NextRequest cookies (Edge runtime).
  *
- * NOTE: Edge middleware cannot construct the `@supabase/ssr` client without
- * the cookie set helpers, and `auth.uid()`/`getUser()` would require a network
- * round-trip. For the role gate this reads the Supabase auth cookies directly;
- * if absent it falls back to the mock cookie. When Supabase is provisioned and
- * a true Edge session check is needed, use `updateSession` from `@supabase/ssr`
- * in `apps/web/src/middleware.ts` and call back into this swap point.
+ * Edge middleware cannot verify the JWT without the signing key, so it never
+ * grants a role here: any request is 'anon' at the edge and the real role
+ * resolution happens in the server action path (`requireAuth`) where the
+ * `@supabase/ssr` client verifies the session via `auth.getUser()`.
+ * A bare `khal_role` cookie is inert — it is no longer read at all.
  */
-export function getRole(request: NextRequest): Role {
-  const supabaseAuthTokens = request.cookies.getAll().filter((c) => c.name.startsWith('sb-'));
-  if (supabaseAuthTokens.length === 0) {
-    return extractRole(request.cookies);
-  }
-  // Supabase session cookies are present for authenticated users; we can't
-  // decode the JWT claims without the signing key in Edge, so treat any
-  // authenticated Supabase session as at least `anon` here and defer the real
-  // role resolution to the server action path (`requireAuth`) where the
-  // `@supabase/ssr` client can verify the session via `auth.getUser()`.
+export function getRole(_request: NextRequest): Role {
+  void _request;
   return 'anon';
 }
 
 /**
  * Server Action variant — verifies the session via `@supabase/ssr` and reads
- * the JWT `app_metadata.role` claim. Single swap point for the mock -> real
- * migration (CQ-04).
+ * the JWT `app_metadata.role` claim. Fail-closed on any error.
  */
 export async function requireAuth(): Promise<AuthResult> {
   try {
@@ -84,13 +69,7 @@ export async function requireAuth(): Promise<AuthResult> {
 
     return { ok: true, ctx: { role, userId: data.user.id } };
   } catch {
-    // UNVERIFIED fallback: Supabase env not configured. Preserve the mock
-    // behaviour so local dev does not break before the project is provisioned.
-    const store = await cookies();
-    const role = extractRole(store);
-    if (role !== 'admin') {
-      return { ok: false, error: 'Unauthorized: admin role required' };
-    }
-    return { ok: true, ctx: { role: 'admin', userId: 'mock-admin' } };
+    // Fail-closed: env misconfig or network error never authenticates.
+    return { ok: false, error: 'Unauthorized: auth backend unavailable' };
   }
 }
