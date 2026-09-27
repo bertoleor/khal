@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 // ---------------------------------------------------------------------------
 // CONFIGURACIÓN — ajustar aquí sin tocar el resto del componente
@@ -10,24 +10,40 @@ import React, { useEffect, useRef } from "react";
 // Pares de blancos/grises que conviven. Se muestran de a una por vez
 // con crossfade suave entre ellas.
 const COLOR_PAIRS: [RGB, RGB][] = [
-  [{ r: 255, g: 255, b: 255 }, { r: 220, g: 220, b: 220 }], // blanco + gris claro
-  [{ r: 240, g: 240, b: 240 }, { r: 200, g: 200, b: 200 }], // gris muy claro + gris
-  [{ r: 250, g: 250, b: 250 }, { r: 235, g: 235, b: 235 }], // blanco + blanco suave
-  [{ r: 230, g: 230, b: 230 }, { r: 255, g: 255, b: 255 }], // gris + blanco
+  [
+    { r: 255, g: 255, b: 255 },
+    { r: 220, g: 220, b: 220 },
+  ], // blanco + gris claro
+  [
+    { r: 240, g: 240, b: 240 },
+    { r: 200, g: 200, b: 200 },
+  ], // gris muy claro + gris
+  [
+    { r: 250, g: 250, b: 250 },
+    { r: 235, g: 235, b: 235 },
+  ], // blanco + blanco suave
+  [
+    { r: 230, g: 230, b: 230 },
+    { r: 255, g: 255, b: 255 },
+  ], // gris + blanco
 ];
 
 const FRAMES_PER_PAIR = 420; // frames que dura cada par (~7s a 60fps). Subir = más lento
-const FADE_FRAMES     = 90;  // frames del crossfade entre pares (~1.5s). Bajar = corte más abrupto
-const PARTICLE_SPEED  = 0.55; // velocidad de movimiento. 0 = estático, 1 = rápido
-const BREATH_AMOUNT   = 0.12; // cuánto pulsa el tamaño (0 = sin respiración, 0.2 = mucho)
-const BREATH_SPEED    = 0.003; // velocidad del pulso
-const BASE_OPACITY    = 0.5; // opacidad máxima en el centro del gradiente
-const VEIL_OPACITY    = 0.0; // velo final que suaviza la mezcla (0 = sin velo, mantiene negro puro)
-const BG_COLOR        = "#000000"; // color base del canvas: NEGRO
+const FADE_FRAMES = 90; // frames del crossfade entre pares (~1.5s). Bajar = corte más abrupto
+const PARTICLE_SPEED = 0.55; // velocidad de movimiento. 0 = estático, 1 = rápido
+const BREATH_AMOUNT = 0.12; // cuánto pulsa el tamaño (0 = sin respiración, 0.2 = mucho)
+const BREATH_SPEED = 0.003; // velocidad del pulso
+const BASE_OPACITY = 0.5; // opacidad máxima en el centro del gradiente
+const VEIL_OPACITY = 0.0; // velo final que suaviza la mezcla (0 = sin velo, mantiene negro puro)
+const BG_COLOR = '#000000'; // color base del canvas: NEGRO
 
 // ---------------------------------------------------------------------------
 
-interface RGB { r: number; g: number; b: number }
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
 
 interface Particle {
   x: number;
@@ -40,14 +56,8 @@ interface Particle {
   tick: number;
 }
 
-function createParticle(
-  width: number,
-  height: number,
-  color: RGB,
-  speed: number
-): Particle {
-  const baseSize =
-    Math.max(width * 0.55, 500) + Math.random() * width * 0.35;
+function createParticle(width: number, height: number, color: RGB, speed: number): Particle {
+  const baseSize = Math.max(width * 0.55, 500) + Math.random() * width * 0.35;
   return {
     x: Math.random() * width,
     y: Math.random() * height,
@@ -102,9 +112,7 @@ function initCanvas(canvas: HTMLCanvasElement, speed: number) {
   const h = globalThis.innerHeight;
   canvas.width = w;
   canvas.height = h;
-  const p = COLOR_PAIRS.flatMap((pair) =>
-    pair.map((color) => createParticle(w, h, color, speed))
-  );
+  const p = COLOR_PAIRS.flatMap((pair) => pair.map((color) => createParticle(w, h, color, speed)));
   return { w, h, p };
 }
 
@@ -161,10 +169,10 @@ export default function BackgroundMesh(): React.JSX.Element {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reducedMotion = globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion = globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const speed = reducedMotion ? 0 : PARTICLE_SPEED;
 
     let width = 0;
@@ -206,13 +214,13 @@ export default function BackgroundMesh(): React.JSX.Element {
       }, 200);
     };
 
-    globalThis.addEventListener("resize", handleResize);
+    globalThis.addEventListener('resize', handleResize);
     start();
 
     return () => {
       cancelAnimationFrame(rafId);
       clearTimeout(resizeTimeout);
-      globalThis.removeEventListener("resize", handleResize);
+      globalThis.removeEventListener('resize', handleResize);
     };
   }, []);
 
