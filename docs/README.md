@@ -1,4 +1,5 @@
 # KHAL — docs/ (baseline verificada 2026-09-15)
+> Relacionados: [[docs/proyectos/khal|khal]] · [[Hub-Proyectos]] · [[INDICE-PLANS]] · [[ESTADO-FLOTA-2026-09-14]]
 
 > Solo documentación. No se tocó código. Todo lo afirmado sale de lectura
 > estática del repo en `E:/sitios web E/khal` (README, `docs/`, `openspec/`,

@@ -1,4 +1,5 @@
 # 03 — Funciones
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[01-que-es]] · [[ADR-0001-auth-provisoria]] · [[PRD-khal-minimo]]
 
 Fuente: `docs/reporte-producto-marketing-estilo-2026-09-12.md` §1 +
 `openspec/changes/virtual-agenda/proposal.md` + lectura de

@@ -1,4 +1,5 @@
 # Auditoría nocturna KHAL — 2026-09-12 (SIN notificación, todo UNVERIFIED)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[INDICE-AUDITS]] · [[projects/khal/plan-accion-2026-09-12|plan-accion-2026-09-12]] · [[06-estado-gates]]
 
 Branch `main`, ahead of `origin/main` by 5 commits + uncommitted work.
 Nada borrado. Todo lo afirmado es UNVERIFIED (sin proyecto Supabase vivo ni deploy comprobado).

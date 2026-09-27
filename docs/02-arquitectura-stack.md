@@ -1,4 +1,5 @@
 # 02 — Arquitectura y stack (cómo se arma)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[03-funciones]] · [[supabase-migration]] · [[ADR-0001-auth-provisoria]]
 
 ## Stack
 

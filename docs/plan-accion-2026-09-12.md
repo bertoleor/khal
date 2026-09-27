@@ -1,4 +1,5 @@
 # KHAL — Plan de acción 2026-09-12 (UNVERIFIED)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[KHAL-plan-2026-09-14]] · [[INDICE-PLANS]] · [[06-estado-gates]]
 
 > Fuente: consolidado 2026-09-12 + `docs/reporte-producto-marketing-estilo-2026-09-12.md`. Sin Supabase vivo ni deploy comprobado; mocks en memoria. Nada aplicado sin OK de la dueña.
 

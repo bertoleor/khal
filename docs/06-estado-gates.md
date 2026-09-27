@@ -1,4 +1,5 @@
 # 06 — Estado y gates (baseline 2026-09-15)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[projects/khal/plan-accion-2026-09-12|plan-accion-2026-09-12]] · [[KHAL-plan-2026-09-14]] · [[auditoria-nocturna-2026-09-12]]
 
 Todo **UNVERIFIED** contra DB viva / deploy real salvo que se indique.
 Mediciones de `docs/auditoria-nocturna-2026-09-12.md`; correcciones de la

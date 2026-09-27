@@ -1,4 +1,5 @@
 # Plantilla — Portada de PRD
+> Parte de: [[INDICE-PLANS]] · Relacionados: [[PRD-TEMPLATE]] · [[KHAL-plan-2026-09-14]] · [[docs/proyectos/khal|khal]]
 
 > Fuente: `E:/Hermes/docs/audits/2026-09-19-templates-y-contratos.md` §3.3
 > Fecha de creación: 2026-09-21 · Estado: CANÓNICO

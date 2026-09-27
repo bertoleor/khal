@@ -1,4 +1,5 @@
 # ADR-0001 — Provisional admin auth (cookie role mock) -> Supabase JWT claims
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[ADR-CONVENTION]] · [[ADR-TEMPLATE]] · [[02-arquitectura-stack]] · [[03-funciones]]
 
 - Status: accepted (temporary) — **UNVERIFIED** until a Supabase project is linked.
 - Context: no Supabase Auth linked yet; admin needs a role gate now.

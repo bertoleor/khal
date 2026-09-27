@@ -1,4 +1,5 @@
 # Changelog — KHAL
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[docs/proyectos/khal|khal]] · [[ESTADO-FLOTA-2026-09-14]]
 
 All notable changes. Format follows Keep a Changelog (summarized).
 

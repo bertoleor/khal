@@ -1,4 +1,5 @@
 # Scheduler de recordatorios de reserva — QStash → Next Route Handler
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[projects/khal/automations|automations]] · [[02-arquitectura-stack]] · [[ADR-CONVENTION]]
 
 - Fecha: 2026-09-16 (verificar con `date` si hay duda)
 - Rama: `feat/khal-payment-a11y`

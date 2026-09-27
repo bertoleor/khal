@@ -1,4 +1,5 @@
 # 04 — Branding e identidad visual
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[05-marketing-tono]] · [[reporte-producto-marketing-estilo-2026-09-12]] · [[docs/proyectos/khal|khal]]
 
 Fuente: `apps/web/src/app/globals.css`, `components/shared/header.tsx`,
 `components/BackgroundMesh.tsx`, `components/catalog/*`,

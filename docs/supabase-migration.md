@@ -1,4 +1,5 @@
 # Supabase Migration & Connection Guide
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[02-arquitectura-stack]] · [[03-funciones]]
 
 This document provides everything needed to connect the Khal application to a live Supabase project. It references the initial schema at `supabase/migrations/0001_initial_schema.sql` and the AGENT CONSTITUTION rules (DB-01 through DB-07, MONEY-01, IDX-01, etc.).
 

@@ -1,4 +1,5 @@
 # 01 — Qué es KHAL
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[PRD-khal-minimo]] · [[KHAL-plan-2026-09-14]] · [[docs/proyectos/khal|khal]]
 
 **KHAL — Virtual Appointment Agenda.** Agenda virtual de turnos para un
 estudio de estética (pestañas / uñas / cejas). La clienta se agenda sola

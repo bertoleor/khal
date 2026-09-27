@@ -1,4 +1,5 @@
 # Auditoría a11y + tono es-AR — KHAL — 2026-09-14
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[INDICE-AUDITS]] · [[auditoria-nocturna-2026-09-12]] · [[KHAL-plan-2026-09-14]]
 
 > Perfil 15-a11y. Cierra G8 (a11y keyboard/contraste) + revisión de tono es-AR + verificación G7 (paridad de claves).
 > Alcance: `apps/web` y `apps/admin` (Next 15/React 19, Tailwind v4, next-intl). Lectura estática del código real.

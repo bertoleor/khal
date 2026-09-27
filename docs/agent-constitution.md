@@ -1,3 +1,5 @@
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[Hub-Gentleman]]
+
 AGENT CONSTITUTION — Elite Engineering Team
 Version 3.0 | OpenCode Format
 Scope: B2B · B2C · SaaS · E-Commerce · Backoffice · Automations
@@ -633,4 +635,3 @@ TDOC-03 — Changelog
 CHANGELOG.md is generated automatically from Conventional Commits on every release. Format follows Keep a Changelog standard. Every entry includes: version, release date, and categorized changes (Added, Changed, Fixed, Removed, Security). Prohibited: manually written changelogs that diverge from actual commit history.
 ________________________________________
 End of Agent Constitution v3.1 Total rules: 154 | Sections: 43 | Format: OpenCode-compatible v3.0 → v3.1: Added 17 sections covering indexes, env validation, seed data, security audit logs, cookie policy, monetary arithmetic, differentiated rate limiting, HTTP compression, healthcheck endpoints, rollback policy, gitflow, accessibility testing, timezone management, i18n for communications, webhook CORS, component docs, and technical docs.
-

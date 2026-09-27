@@ -1,4 +1,5 @@
 # 05 — Marketing y tono
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[04-branding-identidad]] · [[reporte-producto-marketing-estilo-2026-09-12]] · [[docs/proyectos/khal|khal]]
 
 Fuente: `docs/reporte-... §2`, auditoría 2026-09-14, mensajes i18n
 (`apps/*/messages/es.json` + `en.json`), proposal (landing link-in-bio).

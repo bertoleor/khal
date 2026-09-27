@@ -1,4 +1,5 @@
 # 07 — Repos relacionados
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[01-que-es]] · [[docs/proyectos/khal|khal]]
 
 Búsqueda web (2026-09-15) de repos existentes similares: sistemas de
 reservas para salón/estética/peluquería y agenda self-hosted.
