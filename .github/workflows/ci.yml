@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, "khal/orn-79-auth-jwt-real"]
   pull_request:
     branches: [main, develop]
 
