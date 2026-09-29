@@ -12,7 +12,13 @@
       "empty": "No appointments for today.",
       "confirm": "Confirm",
       "cancel": "Cancel",
-      "noShow": "No-show"
+      "noShow": "No-show",
+      "status": {
+        "pendiente": "Pending",
+        "confirmado": "Confirmed",
+        "cancelado": "Cancelled",
+        "no_asistio": "No-show"
+      }
     },
     "services": {
       "title": "Services",
@@ -34,6 +40,8 @@
       "description": "Holidays, vacations, or closures that reduce availability.",
       "empty": "No blocks defined.",
       "addTitle": "Reason (e.g. Holiday)",
+      "typeLabel": "Block type",
+      "dateLabel": "Block date",
       "addType": {
         "holiday": "Holiday",
         "vacation": "Vacation",

@@ -12,7 +12,13 @@
       "empty": "No hay turnos para hoy.",
       "confirm": "Confirmar",
       "cancel": "Cancelar",
-      "noShow": "No asistió"
+      "noShow": "No asistió",
+      "status": {
+        "pendiente": "Pendiente",
+        "confirmado": "Confirmado",
+        "cancelado": "Cancelado",
+        "no_asistio": "No asistió"
+      }
     },
     "services": {
       "title": "Servicios",
@@ -34,6 +40,8 @@
       "description": "Feriados, vacaciones o cierres que se restan de la disponibilidad.",
       "empty": "No hay bloqueos definidos.",
       "addTitle": "Motivo (ej. Feriado)",
+      "typeLabel": "Tipo de bloqueo",
+      "dateLabel": "Fecha del bloqueo",
       "addType": {
         "holiday": "Feriado",
         "vacation": "Vacaciones",

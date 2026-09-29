@@ -41,11 +41,13 @@ function CopyRow({ label, value }: { label: string; value: string }) {
       <button
         type="button"
         onClick={handleCopy}
-        aria-live="polite"
         className="shrink-0 rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 active:bg-slate-100"
       >
         {copied ? t('copied') : t('copy')}
       </button>
+      <span aria-live="polite" role="status" className="sr-only">
+        {copied ? t('copied') : ''}
+      </span>
     </div>
   );
 }

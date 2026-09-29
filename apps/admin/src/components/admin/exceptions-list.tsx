@@ -27,6 +27,7 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
         <input
           name="title"
           placeholder={t('exceptions.addTitle')}
+          aria-label={t('exceptions.addTitle')}
           required
           className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-400"
         />
@@ -34,6 +35,7 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
           <select
             name="type"
             defaultValue="holiday"
+            aria-label={t('exceptions.typeLabel')}
             className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900"
           >
             <option value="holiday">{t('exceptions.addType.holiday')}</option>
@@ -45,6 +47,7 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
             name="date"
             type="date"
             required
+            aria-label={t('exceptions.dateLabel')}
             className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900"
           />
         </div>
