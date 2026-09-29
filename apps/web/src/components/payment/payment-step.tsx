@@ -152,7 +152,7 @@ export function PaymentStep({
             type="button"
             onClick={handlePayOnline}
             disabled={isRedirecting || payerEmail.trim().length === 0}
-            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isRedirecting ? t('redirecting') : t('payOnline')}
           </button>

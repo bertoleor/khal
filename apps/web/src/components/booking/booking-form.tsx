@@ -89,14 +89,14 @@ export function BookingForm({
           <button
             type="submit"
             disabled={isPending}
-            className="w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? t('submitting') : t('confirm')}
           </button>
         </form>
       ) : null}
 
-      <p className="pb-4 text-xs text-slate-400">
+      <p className="pb-4 text-xs text-slate-500">
         {formatCents(service.price_cents, service.currency_code)}
       </p>
     </div>

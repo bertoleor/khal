@@ -50,7 +50,7 @@ export function ServiceList({ services }: { services: Service[] }) {
             name="id"
             value={service.id}
             type="submit"
-            className="shrink-0 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700"
+            className="shrink-0 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
           >
             {service.is_visible ? t('services.hide') : t('services.show')}
           </button>
@@ -60,7 +60,7 @@ export function ServiceList({ services }: { services: Service[] }) {
       <button
         formAction={handleBulkIncrease}
         type="submit"
-        className="mt-4 w-full rounded-full bg-slate-900 py-3 text-sm font-medium text-white"
+        className="mt-4 w-full rounded-full bg-slate-900 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
       >
         {t('services.bulkIncrease')}
       </button>

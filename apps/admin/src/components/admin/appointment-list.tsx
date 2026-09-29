@@ -59,8 +59,8 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
                   type="submit"
                   className={
                     to === 'confirmado'
-                      ? 'rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white'
-                      : 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700'
+                      ? 'rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
+                      : 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700'
                   }
                 >
                   {t(ACTION_KEY[to])}
