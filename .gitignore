@@ -34,3 +34,6 @@ test-results/
 .DS_Store
 *.log.changeset/
 .husky/
+
+# rdd receipts (local)
+.rdd/
