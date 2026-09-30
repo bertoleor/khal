@@ -15,9 +15,11 @@ vi.mock('next/server', () => ({
   NextRequest: class {
     headers: Map<string, string>;
     body: unknown;
-    constructor(opts: { headers?: [string, string][]; body?: unknown }) {
+    nextUrl: { searchParams: URLSearchParams } | null;
+    constructor(opts: { headers?: [string, string][]; body?: unknown; url?: string }) {
       this.headers = new Map(opts.headers ?? []);
       this.body = opts.body;
+      this.nextUrl = opts.url ? { searchParams: new URL(opts.url).searchParams } : null;
     }
     json() {
       return Promise.resolve(this.body);
@@ -41,9 +43,15 @@ const notify = vi.hoisted(() => ({ notifyBookingConfirmed: vi.fn(async () => tru
 const supabase = vi.hoisted(() => {
   const insertState = { data: [{ event_key: 'payment:123' }], error: null as unknown };
   const updates: { appointmentId?: string; count?: number } = {};
+  const state = {
+    deletedKeys: [] as string[],
+    deleteError: null as unknown,
+    confirmError: null as unknown,
+  };
   return {
     _insertState: insertState,
     _updates: updates,
+    _deleteState: state,
     createClient: vi.fn(() => ({
       from: vi.fn((_table: string) => ({
         upsert: () => ({
@@ -52,10 +60,22 @@ const supabase = vi.hoisted(() => {
         update: () => ({
           eq: () => ({
             eq: async () => {
+              if (state.confirmError) {
+                return { error: state.confirmError, count: null };
+              }
               const out = { error: null as unknown, count: updates.count ?? 0 };
               return out;
             },
           }),
+        }),
+        delete: () => ({
+          eq: async (_col: string, key: string) => {
+            if (state.deleteError) {
+              return { error: state.deleteError };
+            }
+            state.deletedKeys.push(key);
+            return { error: null };
+          },
         }),
       })),
     })),
@@ -74,10 +94,11 @@ const validUuid = '123e4567-e89b-12d3-a456-426614174000';
 // above, but tsc checks the test file against the REAL next/server types, so
 // the ergonomic constructor call needs this cast (headers as tuple, body as
 // plain object — not a RequestInfo/ReadableStream).
-async function makeRequest(opts: { headers?: [string, string][]; body?: unknown }) {
+async function makeRequest(opts: { headers?: [string, string][]; body?: unknown; url?: string }) {
   const Ctor = (await import('next/server')).NextRequest as unknown as new (opts: {
     headers?: [string, string][];
     body?: unknown;
+    url?: string;
   }) => { headers: Map<string, string>; body: unknown };
   return new Ctor(opts);
 }
@@ -101,6 +122,9 @@ describe('MP webhook route', () => {
     supabase._insertState.data = [{ event_key: 'payment:123' }];
     supabase._insertState.error = null;
     supabase._updates.count = 1;
+    supabase._deleteState.deletedKeys = [];
+    supabase._deleteState.deleteError = null;
+    supabase._deleteState.confirmError = null;
     process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://db';
     process.env.SUPABASE_SERVICE_ROLE_KEY = 'svc';
   });
@@ -173,5 +197,71 @@ describe('MP webhook route', () => {
     });
     const res = await POST(req as never);
     expect(res.status).toBe(401);
+  });
+
+  it('MP delivery via query params (?data.id=&type=payment) → procesa igual', async () => {
+    // MP manda la identidad del evento también como query params; los SDKs
+    // oficiales leen req.query['data.id'] para validar la firma.
+    mercadopago.getMercadoPagoPayment.mockResolvedValue({
+      id: 123,
+      status: 'approved',
+      transaction_amount: 100,
+      currency_id: 'ARS',
+      external_reference: validUuid,
+    });
+    const req = await makeRequest({
+      headers: auth(),
+      body: { action: 'payment.updated', api_version: 'v1' }, // sin data.id en body
+      url: 'https://x/api/webhooks/mercadopago?data.id=123&type=payment',
+    });
+    const res = await POST(req as never);
+    expect(res.status).toBe(200);
+    expect(mercadopago.getMercadoPagoPayment).toHaveBeenCalledWith('tk', '123');
+    expect(mercadopago.verifyMercadoPagoSignature).toHaveBeenCalledWith(
+      expect.objectContaining({ dataId: '123' })
+    );
+    expect(notify.notifyBookingConfirmed).toHaveBeenCalled();
+  });
+
+  it('claim ok pero confirm UPDATE falla → 500 + rollback del claim (no deja la reserva trancada)', async () => {
+    mercadopago.getMercadoPagoPayment.mockResolvedValue({
+      id: 123,
+      status: 'approved',
+      transaction_amount: 100,
+      currency_id: 'ARS',
+      external_reference: validUuid,
+    });
+    // UPDATE appointments falla → el claim debe liberarse para que el reintento
+    // de MP no se deduplique y pueda correr el camino completo de nuevo.
+    supabase._updates.count = undefined;
+    supabase._deleteState.confirmError = { message: 'db down' };
+    const req = await makeRequest({
+      headers: auth(),
+      body: { action: 'payment.approved', data: { id: 123 } },
+    });
+    const res = await POST(req as never);
+    expect(res.status).toBe(500);
+    expect(supabase._deleteState.deletedKeys).toContain('payment.approved:123');
+    expect(notify.notifyBookingConfirmed).not.toHaveBeenCalled();
+  });
+
+  it('rollback del claim falla → igual 500, sin crash (best-effort)', async () => {
+    mercadopago.getMercadoPagoPayment.mockResolvedValue({
+      id: 123,
+      status: 'approved',
+      transaction_amount: 100,
+      currency_id: 'ARS',
+      external_reference: validUuid,
+    });
+    supabase._updates.count = undefined;
+    supabase._deleteState.confirmError = { message: 'db down' };
+    supabase._deleteState.deleteError = { message: 'delete also down' };
+    const req = await makeRequest({
+      headers: auth(),
+      body: { action: 'payment.approved', data: { id: 123 } },
+    });
+    const res = await POST(req as never);
+    expect(res.status).toBe(500);
+    expect(notify.notifyBookingConfirmed).not.toHaveBeenCalled();
   });
 });

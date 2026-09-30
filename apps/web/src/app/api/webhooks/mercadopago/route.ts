@@ -69,9 +69,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const action = parsed.data.action ?? '';
   const dataId = parsed.data.data?.id !== undefined ? String(parsed.data.data.id) : null;
 
+  // MP delivers the event identity both in the body (`data.id`) and as a URL
+  // query param (`?data.id=...&type=payment`) — the official SDKs read
+  // `req.query['data.id']` for signature validation. Prefer the body, fall
+  // back to the query param, and derive the topic the same way.
+  const queryDataId = req.nextUrl?.searchParams?.get('data.id') ?? null;
+  const effectiveDataId = dataId ?? queryDataId;
+  const effectiveTopic = topic || req.nextUrl?.searchParams?.get('type') || '';
+
   const isPaymentEvent =
-    topic === 'payment' || action.startsWith('payment.') || topic === 'merchant_order';
-  if (!isPaymentEvent || !dataId) {
+    effectiveTopic === 'payment' ||
+    action.startsWith('payment.') ||
+    effectiveTopic === 'merchant_order';
+  if (!isPaymentEvent || !effectiveDataId) {
     // Ack non-payment events (e.g. merchant_order chatter) so MP stops retrying.
     return NextResponse.json({ received: true });
   }
@@ -85,7 +95,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     secret: mpEnv.webhookSecret,
     signatureHeader: req.headers.get('x-signature'),
     requestIdHeader: req.headers.get('x-request-id'),
-    dataId,
+    dataId: effectiveDataId,
   });
   if (!signatureOk) {
     return NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
@@ -93,7 +103,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let payment;
   try {
-    payment = await getMercadoPagoPayment(mpEnv.accessToken, dataId);
+    payment = await getMercadoPagoPayment(mpEnv.accessToken, effectiveDataId);
   } catch {
     // Transient MP API failure: 502 so MP retries with backoff.
     return NextResponse.json({ error: 'mp_lookup_failed' }, { status: 502 });
@@ -119,8 +129,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // event_key (`action|topic` + dataId). on-conflict-do-nothing is atomic, so a
   // replay of an already-processed event inserts 0 rows → we ack and never touch
   // appointments/notify again. Transient failures before this point are NOT
-  // claimed, so MP's retry still runs the full path.
-  const eventKey = `${action || topic}:${dataId}`;
+  // claimed, so MP's retry still runs the full path. A failure AFTER a
+  // successful claim rolls the claim back (best-effort delete) so MP's retry
+  // is not deduped away — otherwise a 500 here would strand the booking.
+  const eventKey = `${action || effectiveTopic}:${effectiveDataId}`;
   const claim = await client
     .from('processed_events')
     // postgrest-js v2 has no `.insert().onConflict()` chain method —
@@ -141,6 +153,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ received: true, duplicate: true });
   }
 
+  // Roll back the claim if the confirm step fails, so MP's retry is not
+  // deduped away and can run the full path again (otherwise a 500 here
+  // would strand the booking: claimed but never confirmed).
+  const releaseClaim = async (): Promise<void> => {
+    try {
+      await client.from('processed_events').delete().eq('event_key', eventKey);
+    } catch {
+      // Best-effort: if the delete also fails the event stays claimed —
+      // the status='pendiente' conditional UPDATE is still the second
+      // idempotency layer, so a later retry is safe, just silent.
+    }
+  };
+
   const { error, count } = await client
     .from('appointments')
     .update({ status: 'confirmado', confirmed_at: new Date().toISOString() }, { count: 'exact' })
@@ -148,12 +173,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq('status', 'pendiente');
 
   if (error) {
+    await releaseClaim();
     return NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
   }
 
   if ((count ?? 0) > 0) {
     // Only notify on a real pending→confirmed transition (retries stay silent).
-    await notifyBookingConfirmed({ event: 'booking.confirmed', appointmentId, paymentId: dataId });
+    await notifyBookingConfirmed({
+      event: 'booking.confirmed',
+      appointmentId,
+      paymentId: effectiveDataId,
+    });
     // ADDITIVE reminder (Resend) — n8n remains the canonical confirmation path.
     // Best-effort: fetch client name/email + slot hour; no-ops when unconfigured.
     try {

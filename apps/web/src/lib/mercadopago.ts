@@ -112,9 +112,25 @@ export async function getMercadoPagoPayment(
   accessToken: string,
   paymentId: string
 ): Promise<MercadoPagoPayment | null> {
-  const response = await fetch(`${MP_API_BASE}/v1/payments/${encodeURIComponent(paymentId)}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+  // RESILIENCIA-01: 8s hard cap so a hung MP API call cannot hold the webhook
+  // past MP's own 22s socket timeout — the route maps this to a 502 and MP
+  // retries with backoff. AbortController, never a blocked main thread.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8_000);
+  let response: Response;
+  try {
+    response = await fetch(`${MP_API_BASE}/v1/payments/${encodeURIComponent(paymentId)}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      signal: controller.signal,
+    });
+  } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') {
+      throw new Error('MP payment fetch failed: timeout (8s)');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
   if (response.status === 404) {
     return null;
   }
@@ -154,6 +170,9 @@ function parseSignatureHeader(header: string | null): { ts: string; v1: string }
  * Verifies the MP webhook HMAC-SHA256 signature.
  * Manifest (per MP docs): `id:{data.id};request-id:{x-request-id};ts:{ts};`
  * signed with MP_WEBHOOK_SECRET; compared against the `v1` hash in `x-signature`.
+ * MP doc: pairs whose values are not present in the request are OMITTED from
+ * the manifest — so with no x-request-id the signed manifest is
+ * `id:{data.id};ts:{ts};`. Compare in constant time.
  */
 export function verifyMercadoPagoSignature(input: {
   secret: string;
@@ -162,10 +181,12 @@ export function verifyMercadoPagoSignature(input: {
   dataId: string;
 }): boolean {
   const parsed = parseSignatureHeader(input.signatureHeader);
-  if (!parsed || !input.requestIdHeader) {
+  if (!parsed) {
     return false;
   }
-  const manifest = `id:${input.dataId};request-id:${input.requestIdHeader};ts:${parsed.ts};`;
+  const manifest = input.requestIdHeader
+    ? `id:${input.dataId};request-id:${input.requestIdHeader};ts:${parsed.ts};`
+    : `id:${input.dataId};ts:${parsed.ts};`;
   const digest = createHmac('sha256', input.secret).update(manifest).digest('hex');
   const a = Buffer.from(digest, 'utf8');
   const b = Buffer.from(parsed.v1, 'utf8');
