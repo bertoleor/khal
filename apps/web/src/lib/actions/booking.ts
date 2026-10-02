@@ -1,13 +1,24 @@
 'use server';
 
+import { bookingRateLimitIdentifier, checkBookingRateLimit } from '@/lib/security/rate-limit';
+import { verifyTurnstileToken } from '@/lib/security/turnstile';
 import { createBookingSupabaseClient, readBookingSupabaseEnv } from '@/lib/supabase/booking-client';
 import { bookingInputSchema } from '@khal/validations';
+import { headers } from 'next/headers';
 import { z } from 'zod';
 
 export interface BookingState {
   ok: boolean;
-  code?: 'invalid' | 'duplicate' | 'blacklisted' | 'conflict' | 'unavailable';
+  code?:
+    | 'invalid'
+    | 'duplicate'
+    | 'blacklisted'
+    | 'conflict'
+    | 'unavailable'
+    | 'captcha_failed'
+    | 'rate_limited';
   bookingId?: string;
+  retryAfterSeconds?: number;
 }
 
 // Contract returned by the SECURITY DEFINER create_booking RPC (0003). Narrowed
@@ -66,6 +77,37 @@ export async function createBooking(
 
   const input = parsed.data;
 
+  const slotMinutes = slotStartToMinutes(input.slotStart);
+  if (slotMinutes === null) {
+    return { ok: false, code: 'invalid' };
+  }
+
+  // [KHAL-A4] Layered anti-bot admission — cheap layers first, so a flood is
+  // rejected before spending any siteverify or database quota. Order:
+  //   1. Rate limit (Upstash fixed window, fail-OPEN: a Redis outage never
+  //      blocks the business — Turnstile is the hard control).
+  //   2. Turnstile server-side verification (fail-CLOSED: without a
+  //      configured secret or a Cloudflare-validated token there is NO
+  //      booking, ever — a missing config must not silently downgrade to
+  //      "no captcha required").
+  const headerList = await headers();
+  const clientIp = (headerList.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+
+  const limit = await checkBookingRateLimit(bookingRateLimitIdentifier(clientIp, input.phone));
+  if (!limit.allowed) {
+    return { ok: false, code: 'rate_limited', retryAfterSeconds: limit.retryAfterSeconds };
+  }
+
+  const turnstileToken = formData.get('cf-turnstile-response');
+  const turnstile = await verifyTurnstileToken(
+    process.env.TURNSTILE_SECRET_KEY,
+    typeof turnstileToken === 'string' ? turnstileToken : null,
+    clientIp !== 'unknown' ? clientIp : undefined
+  );
+  if (!turnstile.ok) {
+    return { ok: false, code: 'captcha_failed' };
+  }
+
   const env = readBookingSupabaseEnv();
   if (!env) {
     // No in-memory mock: without Supabase there is no booking backend, so the
@@ -73,17 +115,15 @@ export async function createBooking(
     return { ok: false, code: 'unavailable' };
   }
 
-  const slotMinutes = slotStartToMinutes(input.slotStart);
-  if (slotMinutes === null) {
-    return { ok: false, code: 'invalid' };
-  }
-
-  // Idempotency key is generated client-side per submission; a user retry after
-  // a network error must resend the SAME key to replay, not a fresh one. The
-  // current form submits once per render, so a fresh UUID per call keeps the
-  // duplicate-pending guard (RPC step 7) as the multi-submit defence until the
-  // form carries a stable key across renders.
-  const idempotencyKey = crypto.randomUUID();
+  // Idempotency key comes from the client when present (stable for the form
+  // lifetime — see booking-form.tsx): a retry after a network error replays
+  // the SAME key instead of minting a second booking. Server-side minting
+  // stays as the fallback for callers without one.
+  const formIdempotencyKey = formData.get('idempotencyKey');
+  const idempotencyKey =
+    typeof formIdempotencyKey === 'string' && formIdempotencyKey.length > 0
+      ? formIdempotencyKey
+      : crypto.randomUUID();
 
   const client = createBookingSupabaseClient(env);
   const { data, error } = await client.rpc('create_booking', {
@@ -94,7 +134,7 @@ export async function createBooking(
     p_date: input.date,
     p_slot_start_minutes: slotMinutes,
     p_idempotency_key: idempotencyKey,
-    p_client_ip: null,
+    p_client_ip: clientIp !== 'unknown' ? clientIp : null,
   });
 
   if (error) {

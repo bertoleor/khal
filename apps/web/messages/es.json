@@ -24,7 +24,9 @@
       "duplicate": "Ya tenés un turno pendiente. Completalo antes de agendar otro.",
       "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno.",
       "conflict": "Ese horario ya no está disponible. Elegí otro.",
-      "unavailable": "Ese horario no está disponible. Elegí otro."
+      "unavailable": "Ese horario no está disponible. Elegí otro.",
+      "captcha_failed": "No pudimos verificar que no sos un robot. Completá la verificación e intentá de nuevo.",
+      "rate_limited": "Hiciste demasiados intentos. Esperá un minuto y volvé a probar."
     }
   },
   "error": {

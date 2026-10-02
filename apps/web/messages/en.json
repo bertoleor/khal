@@ -24,7 +24,9 @@
       "duplicate": "You already have a pending booking. Complete it before booking again.",
       "blacklisted": "Contact us on WhatsApp to manage your next appointment.",
       "conflict": "That time is no longer available. Pick another.",
-      "unavailable": "That time is not available. Pick another."
+      "unavailable": "That time is not available. Pick another.",
+      "captcha_failed": "We could not verify you are human. Complete the verification and try again.",
+      "rate_limited": "Too many attempts. Please wait a minute and try again."
     }
   },
   "error": {
