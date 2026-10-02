@@ -22,6 +22,12 @@ function CopyRow({ label, value }: { label: string; value: string }) {
   const t = useTranslations('payment');
   const [copied, setCopied] = useState(false);
 
+  // [KHAL-A1] A blank value must not render — an empty CVU row with a
+  // working "copy" button is the A1 failure mode.
+  if (value.length === 0) {
+    return null;
+  }
+
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(value);
@@ -72,6 +78,11 @@ export function PaymentStep({
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
   const remainder = formatCents(payment.totalCents - payment.amountDueCents, payment.currencyCode);
+  // [KHAL-A1] Safe fallback: the transfer section (alias/CVU copy rows,
+  // transfer instructions, WhatsApp receipt CTA) only renders when real
+  // settings came from global_settings. Without them the customer sees the
+  // booking confirmation + online payment — never a dummy CVU to copy.
+  const hasTransferDetails = payment.alias.length > 0 && payment.cvu.length > 0;
   const [payerEmail, setPayerEmail] = useState('');
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -128,13 +139,17 @@ export function PaymentStep({
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-slate-700">{t('transferTo')}</p>
-        <CopyRow label={t('alias')} value={payment.alias} />
-        <CopyRow label={t('cvu')} value={payment.cvu} />
-      </div>
+      {hasTransferDetails ? (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-slate-700">{t('transferTo')}</p>
+          <CopyRow label={t('alias')} value={payment.alias} />
+          <CopyRow label={t('cvu')} value={payment.cvu} />
+        </div>
+      ) : null}
 
-      <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
+      {hasTransferDetails ? (
+        <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
+      ) : null}
 
       {bookingId && serviceId ? (
         <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
@@ -166,14 +181,16 @@ export function PaymentStep({
         </div>
       ) : null}
 
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:bg-emerald-800"
-      >
-        {t('sendComprobante')}
-      </a>
+      {payment.whatsappPhone.length > 0 ? (
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+          className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:bg-emerald-800"
+        >
+          {t('sendComprobante')}
+        </a>
+      ) : null}
     </div>
   );
 }
