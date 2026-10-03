@@ -49,9 +49,10 @@ export default defineConfig({
     reuseExistingServer: false,
     // Cold-route compile MEASURED on the Windows dev box: /es ~117s, each
     // deeper dynamic route 2-3 min, sequential warmup of all three routes
-    // ≈ 8-12 min worst case on this slow disk (measured across three cold
-    // boots: gate 200 landed at minute ~7-10). 1200s covers it with margin;
-    // CI (ubuntu, tmpfs) compiles in a fraction of that.
-    timeout: 1_200_000,
+    // ≈ 8-12 min worst case on an idle disk. This machine routinely runs
+    // 5-6 sibling khal worktrees whose builds saturate the disk, which
+    // measured >20 min for the first route alone (KHAL-A6 retry, 2026-10-03)
+    // — 2400s covers that hostile case; CI (ubuntu, tmpfs) stays far under.
+    timeout: 2_400_000,
   },
 });
