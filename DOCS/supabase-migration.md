@@ -29,7 +29,7 @@ cp .env.example .env.local
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (e.g., `https://xxxxx.supabase.co`) |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous/public key |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (for form protection) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (booking form anti-bot widget — KHAL-A4). **REQUIRED**: missing aborts server boot (validated by `config/env.ts` via `instrumentation.ts`) |
 
 ### SERVER (no prefix — server-only)
 
@@ -42,7 +42,7 @@ cp .env.example .env.local
 | `N8N_WEBHOOK_SECRET` | n8n webhook HMAC secret |
 | `TELEGRAM_BOT_TOKEN` | Telegram bot token (alerts) |
 | `TELEGRAM_CHAT_ID` | Telegram chat ID (alerts) |
-| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key |
+| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server-side verification). Optional: without it, booking creation fails CLOSED (`captcha_failed`) instead of accepting unverified traffic |
 | `SENTRY_DSN` | Sentry DSN for error monitoring |
 
 ### CRITICAL (rotated every 90 days — SEC-02)

@@ -25,7 +25,10 @@ pnpm exec prettier --check .
 ```
 
 Copy `.env.example` to `.env.local` for local runs. Web env is validated
-strictly at boot (`apps/web/src/config/env.ts`).
+strictly at server boot (`apps/web/src/config/env.ts`, imported by
+`apps/web/src/instrumentation.ts` — Next instrumentation hook); a missing
+REQUIRED var aborts startup with a listing of every bad key. The check is
+skipped during `next build` (CI builds without env vars).
 
 ## Production gates (blocking)
 
