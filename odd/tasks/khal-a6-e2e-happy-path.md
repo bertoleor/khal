@@ -45,7 +45,7 @@ KHAL-A6 (P2): `apps/web/e2e` does not exist, so `playwright.config.ts` (testDir 
 - (none yet)
 
 ## Next step
-- [x] T1 stub + T3 spec drafted (run 1059, pre-crash). RED→GREEN cycle: run `pnpm e2e` locally, fix until green, then CI wiring (T2/T4).
+- [x] T1-T6 complete (run 1071, third attempt). Remaining: push + kanban close.
 
 ## Progress
 - 2026-10-02 (run 1059): Exploration + worktree + ODD doc created. pnpm install started.
@@ -83,3 +83,28 @@ KHAL-A6 (P2): `apps/web/e2e` does not exist, so `playwright.config.ts` (testDir 
   - Cleanup done: killed orphan EROS stub holding 127.0.0.1:54321 (node tests/e2e/server.mjs,
     pid 39312, dead parent — leftover of the crashed run).
   - pnpm install restarted in background (proc_720f30f963c8).
+  - WORK COMPLETED THIS RUN (recovered from crash mid-verification): commit 415a77f with
+    the full work unit — server.mjs stub + booking-happy-path.spec.ts + playwright config
+    (stub-backed webServer, es-AR locale, workers 1) + CI comment + eslint node globals +
+    ODD doc. Then run 1065 crashed waiting for the final E2E re-run.
+- 2026-10-03 (run 1071, third attempt): recovered the worktree from run 1065.
+  - Found the layout.tsx i18n fix (messages → NextIntlClientProvider) left UNCOMMITTED
+    after 415a77f — verified against the installed package that it is a REAL bug:
+    next-intl 3.26.5's NextIntlClientProviderServer.js inherits only locale/now/timeZone,
+    NOT messages; without the fix every client component rendered raw keys
+    ("booking.pickDay"). apps/admin already used the explicit-messages pattern (layout.tsx:17)
+    — web was the outlier. Committed as d61fead.
+  - E2E run 1: webServer timed out at 1200s — disk saturated by 5-6 sibling worktrees
+    (measured >20min for the first warmup route). Raised the webServer timeout to 2400s
+    (commit 06a46ce) with the hostile-disk evidence in the comment.
+  - E2E run 2 (with 2400s): GREEN — `1 passed (7.0m)`, spec 37.5s, EXIT=0
+    (a6-e2e-run3.log). Stub boot ~6.5m (warm .next cache), spec 37.5s.
+  - Battery (fresh, this run): typecheck 8/8 successful (4m45s, turbo). vitest + format:check
+    → in flight, results below when done.
+  - RDD: `gentle-ai review assess --base-ref 99d4424` → Risk: high (585 changed lines +
+    CI workflow shell_process signals). Motor's next transition:
+    `review status` → immutable_review_transport_unsupported → `review mode disable
+    --scope clone` executed as directed (receipt-driven development: off, clone-local).
+    Documented per doctrine: runtime not eligible for immutable receipts; risk documented
+    in commit messages + this ODD.
+  - CI job e2e: verified non-vacuous — `pnpm e2e --list` → `Total: 1 test in 1 file`.
