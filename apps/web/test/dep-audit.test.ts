@@ -22,6 +22,15 @@ import { describe, expect, it } from 'vitest';
  *       auto-load — both closed at 8.5.23. next@15.5.25 bundles 8.4.31;
  *       the moderate `</style>` XSS (GHSA-7pxx-4mx2-g3jf) is also closed by
  *       the same override.
+ *   - next-intl >= 4.9.2
+ *       [KHAL-A9] GHSA-4c35-wcg5-mm9h — prototype pollution with
+ *       `experimental.messages.precompile` via attacker-controlled
+ *       translation catalog keys (moderate). Vulnerable <=4.9.1, patched
+ *       >=4.9.2. apps/web was pinned to 3.26.5 (2026-10-02 audit: the only
+ *       remaining `pnpm audit --prod` delta); apps/admin already runs
+ *       4.14.2. The web app now aligns with admin on 4.x, and this floor
+ *       keeps any future resolution from silently reintroducing a
+ *       vulnerable 3.x line.
  *
  * The floors intentionally use `>=` semantics: the override pins minimums
  * ("sharp": ">=0.35.4", "postcss": ">=8.5.23"), so newer patch releases stay
@@ -33,6 +42,7 @@ const lockPath = resolve(repoRoot, 'pnpm-lock.yaml');
 const PATCHED_FLOOR = {
   sharp: '0.35.4',
   postcss: '8.5.23',
+  nextIntl: '4.9.2',
 } as const;
 
 /**
@@ -71,6 +81,7 @@ describe('supply-chain: patched dependency floors (pnpm audit HIGHs)', () => {
   it.each([
     { pkg: 'sharp', floor: PATCHED_FLOOR.sharp },
     { pkg: 'postcss', floor: PATCHED_FLOOR.postcss },
+    { pkg: 'next-intl', floor: PATCHED_FLOOR.nextIntl },
   ] as const)('every resolved $pkg in pnpm-lock.yaml is >= $floor', ({ pkg, floor }) => {
     const versions = resolvedVersions(lock, pkg);
 
