@@ -8,7 +8,7 @@ body:
       value: |
         ⚠️ **For critical security issues, please use GitHub Private Security Advisory instead of this form.**
         
-        See [SECURITY.md](../../SECURITY.md) for our security policy.
+        See [SECURITY.md](../docs/SECURITY.md) for our security policy.
   - type: textarea
     id: description
     attributes:

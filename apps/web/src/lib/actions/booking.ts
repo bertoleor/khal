@@ -12,7 +12,7 @@ export interface BookingState {
 
 // Contract returned by the SECURITY DEFINER create_booking RPC (0003). Narrowed
 // with Zod (CQ-06 — no `any`, no `as unknown as`) since database.types.ts is
-// generated only once Supabase is linked (DB-SYNC-01 / supabase-migration.md §8).
+// generated only once Supabase is linked (DB-SYNC-01 / docs/supabase-migration.md §8).
 const createBookingResultSchema = z.object({
   ok: z.boolean(),
   code: z.string(),

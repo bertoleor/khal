@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 /**
  * [ORN-59/t_e7321201] Accessibility contract tests for the P2 findings of the
- * 2026-09-29 audit (DOCS/auditoria-a11y-2026-09-29.md, commit fdb9e29).
+ * 2026-09-29 audit (docs/auditoria-a11y-2026-09-29.md, commit fdb9e29).
  *
  * These are textual contracts over the JSX sources, following the repo's
  * established contract-test pattern (see dep-audit.test.ts and

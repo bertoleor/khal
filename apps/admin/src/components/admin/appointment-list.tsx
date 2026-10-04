@@ -23,7 +23,7 @@ function handleTransition(formData: FormData, confirmMessage: string): void {
     // Destructive transitions require an explicit confirmation (WCAG a11y-ops: no
     // single-click destructive actions in the admin schedule). Native confirm is
     // the repo's minimal-choice fix; a two-step UI is a product decision that is
-    // intentionally NOT made here (see DOCS/auditoria-a11y-2026-09-29.md H5).
+    // intentionally NOT made here (see docs/auditoria-a11y-2026-09-29.md H5).
     if (typeof window !== 'undefined' && !window.confirm(confirmMessage)) {
       return;
     }

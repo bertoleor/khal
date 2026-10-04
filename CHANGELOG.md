@@ -4,6 +4,10 @@ All notable changes. Format follows Keep a Changelog (summarized).
 
 ## Unreleased (UNVERIFIED)
 
+- Docs: `docs/` única fuente — case-rename `DOCS/`→`docs/` en index (breaker de CI Linux),
+  `SECURITY.md`→`docs/SECURITY.md`, `AGENT CONSTITUTION.MD`→`docs/agent-constitution.md`,
+  ADR-0001→`docs/adr/`; `docs/PRODUCTO.md` + `docs/README.md` (índice) nuevos;
+  refs vivas re-apuntadas (README, issue template, comentarios de código, skills).
 - Prettier formatting pass across repo (style only, no logic change).
 - Docs: added `README.md`, `CHANGELOG.md`, `DOCS/ADR-0001-auth-provisoria.md`.
 - Audit: `DOCS/auditoria-nocturna-2026-09-12.md` (baseline + gates + gaps + kanban dry-run).

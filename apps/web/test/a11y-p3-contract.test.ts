@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 /**
  * [ORN-59] Accessibility contract tests for the P3/SUGG findings of the
- * 2026-09-29 audit (DOCS/auditoria-a11y-2026-09-29.md). Same static-contract
+ * 2026-09-29 audit (docs/auditoria-a11y-2026-09-29.md). Same static-contract
  * pattern as a11y-p2-contract.test.ts: the audit findings are textual
  * class-level defects, so the contract pins the fixed outcome.
  *

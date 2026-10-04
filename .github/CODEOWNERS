@@ -26,4 +26,4 @@
 /.github/ @bertoleor
 
 # Security
-SECURITY.md @bertoleor
+docs/SECURITY.md @bertoleor
