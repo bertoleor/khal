@@ -19,24 +19,20 @@ export default defineConfig({
   // Modern automatic JSX runtime so .tsx components (authored for Next's automatic
   // runtime) compile under Vitest without a plugin and without importing React.
   esbuild: { jsx: 'automatic' },
-  resolve: {
-    alias: {
-      // apps/web uses the `@/*` alias (its tsconfig paths) — expose it to Vitest so
-      // webhook route tests can import `@/lib/mercadopago` / `@/lib/notify`.
-      '@': fileURLToPath(new URL('./apps/web/src', import.meta.url)),
-    },
-  },
   test: {
     environment: 'node',
     include: ['packages/**/test/**/*.test.{ts,tsx}', 'apps/**/test/**/*.test.{ts,tsx}'],
   },
   plugins: [
     {
+      // enforce pre: resolve @/ per importing app BEFORE the global '@' alias
+      // (added in merge with payment-a11y) rewrites it to apps/web only.
+      enforce: 'pre',
       name: 'per-app-at-alias',
       async resolveId(source, importer) {
         if (!source.startsWith('@/')) return null;
         if (!importer) return null;
-        const appsDir = resolve(__dirname, 'apps');
+        const appsDir = fileURLToPath(new URL('./apps', import.meta.url));
         const rel = relative(appsDir, importer);
         if (rel.startsWith('..') || isAbsolute(rel)) return null;
         const appName = rel.split(sep)[0];
