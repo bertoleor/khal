@@ -116,7 +116,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Run Trivy
-        uses: aquasec/trivy-action@master
+        # aquasecurity/trivy-action 0.35.0 (SHA-pinned) — org previa "aquasec/" no existe;
+        # version >=0.35.0 verificada limpia tras los supply-chain incidents de 2026-03
+        uses: aquasecurity/trivy-action@57a97c7e7821
         with:
           scan-type: fs
           path: .
@@ -145,7 +147,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: SBOM CycloneDX
-        uses: aquasec/trivy-action@master
+        uses: aquasecurity/trivy-action@57a97c7e7821
         with:
           scan-type: fs
           path: .
