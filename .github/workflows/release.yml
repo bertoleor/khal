@@ -41,10 +41,10 @@ jobs:
         id: changesets
         uses: changesets/action@v2
         with:
-          publish: pnpm release
-          version: pnpm version
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
+          publish-script: pnpm release
+          version-script: pnpm version
+          commit-message: "chore(release): version packages"
+          pr-title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
