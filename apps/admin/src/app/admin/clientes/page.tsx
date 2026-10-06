@@ -24,7 +24,7 @@ export default async function ClientesPage() {
   }));
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-6">
+    <main id="main" tabIndex={-1} className="mx-auto max-w-2xl px-4 py-6">
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{t('title')}</h1>
       <ClientList rows={rows} />
     </main>

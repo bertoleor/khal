@@ -1,4 +1,5 @@
 # ADR-0001 — Provisional admin auth (cookie role mock) -> Supabase JWT claims
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[ADR-CONVENTION]] · [[ADR-TEMPLATE]] · [[02-arquitectura-stack]] · [[03-funciones]]
 
 - Status: superseded (2026-09-27) — the `khal_role` cookie mock has been fully
   removed (ORN-79). The JWT claims path described below is now the ONLY path.

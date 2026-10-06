@@ -4,7 +4,7 @@ context: |
   Tech stack: Next.js App Router (React 19+), TypeScript strict, Tailwind CSS v4, Shadcn/Radix, React Query, React Hook Form + Zod
   Architecture: src/ App Router, path aliases (@/), Server Actions as public endpoints, Supabase (RLS, UTC, soft deletes, audit logs)
   Testing: Vitest (unit), Testing Library (integration), Playwright + axe-core (E2E), 80% coverage baseline, sad paths mandatory
-  Source of truth: DOCS/AGENT CONSTITUTION.MD v3.1 (154 rules, 43 sections)
+  Source of truth: docs/agent-constitution.md v3.1 (154 rules, 43 sections)
 
 strict_tdd: false
 

@@ -129,12 +129,18 @@ function parseSignatureHeader(header: string | null): { ts: string; v1: string }
   if (!header) {
     return null;
   }
-  const parts = Object.fromEntries(
-    header.split(',').map((chunk) => {
-      const [key, ...rest] = chunk.split('=');
-      return [key.trim(), rest.join('=').trim()];
-    })
-  );
+  // MP may deliver x-signature as `ts=...,v1=...,` (recommended) but also with
+  // a leading URL query (`?ts=..&v1=..` on GET fallbacks) or `&` separators.
+  // Normalize to a single `key=value` token stream before parsing.
+  const normalized = header.replace(/^\?/, '').split(/[,&]/).filter(Boolean);
+  const parts: Record<string, string> = {};
+  for (const token of normalized) {
+    const eq = token.indexOf('=');
+    if (eq === -1) {
+      continue;
+    }
+    parts[token.slice(0, eq).trim()] = token.slice(eq + 1).trim();
+  }
   // MP sends `ts=`; accept `t=` as an alias for forward-compat.
   const ts = parts['ts'] ?? parts['t'];
   const v1 = parts['v1'];

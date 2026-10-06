@@ -8,13 +8,13 @@ Document SQL migration patterns and Supabase connection preparation so the team 
 
 ### Requirement: Migration Documentation
 
-The project SHALL include documentation in `DOCS/` describing the SQL migration patterns needed when connecting to Supabase.
+The project SHALL include documentation in `docs/` describing the SQL migration patterns needed when connecting to Supabase.
 
-#### Scenario: Migration docs exist in DOCS/
+#### Scenario: Migration docs exist in docs/
 
 - GIVEN the project plans to connect to Supabase
-- WHEN a developer reads `DOCS/`
-- THEN a migration guide exists (e.g., `DOCS/supabase-migration.md`)
+- WHEN a developer reads `docs/`
+- THEN a migration guide exists (e.g., `docs/supabase-migration.md`)
 - AND the guide covers: schema creation, RLS policies, seed data, and connection setup
 
 #### Scenario: Migration docs reference existing schema
@@ -49,7 +49,7 @@ The documentation SHALL list all environment variables required for Supabase con
 
 - GIVEN the project will connect to Supabase
 - WHEN a developer sets up the environment
-- THEN `DOCS/` contains a list of required env vars: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`
+- THEN `docs/` contains a list of required env vars: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`
 - AND each variable includes a description and example value format
 
 #### Scenario: Env vars added to validation schema

@@ -1,0 +1,33 @@
+# gitleaks repo config — khal
+# Local (pre-commit hook) y CI (.github/workflows/ci.yml → gitleaks/gitleaks-action@v2
+# auto-detects this file) comparten las mismas reglas.
+#
+# [extend] useDefault = true: mantiene TODOS los rulesets de secretos oficiales de
+# gitleaks. El allowlist SOLO excluye rutas de build/deps/docs que nunca deben
+# contener secretos reales, así el scan local no se cuelga recorriendo node_modules/
+# y el repo entero.
+title = "khal gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Excluye rutas de build/deps/docs (nunca llevan secretos reales). No silencia secretos de código fuente."
+paths = [
+  # build toolchains / deps (voluminosas, auto-generadas)
+  '''(^|/)node_modules/''',
+  '''(^|/)\.next/''',
+  '''(^|/)\.turbo/''',
+  '''(^|/)dist/''',
+  '''(^|/)build/''',
+  '''(^|/)coverage/''',
+  # lockfiles (hashes minificados, sin secretos)
+  '''(^|/)pnpm-lock\.yaml$''',
+  # docs normalizados (lowercase docs/ y legacy DOCS/)
+  '''(^|/)docs/''',
+  '''(^|/)DOCS/''',
+  # tooling local regenerable
+  '''(^|/)\.at/''',
+  '''(^|/)\.rdd/''',
+  '''(^|/)openspec/''',
+]

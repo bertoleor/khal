@@ -1,6 +1,7 @@
 # Reporte de producto, marketing y estilo — KHAL — 2026-09-12
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[INDICE-REPORTS]] · [[04-branding-identidad]] · [[05-marketing-tono]]
 
-> TODO UNVERIFIED. Nada borrado. Basado en lectura del código real (`apps/web`, `apps/admin`, `packages/*`) + `DOCS/auditoria-nocturna-2026-09-12.md` + `package.json`. Provider nvidia. No hay proyecto Supabase vivo ni deploy comprobado; los datos del catálogo y de disponibilidad son mocks en memoria.
+> TODO UNVERIFIED. Nada borrado. Basado en lectura del código real (`apps/web`, `apps/admin`, `packages/*`) + `docs/auditoria-nocturna-2026-09-12.md` + `package.json`. Provider nvidia. No hay proyecto Supabase vivo ni deploy comprobado; los datos del catálogo y de disponibilidad son mocks en memoria.
 
 ---
 

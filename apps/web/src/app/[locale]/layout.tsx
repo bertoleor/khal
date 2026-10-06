@@ -23,7 +23,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale === 'es' ? 'es-AR' : locale}>
       <body className="bg-black">
         <BackgroundMesh />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

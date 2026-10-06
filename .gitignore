@@ -29,8 +29,16 @@ test-results/
 
 # agent tooling (regenerated, not project source)
 .atl/
+.rdd/
+.worktrees/
+
+# caches / local tool state
+.eslintcache
+supabase/.temp/
 
 # misc
 .DS_Store
 *.log.changeset/
-.husky/
+
+.vercel
+.env*

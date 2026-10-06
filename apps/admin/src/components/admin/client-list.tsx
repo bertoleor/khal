@@ -31,7 +31,7 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               <p className="truncate text-sm text-slate-500">{client.phone}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-slate-400">{t('clients.ltv')}</p>
+              <p className="text-xs text-slate-600">{t('clients.ltv')}</p>
               <p className="font-medium text-slate-900">{formatCents(ltvCents, 'ARS')}</p>
             </div>
           </div>
@@ -46,7 +46,7 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               </span>
             ))}
             {client.noShowCount > 0 ? (
-              <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-600">
+              <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-700">
                 {t('clients.noShow', { count: client.noShowCount })}
               </span>
             ) : null}

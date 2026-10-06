@@ -55,7 +55,7 @@
     "payOnlineTitle": "Or pay online with Mercado Pago",
     "payOnline": "Pay online",
     "redirecting": "Redirecting…",
-    "checkoutError": "Could not start the online payment. Try again or pay by transfer.",
+    "checkoutError": "We couldn't start the online payment. Try again or pay by bank transfer.",
     "sendComprobante": "Send receipt via WhatsApp",
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof."
   }

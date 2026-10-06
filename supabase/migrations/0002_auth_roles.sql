@@ -2,7 +2,7 @@
 -- Greenfield migration; NOT YET applied to a live Supabase project (UNVERIFIED).
 -- Builds on 0001's `org_id()` / `org_role()` claim readers (auth.jwt() -> app_metadata.*).
 --
--- Contract (see DOCS/ADR-0001-auth-provisoria.md):
+-- Contract (see docs/ADR-0001-auth-provisoria.md):
 --   * role  := auth.jwt()->'app_metadata'->>'role'   (never user_metadata — user-editable)
 --   * org_id := auth.jwt()->'app_metadata'->>'org_id'
 --   * No Supabase project is linked yet; the app layer falls back to the mock

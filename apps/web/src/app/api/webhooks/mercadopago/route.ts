@@ -4,15 +4,19 @@ import {
   verifyMercadoPagoSignature,
 } from '@/lib/mercadopago';
 import { notifyBookingConfirmed } from '@/lib/notify';
+import { sendBookingReminder } from '@/lib/send-reminder';
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 
 // Mercado Pago webhook (G3): payment -> pending→confirmed + email notify.
 // HMAC-SHA256 verified on every call (x-signature / x-request-id headers).
-// Idempotency: the confirm UPDATE is conditional on status='pendiente', so
-// MP retries are safe (processed_events has a uuid PK — MP payment ids are
-// numeric strings, hence not usable as event_id there).
+// Idempotency (two layers): the confirm UPDATE is conditional on
+// status='pendiente', AND each approved event is claimed in processed_events
+// keyed by its real MP event_key (migration 0004) before the DB is touched, so
+// MP retries ack without re-running the confirm/notify path. MP payment ids are
+// numeric strings, hence unusable as the original uuid event_id PK — that is why
+// processed_events carries its own text event_key.
 
 const webhookBodySchema = z.object({
   type: z.string().optional(),
@@ -22,6 +26,25 @@ const webhookBodySchema = z.object({
 });
 
 const uuidSchema = z.string().uuid();
+
+// REMINDERS-01 — additive booking reminder (Resend). Shown copy is the es-AR
+// voseo formatReminderEsAR from packages/utils. Best-effort: any failure here
+// is swallowed so it can never fail the confirm path (n8n stays canonical).
+const reminderRowSchema = z.object({
+  scheduled_at: z.string().datetime(),
+  clients: z.object({ name: z.string().min(1), email: z.string().email() }).nullable(),
+});
+
+const ARGENTINA_TZ = 'America/Argentina/Buenos_Aires';
+
+/** Derive the es-AR "HH:mm" slot hour from a scheduled_at timestamptz. */
+function appointmentHoraEsAR(scheduledAtIso: string): string {
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: ARGENTINA_TZ,
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(scheduledAtIso));
+}
 
 function readServiceEnv(): { url: string; serviceKey: string } | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -91,6 +114,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const client = createClient(serviceEnv.url, serviceEnv.serviceKey);
+
+  // Persisted idempotency gate (migration 0004): claim the MP event by its real
+  // event_key (`action|topic` + dataId). on-conflict-do-nothing is atomic, so a
+  // replay of an already-processed event inserts 0 rows → we ack and never touch
+  // appointments/notify again. Transient failures before this point are NOT
+  // claimed, so MP's retry still runs the full path.
+  const eventKey = `${action || topic}:${dataId}`;
+  const claim = await client
+    .from('processed_events')
+    // postgrest-js v2 has no `.insert().onConflict()` chain method —
+    // `onConflict` is an upsert option (verified against the installed
+    // postgrest-js 2.116.0 d.ts, 2026-09-17). ignoreDuplicates → DO NOTHING.
+    .upsert(
+      { event_key: eventKey, provider: 'mercadopago' },
+      {
+        onConflict: 'event_key',
+        ignoreDuplicates: true,
+      }
+    )
+    .select('event_key');
+  if (claim.error) {
+    return NextResponse.json({ error: 'dedup_failed' }, { status: 500 });
+  }
+  if (claim.data.length === 0) {
+    return NextResponse.json({ received: true, duplicate: true });
+  }
+
   const { error, count } = await client
     .from('appointments')
     .update({ status: 'confirmado', confirmed_at: new Date().toISOString() }, { count: 'exact' })
@@ -104,6 +154,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if ((count ?? 0) > 0) {
     // Only notify on a real pending→confirmed transition (retries stay silent).
     await notifyBookingConfirmed({ event: 'booking.confirmed', appointmentId, paymentId: dataId });
+    // ADDITIVE reminder (Resend) — n8n remains the canonical confirmation path.
+    // Best-effort: fetch client name/email + slot hour; no-ops when unconfigured.
+    try {
+      const { data } = await client
+        .from('appointments')
+        .select('scheduled_at, clients ( name, email )')
+        .eq('id', appointmentId)
+        .single();
+      const row = reminderRowSchema.parse(data);
+      const { name, email } = row.clients ?? {};
+      if (name && email) {
+        await sendBookingReminder({
+          to: email,
+          nombre: name,
+          hora: appointmentHoraEsAR(row.scheduled_at),
+        });
+      }
+    } catch {
+      // Best-effort: a reminder must never fail the webhook confirm path.
+    }
   }
 
   return NextResponse.json({ received: true, confirmed: (count ?? 0) > 0 });

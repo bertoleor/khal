@@ -1,4 +1,5 @@
 # Automatizaciones — Guía de conexión (slice 6)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[design-scheduler-recordatorios-qstash]] · [[03-funciones]] · [[automatizaciones]]
 
 Estado: **scaffold listo, infraestructura pendiente.** El código de resiliencia e
 integridad webhook está implementado y testeado en `apps/api-workers`. El cableado

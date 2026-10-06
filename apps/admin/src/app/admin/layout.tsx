@@ -1,4 +1,4 @@
-import { Link } from '@/i18n/navigation';
+import { AdminNav } from '@/components/admin/admin-nav';
 import { getTranslations } from 'next-intl/server';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -6,21 +6,23 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-dvh bg-white">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-20 focus:rounded-full focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+      >
+        Ir al contenido
+      </a>
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
         <nav className="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3">
           <span className="font-semibold tracking-tight text-slate-900">{t('brand')}</span>
-          <Link href="/admin" className="text-sm text-slate-600">
-            {t('agenda')}
-          </Link>
-          <Link href="/admin/clientes" className="text-sm text-slate-600">
-            {t('clientes')}
-          </Link>
-          <Link href="/admin/servicios" className="text-sm text-slate-600">
-            {t('servicios')}
-          </Link>
-          <Link href="/admin/bloqueos" className="text-sm text-slate-600">
-            {t('bloqueos')}
-          </Link>
+          <AdminNav
+            links={[
+              { href: '/admin', label: t('agenda') },
+              { href: '/admin/clientes', label: t('clientes') },
+              { href: '/admin/servicios', label: t('servicios') },
+              { href: '/admin/bloqueos', label: t('bloqueos') },
+            ]}
+          />
         </nav>
       </header>
       {children}

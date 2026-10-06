@@ -1,4 +1,5 @@
 # Auditoría nocturna KHAL — 2026-09-12 (SIN notificación, todo UNVERIFIED)
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[INDICE-AUDITS]] · [[projects/khal/plan-accion-2026-09-12|plan-accion-2026-09-12]] · [[06-estado-gates]]
 
 Branch `main`, ahead of `origin/main` by 5 commits + uncommitted work.
 Nada borrado. Todo lo afirmado es UNVERIFIED (sin proyecto Supabase vivo ni deploy comprobado).
@@ -25,7 +26,7 @@ Nada borrado. Todo lo afirmado es UNVERIFIED (sin proyecto Supabase vivo ni depl
 
 - **09-product**: flujo catálogo → reserva → seña manual → WhatsApp definido; falta captura online. Sin README/CHANGELOG (creados ahora).
 - **10-uiux / design**: Tailwind v4, next-intl es/en, error/not-found boundaries; header/slot-picker con `aria-`; falta auditoría a11y completa.
-- **19-writer**: faltaban README, CHANGELOG, ADR (creados: `README.md`, `CHANGELOG.md`, `DOCS/ADR-0001-auth-provisoria.md`).
+- **19-writer**: faltaban README, CHANGELOG, ADR (creados: `README.md`, `CHANGELOG.md`, `docs/ADR-0001-auth-provisoria.md`).
 - **21-content**: mensajes es/en existen en web y admin; falta revisión de tono es-AR.
 - **18-i18n**: next-intl en ambas apps, rutas `[locale]`; sin test de paridad de claves.
 - **15-a11y**: `eslint-plugin-jsx-a11y` en PASS, aria parcial; sin test keyboard/contraste.

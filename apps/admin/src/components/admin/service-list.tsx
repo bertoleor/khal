@@ -36,7 +36,7 @@ export function ServiceList({ services }: { services: Service[] }) {
           <div className="min-w-0 flex-1">
             <p
               className={`truncate font-medium ${
-                service.is_visible ? 'text-slate-900' : 'text-slate-400'
+                service.is_visible ? 'text-slate-900' : 'text-slate-500'
               }`}
             >
               {service.name}

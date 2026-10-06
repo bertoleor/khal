@@ -1,4 +1,5 @@
 # Security Policy
+> Parte de: [[projects/khal/README|README]] · Relacionados: [[seguridad]] · [[docs/proyectos/khal|khal]]
 
 ## Supported Versions
 
