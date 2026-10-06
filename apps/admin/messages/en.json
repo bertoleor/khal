@@ -55,7 +55,7 @@
     },
     "login": {
       "title": "Khal · Admin",
-      "button": "Sign in as administrator"
+      "notice": "Admin access requires an authorized staff session (Supabase)."
     }
   }
 }

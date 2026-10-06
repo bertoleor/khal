@@ -55,7 +55,7 @@
     },
     "login": {
       "title": "Khal · Admin",
-      "button": "Entrar como administradora"
+      "notice": "El acceso de administración requiere una sesión de personal autorizada (Supabase)."
     }
   }
 }

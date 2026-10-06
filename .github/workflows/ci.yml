@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, "khal/orn-79-auth-jwt-real"]
   pull_request:
     branches: [main, develop]
 
@@ -21,8 +21,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 12
-          run_install: false
+                    run_install: false
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
@@ -47,8 +46,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 12
-          run_install: false
+                    run_install: false
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
@@ -71,8 +69,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 12
-          run_install: false
+                    run_install: false
       - name: Setup Node
         uses: actions/setup-node@v7
         with:

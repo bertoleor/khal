@@ -1,9 +1,9 @@
+import BackgroundMesh from '@/components/BackgroundMesh';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import '../globals.css';
-import BackgroundMesh from '@/components/BackgroundMesh';
 
 export const metadata: Metadata = {
   title: 'Khal — Agenda',
