@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop, "khal/orn-79-auth-jwt-real"]
+    branches: [main, develop, "khal/**"]
   pull_request:
     branches: [main, develop]
 
@@ -81,6 +81,12 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Build
         run: pnpm build
+      # KHAL-A6: the e2e suite is no longer vacuous. The Playwright webServer
+      # boots the zero-dep Supabase REST stub (apps/web/e2e/server.mjs) which
+      # spawns `next dev` on port 3100 with Supabase env vars pointing at the
+      # stub — real specs run against deterministic fixtures, no live systems.
+      # With the booking happy-path spec committed, this job now exercises
+      # the booking flow instead of passing vacuously.
       - name: Run E2E
         run: pnpm e2e
 
@@ -151,7 +157,7 @@ jobs:
         with:
           scan-type: fs
           path: .
-          format: cyclonedx-json
+          format: cyclonedx
           output: sbom.cdx.json
           exit-code: 0
       - name: Cosign install

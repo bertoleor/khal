@@ -9,7 +9,25 @@ import {
 } from '@khal/validations';
 import { useTranslations } from 'next-intl';
 
-function handleTransition(formData: FormData): void {
+const DESTRUCTIVE_STATUSES: ReadonlySet<AppointmentStatus> = new Set(['cancelado', 'no_asistio']);
+
+const ACTION_KEY: Record<string, string> = {
+  confirmado: 'appointments.confirm',
+  cancelado: 'appointments.cancel',
+  no_asistio: 'appointments.noShow',
+};
+
+function handleTransition(formData: FormData, confirmMessage: string): void {
+  const to = String(formData.get('to') ?? '') as AppointmentStatus;
+  if (DESTRUCTIVE_STATUSES.has(to)) {
+    // Destructive transitions require an explicit confirmation (WCAG a11y-ops: no
+    // single-click destructive actions in the admin schedule). Native confirm is
+    // the repo's minimal-choice fix; a two-step UI is a product decision that is
+    // intentionally NOT made here (see DOCS/auditoria-a11y-2026-09-29.md H5).
+    if (typeof window !== 'undefined' && !window.confirm(confirmMessage)) {
+      return;
+    }
+  }
   void transitionAppointmentAction(formData);
 }
 
@@ -18,12 +36,6 @@ const STATUS_DOT: Record<AppointmentStatus, string> = {
   confirmado: 'bg-emerald-500',
   cancelado: 'bg-slate-300',
   no_asistio: 'bg-red-500',
-};
-
-const ACTION_KEY: Record<string, string> = {
-  confirmado: 'appointments.confirm',
-  cancelado: 'appointments.cancel',
-  no_asistio: 'appointments.noShow',
 };
 
 export function AppointmentList({ appointments }: { appointments: Appointment[] }) {
@@ -41,6 +53,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
           className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 p-3"
         >
           <span aria-hidden className={`h-3 w-3 rounded-full ${STATUS_DOT[appointment.status]}`} />
+          <span className="sr-only">{t(`appointments.status.${appointment.status}`)}</span>
           <div className="min-w-0 flex-1">
             <p className="truncate font-medium text-slate-900">{appointment.clientName}</p>
             <p className="truncate text-sm text-slate-500">
@@ -52,15 +65,15 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
           </span>
           <div className="flex gap-1">
             {VALID_APPOINTMENT_TRANSITIONS[appointment.status].map((to) => (
-              <form key={to} action={handleTransition}>
+              <form key={to} action={(formData) => handleTransition(formData, t(ACTION_KEY[to]))}>
                 <input type="hidden" name="id" value={appointment.id} />
                 <input type="hidden" name="to" value={to} />
                 <button
                   type="submit"
                   className={
                     to === 'confirmado'
-                      ? 'rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white'
-                      : 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700'
+                      ? 'rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
+                      : 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700'
                   }
                 >
                   {t(ACTION_KEY[to])}

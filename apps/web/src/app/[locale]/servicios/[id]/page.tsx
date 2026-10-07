@@ -60,7 +60,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           </span>
           <Link
             href={`/servicios/${service.id}/reservar`}
-            className="rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white"
+            className="rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
           >
             {t('book')}
           </Link>

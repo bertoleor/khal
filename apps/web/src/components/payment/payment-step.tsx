@@ -43,11 +43,17 @@ function CopyRow({ label, value }: { label: string; value: string }) {
       <button
         type="button"
         onClick={handleCopy}
+<<<<<<< HEAD
         aria-label={`${t('copy')}: ${value}`}
+=======
+>>>>>>> 415a77f
         className="shrink-0 rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 active:bg-slate-100"
       >
         {copied ? t('copied') : t('copy')}
       </button>
+      <span aria-live="polite" role="status" className="sr-only">
+        {copied ? t('copied') : ''}
+      </span>
     </div>
   );
 }
@@ -109,6 +115,39 @@ export function PaymentStep({
 
       <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
 
+<<<<<<< HEAD
+=======
+      {bookingId && serviceId ? (
+        <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
+          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-slate-700">
+            {t('payOnlineTitle')}
+          </label>
+          <input
+            id="mp-payer-email"
+            type="email"
+            autoComplete="email"
+            value={payerEmail}
+            onChange={(event) => setPayerEmail(event.target.value)}
+            placeholder="tu@email.com"
+            className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+          />
+          <button
+            type="button"
+            onClick={handlePayOnline}
+            disabled={isRedirecting || payerEmail.trim().length === 0}
+            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isRedirecting ? t('redirecting') : t('payOnline')}
+          </button>
+          {checkoutError ? (
+            <p role="alert" className="text-sm text-red-600">
+              {checkoutError}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+>>>>>>> 415a77f
       <a
         href={link}
         target="_blank"

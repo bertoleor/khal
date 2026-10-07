@@ -17,6 +17,24 @@ export default tseslint.config(
     ],
   },
   js.configs.recommended,
+  // Node tooling scripts (E2E stub server, config files): bare Node globals
+  // (process, console, URL, Buffer, fetch, setTimeout, AbortSignal) are not
+  // in js.configs.recommended's browser-ish default environment.
+  {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        URL: 'readonly',
+        Buffer: 'readonly',
+        fetch: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        AbortSignal: 'readonly',
+      },
+    },
+  },
   ...tseslint.configs.recommended,
   reactHooks.configs.flat['recommended-latest'],
   prettier,

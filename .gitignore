@@ -41,4 +41,6 @@ supabase/.temp/
 *.log.changeset/
 
 .vercel
-.env*
+
+# rdd receipts (local)
+.rdd/
