@@ -16,12 +16,13 @@ describe('a11y fixes (web)', () => {
     expect(html).toContain('Ir al contenido');
   });
 
-  it('C1: el precio del servicio usa text-slate-600 (no slate-400)', () => {
+  it('C1: el precio del servicio usa text-slate-500 AA (no slate-400) — contrato p2 ratio 4.76:1', () => {
     const src = readFileSync(
       join(__dirname, '..', 'src', 'components', 'booking', 'booking-form.tsx'),
       'utf-8'
     );
-    expect(src).toContain('text-slate-600');
+    expect(src).toContain('text-slate-500');
+    expect(src).not.toContain('slate-400');
     expect(src).not.toContain('text-slate-400');
   });
 });

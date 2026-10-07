@@ -94,7 +94,7 @@ export function BookingForm({
         </form>
       ) : null}
 
-      <p className="pb-4 text-xs text-slate-600">
+      <p className="pb-4 text-xs text-slate-500">
         {formatCents(service.price_cents, service.currency_code)}
       </p>
     </div>
