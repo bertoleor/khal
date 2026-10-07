@@ -43,10 +43,7 @@ function CopyRow({ label, value }: { label: string; value: string }) {
       <button
         type="button"
         onClick={handleCopy}
-<<<<<<< HEAD
         aria-label={`${t('copy')}: ${value}`}
-=======
->>>>>>> 415a77f
         className="shrink-0 rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 active:bg-slate-100"
       >
         {copied ? t('copied') : t('copy')}
@@ -115,8 +112,6 @@ export function PaymentStep({
 
       <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
 
-<<<<<<< HEAD
-=======
       {bookingId && serviceId ? (
         <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
           <label htmlFor="mp-payer-email" className="text-sm font-semibold text-slate-700">
@@ -147,7 +142,6 @@ export function PaymentStep({
         </div>
       ) : null}
 
->>>>>>> 415a77f
       <a
         href={link}
         target="_blank"
