@@ -2,18 +2,20 @@ packages:
   - 'apps/*'
   - 'packages/*'
 
-# [ORN-57/t_44d71e6c] Force patched floors for the transitive deps next@15.5.25
-# bundles (sharp 0.34.5, postcss 8.4.31) to close the pnpm audit HIGHs:
+# [ORN-57/t_44d71e6c] Force patched floors for transitive deps next@15.5.25
+# bundles (sharp 0.34.5, postcss 8.4.31) to close pnpm audit HIGHs:
 #   sharp >=0.35.4    CVE-2026-33327/33328 (libvips) + GHSA-g89c-p67h-r497,
 #                     GHSA-2jg2-4c8w-9m2x (libheif)
-#   postcss >=8.5.23  GHSA-68xf-6m6c-pvwj (arbitrary file read via source map)
-#                     + GHSA-fxqj-rqcc-2cmp (path traversal); also closes the
-#                     moderate </style> XSS (GHSA-7pxx-4mx2-g3jf)
+#   postcss >=8.5.28  GHSA-68xf-6m6c-pvwj (arbitrary file read via source map)
+#                     + path traversal (GHSA-6g55-p6wh-862q, GHSA-r28c-9q8g-f849
+#                     HIGH); also closes the moderate </style> XSS
+#                     (GHSA-7pxx-4mx2-g3jf).
+# Registry verificado 2026-09-17: sharp 0.35.4 y postcss 8.5.28 = patched.
 # pnpm >=11 reads overrides from pnpm-workspace.yaml only (package.json#pnpm
 # is ignored). Enforced by apps/web/test/dep-audit.test.ts.
 overrides:
   sharp: '>=0.35.4'
-  postcss: '>=8.5.23'
+  postcss: '>=8.5.28'
 
 allowBuilds:
   '@parcel/watcher': true
@@ -23,11 +25,3 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - resend@6.28.1
-
-overrides:
-  # pnpm audit 2026-09-17: sharp 0.34.5 (vía next) arrastra CVEs libvips/libheif
-  # (GHSA-f88m-g3jw-g9cj HIGH, GHSA-rgj7-g3m4-5g8c HIGH) y postcss 8.4.31 arrastra
-  # path traversal/sourceMappingURL (GHSA-6g55-p6wh-862q, GHSA-r28c-9q8g-f849 HIGH).
-  # Registry verificado 2026-09-17: sharp 0.35.4 y postcss 8.5.28 = patched.
-  sharp: 0.35.4
-  postcss: 8.5.28
