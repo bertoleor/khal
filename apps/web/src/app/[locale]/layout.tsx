@@ -2,6 +2,7 @@ import BackgroundMesh from '@/components/BackgroundMesh';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import '../globals.css';
 
@@ -22,11 +23,16 @@ export default async function RootLayout({
     notFound();
   }
 
+  // next-intl 3.x does NOT auto-inherit messages into the client provider
+  // (inherit-by-default landed in v4, PR #1682) — pass them explicitly or
+  // every 'use client' component renders raw keys (booking.pickDay).
+  const messages = await getMessages();
+
   return (
     <html lang={locale === 'es' ? 'es-AR' : locale}>
       <body className="bg-black">
         <BackgroundMesh />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
