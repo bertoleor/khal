@@ -14,6 +14,10 @@ export default tseslint.config(
       '**/playwright-report/**',
       '**/test-results/**',
       '**/next-env.d.ts',
+      // Sibling git worktrees (agent tooling, gitignored): each one is a full
+      // checkout of another branch and lints as if it were project source.
+      // Scanning them makes `pnpm lint` fail on other cards' in-flight files.
+      '.worktrees/**',
     ],
   },
   js.configs.recommended,
