@@ -166,11 +166,16 @@ const BOOKING_ID = '99999999-9999-4999-8999-999999999999';
  * happy-path day strip keeps having both open days and a closed Sunday).
  */
 function availabilityFor(payload) {
-  const pDate = typeof payload.p_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(payload.p_date)
-    ? payload.p_date
-    : null;
+  const pDate =
+    typeof payload.p_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(payload.p_date)
+      ? payload.p_date
+      : null;
   if (!pDate) {
-    return { date: typeof payload.p_date === 'string' ? payload.p_date : null, closed: true, slots: [] };
+    return {
+      date: typeof payload.p_date === 'string' ? payload.p_date : null,
+      closed: true,
+      slots: [],
+    };
   }
   const service = services.find((s) => s.id === payload.p_service_id);
   if (!service) {
@@ -182,10 +187,12 @@ function availabilityFor(payload) {
   const blocked = [];
   if (weekday !== 0) {
     const now = new Date();
-    const isToday =
-      now.getFullYear() === y && now.getMonth() === m - 1 && now.getDate() === d;
+    const isToday = now.getFullYear() === y && now.getMonth() === m - 1 && now.getDate() === d;
     if (isToday) {
-      blocked.push({ start: 10 * 60, end: 11 * 60 + 15 }, { start: 14 * 60 + 30, end: 15 * 60 + 45 });
+      blocked.push(
+        { start: 10 * 60, end: 11 * 60 + 15 },
+        { start: 14 * 60 + 30, end: 15 * 60 + 45 }
+      );
     }
   }
 
@@ -197,7 +204,9 @@ function availabilityFor(payload) {
     for (let start = open; start + block <= close; start += service.duration_minutes) {
       const conflicts = blocked.some((p) => p.start < start + block && start < p.end);
       if (!conflicts) {
-        slots.push(`${String(Math.floor(start / 60)).padStart(2, '0')}:${String(start % 60).padStart(2, '0')}`);
+        slots.push(
+          `${String(Math.floor(start / 60)).padStart(2, '0')}:${String(start % 60).padStart(2, '0')}`
+        );
       }
     }
   }
