@@ -2,10 +2,9 @@ import { BookingForm } from '@/components/booking/booking-form';
 import type { DaySlot } from '@/components/booking/slot-picker';
 import type { PaymentInfo } from '@/components/payment/payment-step';
 import { Header } from '@/components/shared/header';
+import { getAvailability } from '@/lib/actions/availability';
 import { getService } from '@/lib/actions/catalog';
-import { blockedPeriodsFor, businessHoursFor } from '@/lib/mocks/schedule';
 import { storePaymentSettings } from '@/lib/mocks/settings';
-import { computeAvailableSlots, parseClock } from '@khal/db';
 import { computeAmountDueCents, formatCents, toIsoDate } from '@khal/utils';
 import { notFound } from 'next/navigation';
 
@@ -35,21 +34,16 @@ export default async function ReservarPage({
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     const isoDate = toIsoDate(date);
-    const weekday = date.getDay();
-    const hours = businessHoursFor(weekday);
-    const slots = hours
-      ? computeAvailableSlots(
-          { start: parseClock(hours.open), end: parseClock(hours.close) },
-          blockedPeriodsFor(isoDate, weekday),
-          service.duration_minutes,
-          service.buffer_minutes
-        )
-      : [];
+    // Slots come from the get_availability RPC (migration 0010, KHAL A2):
+    // the same admission logic create_booking (0003) enforces, so the UI can
+    // never offer a slot the booking RPC rejects. Missing env or an RPC
+    // failure fails soft into a closed day — the page still renders.
+    const availability = await getAvailability(id, isoDate);
     days.push({
       date: isoDate,
       label: dayLabel(date, locale),
-      closed: hours === null,
-      slots,
+      closed: availability.closed,
+      slots: availability.slots,
     });
   }
 

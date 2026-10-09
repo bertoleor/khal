@@ -156,6 +156,55 @@ function send(res, status, body, extraHeaders = {}) {
 
 const BOOKING_ID = '99999999-9999-4999-8999-999999999999';
 
+/**
+ * get_availability RPC (0010 contract): open Mon-Sat 09:00-18:00, Sunday
+ * closed — the same windows the mock fixtures advertised and the same slots
+ * the create_booking stub above accepts (it answers `ok` to any of them).
+ * Candidates step by the service duration while duration + buffer fits the
+ * window; today additionally blocks 10:00-11:15 and 14:30-15:45, mirroring
+ * the fictional blocked periods the mock schedule shipped (kept so the
+ * happy-path day strip keeps having both open days and a closed Sunday).
+ */
+function availabilityFor(payload) {
+  const pDate = typeof payload.p_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(payload.p_date)
+    ? payload.p_date
+    : null;
+  if (!pDate) {
+    return { date: typeof payload.p_date === 'string' ? payload.p_date : null, closed: true, slots: [] };
+  }
+  const service = services.find((s) => s.id === payload.p_service_id);
+  if (!service) {
+    return { date: pDate, closed: true, slots: [] };
+  }
+
+  const [y, m, d] = pDate.split('-').map(Number);
+  const weekday = new Date(y, m - 1, d).getDay(); // 0..6 Sun..Sat
+  const blocked = [];
+  if (weekday !== 0) {
+    const now = new Date();
+    const isToday =
+      now.getFullYear() === y && now.getMonth() === m - 1 && now.getDate() === d;
+    if (isToday) {
+      blocked.push({ start: 10 * 60, end: 11 * 60 + 15 }, { start: 14 * 60 + 30, end: 15 * 60 + 45 });
+    }
+  }
+
+  const open = 9 * 60;
+  const close = 18 * 60;
+  const block = service.duration_minutes + service.buffer_minutes;
+  const slots = [];
+  if (weekday !== 0) {
+    for (let start = open; start + block <= close; start += service.duration_minutes) {
+      const conflicts = blocked.some((p) => p.start < start + block && start < p.end);
+      if (!conflicts) {
+        slots.push(`${String(Math.floor(start / 60)).padStart(2, '0')}:${String(start % 60).padStart(2, '0')}`);
+      }
+    }
+  }
+  // Zero surviving slots -> closed, mirroring the 0010 SQL.
+  return { date: pDate, closed: slots.length === 0, slots };
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url ?? '/', `http://127.0.0.1:${STUB_PORT}`);
   const chunks = [];
@@ -183,14 +232,26 @@ const server = http.createServer((req, res) => {
     // create_booking RPC (booking.ts action — PostgREST /rest/v1/rpc/<fn> POST)
     const rpcMatch = url.pathname.match(/^\/rest\/v1\/rpc\/([a-z_]+)$/);
     if (rpcMatch) {
-      if (req.method !== 'POST' || rpcMatch[1] !== 'create_booking') {
-        return send(res, 404, { message: 'not found' });
-      }
       let payload = {};
       try {
         payload = body ? JSON.parse(body) : {};
       } catch {
         payload = {};
+      }
+      if (req.method !== 'POST') {
+        return send(res, 404, { message: 'not found' });
+      }
+      // get_availability RPC (availability.ts action — 0010 contract).
+      if (rpcMatch[1] === 'get_availability') {
+        // eslint-disable-next-line no-console -- stub server diagnostics
+        console.log(
+          `[supabase-stub] POST rpc/get_availability ${payload.p_date ?? 'unknown'} ->`,
+          JSON.stringify(availabilityFor(payload))
+        );
+        return send(res, 200, availabilityFor(payload));
+      }
+      if (rpcMatch[1] !== 'create_booking') {
+        return send(res, 404, { message: 'not found' });
       }
       createBookingCalls.push(payload);
       // eslint-disable-next-line no-console -- stub server diagnostics
