@@ -9,6 +9,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/.next/**',
       '**/.turbo/**',
+      '**/.worktrees/**',
       '**/dist/**',
       '**/coverage/**',
       '**/playwright-report/**',
