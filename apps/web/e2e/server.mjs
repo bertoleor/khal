@@ -58,7 +58,8 @@ const services = [
     id: '22222222-2222-4222-8222-222222222222',
     organization_id: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
     name: 'Extensiones Clásicas 1:1',
-    description: 'Una extensión por pestaña natural: efecto rimel natural de curvada limpia y duradera.',
+    description:
+      'Una extensión por pestaña natural: efecto rimel natural de curvada limpia y duradera.',
     price_cents: 4000000,
     currency_code: 'ARS',
     duration_minutes: 90,
