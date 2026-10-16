@@ -71,13 +71,14 @@ describe('supabase/seed.sql — production seed contract', () => {
     for (const id of MOCK_SERVICE_IDS) {
       expect(seed).toContain(id);
     }
-    // 3 visible + 1 hidden (Spa de Uñas Completo) mirrors the mock catalog.
-    expect(seed).toContain("'Spa de Uñas Completo'");
-    // Column appears once in the insert header; the four rows carry 3 true + 1 false.
+    // 4 visible services — the 100% lash catalog (2026-10-15) mirrors the
+    // mock catalog: Lifting, Clásicas, Híbridas and Volumen Ruso all visible.
+    expect(seed).toContain("'Volumen Ruso'");
+    // Column appears once in the insert header; the four rows carry 4 true.
     expect(seed).toContain('15, true, 1');
     expect(seed).toContain('15, true, 2');
-    expect(seed).toContain('10, true, 3');
-    expect(seed).toContain('15, false, 4');
+    expect(seed).toContain('15, true, 3');
+    expect(seed).toContain('15, true, 4');
   });
 
   it('only uses deposit_mode values from the enum', () => {

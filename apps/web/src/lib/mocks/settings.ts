@@ -5,3 +5,8 @@ export const storePaymentSettings = {
   cvu: '0000003100000000000001',
   whatsappPhone: '5491100000000',
 };
+
+export const storeSocialSettings = {
+  instagramUrl: 'https://www.instagram.com/khal.estudiook/',
+  instagramHandle: '@khal.estudiook',
+};

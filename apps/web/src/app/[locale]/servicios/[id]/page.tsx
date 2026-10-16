@@ -1,4 +1,3 @@
-import BackgroundMesh from '@/components/BackgroundMesh';
 import { Header } from '@/components/shared/header';
 import { Link } from '@/i18n/navigation';
 import { getService } from '@/lib/actions/catalog';
@@ -30,9 +29,6 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="relative min-h-dvh">
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
-        <BackgroundMesh />
-      </div>
       <Header />
       <main className="mx-auto max-w-lg px-4 pb-28">
         <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-5xl font-semibold text-white/80 backdrop-blur-sm">

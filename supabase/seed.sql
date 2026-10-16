@@ -35,9 +35,9 @@ on conflict (id) do nothing;
 -- ---------------------------------------------------------------------------
 insert into public.providers (id, organization_id, name, is_active) values
   ('10000000-0000-4000-8000-000000000001', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Pestañas & Lifting', true),
-  ('10000000-0000-4000-8000-000000000002', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Manicura', true),
-  ('10000000-0000-4000-8000-000000000003', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Cejas', true),
-  ('10000000-0000-4000-8000-000000000004', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Spa de Uñas', true)
+  ('10000000-0000-4000-8000-000000000002', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Extensionista Clásicas', true),
+  ('10000000-0000-4000-8000-000000000003', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Extensionista Híbridas', true),
+  ('10000000-0000-4000-8000-000000000004', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', 'Extensionista Volumen', true)
 on conflict (id) do nothing;
 
 -- ---------------------------------------------------------------------------
@@ -60,24 +60,24 @@ insert into public.services (
   ),
   (
     '22222222-2222-4222-8222-222222222222', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
-    'Esmaltado Semipermanente',
-    'Manicura semipermanente con tres semanas de duración.',
-    3800000, 'ARS', 75, 15, true, 2,
-    'fixed', 1500000, null
+    'Extensiones Clásicas 1:1',
+    'Una extensión por pestaña natural: efecto rimel natural de curvada limpia y duradera.',
+    4000000, 'ARS', 90, 15, true, 2,
+    'percentage', null, 3000
   ),
   (
     '33333333-3333-4333-8333-333333333333', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
-    'Diseño de Cejas',
-    'Perfilado y diseño de cejas a medida de tu rostro.',
-    2800000, 'ARS', 45, 10, true, 3,
-    null, null, null
+    'Extensiones Híbridas',
+    'Mix de clásicas y volumen: abanicos suaves para un efecto espeso y natural.',
+    4800000, 'ARS', 120, 15, true, 3,
+    'percentage', null, 3000
   ),
   (
     '44444444-4444-4444-8444-444444444444', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
-    'Spa de Uñas Completo',
-    'Tratamiento completo: exfoliación, hidratación y esmaltado.',
-    5500000, 'ARS', 90, 15, false, 4,
-    null, null, null
+    'Volumen Ruso',
+    'Abanicos hechos a mano 3D-5D: máximo volumen con efecto delineado.',
+    5500000, 'ARS', 150, 15, true, 4,
+    'percentage', null, 3000
   )
 on conflict (id) do nothing;
 
