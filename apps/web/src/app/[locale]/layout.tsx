@@ -15,11 +15,11 @@ export const metadata: Metadata = {
     template: '%s | Khal',
   },
   description:
-    'Turnos online para estudios de pestañas: elegí tu servicio, reservá al instante y confirmá por WhatsApp.',
+    'Turnos online para estudios de pestañas en Vicente López, Buenos Aires: elegí tu servicio, reservá al instante y confirmá por WhatsApp.',
   openGraph: {
     title: 'Khal | Agenda de pestañas',
     description:
-      'Turnos online para estudios de pestañas: elegí tu servicio, reservá al instante y confirmá por WhatsApp.',
+      'Turnos online para estudios de pestañas en Vicente López, Buenos Aires: elegí tu servicio, reservá al instante y confirmá por WhatsApp.',
     url: BASE_URL,
     siteName: 'Khal',
     locale: 'es_AR',
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+  },
+  other: {
+    'geo.region': 'AR-B',
+    'geo.placename': 'Vicente López',
+    'geo.position': '-34.5361;-58.4750',
+    ICBM: '-34.5361, -58.4750',
   },
 };
 
@@ -50,6 +56,31 @@ export default async function RootLayout({
   return (
     <html lang={locale === 'es' ? 'es-AR' : locale}>
       <body className="bg-black">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BeautySalon',
+              name: 'Khal',
+              description: 'Estudio de pestañas en Vicente López con agenda de turnos online.',
+              url: BASE_URL,
+              sameAs: ['https://www.instagram.com/khal.estudiook/'],
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Vicente López',
+                addressRegion: 'Buenos Aires',
+                addressCountry: 'AR',
+              },
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: -34.5361,
+                longitude: -58.475,
+              },
+              openingHours: 'Mo-Sa 09:00-18:00',
+            }),
+          }}
+        />
         <BackgroundMesh />
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>

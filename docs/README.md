@@ -16,6 +16,9 @@
 | [04 — Branding e identidad visual](04-branding-identidad.md) | Branding, identidad visual, tokens, componentes |
 | [05 — Marketing y tono](05-marketing-tono.md) | Marketing, i18n es/en, tono es-AR, copys clave |
 | [06 — Estado y gates](06-estado-gates.md) | Baseline medida, gates bloqueantes, gaps, próximos pasos (re-baseline 2026-10-15) |
+| [Flujo de la clienta](flujo-cliente.md) | Journey de reserva punta a punta con diagrama (catálogo → seña → WhatsApp) |
+| [Flujo del admin](flujo-admin.md) | Panel operativo: auth fail-closed, turnos/servicios/clientas/excepciones |
+| [API Guide](API-GUIDE.md) | Superficie pública: PostgREST + RPC create_booking + contrato del stub |
 | [ADR-0001 — Auth provisoria → JWT](adr/ADR-0001-auth-provisoria.md) | Admin auth: cookie mock → Supabase JWT claims (aplicada) |
 | [ADR-0002 — Pagos dual](adr/ADR-0002-payment-dual-flow.md) | MP checkout + transferencia manual como flujos oficiales |
 | [ADR-0003 — E2E stub](adr/ADR-0003-e2e-supabase-stub.md) | E2E contra stub determinista, no DB viva |
