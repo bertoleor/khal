@@ -1,0 +1,304 @@
+== Khal — 0009 hardening grants anon: receipt en DB viva (t_1d966854) ==
+Fecha: 2026-10-16 16:19:02 (-03, America/Argentina/Buenos_Aires)
+Refs: kanban t_1d966854 · audit E:/Hermes/docs/audits/rls-verify-khal-2026-10-07.md §6 H2 (P3)
+      · migración supabase/migrations/0009_revoke_anon_grants.sql (af9bbb2, main)
+      · rama origen fix/khal-revoke-anon-grants (9c5d078, khal-engineer 2026-10-08)
+DB: ref epykihchzlbbptrvvawg (prod, us-west-2) vía Management API (SUPABASE_PAT_2) + PostgREST con anon JWT real.
+Historia: 0009 fue aplicado a la DB viva el 2026-10-08 desde la rama loop
+      fix/khal-revoke-anon-grants ANTES de existir este ticket; esta corrida
+      aterriza los archivos al repo (cherry-pick af9bbb2), re-aplica el archivo
+      exacto del repo de forma idempotente (convergencia repo<->DB) y reproduce
+      la matriz §4 del audit como receipt de no-regresión.
+Cuidado 0007 respetado: grant EXECUTE de create_booking a anon NO tocado
+      (verificado en vivo abajo). El archivo 0009 es DCL puro — no redefine
+      funciones, por lo que el cuidado 'set search_path' no aplica (el proconfig
+      de create_booking se verifica intacto: search_path=public, extensions).
+
+== 1. Re-apply idempotente del archivo del repo (convergencia) ==
+== pre-apply ledger ==
+[{"version": "0001"}, {"version": "0002"}, {"version": "0003"}, {"version": "0004"}, {"version": "0005"}, {"version": "0006"}, {"version": "0007"}, {"version": "0009"}]
+
+== applying repo 0009 file (idempotent re-apply) ==
+HTTP 201: []
+
+== post-apply ledger (expect unchanged, incl. 0009) ==
+[{"version": "0001"}, {"version": "0002"}, {"version": "0003"}, {"version": "0004"}, {"version": "0005"}, {"version": "0006"}, {"version": "0007"}, {"version": "0009"}]
+
+== post-apply anon privilege matrix ==
+[
+{
+"obj": "appointments",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "audit_logs",
+"sel": true,
+"ins": true,
+"upd": true,
+"del": true,
+"trunc": true
+},
+{
+"obj": "business_hours",
+"sel": true,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "calendar_exceptions",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "client_tags",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "clients",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "failed_webhooks_log",
+"sel": true,
+"ins": true,
+"upd": true,
+"del": true,
+"trunc": true
+},
+{
+"obj": "global_settings",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "my_auth_context",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "notes",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "organizations",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "processed_events",
+"sel": true,
+"ins": true,
+"upd": true,
+"del": true,
+"trunc": true
+},
+{
+"obj": "provider_schedules",
+"sel": true,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "provider_services",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "providers",
+"sel": true,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "security_logs",
+"sel": true,
+"ins": true,
+"upd": true,
+"del": true,
+"trunc": true
+},
+{
+"obj": "services",
+"sel": true,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+},
+{
+"obj": "tags",
+"sel": false,
+"ins": false,
+"upd": false,
+"del": false,
+"trunc": false
+}
+]
+
+== convergence check ==
+  [B] appointments: PASS
+  [OOS] audit_logs: PASS
+  [A] business_hours: PASS
+  [B] calendar_exceptions: PASS
+  [B] client_tags: PASS
+  [B] clients: PASS
+  [OOS] failed_webhooks_log: PASS
+  [B] global_settings: PASS
+  [B] notes: PASS
+  [B] organizations: PASS
+  [OOS] processed_events: PASS
+  [A] provider_schedules: PASS
+  [B] provider_services: PASS
+  [A] providers: PASS
+  [OOS] security_logs: PASS
+  [A] services: PASS
+  [B] tags: PASS
+
+CONVERGENCE: PASS — repo file and live DB agree
+
+== 2. Matriz §4 audit + RPC + cleanup (PostgREST, anon JWT real) ==
+== anon JWT obtenido (solo hash de control): e7d809caeaef ==
+== baseline counts ==
+  {'services': 4, 'appts': 0, 'clients': 0, 'psched': 0}
+== temp invisible service insertada (id 44444444..., ins[0]['is_visible']=False) ==
+== servicio visible para RPC: Extensiones Clásicas 1:1 (22222222-2222-4222-8222-222222222222) ==
+== fecha de reserva (próximo lunes): 2026-10-19 slot 600 ==
+
+== §4 matriz anon (PostgREST, JWT real) ==
+  [PASS] T1 GET services -> HTTP 200, 4 filas visibles, temp invisible OCULTA (RLS filtra)
+  [PASS] T2 GET clients -> HTTP 401, {"code":"42501","details":null,"hint":"Grant the required privileges to the current role with: GRANT SELECT ON public.cl
+  [PASS] T3 GET appointments -> HTTP 401, {"code":"42501","details":null,"hint":"Grant the required privileges to the current role with: GRANT SELECT ON public.ap
+  [PASS] T4 GET my_auth_context -> HTTP 401, {"code":"42501","details":null,"hint":null,"message":"permission denied for view my_auth_context"}
+  [PASS] T5 GET processed_events -> HTTP 200, []
+  [PASS] T7 POST services (INSERT) -> HTTP 401, {"code":"42501","details":null,"hint":"Grant the required privileges to the current role with: GRANT INSERT ON public.services TO anon;","me
+  [PASS] T8 DELETE services -> HTTP 401, count services 5 (esperado 5), {"code":"42501","details":null,"hint":"Grant the required privileges to the current role with: GRANT DELETE ON public.se
+  [PASS] T9 POST appointments (INSERT) -> HTTP 401, {"code":"42501","details":null,"hint":"Grant the required privileges to the current role with: GRANT INSERT ON public.appointments TO anon;"
+
+== RPC create_booking en vivo (grant EXECUTE intacto) ==
+  [PASS] R1 RPC happy path lunes 10:00 -> HTTP 200, {'ok': True, 'code': 'ok', 'booking_id': 'cd4bb2a7-1415-438a-b7b3-5e4a626aa1ac'}
+  [PASS] R2 RPC replay idempotencia -> HTTP 200, mismo booking_id=True
+  [PASS] R3 RPC servicio inválido -> HTTP 200, {'ok': False, 'code': 'invalid', 'booking_id': None}
+
+== cleanup (por id exacto) ==
+  [PASS] C1 DELETE temp invisible service -> borradas: ['44444444-4444-4444-4444-444444444444']
+  [PASS] C2 DELETE appointment de prueba -> borradas: ['cd4bb2a7-1415-438a-b7b3-5e4a626aa1ac']
+  [PASS] C3 DELETE client de prueba -> borradas: ['b9a582b4-365a-4f92-9b5f-d88b60646eef']
+== counts finales ==
+  {'services': 4, 'appts': 0, 'clients': 0, 'psched': 0}
+  [PASS] C4 counts restaurados al baseline -> {'services': 4, 'appts': 0, 'clients': 0, 'psched': 0} vs baseline {'services': 4, 'appts': 0, 'clients': 0, 'psched': 0}
+
+== functiondef final ==
+  {'gate': True, 'proconfig': ['search_path=public, extensions'], 'anon_exec': True}
+  [PASS] F1 create_booking functiondef intacta -> gate=True, proconfig=['search_path=public, extensions'], anon EXECUTE=True
+
+MATRIZ H2: todas las expectativas PASS
+
+== 3. Grants anon post-hardening — query viva (information_schema.role_table_grants) ==
+  audit_logs: DELETE
+  audit_logs: INSERT
+  audit_logs: REFERENCES
+  audit_logs: SELECT
+  audit_logs: TRIGGER
+  audit_logs: TRUNCATE
+  audit_logs: UPDATE
+  business_hours: SELECT
+  failed_webhooks_log: DELETE
+  failed_webhooks_log: INSERT
+  failed_webhooks_log: REFERENCES
+  failed_webhooks_log: SELECT
+  failed_webhooks_log: TRIGGER
+  failed_webhooks_log: TRUNCATE
+  failed_webhooks_log: UPDATE
+  processed_events: DELETE
+  processed_events: INSERT
+  processed_events: REFERENCES
+  processed_events: SELECT
+  processed_events: TRIGGER
+  processed_events: TRUNCATE
+  processed_events: UPDATE
+  provider_schedules: SELECT
+  providers: SELECT
+  security_logs: DELETE
+  security_logs: INSERT
+  security_logs: REFERENCES
+  security_logs: SELECT
+  security_logs: TRIGGER
+  security_logs: TRUNCATE
+  security_logs: UPDATE
+  services: SELECT
+
+== 4. Grants EXECUTE anon sobre funciones public (query viva) ==
+  create_booking: EXECUTE
+  org_id: EXECUTE
+  org_role: EXECUTE
+  rls_auto_enable: EXECUTE
+  set_updated_at: EXECUTE
+
+== 5. Notas de la corrida ==
+- Deltas de mecanismo vs audit §4 (esperados por diseño del hardening, mismo
+  veredicto 'bloqueado' en todos): T2/T3 pasaron de 200/0-filas (filtro RLS) a
+  401 42501 permission denied (denegación de privilegio, una capa ANTES de RLS);
+  T7/T9 pasaron de 42501 'new row violates row-level security policy' a 42501
+  'permission denied'; T8 pasó de 204/0-filas-afectadas a 401 permission denied.
+  En todos los casos anon sigue sin poder leer datos de clientes/turnos ni
+  escribir: defense in depth funcionando (segunda capa activa).
+- T1 data drift: el audit (2026-10-07) vio 3 servicios visibles + 1 invisible de
+  prueba (44444444); hoy la tabla tiene 4 visibles y el 44444444 histórico ya no
+  existe. Para reproducir el veredicto 'RLS filtra' se insertó un servicio
+  temporal invisible (id 44444444-4444-4444-4444-444444444444), se verificó
+  OCULTO para anon, y se borró por id exacto (cleanup verificado, counts al
+  baseline 4/0/0/0).
+- T5: GET processed_events devuelve 200/0 filas — tabla fuera de scope por
+  diseño (superficie insert-only de webhooks), SELECT de anon se mantiene y la
+  policy insert-only filtra lecturas. Mismo veredicto que el audit.
+- Residuales documentados (fuera de scope del ticket, candidatos a follow-up):
+  (a) pg_default_acl sigue otorgando anon=arwdDxtm a tablas NUEVAS creadas por
+  postgres/supabase_admin en public — toda tabla futura nace con anon ALL y
+  requiere su propio REVOKE; (b) las 4 tablas log/webhook mantienen anon ALL por
+  diseño (hardening aparte); (c) has_function_privilege(anon, current_role/org_id/
+  org_role, EXECUTE)=true vía PUBLIC — lectores de claims del propio JWT, sin
+  superficie de datos, revocable en un hardening posterior si se desea.
+- Ledger: '0009' ya estaba aplicado (insert on conflict do nothing lo re-confirmó);
+  el re-apply NO produjo ningún cambio de estado (matriz pre == post, ver arriba).
+
+== Veredicto ==
+MATRIZ §4 REPRODUCIDA VERDE (15/15 PASS). create_booking EXECUTE + functiondef
+intactos. Cleanup verificado. Convergencia repo<->DB viva PASS.
+H2 (P3) CERRADO con receipts.
