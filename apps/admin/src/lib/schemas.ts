@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { depositModeSchema } from '@khal/validations';
+import { z } from 'zod';
 
 /**
  * Catalog form schema (khal-admin-100-operable T2).

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import { getSupabaseBrowserClient } from '@/lib/supabase/browser';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useState, type FormEvent } from 'react';
 
 /**
  * Staff sign-in (khal-admin-100-operable T3).
@@ -34,9 +34,12 @@ export function LoginForm() {
     const m = err.message.toLowerCase();
     if (m.includes('invalid login')) return t('errors.invalid');
     if (m.includes('email not confirmed')) return t('errors.notConfirmed');
-    if (m.includes('expired') || m.includes('otp') || m.includes('token')) return t('errors.badCode');
-    if (m.includes('rate') || m.includes('too many') || m.includes('limit')) return t('errors.rateLimit');
-    if (m.includes('signup') || m.includes('not found') || m.includes('unable to')) return t('errors.notStaff');
+    if (m.includes('expired') || m.includes('otp') || m.includes('token'))
+      return t('errors.badCode');
+    if (m.includes('rate') || m.includes('too many') || m.includes('limit'))
+      return t('errors.rateLimit');
+    if (m.includes('signup') || m.includes('not found') || m.includes('unable to'))
+      return t('errors.notStaff');
     return t('errors.generic');
   }
 
@@ -113,7 +116,8 @@ export function LoginForm() {
     'w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500';
   const buttonClass =
     'w-full rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60';
-  const secondaryClass = 'text-sm font-medium text-slate-600 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600';
+  const secondaryClass =
+    'text-sm font-medium text-slate-600 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600';
 
   return (
     <div className="w-full space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -197,7 +201,10 @@ export function LoginForm() {
       {mode === 'password' && (
         <form className="space-y-4" onSubmit={signInWithPassword} noValidate>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="login-email-pw">
+            <label
+              className="mb-1 block text-sm font-medium text-slate-700"
+              htmlFor="login-email-pw"
+            >
               {t('email')}
             </label>
             <input
@@ -213,7 +220,10 @@ export function LoginForm() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="login-password">
+            <label
+              className="mb-1 block text-sm font-medium text-slate-700"
+              htmlFor="login-password"
+            >
               {t('password')}
             </label>
             <input

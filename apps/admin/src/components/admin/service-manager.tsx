@@ -1,11 +1,7 @@
 'use client';
 
-import { useMemo, useState, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
-import { formatCents } from '@khal/utils';
-import type { Service } from '@khal/validations';
+import { PhotoUploader } from '@/components/admin/photo-uploader';
+import { RichTextEditor } from '@/components/admin/rich-text-editor';
 import {
   bulkIncrease,
   createService,
@@ -14,8 +10,12 @@ import {
   updateService,
 } from '@/lib/actions/services';
 import { serviceFormSchema } from '@/lib/schemas';
-import { RichTextEditor } from '@/components/admin/rich-text-editor';
-import { PhotoUploader } from '@/components/admin/photo-uploader';
+import { formatCents } from '@khal/utils';
+import type { Service } from '@khal/validations';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState, type FormEvent } from 'react';
 
 /**
  * Catalog manager (khal-admin-100-operable T4).
@@ -101,7 +101,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
   const [sort, setSort] = useState<SortKey>('order');
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const [dialog, setDialog] = useState<{ mode: 'create' } | { mode: 'edit'; service: Service } | null>(null);
+  const [dialog, setDialog] = useState<
+    { mode: 'create' } | { mode: 'edit'; service: Service } | null
+  >(null);
   const [form, setForm] = useState<FormState | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [banner, setBanner] = useState<string | null>(null);
@@ -110,7 +112,8 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const list = q === '' ? [...services] : services.filter((s) => s.name.toLowerCase().includes(q));
+    const list =
+      q === '' ? [...services] : services.filter((s) => s.name.toLowerCase().includes(q));
     switch (sort) {
       case 'name':
         list.sort((a, b) => a.name.localeCompare(b.name, 'es'));
@@ -216,7 +219,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
     setServices((prev) =>
       dialog.mode === 'create'
         ? [...prev, saved].sort((a, b) => a.sort_order - b.sort_order)
-        : prev.map((s) => (s.id === saved.id ? saved : s)),
+        : prev.map((s) => (s.id === saved.id ? saved : s))
     );
     closeDialog();
     router.refresh();
@@ -258,8 +261,8 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         prev.map((s) =>
           selected.has(s.id)
             ? { ...s, price_cents: s.price_cents + Math.round((s.price_cents * 1000) / 10000) }
-            : s,
-        ),
+            : s
+        )
       );
       setSelected(new Set());
     } else {
@@ -317,7 +320,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-price">
+                <label
+                  className="mb-1 block text-sm font-medium text-slate-700"
+                  htmlFor="svc-price"
+                >
                   {t('fields.price')}
                 </label>
                 <input
@@ -330,10 +336,15 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   onChange={(e) => patchForm({ price: e.target.value })}
                 />
                 <p className="mt-1 text-xs text-slate-500">{t('fields.priceHint')}</p>
-                {errors.price_cents !== undefined && <p className={errorClass}>{errors.price_cents}</p>}
+                {errors.price_cents !== undefined && (
+                  <p className={errorClass}>{errors.price_cents}</p>
+                )}
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-duration">
+                <label
+                  className="mb-1 block text-sm font-medium text-slate-700"
+                  htmlFor="svc-duration"
+                >
                   {t('fields.duration')}
                 </label>
                 <input
@@ -353,7 +364,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-description">
+              <label
+                className="mb-1 block text-sm font-medium text-slate-700"
+                htmlFor="svc-description"
+              >
                 {t('fields.description')}
               </label>
               <RichTextEditor
@@ -375,7 +389,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             </div>
 
             <div>
-              <span className="mb-1 block text-sm font-medium text-slate-700">{t('fields.photo')}</span>
+              <span className="mb-1 block text-sm font-medium text-slate-700">
+                {t('fields.photo')}
+              </span>
               <PhotoUploader
                 url={form.photo_path}
                 altLabel={t('fields.photo')}
@@ -391,14 +407,19 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-deposit-mode">
+                <label
+                  className="mb-1 block text-sm font-medium text-slate-700"
+                  htmlFor="svc-deposit-mode"
+                >
                   {t('fields.deposit')}
                 </label>
                 <select
                   id="svc-deposit-mode"
                   className={inputClass}
                   value={form.deposit_mode}
-                  onChange={(e) => patchForm({ deposit_mode: e.target.value as FormState['deposit_mode'] })}
+                  onChange={(e) =>
+                    patchForm({ deposit_mode: e.target.value as FormState['deposit_mode'] })
+                  }
                 >
                   <option value={DEPOSIT_NONE}>{t('deposit.none')}</option>
                   <option value={DEPOSIT_FIXED}>{t('deposit.fixed')}</option>
@@ -407,8 +428,13 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               </div>
               {form.deposit_mode !== DEPOSIT_NONE && (
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-deposit-amount">
-                    {form.deposit_mode === DEPOSIT_FIXED ? t('deposit.fixedAmount') : t('deposit.percentageAmount')}
+                  <label
+                    className="mb-1 block text-sm font-medium text-slate-700"
+                    htmlFor="svc-deposit-amount"
+                  >
+                    {form.deposit_mode === DEPOSIT_FIXED
+                      ? t('deposit.fixedAmount')
+                      : t('deposit.percentageAmount')}
                   </label>
                   <input
                     id="svc-deposit-amount"
@@ -431,7 +457,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-buffer">
+                <label
+                  className="mb-1 block text-sm font-medium text-slate-700"
+                  htmlFor="svc-buffer"
+                >
                   {t('fields.buffer')}
                 </label>
                 <input
@@ -443,7 +472,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   onChange={(e) => patchForm({ buffer: e.target.value })}
                 />
                 <p className="mt-1 text-xs text-slate-500">{t('fields.bufferHint')}</p>
-                {errors.buffer_minutes !== undefined && <p className={errorClass}>{errors.buffer_minutes}</p>}
+                {errors.buffer_minutes !== undefined && (
+                  <p className={errorClass}>{errors.buffer_minutes}</p>
+                )}
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-sort">
@@ -458,7 +489,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   onChange={(e) => patchForm({ sort_order: e.target.value })}
                 />
                 <p className="mt-1 text-xs text-slate-500">{t('fields.sortHint')}</p>
-                {errors.sort_order !== undefined && <p className={errorClass}>{errors.sort_order}</p>}
+                {errors.sort_order !== undefined && (
+                  <p className={errorClass}>{errors.sort_order}</p>
+                )}
               </div>
             </div>
 
@@ -485,7 +518,11 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                 disabled={busy}
                 className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {busy ? t('actions.saving') : dialog.mode === 'create' ? t('actions.create') : t('actions.save')}
+                {busy
+                  ? t('actions.saving')
+                  : dialog.mode === 'create'
+                    ? t('actions.create')
+                    : t('actions.save')}
               </button>
             </div>
           </form>
@@ -587,7 +624,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                 <h2 className="truncate font-medium text-slate-900">{service.name}</h2>
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                    service.is_visible ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'
+                    service.is_visible
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {service.is_visible ? t('visible') : t('hidden')}
@@ -596,11 +635,18 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               <p className="mt-0.5 text-sm text-slate-600">
                 {formatCents(service.price_cents, service.currency_code)} ·{' '}
                 {t('duration', { count: service.duration_minutes })}
-                {service.deposit_mode === 'percentage' && service.deposit_percentage_bp !== undefined && (
-                  <> · {t('deposit.badge', { count: service.deposit_percentage_bp / 100 })}</>
-                )}
+                {service.deposit_mode === 'percentage' &&
+                  service.deposit_percentage_bp !== undefined && (
+                    <> · {t('deposit.badge', { count: service.deposit_percentage_bp / 100 })}</>
+                  )}
                 {service.deposit_mode === 'fixed' && service.deposit_fixed_cents !== undefined && (
-                  <> · {t('deposit.fixedBadge', { amount: formatCents(service.deposit_fixed_cents, service.currency_code) })}</>
+                  <>
+                    {' '}
+                    ·{' '}
+                    {t('deposit.fixedBadge', {
+                      amount: formatCents(service.deposit_fixed_cents, service.currency_code),
+                    })}
+                  </>
                 )}
               </p>
               {service.description !== undefined && service.description !== '' && (

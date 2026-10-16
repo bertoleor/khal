@@ -1,8 +1,8 @@
 'use client';
 
+import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
 
 /**
  * Rich text editor for service descriptions (khal-admin-100-operable T4).
@@ -88,7 +88,10 @@ export function RichTextEditor({
 
   if (!editor) {
     return (
-      <div className="min-h-24 animate-pulse rounded-lg border border-slate-200 bg-slate-50" aria-hidden="true" />
+      <div
+        className="min-h-24 animate-pulse rounded-lg border border-slate-200 bg-slate-50"
+        aria-hidden="true"
+      />
     );
   }
 
@@ -149,10 +152,18 @@ export function RichTextEditor({
           <span aria-hidden="true">1.</span>
         </ToolbarButton>
         <span aria-hidden="true" className="mx-1 w-px self-stretch bg-slate-300" />
-        <ToolbarButton label={labels.undo} disabled={!editor.can().undo()} onClick={() => chain().undo().run()}>
+        <ToolbarButton
+          label={labels.undo}
+          disabled={!editor.can().undo()}
+          onClick={() => chain().undo().run()}
+        >
           <span aria-hidden="true">↺</span>
         </ToolbarButton>
-        <ToolbarButton label={labels.redo} disabled={!editor.can().redo()} onClick={() => chain().redo().run()}>
+        <ToolbarButton
+          label={labels.redo}
+          disabled={!editor.can().redo()}
+          onClick={() => chain().redo().run()}
+        >
           <span aria-hidden="true">↻</span>
         </ToolbarButton>
       </div>

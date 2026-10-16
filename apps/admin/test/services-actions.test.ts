@@ -18,7 +18,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const ORG = 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee';
 
 vi.mock('@/lib/auth', () => ({
-  requireAuth: vi.fn(async () => ({ ok: true, ctx: { role: 'admin', userId: 'user-1', orgId: ORG } })),
+  requireAuth: vi.fn(async () => ({
+    ok: true,
+    ctx: { role: 'admin', userId: 'user-1', orgId: ORG },
+  })),
 }));
 vi.mock('@/lib/supabase/server', () => ({
   getSupabaseServerClient: vi.fn(),
@@ -42,7 +45,7 @@ type AnyRecord = Record<string, unknown>;
 
 function makeClientMock(
   singleData: AnyRecord | null = null,
-  listData: unknown[] = [{ id: '11111111-1111-4111-8111-111111111111', price_cents: 25000 }],
+  listData: unknown[] = [{ id: '11111111-1111-4111-8111-111111111111', price_cents: 25000 }]
 ) {
   const ops: string[] = [];
   const calls = {
@@ -132,7 +135,9 @@ beforeEach(() => {
 describe('fetchServices (T1·read path)', () => {
   it('filters soft-deleted rows out of the admin list', async () => {
     await fetchServices();
-    expect(mock.calls.is.some((c) => c.table === 'services' && c.args[0] === 'deleted_at')).toBe(true);
+    expect(mock.calls.is.some((c) => c.table === 'services' && c.args[0] === 'deleted_at')).toBe(
+      true
+    );
   });
 });
 
@@ -155,7 +160,10 @@ describe('createService (T1·write path)', () => {
   });
 
   it('rejects a non-integer price BEFORE touching Supabase', async () => {
-    const res: AnyRecord = (await createService({ ...validInput, price_cents: 2500.5 })) as AnyRecord;
+    const res: AnyRecord = (await createService({
+      ...validInput,
+      price_cents: 2500.5,
+    })) as AnyRecord;
     expect(res?.ok).toBe(false);
     expect(mock.calls.insert).toHaveLength(0);
   });
@@ -244,7 +252,10 @@ describe('uploadServicePhoto (T1·gates)', () => {
 
 describe('bulkIncrease (T1·math)', () => {
   it('upserts +10% (1000 bp) on the fetched prices', async () => {
-    const res: AnyRecord = (await bulkIncrease(['11111111-1111-4111-8111-111111111111'], 1000)) as AnyRecord;
+    const res: AnyRecord = (await bulkIncrease(
+      ['11111111-1111-4111-8111-111111111111'],
+      1000
+    )) as AnyRecord;
     expect(res?.ok).toBe(true);
     expect(mock.calls.upsert).toHaveLength(1);
     const rows = mock.calls.upsert[0].args[0] as AnyRecord[];

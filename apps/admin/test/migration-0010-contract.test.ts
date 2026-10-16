@@ -40,14 +40,18 @@ describe('0010 service-photos bucket (contract)', () => {
 
   it('up: public read policy scoped to the bucket', () => {
     const sql = readFileSync(UP, 'utf-8');
-    expect(sql).toMatch(/create policy "service_photos_public_read"\s+on storage\.objects\s+for select/);
+    expect(sql).toMatch(
+      /create policy "service_photos_public_read"\s+on storage\.objects\s+for select/
+    );
     expect(sql).toContain("bucket_id = 'service-photos'");
   });
 
   it('up: write policies are staff-only (org_role admin/manager, never bare authenticated)', () => {
     const sql = readFileSync(UP, 'utf-8');
     for (const op of ['insert', 'update', 'delete']) {
-      const re = new RegExp(`create policy "service_photos_${op}"\\s+on storage\\.objects\\s+for ${op}\\s+to authenticated`);
+      const re = new RegExp(
+        `create policy "service_photos_${op}"\\s+on storage\\.objects\\s+for ${op}\\s+to authenticated`
+      );
       expect(sql).toMatch(re);
     }
     expect(sql).toContain("public.org_role() in ('admin', 'manager')");
@@ -65,6 +69,8 @@ describe('0010 service-photos bucket (contract)', () => {
     const sql = readFileSync(DOWN, 'utf-8');
     expect(sql).toMatch(/drop policy if exists "service_photos_public_read" on storage\.objects/);
     expect(sql).toMatch(/delete\s+from\s+storage\.buckets\s+where\s+id\s*=\s*'service-photos'/);
-    expect(sql).toMatch(/delete\s+from\s+supabase_migrations\.schema_migrations\s+where\s+version\s*=\s*'0010'/);
+    expect(sql).toMatch(
+      /delete\s+from\s+supabase_migrations\.schema_migrations\s+where\s+version\s*=\s*'0010'/
+    );
   });
 });

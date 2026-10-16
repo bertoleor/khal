@@ -1,10 +1,10 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import type { Service } from '@khal/validations';
 import { requireAuth } from '@/lib/auth';
-import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { serviceFormSchema, type ServiceFormInput } from '@/lib/schemas';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
+import type { Service } from '@khal/validations';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Catalog server actions (khal-admin-100-operable T2).
@@ -75,7 +75,10 @@ export async function createService(input: ServiceFormInput): Promise<ActionResu
   return { ok: true, data: normalizeRow(data as DbService) };
 }
 
-export async function updateService(id: string, input: ServiceFormInput): Promise<ActionResult<Service>> {
+export async function updateService(
+  id: string,
+  input: ServiceFormInput
+): Promise<ActionResult<Service>> {
   const auth = await requireAuth();
   if (!auth.ok) return { ok: false, error: auth.error };
 
@@ -94,7 +97,8 @@ export async function updateService(id: string, input: ServiceFormInput): Promis
     .select()
     .single();
 
-  if (error || !data) return { ok: false, error: error?.message ?? 'No se pudo guardar el servicio' };
+  if (error || !data)
+    return { ok: false, error: error?.message ?? 'No se pudo guardar el servicio' };
 
   revalidatePath(SERVICES_PATH);
   return { ok: true, data: normalizeRow(data as DbService) };
@@ -113,7 +117,8 @@ export async function deleteService(id: string): Promise<ActionResult<{ id: stri
     .select()
     .single();
 
-  if (error || !data) return { ok: false, error: error?.message ?? 'No se pudo eliminar el servicio' };
+  if (error || !data)
+    return { ok: false, error: error?.message ?? 'No se pudo eliminar el servicio' };
 
   revalidatePath(SERVICES_PATH);
   return { ok: true, data: { id } };
@@ -132,7 +137,8 @@ export async function toggleVisibility(id: string, next: boolean): Promise<Actio
     .select()
     .single();
 
-  if (error || !data) return { ok: false, error: error?.message ?? 'No se pudo actualizar el servicio' };
+  if (error || !data)
+    return { ok: false, error: error?.message ?? 'No se pudo actualizar el servicio' };
 
   revalidatePath(SERVICES_PATH);
   return { ok: true, data: normalizeRow(data as DbService) };
@@ -167,7 +173,10 @@ export async function uploadServicePhoto(file: File): Promise<ActionResult<{ url
   return { ok: true, data: { url: publicUrl } };
 }
 
-export async function bulkIncrease(ids: string[], percentageBp = 1000): Promise<ActionResult<{ count: number }>> {
+export async function bulkIncrease(
+  ids: string[],
+  percentageBp = 1000
+): Promise<ActionResult<{ count: number }>> {
   const auth = await requireAuth();
   if (!auth.ok) return { ok: false, error: auth.error };
   if (ids.length === 0) return { ok: false, error: 'No hay servicios seleccionados' };

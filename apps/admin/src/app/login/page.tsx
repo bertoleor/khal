@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server';
 import { LoginForm } from '@/components/admin/login-form';
+import { getTranslations } from 'next-intl/server';
 
 /**
  * [khal-admin-100-operable T3] Login page — real Supabase sign-in.

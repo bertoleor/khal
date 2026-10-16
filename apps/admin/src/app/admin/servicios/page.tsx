@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
-import { requireAuth } from '@/lib/auth';
-import { fetchServices } from '@/lib/actions/services';
 import { ServiceManager } from '@/components/admin/service-manager';
+import { fetchServices } from '@/lib/actions/services';
+import { requireAuth } from '@/lib/auth';
+import { getTranslations } from 'next-intl/server';
+import { redirect } from 'next/navigation';
 
 /**
  * Servicios (khal-admin-100-operable T4) — server shell.

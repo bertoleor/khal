@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState, type ChangeEvent } from 'react';
-import Image from 'next/image';
 import { uploadServicePhoto } from '@/lib/actions/services';
+import Image from 'next/image';
+import { useRef, useState, type ChangeEvent } from 'react';
 
 /**
  * Catalog photo uploader (khal-admin-100-operable T4).
@@ -54,13 +54,7 @@ export function PhotoUploader({
       <div className="flex items-start gap-3">
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
           {url !== null ? (
-            <Image
-              src={url}
-              alt={altLabel}
-              fill
-              sizes="96px"
-              className="object-cover"
-            />
+            <Image src={url} alt={altLabel} fill sizes="96px" className="object-cover" />
           ) : (
             <span className="absolute inset-0 flex items-center justify-center px-1 text-center text-[10px] leading-tight text-slate-500">
               {labels.empty}
