@@ -1,0 +1,50 @@
+== anon JWT obtenido (solo hash de control): e7d809caeaef ==
+== D9.1 baseline counts ==
+  {'appts': 0, 'clients': 0, 'psched': 0}
+  [PASS] baseline 0/0/0 
+== D9.2 REPLAY del gap: lunes 03:00 (slot 180) ANTES ok=true => AHORA debe rechazar ==
+  {'ok': False, 'code': 'unavailable', 'booking_id': None}
+  [PASS] 03:00 => ok=false code=unavailable 
+== D9.3 happy path lunes 10:00 (600) + idempotencia ==
+  {'ok': True, 'code': 'ok', 'booking_id': '2ea3b085-ceac-4a96-95c7-2fc8e379b827'}
+  [PASS] 10:00 => ok=true 
+  {'ok': True, 'code': 'ok', 'booking_id': '2ea3b085-ceac-4a96-95c7-2fc8e379b827'}
+  [PASS] replay mismo key => mismo booking_id 
+== D9.4 domingo 10:00 (sin business_hours dow 0) => cerrado ==
+  {'ok': False, 'code': 'unavailable', 'booking_id': None}
+  [PASS] domingo 10:00 => unavailable 
+== D9.5 fin fuera de ventana: lunes 17:00 (1020) 60+15=75min => 18:15 > 18:00 ==
+  {'ok': False, 'code': 'unavailable', 'booking_id': None}
+  [PASS] 17:00 => unavailable 
+== D9.5b boundary D3: lunes 16:45 (1005) termina exacto 18:00 => el ULTIMO slot que la UI ofrece ==
+  {'ok': True, 'code': 'ok', 'booking_id': '7d4b2416-0699-4542-8303-d9e5931bf3c3'}
+  [PASS] 16:45 => ok=true (paridad con computeAvailableSlots) 
+== D9.6 override provider_schedules: fila temporal martes (dow 2) 10:00-14:00 ==
+  provider del servicio Lifting: 10000000-0000-4000-8000-000000000001
+  fila temporal insertada (id d0000000-...-000000000002, 10:00-14:00 dow 2)
+  martes 16:00 (business_hours lo permitiria, override no): {'ok': False, 'code': 'unavailable', 'booking_id': None}
+  [PASS] 16:00 con override 10-14 => unavailable 
+  martes 11:00 (dentro del override 10-14): {'ok': True, 'code': 'ok', 'booking_id': '2045e2a1-aa99-46c2-97f9-c676da3a17c3'}
+  [PASS] 11:00 con override => ok=true 
+  DELETE fila temporal returning: [{'id': 'd0000000-0000-4000-8000-000000000002', 'provider_id': '10000000-0000-4000-8000-000000000001', 'day_of_week': 2, 'open_time': '10:00:00', 'close_time': '14:00:00'}]
+  [PASS] DELETE fila temporal 
+  count provider_schedules: 0
+  [PASS] provider_schedules vuelta a 0 
+== D9.7 CLEANUP de appointments/clients de prueba (delete exacto por id) ==
+  appointments de prueba: [{'id': '2ea3b085-ceac-4a96-95c7-2fc8e379b827'}, {'id': '7d4b2416-0699-4542-8303-d9e5931bf3c3'}, {'id': '2045e2a1-aa99-46c2-97f9-c676da3a17c3'}]
+  appointments borrados: 3
+  [PASS] appointments de prueba borrados 
+  clients de prueba: [{'id': '89533c67-7c38-4501-bcb4-75244aa58ad2'}, {'id': 'edf3f4dd-86a2-4e73-9226-ee3c328e90c5'}, {'id': '2ed0a193-88a9-42eb-aefa-539cc4a27787'}]
+  clients borrados: 3
+  [PASS] clients de prueba borrados 
+  counts finales: {'appts': 0, 'clients': 0, 'psched': 0}
+  [PASS] counts restaurados al baseline 0/0/0 
+== D9.7 FINAL: ledger + functiondef ==
+  ledger: ['0001', '0002', '0003', '0004', '0005', '0006', '0007', '0009']
+  [PASS] ledger contiene 0007 
+  functiondef search_path line: SET search_path TO 'public', 'extensions'
+  [PASS] functiondef fija search_path public, extensions 
+  [PASS] functiondef contiene el gate (provider_schedules + business_hours + extract dow) 
+
+MATRIZ D9 COMPLETA: todas las expectativas PASS
+EXIT=0

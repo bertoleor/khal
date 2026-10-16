@@ -1,0 +1,213 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mE:/Hermes/projects/khal[39m
+
+ [31m❯[39m apps/web/test/seed-contract.test.ts [2m([22m[2m20 tests[22m[2m | [22m[31m10 failed[39m[2m)[22m[32m 43[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mexists[32m 2[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22minserts into every table the booking flow requires[32m 1[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mis idempotent: every insert statement carries a conflict guard[32m 1[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mseeds exactly the four mock service ids with matching visibility[32m 1[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22monly uses deposit_mode values from the enum[32m 3[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mkeeps provider_services rows unique per (provider_id, service_id)[32m 0[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mseeds business_hours with day_of_week 1..6 (Sunday closed, mirrors the mock schedule)[32m 1[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mseeds store payment settings into global_settings (payment alias/cvu/whatsapp)[32m 0[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mreferences providers and services by stable UUIDs (no gen_random_uuid for seeded rows)[32m 0[2mms[22m[39m
+   [32m✓[39m supabase/seed.sql — production seed contract[2m > [22mdoes not grant anon write access beyond what 0001/0003 already established[32m 1[2mms[22m[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mexists with its rollback[39m[32m 19[2mms[22m[39m
+[31m     → 0007_create_booking_schedule_gates.sql missing: expected null not to be null[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mreplaces create_booking with the search_path pinned (lesson P0 of 0006)[39m[32m 2[2mms[22m[39m
+[31m     → expected '' to contain 'create or replace function public.cre…'[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mgates on provider_schedules overriding business_hours (D2)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to contain 'public.provider_schedules'[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mcomputes weekday from the wall-clock date and compares minute-of-day (D4)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to contain 'extract(dow from p_date)'[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mrequires the FULL block (duration + buffer) inside one window row (D3)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to contain 'v_service_row.duration_minutes + v_se…'[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mrejects out-of-window slots with the existing unavailable code (D1)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to contain '\'unavailable\''[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mplaces the gate between calendar_exceptions (9) and the client upsert (10) (D6)[39m[32m 1[2mms[22m[39m
+[31m     → expected -1 to be greater than -1[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mregisters itself in the supabase_migrations ledger (0006 convention)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to match /insert into supabase_migrations\.sche…/[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mkeeps the anon execute grant block of 0003 (self-documenting ACL)[39m[32m 1[2mms[22m[39m
+[31m     → expected '' to contain 'grant execute on function public.crea…'[39m
+[31m   [31m×[31m migration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mdown restores the pre-gate body with the search_path fix kept (D5)[39m[32m 2[2mms[22m[39m
+[31m     → expected '' to contain 'create or replace function public.cre…'[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 10 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mexists with its rollback
+[31m[1mAssertionError[22m: 0007_create_booking_schedule_gates.sql missing: expected null not to be null[39m
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m174:99[22m[39m
+    [90m172| [39mdescribe('migration 0007 — create_booking schedule-window gate (ORN-17…
+    [90m173| [39m  [34mit[39m([32m'exists with its rollback'[39m[33m,[39m () [33m=>[39m {
+    [90m174| [39m    expect(readIfExists(migration0007Path), '0007_create_booking_sched…
+    [90m   | [39m                                                                                                  [31m^[39m
+    [90m175| [39m    expect(readIfExists(migration0007DownPath), '0007_create_booking_s…
+    [90m176| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mreplaces create_booking with the search_path pinned (lesson P0 of 0006)
+[31m[1mAssertionError[22m: expected '' to contain 'create or replace function public.cre…'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- create or replace function public.create_booking([39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m180:17[22m[39m
+    [90m178| [39m  it('replaces create_booking with the search_path pinned (lesson P0 o…
+    [90m179| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m180| [39m    expect(mig).toContain('create or replace function public.create_bo…
+    [90m   | [39m                [31m^[39m
+    [90m181| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m'set search_path = public, extensions'[39m)[33m;[39m
+    [90m182| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mgates on provider_schedules overriding business_hours (D2)
+[31m[1mAssertionError[22m: expected '' to contain 'public.provider_schedules'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- public.provider_schedules[39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m186:17[22m[39m
+    [90m184| [39m  it('gates on provider_schedules overriding business_hours (D2)', () …
+    [90m185| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m186| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m'public.provider_schedules'[39m)[33m;[39m
+    [90m   | [39m                [31m^[39m
+    [90m187| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m'public.business_hours'[39m)[33m;[39m
+    [90m188| [39m    [90m// Provider override only counts for ACTIVE, non-deleted rows.[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mcomputes weekday from the wall-clock date and compares minute-of-day (D4)
+[31m[1mAssertionError[22m: expected '' to contain 'extract(dow from p_date)'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- extract(dow from p_date)[39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m195:17[22m[39m
+    [90m193| [39m  it('computes weekday from the wall-clock date and compares minute-of…
+    [90m194| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m195| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m'extract(dow from p_date)'[39m)[33m;[39m
+    [90m   | [39m                [31m^[39m
+    [90m196| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m'extract(epoch from'[39m)[33m;[39m
+    [90m197| [39m    [90m// Never cast the block end to ::time — it wraps at 24:00.[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mrequires the FULL block (duration + buffer) inside one window row (D3)
+[31m[1mAssertionError[22m: expected '' to contain 'v_service_row.duration_minutes + v_se…'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- v_service_row.duration_minutes + v_service_row.buffer_minutes[39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m203:17[22m[39m
+    [90m201| [39m  it('requires the FULL block (duration + buffer) inside one window ro…
+    [90m202| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m203| [39m    expect(mig).toContain('v_service_row.duration_minutes + v_service_…
+    [90m   | [39m                [31m^[39m
+    [90m204| [39m  })[33m;[39m
+    [90m205| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mrejects out-of-window slots with the existing unavailable code (D1)
+[31m[1mAssertionError[22m: expected '' to contain '\'unavailable\''[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 'unavailable'[39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m208:17[22m[39m
+    [90m206| [39m  it('rejects out-of-window slots with the existing unavailable code (…
+    [90m207| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m208| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m"'unavailable'"[39m)[33m;[39m
+    [90m   | [39m                [31m^[39m
+    [90m209| [39m  })[33m;[39m
+    [90m210| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mplaces the gate between calendar_exceptions (9) and the client upsert (10) (D6)
+[31m[1mAssertionError[22m: expected -1 to be greater than -1[39m
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m216:20[22m[39m
+    [90m214| [39m    [35mconst[39m iGate [33m=[39m mig[33m.[39m[34mindexOf[39m([32m'public.provider_schedules'[39m)[33m;[39m
+    [90m215| [39m    [35mconst[39m iUpsert [33m=[39m mig[33m.[39m[34mindexOf[39m([32m'insert into public.clients'[39m)[33m;[39m
+    [90m216| [39m    [34mexpect[39m(iCalex)[33m.[39m[34mtoBeGreaterThan[39m([33m-[39m[34m1[39m)[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m217| [39m    [34mexpect[39m(iGate)[33m.[39m[34mtoBeGreaterThan[39m([33m-[39m[34m1[39m)[33m;[39m
+    [90m218| [39m    [34mexpect[39m(iUpsert)[33m.[39m[34mtoBeGreaterThan[39m([33m-[39m[34m1[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mregisters itself in the supabase_migrations ledger (0006 convention)
+[31m[1mAssertionError[22m: expected '' to match /insert into supabase_migrations\.sche…/[39m
+
+[32m- Expected:[39m 
+/insert into supabase_migrations\.schema_migrations/
+
+[31m+ Received:[39m 
+""
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m225:17[22m[39m
+    [90m223| [39m  it('registers itself in the supabase_migrations ledger (0006 convent…
+    [90m224| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m225| [39m    expect(mig).toMatch(/insert into supabase_migrations\.schema_migra…
+    [90m   | [39m                [31m^[39m
+    [90m226| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m([32m"values ('0007')"[39m)[33m;[39m
+    [90m227| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mkeeps the anon execute grant block of 0003 (self-documenting ACL)
+[31m[1mAssertionError[22m: expected '' to contain 'grant execute on function public.crea…'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- grant execute on function public.create_booking(uuid, text, text, text, date, integer, uuid, text) to anon, authenticated, service_role[39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m231:17[22m[39m
+    [90m229| [39m  it('keeps the anon execute grant block of 0003 (self-documenting ACL…
+    [90m230| [39m    [35mconst[39m mig [33m=[39m [34mreadIfExists[39m(migration0007Path) [33m??[39m [32m''[39m[33m;[39m
+    [90m231| [39m    [34mexpect[39m(mig)[33m.[39m[34mtoContain[39m(
+    [90m   | [39m                [31m^[39m
+    [90m232| [39m      'grant execute on function public.create_booking(uuid, text, tex…
+    [90m233| [39m    )[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m apps/web/test/seed-contract.test.ts[2m > [22mmigration 0007 — create_booking schedule-window gate (ORN-170)[2m > [22mdown restores the pre-gate body with the search_path fix kept (D5)
+[31m[1mAssertionError[22m: expected '' to contain 'create or replace function public.cre…'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- create or replace function public.create_booking([39m
+
+[36m [2m❯[22m apps/web/test/seed-contract.test.ts:[2m238:18[22m[39m
+    [90m236| [39m  it('down restores the pre-gate body with the search_path fix kept (D…
+    [90m237| [39m    [35mconst[39m down [33m=[39m [34mreadIfExists[39m(migration0007DownPath) [33m??[39m [32m''[39m[33m;[39m
+    [90m238| [39m    expect(down).toContain('create or replace function public.create_b…
+    [90m   | [39m                 [31m^[39m
+    [90m239| [39m    [34mexpect[39m(down)[33m.[39m[34mtoContain[39m([32m'set search_path = public, extensions'[39m)[33m;[39m
+    [90m240| [39m    // The restored body keeps the calendar_exceptions step but drops …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m10 failed[39m[22m[2m | [22m[1m[32m10 passed[39m[22m[90m (20)[39m
+[2m   Start at [22m 06:04:15
+[2m   Duration [22m 922ms[2m (transform 62ms, setup 0ms, collect 75ms, tests 43ms, environment 0ms, prepare 283ms)[22m
+
+EXIT=1
