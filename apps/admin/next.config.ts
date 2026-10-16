@@ -5,6 +5,11 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@khal/utils', '@khal/validations'],
+  // Service photos live in Supabase Storage (service.photo_path) and render
+  // through next/image in the admin catalog manager.
+  images: {
+    remotePatterns: [{ protocol: 'https' as const, hostname: 'epykihchzlbbptrvvawg.supabase.co' }],
+  },
   // Low-RAM build host (4 vCPU, ~3.5GB free with the Hermes fleet resident):
   // cap page-data/static-gen workers (each loads a full copy of the module
   // graph) and shrink webpack memory. Refs: nextjs.org/docs/app/guides/memory-usage

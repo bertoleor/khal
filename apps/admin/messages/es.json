@@ -22,10 +22,79 @@
     },
     "services": {
       "title": "Servicios",
-      "description": "Seleccioná servicios y aplicá el aumento por inflación.",
-      "hide": "Ocultar",
-      "show": "Mostrar",
-      "bulkIncrease": "Subir 10% a seleccionados"
+      "subtitle": "Tu catálogo: editá textos, subí fotos y ajustá precios.",
+      "new": "Nuevo servicio",
+      "search": {
+        "label": "Buscar servicio",
+        "placeholder": "Buscar por nombre…"
+      },
+      "sort": {
+        "label": "Ordenar",
+        "order": "Orden del catálogo",
+        "name": "Nombre",
+        "price": "Precio"
+      },
+      "count": "{count} servicios",
+      "bulkIncrease": "Subir 10% a {count} seleccionados",
+      "empty": "No hay servicios todavía. Creá el primero con «Nuevo servicio».",
+      "visible": "Visible",
+      "hidden": "Oculto",
+      "duration": "{count} min",
+      "confirmDelete": "¿Eliminar «{name}»? Va a dejar de verse en el catálogo (los turnos ya agendados se conservan).",
+      "dialog": {
+        "newTitle": "Nuevo servicio",
+        "editTitle": "Editar servicio"
+      },
+      "fields": {
+        "name": "Nombre",
+        "price": "Precio",
+        "priceHint": "En pesos (ej. 25000)",
+        "duration": "Duración",
+        "durationHint": "Minutos de la sesión",
+        "description": "Descripción",
+        "photo": "Foto del catálogo",
+        "deposit": "Seña",
+        "buffer": "Margen",
+        "bufferHint": "Minutos de limpieza después",
+        "sort": "Orden",
+        "sortHint": "Número de posición (menor = antes)",
+        "visible": "Visible en el catálogo"
+      },
+      "deposit": {
+        "none": "Sin seña",
+        "fixed": "Monto fijo",
+        "percentage": "Porcentaje",
+        "fixedAmount": "Monto de la seña (pesos)",
+        "percentageAmount": "Porcentaje (%)",
+        "badge": "Seña {count}%",
+        "fixedBadge": "Seña {amount}"
+      },
+      "editor": {
+        "bold": "Negrita",
+        "italic": "Cursiva",
+        "underline": "Subrayado",
+        "strike": "Tachado",
+        "bulletList": "Lista con viñetas",
+        "orderedList": "Lista numerada",
+        "undo": "Deshacer",
+        "redo": "Rehacer"
+      },
+      "photo": {
+        "upload": "Subir foto",
+        "uploading": "Subiendo…",
+        "remove": "Quitar foto",
+        "empty": "Sin foto"
+      },
+      "actions": {
+        "edit": "Editar",
+        "hide": "Ocultar",
+        "show": "Mostrar",
+        "delete": "Eliminar",
+        "cancel": "Cancelar",
+        "create": "Crear",
+        "save": "Guardar",
+        "saving": "Guardando…"
+      }
     },
     "clients": {
       "title": "Clientes",
@@ -63,7 +132,29 @@
     },
     "login": {
       "title": "Khal · Admin",
-      "notice": "El acceso de administración requiere una sesión de personal autorizada (Supabase)."
+      "subtitle": "Entrá con tu email de staff y te enviamos un código de acceso.",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "sendCode": "Enviarme el código",
+      "sending": "Enviando…",
+      "codeSent": "Te enviamos un código de 6 dígitos por email.",
+      "code": "Código",
+      "codePlaceholder": "000000",
+      "verify": "Entrar",
+      "verifying": "Entrando…",
+      "back": "Cambiar email",
+      "usePassword": "Entrar con contraseña",
+      "password": "Contraseña",
+      "signIn": "Entrar",
+      "useCode": "Entrar con código",
+      "errors": {
+        "invalid": "Email o contraseña incorrectos.",
+        "notConfirmed": "Todavía no confirmaste tu email.",
+        "badCode": "El código no es válido o venció. Pedí uno nuevo.",
+        "rateLimit": "Demasiados intentos. Esperá un momento y probá de nuevo.",
+        "notStaff": "Esa cuenta no tiene acceso al panel del estudio.",
+        "generic": "No pudimos iniciar sesión. Probá de nuevo en un rato."
+      }
     }
   }
 }

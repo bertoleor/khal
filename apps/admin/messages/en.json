@@ -22,10 +22,79 @@
     },
     "services": {
       "title": "Services",
-      "description": "Select services and apply the inflation increase.",
-      "hide": "Hide",
-      "show": "Show",
-      "bulkIncrease": "Increase 10% for selected"
+      "subtitle": "Your catalog: edit copy, upload photos, adjust prices.",
+      "new": "New service",
+      "search": {
+        "label": "Search service",
+        "placeholder": "Search by name…"
+      },
+      "sort": {
+        "label": "Sort",
+        "order": "Catalog order",
+        "name": "Name",
+        "price": "Price"
+      },
+      "count": "{count} services",
+      "bulkIncrease": "Increase 10% on {count} selected",
+      "empty": "No services yet. Create the first one with “New service”.",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "duration": "{count} min",
+      "confirmDelete": "Delete “{name}”? It will disappear from the catalog (already-booked appointments are kept).",
+      "dialog": {
+        "newTitle": "New service",
+        "editTitle": "Edit service"
+      },
+      "fields": {
+        "name": "Name",
+        "price": "Price",
+        "priceHint": "In pesos (e.g. 25000)",
+        "duration": "Duration",
+        "durationHint": "Session minutes",
+        "description": "Description",
+        "photo": "Catalog photo",
+        "deposit": "Deposit",
+        "buffer": "Buffer",
+        "bufferHint": "Cleanup minutes after",
+        "sort": "Order",
+        "sortHint": "Position number (lower = first)",
+        "visible": "Visible in catalog"
+      },
+      "deposit": {
+        "none": "No deposit",
+        "fixed": "Fixed amount",
+        "percentage": "Percentage",
+        "fixedAmount": "Deposit amount (pesos)",
+        "percentageAmount": "Percentage (%)",
+        "badge": "Deposit {count}%",
+        "fixedBadge": "Deposit {amount}"
+      },
+      "editor": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "underline": "Underline",
+        "strike": "Strikethrough",
+        "bulletList": "Bullet list",
+        "orderedList": "Numbered list",
+        "undo": "Undo",
+        "redo": "Redo"
+      },
+      "photo": {
+        "upload": "Upload photo",
+        "uploading": "Uploading…",
+        "remove": "Remove photo",
+        "empty": "No photo"
+      },
+      "actions": {
+        "edit": "Edit",
+        "hide": "Hide",
+        "show": "Show",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "create": "Create",
+        "save": "Save",
+        "saving": "Saving…"
+      }
     },
     "clients": {
       "title": "Clients",
@@ -63,7 +132,29 @@
     },
     "login": {
       "title": "Khal · Admin",
-      "notice": "Admin access requires an authorized staff session (Supabase)."
+      "subtitle": "Sign in with your staff email and we'll send you an access code.",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "sendCode": "Send me the code",
+      "sending": "Sending…",
+      "codeSent": "We sent you a 6-digit code by email.",
+      "code": "Code",
+      "codePlaceholder": "000000",
+      "verify": "Sign in",
+      "verifying": "Signing in…",
+      "back": "Change email",
+      "usePassword": "Sign in with password",
+      "password": "Password",
+      "signIn": "Sign in",
+      "useCode": "Sign in with code",
+      "errors": {
+        "invalid": "Wrong email or password.",
+        "notConfirmed": "Your email is not confirmed yet.",
+        "badCode": "The code is invalid or expired. Request a new one.",
+        "rateLimit": "Too many attempts. Wait a moment and try again.",
+        "notStaff": "That account has no access to the studio panel.",
+        "generic": "We couldn't sign you in. Try again in a bit."
+      }
     }
   }
 }
