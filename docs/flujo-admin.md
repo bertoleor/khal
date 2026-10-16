@@ -34,7 +34,7 @@ Las cuatro escriben vía server actions (`requireAuth` → zod → Supabase bajo
 - Ring de foco visible en TODOS los botones (contrato ORN-59 H2, testeado en `apps/web/test/a11y-p2-contract.test.ts`).
 - `aria-current` en la navegación activa (hallazgo P2 corregido).
 - Estados semánticos con color + texto (badge de no-show, servicio oculto), nunca color solo.
-- UI todavía en tema claro original — el dark brand se aplicó solo a la web pública (pendiente P2).
+- UI en tema claro premium (coherente con la web pública) — el dark brand no se aplica; ambos frontends usan la misma estética iOS‑light (sin azul, blanco, grises, transparencias).
 
 ## Evidencia
 

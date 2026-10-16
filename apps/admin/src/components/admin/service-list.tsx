@@ -9,7 +9,9 @@ import type { Service } from '@khal/validations';
 import { useTranslations } from 'next-intl';
 
 function handleToggleVisibility(formData: FormData): void {
-  void toggleVisibilityAction(formData);
+  const id = formData.get('id') as string;
+  const next = formData.get('next') === 'true';
+  void toggleVisibilityAction(id, next);
 }
 
 function handleBulkIncrease(formData: FormData): void {
@@ -33,6 +35,7 @@ export function ServiceList({ services }: { services: Service[] }) {
             aria-label={service.name}
             className="h-4 w-4"
           />
+          <input type="hidden" name="next" value={!service.is_visible} />
           <div className="min-w-0 flex-1">
             <p
               className={`truncate font-medium ${
