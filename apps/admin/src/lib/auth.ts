@@ -19,6 +19,8 @@ export type Role = 'admin' | 'manager' | 'anon';
 export type AuthContext = {
   role: Role;
   userId: string;
+  /** Org from the JWT `app_metadata.org_id` claim — undefined when absent. */
+  orgId?: string;
 };
 
 export type AuthResult = { ok: true; ctx: AuthContext } | { ok: false; error: string };
@@ -67,7 +69,10 @@ export async function requireAuth(): Promise<AuthResult> {
       return { ok: false, error: 'Unauthorized: admin role required' };
     }
 
-    return { ok: true, ctx: { role, userId: data.user.id } };
+    const orgClaim = appMetadata?.org_id;
+    const orgId = typeof orgClaim === 'string' && orgClaim.length > 0 ? orgClaim : undefined;
+
+    return { ok: true, ctx: { role, userId: data.user.id, orgId } };
   } catch {
     // Fail-closed: env misconfig or network error never authenticates.
     return { ok: false, error: 'Unauthorized: auth backend unavailable' };

@@ -12,7 +12,7 @@ const SRC = (...p: string[]) => readFileSync(join(__dirname, '..', 'src', ...p),
 
 describe('contraste admin (C2–C4)', () => {
   it('C2: nombre de servicio oculto usa text-slate-500 (no slate-400)', () => {
-    const src = SRC('components', 'admin', 'service-list.tsx');
+    const src = SRC('components', 'admin', 'service-manager.tsx');
     expect(src).toContain('text-slate-500');
     expect(src).not.toContain('text-slate-400');
   });

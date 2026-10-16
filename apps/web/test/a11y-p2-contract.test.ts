@@ -103,7 +103,7 @@ describe('[ORN-59 H2] focus-visible ring on audited interactive controls', () =>
     { file: 'apps/web/src/components/booking/booking-form.tsx', hint: 'submit Confirmar' },
     { file: 'apps/web/src/components/payment/payment-step.tsx', hint: 'Pagar online' },
     { file: 'apps/admin/src/components/admin/appointment-list.tsx', hint: 'transiciones admin' },
-    { file: 'apps/admin/src/components/admin/service-list.tsx', hint: 'toggle visibilidad + bulk' },
+    { file: 'apps/admin/src/components/admin/service-manager.tsx', hint: 'editar/ocultar/eliminar + nuevo + bulk (reemplaza service-list)' },
     { file: 'apps/admin/src/components/admin/exceptions-list.tsx', hint: 'submit excepciones' },
     { file: 'apps/admin/src/components/admin/client-list.tsx', hint: 'toggle blacklist' },
   ];
