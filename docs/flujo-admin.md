@@ -15,16 +15,19 @@ flowchart LR
 ```
 
 - **ADR-0001 (aplicada, ORN-79):** el mock de cookie fue eliminado; la única vía es el JWT de Supabase con claim `app_metadata.role`. Sin token válido el acceso se niega — **fail-closed**, no hay login alternativo.
-- **Gap actual:** NO existe form de login y no hay usuarios staff provisionados en la DB → hoy el panel no puede operarse. Es el ítem pendiente #1 del [[06-estado-gates]] para "producción real". Al provisionar: `app_metadata.role = 'staff'` en el usuario de Supabase Auth.
+- **Login real (2026-10-16, khal-admin-100-operable):** `/login` tiene formulario Supabase real — flujo primario por **código mágico OTP** (`signInWithOtp` con `shouldCreateUser:false`; solo emails de staff provisionados reciben código) y flujo secundario por contraseña. Cuenta de la dueña provisionada (`bertoletti3011@gmail.com`, `role=admin`, org del seed) — el código llega a su propio email, ninguna credencial transita por chat.
+- Deploy: proyecto Vercel propio `khal-admin` (deploy en push a main, Root Directory `apps/admin`), separado del storefront.
 
 ## Entidades operables (componentes verificados en `apps/admin/src/components/admin/`)
 
 | Pantalla | Componente | Qué hace |
 |---|---|---|
 | Turnos | `appointment-list.tsx` | Lista de turnos con transiciones de estado (pendiente → confirmado / no-show) |
-| Servicios | `service-list.tsx` | Toggle de visibilidad por servicio + acciones bulk; el servicio oculto deja de aparecer en la web pública al instante (RLS filtra `is_visible`) |
+| Servicios | `service-manager.tsx` | CRUD completo del catálogo contra la DB viva: **editor de texto enriquecido Tiptap** para la descripción, **subida de fotos** al bucket `service-photos` (Supabase Storage, pública, máx 4MB) con preview y quitado, precios en pesos con validación zod inline (montos, duración, seña), búsqueda y orden, toggle de visibilidad, **soft delete** (`deleted_at`, conserva los turnos agendados) y aumento bulk +10% |
 | Clientas | `client-list.tsx` | Lista con LTV por clienta y toggle de blacklist (la clienta bloqueada recibe `error.blacklisted` al intentar reservar) |
 | Excepciones | `exceptions-list.tsx` | Alta de horarios bloqueados (feriados, vacaciones) que restan slots en la web pública |
+
+Las cuatro escriben vía server actions (`requireAuth` → zod → Supabase bajo RLS `services_member_all` org-scoped); los antiguos mock stores de servicios quedaron fuera (clients/exceptions siguen con sus acciones existentes).
 
 ## Convenciones de calidad que el admin ya cumple
 

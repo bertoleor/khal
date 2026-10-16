@@ -23,7 +23,7 @@ versión re-sincroniza el doc con el estado real del repo.
 
 | ID | Gate | Estado 09-15 | Estado 10-15 |
 |---|---|---|---|
-| G1 | Auth mock → JWT Supabase | UNVERIFIED | **APLICADO** (ADR-0001, superseded 09-27): cookie mock eliminado (ORN-79), JWT `app_metadata.role` única vía, **fail-closed**, proyecto linkeado. Restante: provisionar staff en Supabase Auth + form de login + E2E login |
+| G1 | Auth mock → JWT Supabase | UNVERIFIED | **APLICADO** (ADR-0001, superseded 09-27): cookie mock eliminado (ORN-79), JWT `app_metadata.role` única vía, **fail-closed**, proyecto linkeado. 10-16: **login real OTP + staff provisionado** (khal-admin-100-operable); restante: E2E login |
 | G2 | RLS verificado en DB viva | UNVERIFIED | **UNVERIFIED** — migraciones 0001→0003 existen (incl. `0002_auth_roles.sql`); falta `db push` + tests RPC contra DB viva (el E2E usa stub, no la toca) |
 | G3 | Pagos: MP vs manual-only | Decisión dueña pendiente | **Decisión EFECTIVA en código**: dual flow (MP checkout + alias/CVU + WhatsApp en `payment-step.tsx`, ver ADR-0002). En vivo UNVERIFIED: `MP_ACCESS_TOKEN`/webhook sin verificar contra producción |
 | G4 | Reserva real sin doble-booking | UNVERIFIED | **UNVERIFIED** — `create_booking` via PostgREST RPC existe en código; falta test de concurrencia contra DB viva |
