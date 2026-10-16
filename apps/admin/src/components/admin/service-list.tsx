@@ -15,7 +15,8 @@ function handleToggleVisibility(formData: FormData): void {
 }
 
 function handleBulkIncrease(formData: FormData): void {
-  void bulkIncreaseAction(formData);
+  const ids = formData.getAll('ids') as string[];
+  void bulkIncreaseAction(ids);
 }
 
 export function ServiceList({ services }: { services: Service[] }) {
