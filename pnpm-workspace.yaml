@@ -4,18 +4,22 @@ packages:
 
 # [ORN-57/t_44d71e6c] Force patched floors for transitive deps next@15.5.25
 # bundles (sharp 0.34.5, postcss 8.4.31) to close pnpm audit HIGHs:
-#   sharp >=0.35.4    CVE-2026-33327/33328 (libvips) + GHSA-g89c-p67h-r497,
-#                     GHSA-2jg2-4c8w-9m2x (libheif)
+#   sharp >=0.35.5    CVE-2026-33327/33328 (libvips) + GHSA-g89c-p67h-r497,
+#                     GHSA-2jg2-4c8w-9m2x (libheif), GHSA-wq5f-xc86-pv6w
+#                     (librsvg CVE-2026-96889, fixed 0.35.5)
 #   postcss >=8.5.28  GHSA-68xf-6m6c-pvwj (arbitrary file read via source map)
 #                     + path traversal (GHSA-6g55-p6wh-862q, GHSA-r28c-9q8g-f849
 #                     HIGH); also closes the moderate </style> XSS
 #                     (GHSA-7pxx-4mx2-g3jf).
 # Registry verificado 2026-09-17: sharp 0.35.4 y postcss 8.5.28 = patched.
+# [t_29caa871] source-map-js >=1.2.2 CVE-2026-93749 (DoS via crafted source
+# map, transitive via postcss/next tooling). Registry verificado 2026-10-09.
 # pnpm >=11 reads overrides from pnpm-workspace.yaml only (package.json#pnpm
 # is ignored). Enforced by apps/web/test/dep-audit.test.ts.
 overrides:
-  sharp: '>=0.35.4'
+  sharp: '>=0.35.5'
   postcss: '>=8.5.28'
+  source-map-js: '>=1.2.2'
 
 allowBuilds:
   '@parcel/watcher': true
