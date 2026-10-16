@@ -39,6 +39,7 @@ KHAL-A6 (P2): `apps/web/e2e` does not exist, so `playwright.config.ts` (testDir 
 
 ## Accumulated evidence
 - (2026-10-02) Exploratory reads: reservar/page.tsx (slots computed via computeAvailableSlots + businessHoursFor/blockedPeriodsFor), booking-form.tsx (useActionState → createBooking server action), booking.ts action (RPC contract `{ok, code, booking_id}` via PostgREST `client.rpc('create_booking', {...})`), payment-step.tsx (payment screen: alias/CVU copy rows + MP checkout + WhatsApp link), catalog actions (fail-soft null env), serviceSchema, seed.sql fixtures (UUIDs 11111111…/22222222…/33333333…/44444444…), messages/es.json (exact UI strings for selectors).
+- (2026-10-15) External verification: the CI e2e job runs real specs on PRs/main — confirmed in .github/workflows/ci.yml (KHAL-A6 comment block) and green CI runs 38794954654 / 38814491586. Task checkboxes left to the owning worker.
 - (2026-10-02) `git worktree list` → own worktree created at `.worktrees/t_2ba19668` branch `khal/t_2ba19668-e2e-happy-path` @ 99d4424.
 
 ## Accepted changes and rationale
