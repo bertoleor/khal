@@ -22,6 +22,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   }));
 
+  const policies = locales.map((locale) => ({
+    url: `${BASE}/${locale}/politicas`,
+    lastModified: now,
+    changeFrequency: 'yearly' as const,
+    priority: 0.3,
+  }));
+
   const services = locales.flatMap((locale) =>
     SERVICE_IDS.map((id) => ({
       url: `${BASE}/${locale}/servicios/${id}`,
@@ -31,5 +38,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...home, ...services];
+  return [...home, ...policies, ...services];
 }

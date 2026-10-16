@@ -57,6 +57,19 @@
     "redirecting": "Redirigiendo…",
     "checkoutError": "No pudimos iniciar el pago online. Probá de nuevo o pagá por transferencia.",
     "sendComprobante": "Enviar comprobante por WhatsApp",
-    "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
+    "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago.",
+    "refillSuggestion": "Te sugerimos anotar el relleno para el {date}: así conservás el diseño con la menor cantidad de pestañas nuevas."
+  },
+  "policies": {
+    "title": "Políticas del estudio",
+    "intro": "Reglas claras para que tu turno y el de todas estén siempre protegidos.",
+    "depositTitle": "Seña",
+    "depositBody": "Todas las reservas se confirman con una seña del 30% del servicio. La seña reserva tu turno de forma exclusiva y se descuenta del precio final. Se abona por transferencia (alias o CVU) y se confirma por WhatsApp.",
+    "cancellationTitle": "Cancelación y reprogramación",
+    "cancellationBody": "Podés cancelar o reprogramar sin costo hasta 24 horas antes de tu turno. Con menos de 24 horas de anticipación, la seña no se devuelve ni se reprograma.",
+    "noShowTitle": "Inasistencia",
+    "noShowBody": "Si no asistís a tu turno sin avisar, la seña se pierde. Avisanos con tiempo por WhatsApp y lo reprogramamos.",
+    "punctualityTitle": "Puntualidad",
+    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente."
   }
 }

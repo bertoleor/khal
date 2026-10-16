@@ -57,6 +57,19 @@
     "redirecting": "Redirecting…",
     "checkoutError": "We couldn't start the online payment. Try again or pay by bank transfer.",
     "sendComprobante": "Send receipt via WhatsApp",
-    "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof."
+    "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof.",
+    "refillSuggestion": "We suggest booking your refill for {date}: that keeps your set full with the least amount of new lashes."
+  },
+  "policies": {
+    "title": "Studio policies",
+    "intro": "Clear rules so your appointment, and everyone else's, stays protected.",
+    "depositTitle": "Deposit",
+    "depositBody": "Every booking is confirmed with a 30% deposit of the service price. The deposit reserves your slot exclusively and is deducted from the final price. It is paid by bank transfer (alias or CVU) and confirmed via WhatsApp.",
+    "cancellationTitle": "Cancellation and rescheduling",
+    "cancellationBody": "You can cancel or reschedule free of charge up to 24 hours before your appointment. With less than 24 hours notice, the deposit is neither refunded nor rescheduled.",
+    "noShowTitle": "No-shows",
+    "noShowBody": "If you do not attend your appointment without notice, the deposit is forfeited. Let us know in advance via WhatsApp and we will reschedule.",
+    "punctualityTitle": "Punctuality",
+    "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting."
   }
 }

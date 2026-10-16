@@ -4,6 +4,7 @@ import { getService } from '@/lib/actions/catalog';
 import { formatCents } from '@khal/utils';
 import type { Service } from '@khal/validations';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 function depositLabel(service: Service): string | null {
@@ -31,9 +32,21 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     <div className="relative min-h-dvh">
       <Header />
       <main className="mx-auto max-w-lg px-4 pb-28">
-        <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-5xl font-semibold text-white/80 backdrop-blur-sm">
-          {service.name.slice(0, 1)}
-        </div>
+        {service.photo_path ? (
+          <div className="mt-4 h-48 overflow-hidden rounded-2xl border border-white/10">
+            <Image
+              src={service.photo_path}
+              alt={service.name}
+              width={512}
+              height={192}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ) : (
+          <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-5xl font-semibold text-white/80 backdrop-blur-sm">
+            {service.name.slice(0, 1)}
+          </div>
+        )}
         <h1 className="mt-5 text-2xl font-semibold tracking-tight text-white">{service.name}</h1>
         {service.description ? <p className="mt-2 text-zinc-400">{service.description}</p> : null}
 

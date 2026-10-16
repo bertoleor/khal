@@ -1,7 +1,7 @@
 'use client';
 
 import { buildWhatsAppLink, formatCents } from '@khal/utils';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export type DepositStatus = 'pending' | 'confirmed';
@@ -67,10 +67,21 @@ export function PaymentStep({
   slot: string;
 }) {
   const t = useTranslations('payment');
+  const locale = useLocale();
   const message = t('whatsappMessage', { service: serviceName, date, slot });
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
   const remainder = formatCents(payment.totalCents - payment.amountDueCents, payment.currencyCode);
+  // Refill suggestion: booking date + 21 days. Fail-soft on non-ISO dates —
+  // the note is dropped rather than crashing the payment screen.
+  const refillMs = new Date(`${date}T12:00:00`).getTime();
+  const refillDate = Number.isNaN(refillMs)
+    ? null
+    : new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+      }).format(new Date(refillMs + 21 * 24 * 60 * 60 * 1000));
 
   return (
     <div className="space-y-4">
@@ -106,6 +117,14 @@ export function PaymentStep({
           </>
         ) : null}
       </div>
+
+      {refillDate ? (
+        <div role="note" className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-4">
+          <p className="text-sm text-emerald-200/90">
+            {t('refillSuggestion', { date: refillDate })}
+          </p>
+        </div>
+      ) : null}
 
       <div className="space-y-2">
         <p className="text-sm font-semibold text-zinc-300">{t('transferTo')}</p>

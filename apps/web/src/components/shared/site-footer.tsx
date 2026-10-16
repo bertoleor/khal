@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 import { storePaymentSettings, storeSocialSettings } from '@/lib/mocks/settings';
 
 export function SiteFooter() {
@@ -6,6 +7,12 @@ export function SiteFooter() {
       <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm">
         <p className="text-zinc-500">Khal · Pestañas · Vicente López, Buenos Aires</p>
         <nav aria-label="Redes del estudio" className="flex items-center gap-4">
+          <Link
+            href="/politicas"
+            className="font-medium text-zinc-300 transition-colors hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+          >
+            Políticas
+          </Link>
           <a
             href={storeSocialSettings.instagramUrl}
             target="_blank"

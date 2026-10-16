@@ -28,6 +28,7 @@ vi.mock('next-intl', () => {
     whatsappMessage: 'Hola! Agendé para {service} el {date} a las {slot}.',
   };
   return {
+    useLocale: () => 'es',
     useTranslations:
       () =>
       (key: string, vars: Record<string, string | number> = {}) => {
@@ -51,7 +52,7 @@ const payment: PaymentInfo = {
 
 function renderPayment() {
   return renderToStaticMarkup(
-    <PaymentStep payment={payment} serviceName="Lash lifting" date="Lun 21" slot="14:00" />
+    <PaymentStep payment={payment} serviceName="Lash lifting" date="2026-10-21" slot="14:00" />
   );
 }
 
