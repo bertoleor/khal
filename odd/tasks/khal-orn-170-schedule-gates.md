@@ -31,7 +31,7 @@ Live audit 2026-10-07 (`docs/audits/rls-verify-khal-2026-10-07.md` §5 probe E, 
   - evidence: `reports/probes-live-0007-schedule-gates.log` (EXIT=0) — 03:00 → `unavailable` (H1 replay receipt), 10:00 → ok + idempotent replay same booking_id, Sunday → `unavailable`, 17:00 (ends 18:15) → `unavailable`, 16:45 (ends exactly 18:00) → ok, provider_schedules override 10:00-14:00 rejects 16:00 / accepts 11:00 then row deleted returning; final counts appointments/clients/provider_schedules = 0/0/0.
 - [x] T6: Docs — `docs/API-GUIDE.md` §2 `unavailable` semantics extended; this ODD doc.
 - [x] T7: Commit on main + push + `gentle-ai review assess` transition.
-  - evidence: commit `9cbbaf0` on `main`, pushed to `origin/main`; assess output in the task review handoff.
+  - evidence: feature commit `a90a53a` on `origin/main` (this doc rides a follow-up docs commit); assess output in the task review handoff.
 
 ## Accumulated evidence
 - 2026-10-16: expressions validated live BEFORE writing SQL — `extract(epoch from time '09:00')/60 = 540.0`, `extract(dow from date '2026-10-18') = 0` (numeric, PG 17.6).
