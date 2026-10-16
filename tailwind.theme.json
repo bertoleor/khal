@@ -1,0 +1,74 @@
+{
+  "theme": {
+    "extend": {
+      "colors": {
+        "primary": "#000000",
+        "secondary": "#f4f4f5",
+        "tertiary": "#34d399",
+        "accentSoft": "#6ee7b7",
+        "textPrimary": "#ffffff",
+        "textSecondary": "#a1a1aa",
+        "textTertiary": "#71717a",
+        "surface": "#ffffff0a",
+        "surfaceHover": "#ffffff12",
+        "border": "#ffffff1a",
+        "borderStrong": "#ffffff26",
+        "header": "#00000099",
+        "error": "#f87171",
+        "statusPending": "#fbbf24"
+      },
+      "fontFamily": {
+        "h1": [
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        ],
+        "body-md": [
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        ],
+        "price": [
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        ],
+        "wordmark": [
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        ]
+      },
+      "fontSize": {
+        "h1": [
+          "1.875rem",
+          {
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ],
+        "body-md": [
+          "1rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "price": [
+          "0.875rem",
+          {
+            "fontWeight": "500"
+          }
+        ],
+        "wordmark": [
+          "1.125rem",
+          {
+            "letterSpacing": "-0.025em",
+            "fontWeight": "600"
+          }
+        ]
+      },
+      "borderRadius": {
+        "sm": "12px",
+        "md": "16px",
+        "pill": "9999px"
+      },
+      "spacing": {
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px"
+      }
+    }
+  }
+}
