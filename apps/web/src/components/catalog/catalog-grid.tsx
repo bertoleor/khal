@@ -15,19 +15,19 @@ export function CatalogGrid({
   }
 
   return (
-    <div className="mt-6 grid grid-cols-1 gap-4">
+    <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
       {services.map((service) => (
         <Link
           key={service.id}
           href={`/servicios/${service.id}`}
-          className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm transition-transform active:scale-[0.98]"
+          className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm transition-all hover:border-white/25 hover:bg-white/[0.07] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98]"
         >
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-xl font-semibold text-slate-400">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-lg font-semibold text-emerald-200 transition-colors group-hover:border-emerald-300/40">
             {service.name.slice(0, 1)}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-semibold text-slate-900">{service.name}</h3>
-            <p className="text-sm text-slate-500">
+            <h3 className="truncate font-semibold text-white">{service.name}</h3>
+            <p className="mt-0.5 text-sm font-medium text-emerald-300">
               {formatCents(service.price_cents, service.currency_code)}
             </p>
           </div>

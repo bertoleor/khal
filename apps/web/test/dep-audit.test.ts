@@ -13,9 +13,11 @@ import { describe, expect, it } from 'vitest';
  * `pnpm install` that silently reintroduces a vulnerable resolution fails CI
  * instead of shipping.
  *
- *   - sharp >= 0.35.4
+ *   - sharp >= 0.35.5
  *       CVE-2026-33327 + CVE-2026-33328 (libvips) — fixed in 0.35.0 line,
  *       GHSA-g89c-p67h-r497 + GHSA-2jg2-4c8w-9m2x (libheif) — fixed in 0.35.4.
+ *       GHSA-wq5f-xc86-pv6w (librsvg CVE-2026-96889) — fixed in 0.35.5
+ *       (trivy fs --scanners vuln, run t_29caa871 2026-10-09).
  *   - postcss >= 8.5.23
  *       GHSA-68xf-6m6c-pvwj arbitrary file read via source map
  *       (`from` unset) and GHSA-fxqj-rqcc-2cmp path traversal in source-map
@@ -26,13 +28,18 @@ import { describe, expect, it } from 'vitest';
  * The floors intentionally use `>=` semantics: the override pins minimums
  * ("sharp": ">=0.35.4", "postcss": ">=8.5.23"), so newer patch releases stay
  * green without touching this file.
+ *
+ * [t_29caa871] source-map-js >= 1.2.2 — CVE-2026-93749 (DoS via crafted
+ * source map, build-time/transitive via postcss & co). Installed 1.2.1,
+ * fixed 1.2.2. Same override pattern as sharp/postcss above.
  */
 const repoRoot = resolve(__dirname, '../../..');
 const lockPath = resolve(repoRoot, 'pnpm-lock.yaml');
 
 const PATCHED_FLOOR = {
-  sharp: '0.35.4',
+  sharp: '0.35.5',
   postcss: '8.5.23',
+  'source-map-js': '1.2.2',
 } as const;
 
 /**
@@ -71,6 +78,7 @@ describe('supply-chain: patched dependency floors (pnpm audit HIGHs)', () => {
   it.each([
     { pkg: 'sharp', floor: PATCHED_FLOOR.sharp },
     { pkg: 'postcss', floor: PATCHED_FLOOR.postcss },
+    { pkg: 'source-map-js', floor: PATCHED_FLOOR['source-map-js'] },
   ] as const)('every resolved $pkg in pnpm-lock.yaml is >= $floor', ({ pkg, floor }) => {
     const versions = resolvedVersions(lock, pkg);
 

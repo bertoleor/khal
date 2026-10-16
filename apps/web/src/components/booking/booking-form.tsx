@@ -83,18 +83,18 @@ export function BookingForm({
           <Field label={t('name')} name="name" type="text" autoComplete="name" />
           <Field label={t('phone')} name="phone" type="tel" autoComplete="tel" />
           <Field label={t('email')} name="email" type="email" autoComplete="email" />
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? <p className="text-sm text-red-400">{error}</p> : null}
           <button
             type="submit"
             disabled={isPending}
-            className="w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? t('submitting') : t('confirm')}
           </button>
         </form>
       ) : null}
 
-      <p className="pb-4 text-xs text-slate-500">
+      <p className="pb-4 text-xs text-zinc-500">
         {formatCents(service.price_cents, service.currency_code)}
       </p>
     </div>

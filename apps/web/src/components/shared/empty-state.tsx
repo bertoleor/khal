@@ -8,12 +8,12 @@ export function EmptyState({
   ctaHref?: string;
 }) {
   return (
-    <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-10 text-center">
-      <p className="text-slate-500">{message}</p>
+    <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-sm">
+      <p className="text-zinc-400">{message}</p>
       {ctaLabel && ctaHref ? (
         <a
           href={ctaHref}
-          className="mt-4 inline-block rounded-full border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700"
+          className="mt-4 inline-block rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
         >
           {ctaLabel}
         </a>

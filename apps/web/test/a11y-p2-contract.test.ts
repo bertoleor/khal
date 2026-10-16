@@ -62,11 +62,11 @@ const RING_OFFSET = 'focus-visible:outline-offset-2';
 /**
  * H1 — price/LTV text contrast (WCAG 1.4.3 AA: 4.5:1).
  *
- * slate-400 (#94a3b8) on white is 2.56:1 — fails AA even for large text.
- * slate-500 (#64748b) is 4.76:1 and passes. The contract forbids the
- * sub-AA token on the audited text surfaces.
+ * Dark theme since 2026-10-15: web surfaces are #000 (BackgroundMesh brand),
+ * so the AA price token is zinc-500 (#71717a on #000 = ~5.75:1). The contract
+ * forbids the sub-AA slate-400 token on any audited text surface.
  */
-describe('[ORN-59 H1] price & LTV text contrast on white surfaces', () => {
+describe('[ORN-59 H1] price & LTV text contrast on dark surfaces', () => {
   it('booking form price line does not use the sub-AA slate-400 token', () => {
     const src = read('apps/web/src/components/booking/booking-form.tsx');
     const lines = src.split('\n');
@@ -78,7 +78,7 @@ describe('[ORN-59 H1] price & LTV text contrast on white surfaces', () => {
       .reverse()
       .find((l) => l.includes('className='));
     expect(opening).toBeDefined();
-    expect(opening).toContain('text-slate-500');
+    expect(opening).toContain('text-zinc-500');
     expect(opening).not.toContain('text-slate-400');
   });
 

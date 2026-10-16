@@ -1,3 +1,4 @@
+import BackgroundMesh from '@/components/BackgroundMesh';
 import { BookingForm } from '@/components/booking/booking-form';
 import type { DaySlot } from '@/components/booking/slot-picker';
 import type { PaymentInfo } from '@/components/payment/payment-step';
@@ -71,11 +72,14 @@ export default async function ReservarPage({
   };
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="relative min-h-dvh">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+        <BackgroundMesh />
+      </div>
       <Header />
-      <main className="mx-auto max-w-md px-4 py-6">
-        <h1 className="text-xl font-semibold tracking-tight text-slate-900">{service.name}</h1>
-        <p className="mt-1 text-slate-500">
+      <main className="mx-auto max-w-lg px-4 py-6">
+        <h1 className="text-xl font-semibold tracking-tight text-white">{service.name}</h1>
+        <p className="mt-1 font-medium text-emerald-300">
           {formatCents(service.price_cents, service.currency_code)}
         </p>
         <div className="mt-6">

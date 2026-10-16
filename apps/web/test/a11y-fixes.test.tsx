@@ -16,12 +16,14 @@ describe('a11y fixes (web)', () => {
     expect(html).toContain('Ir al contenido');
   });
 
-  it('C1: el precio del servicio usa text-slate-500 AA (no slate-400) — contrato p2 ratio 4.76:1', () => {
+  it('C1: el precio del servicio usa text-zinc-500 AA sobre superficie oscura (no slate-400) — contrato p2 ratio ~5.75:1', () => {
     const src = readFileSync(
       join(__dirname, '..', 'src', 'components', 'booking', 'booking-form.tsx'),
       'utf-8'
     );
-    expect(src).toContain('text-slate-500');
+    // Dark theme (2026-10-15): surfaces are #000 (BackgroundMesh brand), so the
+    // AA price token is zinc-500 (#71717a on #000 ~ 5.75:1, WCAG 1.4.3 AA).
+    expect(src).toContain('text-zinc-500');
     expect(src).not.toContain('slate-400');
     expect(src).not.toContain('text-slate-400');
   });

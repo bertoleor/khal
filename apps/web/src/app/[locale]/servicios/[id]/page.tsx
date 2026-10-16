@@ -1,3 +1,4 @@
+import BackgroundMesh from '@/components/BackgroundMesh';
 import { Header } from '@/components/shared/header';
 import { Link } from '@/i18n/navigation';
 import { getService } from '@/lib/actions/catalog';
@@ -28,39 +29,40 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const deposit = depositLabel(service);
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="relative min-h-dvh">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+        <BackgroundMesh />
+      </div>
       <Header />
-      <main className="mx-auto max-w-md px-4 pb-28">
-        <div className="mt-4 flex h-48 items-center justify-center rounded-2xl bg-slate-100 text-4xl font-semibold text-slate-300">
+      <main className="mx-auto max-w-lg px-4 pb-28">
+        <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-5xl font-semibold text-white/80 backdrop-blur-sm">
           {service.name.slice(0, 1)}
         </div>
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-slate-900">
-          {service.name}
-        </h1>
-        {service.description ? <p className="mt-2 text-slate-600">{service.description}</p> : null}
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-white">{service.name}</h1>
+        {service.description ? <p className="mt-2 text-zinc-400">{service.description}</p> : null}
 
-        <dl className="mt-4 space-y-1 text-sm text-slate-500">
-          <div className="flex justify-between py-2">
+        <dl className="mt-4 space-y-1 text-sm text-zinc-400">
+          <div className="flex justify-between border-b border-white/5 py-2.5">
             <dt>{t('duration')}</dt>
-            <dd>{service.duration_minutes} min</dd>
+            <dd className="text-zinc-200">{service.duration_minutes} min</dd>
           </div>
           {deposit ? (
-            <div className="flex justify-between py-2">
+            <div className="flex justify-between border-b border-white/5 py-2.5">
               <dt>{t('deposit')}</dt>
-              <dd>{deposit}</dd>
+              <dd className="text-emerald-300">{deposit}</dd>
             </div>
           ) : null}
         </dl>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-md items-center justify-between gap-4 px-4 py-3">
-          <span className="text-lg font-semibold text-slate-900">
+      <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-black/70 backdrop-blur">
+        <div className="mx-auto flex max-w-lg items-center justify-between gap-4 px-4 py-3">
+          <span className="text-lg font-semibold text-white">
             {formatCents(service.price_cents, service.currency_code)}
           </span>
           <Link
             href={`/servicios/${service.id}/reservar`}
-            className="rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98]"
           >
             {t('book')}
           </Link>

@@ -1,3 +1,4 @@
+import BackgroundMesh from '@/components/BackgroundMesh';
 import { CatalogGrid } from '@/components/catalog/catalog-grid';
 import { Header } from '@/components/shared/header';
 import { getCatalog } from '@/lib/actions/catalog';
@@ -8,11 +9,16 @@ export default async function HomePage() {
   const services = await getCatalog();
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="relative min-h-dvh">
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+        <BackgroundMesh />
+      </div>
       <Header />
-      <main id="main" tabIndex={-1} className="mx-auto max-w-md px-4 py-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{t('title')}</h1>
-        <p className="mt-1 text-slate-500">{t('tagline')}</p>
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-lg px-4 pb-16 pt-10 sm:pt-16">
+        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          {t('title')}
+        </h1>
+        <p className="mt-2 text-zinc-400">{t('tagline')}</p>
         <CatalogGrid services={services} emptyMessage={t('empty')} />
       </main>
     </div>

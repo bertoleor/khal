@@ -29,7 +29,7 @@ export function SlotPicker({
   return (
     <div className="space-y-6">
       <section>
-        <h2 className="text-sm font-medium text-slate-500">{t('pickDay')}</h2>
+        <h2 className="text-sm font-medium text-zinc-400">{t('pickDay')}</h2>
         <div className="mt-2 flex gap-2 overflow-x-auto pb-2">
           {days.map((day) => {
             const isActive = day.date === selectedDate;
@@ -41,12 +41,12 @@ export function SlotPicker({
                 disabled={day.closed}
                 aria-pressed={isActive}
                 className={cn(
-                  'shrink-0 rounded-xl border px-3 py-2 text-sm',
+                  'shrink-0 rounded-xl border px-3 py-2 text-sm transition-colors',
                   day.closed
-                    ? 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'
+                    ? 'cursor-not-allowed border-white/5 bg-transparent text-zinc-600'
                     : isActive
-                      ? 'border-slate-900 bg-slate-900 text-white'
-                      : 'border-slate-200 bg-white text-slate-700'
+                      ? 'border-emerald-400 bg-emerald-400 font-semibold text-black'
+                      : 'border-white/15 bg-white/[0.06] text-zinc-200 hover:border-white/30'
                 )}
               >
                 {day.label}
@@ -58,9 +58,9 @@ export function SlotPicker({
 
       {activeDay && !activeDay.closed ? (
         <section>
-          <h2 className="text-sm font-medium text-slate-500">{t('pickSlot')}</h2>
+          <h2 className="text-sm font-medium text-zinc-400">{t('pickSlot')}</h2>
           {activeDay.slots.length === 0 ? (
-            <p className="mt-2 text-sm text-slate-500">{t('noSlots')}</p>
+            <p className="mt-2 text-sm text-zinc-500">{t('noSlots')}</p>
           ) : (
             <div className="mt-2 grid grid-cols-3 gap-2">
               {activeDay.slots.map((slot) => (
@@ -70,10 +70,10 @@ export function SlotPicker({
                   onClick={() => onSelectSlot(slot)}
                   aria-pressed={selectedSlot === slot}
                   className={cn(
-                    'rounded-xl border px-3 py-2 text-sm',
+                    'rounded-xl border px-3 py-2 text-sm transition-colors',
                     selectedSlot === slot
-                      ? 'border-slate-900 bg-slate-900 text-white'
-                      : 'border-slate-200 bg-white text-slate-700'
+                      ? 'border-emerald-400 bg-emerald-400 font-semibold text-black'
+                      : 'border-white/15 bg-white/[0.06] text-zinc-200 hover:border-white/30'
                   )}
                 >
                   {slot}
@@ -83,7 +83,7 @@ export function SlotPicker({
           )}
         </section>
       ) : (
-        <p className="text-sm text-slate-500">{t('closed')}</p>
+        <p className="text-sm text-zinc-500">{t('closed')}</p>
       )}
     </div>
   );
