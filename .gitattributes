@@ -1,3 +1,21 @@
 # Force LF line endings for YAML so GitHub Actions workflows stay valid on all checkouts
 *.yml text eol=lf
 *.yaml text eol=lf
+
+# Normalize line endings repo-wide: the index is already 100% LF (verified
+# 2026-10-16 with git ls-files --eol: 0 CRLF entries). This stops the
+# autocrlf CRLF<->LF churn that polluted every commit with warnings and
+# made agents on different platforms rewrite files spuriously.
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF (they break with LF under cmd.exe)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binaries
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

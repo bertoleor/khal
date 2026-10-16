@@ -19,6 +19,7 @@
 | [Flujo de la clienta](flujo-cliente.md) | Journey de reserva punta a punta con diagrama (catálogo → seña → WhatsApp) |
 | [Flujo del admin](flujo-admin.md) | Panel operativo: auth fail-closed, turnos/servicios/clientas/excepciones |
 | [API Guide](API-GUIDE.md) | Superficie pública: PostgREST + RPC create_booking + contrato del stub |
+| [DESIGN.md (raíz)](../DESIGN.md) | Spec de tokens de identidad visual (formato Google design.md) — fuente normativa para cualquier UI nueva |
 | [ADR-0001 — Auth provisoria → JWT](adr/ADR-0001-auth-provisoria.md) | Admin auth: cookie mock → Supabase JWT claims (aplicada) |
 | [ADR-0002 — Pagos dual](adr/ADR-0002-payment-dual-flow.md) | MP checkout + transferencia manual como flujos oficiales |
 | [ADR-0003 — E2E stub](adr/ADR-0003-e2e-supabase-stub.md) | E2E contra stub determinista, no DB viva |

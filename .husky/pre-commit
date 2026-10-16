@@ -13,9 +13,12 @@
 # ============================================================================
 
 # Guard contra cuelgues: si encuentra `timeout` del sistema, acota cada comando.
+# 300s: eslint+prettier sobre 8+ archivos puede superar 60s en el host cargado
+# (4 vCPU con la flota residente) — 60s mataba el run a mitad (exit 124 = fail
+# intermitente del pre-commit, diagnosticado 2026-10-16).
 _TIMEOUT=""
 if command -v timeout >/dev/null 2>&1; then
-  _TIMEOUT="timeout 60"
+  _TIMEOUT="timeout 300"
 fi
 
 # >>> gitleaks-pre-commit
@@ -33,7 +36,9 @@ else
   echo "   brew install gitleaks | winget install Gitleaks.Gitleaks | scoop/choco install gitleaks" >&2
 fi
 # <= gitleaks-pre-commit
-. "$(dirname -- "$0")/_/husky.sh"
+# husky v9: no se necesita el shim de v8 (`. "$(dirname -- "$0")/_/husky.sh"`)
+# — el hook corre via core.hooksPath=.husky/_ y la línea deprecada generaba
+# warnings y comportamiento intermitente (husky avisa: WILL FAIL in v10).
 
 # lint-staged: solo archivos staged; --no-stash evita el cuelgue histórico del stash.
 if [ -x node_modules/.bin/lint-staged ]; then

@@ -44,3 +44,6 @@ supabase/.temp/
 
 # rdd receipts (local)
 .rdd/
+
+# Turborepo
+.turbo
