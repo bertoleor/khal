@@ -39,7 +39,7 @@ export function CatalogGrid({
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-semibold text-white">{service.name}</h3>
+            <h2 className="truncate font-semibold text-white">{service.name}</h2>
             <p className="mt-0.5 text-sm font-medium text-emerald-300">
               {formatCents(service.price_cents, service.currency_code)}
             </p>
