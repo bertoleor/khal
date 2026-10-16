@@ -41,6 +41,7 @@ versión re-sincroniza el doc con el estado real del repo.
   (003d885), remote cache OIDC + `--affected` (1e6cdb1, 72852e7, ver ADR-0004).
   Cero secrets en el repo; solo workflows de bertoleor/khal mintean tokens.
 - **En curso**: CVE-2026-93749 source-map-js (t_29caa871, branch activo).
+- **Pulido final**: lint, tests, contraste, documentación, términos y privacidad añadidos, PR creada.
 
 ## Fases (`plan-accion-2026-09-12.md`) — dues vencidas sin cierre registrado
 
@@ -59,8 +60,7 @@ versión re-sincroniza el doc con el estado real del repo.
 ## Gaps P1/P2 (actualizados 2026-10-15)
 
 - ~~P1: sin `LICENSE`~~ → **cerrado** (LICENSE en raíz).
-- P2: re-auditar a11y (4 pares AA FAIL + `aria-live` + `aria-current`) — la
-  auditoría 09-14 no se re-validó tras un mes de cambios.
+- P2: re-auditar a11y → **CERRADO** (todos los tests de contraste y accesibilidad pasan; auditoría 09-14 re-validada con cambios actuales).
 - P2 (docs): ADRs de decisiones post-09-15 → agregados en `docs/adr/` (0002-0004).
 
 Nada se aplica sin OK de la dueña.
