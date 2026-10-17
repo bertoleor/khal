@@ -1,0 +1,62 @@
+name: Visual Regression Tests
+
+on:
+  push:
+    branches: [main, "khal/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  visual-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    container:
+      # Official Playwright Docker image — same renderer that produces the
+      # definitive baselines (update-snapshots.yml runs the same image).
+      # ⚠️ Keep this version in sync with the INSTALLED @playwright/test
+      # (pnpm-lock.yaml): 1.63.0 (specifier ^1.51.0).
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      # --ipc=host: required for Chromium in Docker.
+      # Without it, renderer processes hit the 64MB /dev/shm limit and crash.
+      options: --ipc=host
+
+    steps:
+      # actions/checkout shells out to the container's git — the Playwright
+      # image does not guarantee it, so install it explicitly.
+      - name: Install git (checkout needs it inside the container)
+        run: apt-get update && apt-get install -y --no-install-recommends git
+
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm (packageManager pin)
+        run: npm install -g pnpm@12.3.4
+
+      # No node_modules/pnpm-store caching on purpose (pilot): pnpm workspaces
+      # symlink node_modules across packages, so a naive cache is incomplete.
+      # Fresh install keeps the workflow correct — add store-dir caching later
+      # if install time becomes a problem.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The webServer block in playwright.visual.config.ts boots the Supabase
+      # stub + `next dev` itself — no server step needed here. CI=true makes
+      # missing baselines FAIL (updateSnapshots: 'none'): baselines are born in
+      # CI via update-snapshots.yml, never auto-created on a verify run.
+      - name: Run visual regression tests
+        run: pnpm exec playwright test --config playwright.visual.config.ts
+        env:
+          CI: true
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
