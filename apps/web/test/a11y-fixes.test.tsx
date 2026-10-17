@@ -1,8 +1,9 @@
 // @vitest-environment node
 // A1 (web) + C1 — fixes verificados contra el código real.
-// Header es puro (sin imports) así que se renderiza con ReactDOMServer.
-// booking-form.tsx usa alias @/ irresoluble en vitest → contrato estático
-// de fuente, marcado como tal.
+// Header usa Link de @/i18n/navigation (next-intl) desde la navbar 2026-10-17,
+// así que se renderiza dentro de NextIntlClientProvider. booking-form.tsx usa
+// alias @/ irresoluble en vitest → contrato estático de fuente, marcado como tal.
+import { NextIntlClientProvider } from 'next-intl';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -11,7 +12,11 @@ import { Header } from '../src/components/shared/header';
 
 describe('a11y fixes (web)', () => {
   it('A1: Header expone un skip-link "Ir al contenido" hacia #main', () => {
-    const html = renderToStaticMarkup(<Header />);
+    const html = renderToStaticMarkup(
+      <NextIntlClientProvider locale="es" messages={{}}>
+        <Header />
+      </NextIntlClientProvider>
+    );
     expect(html).toContain('href="#main"');
     expect(html).toContain('Ir al contenido');
   });

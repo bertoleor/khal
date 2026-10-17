@@ -10,9 +10,26 @@ import { getTranslations } from 'next-intl/server';
  * password ever transits the chat or the codebase — with an optional
  * password path for staff that set one. Role comes exclusively from the
  * server-issued `app_metadata.role` claim; this page grants nothing.
+ *
+ * `?skeleton=1` renders a placeholder-only layout for design review.
  */
-export default async function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{ skeleton?: string }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { skeleton } = await searchParams;
   const t = await getTranslations('Admin.login');
+
+  if (skeleton === '1') {
+    return (
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-4">
+        <h1 className="skeleton-shimmer h-8 w-1/3 rounded bg-slate-200"></h1>
+        <p className="skeleton-shimmer h-4 w-1/2 rounded bg-slate-100"></p>
+        <div className="skeleton-shimmer h-44 w-full rounded-2xl bg-slate-100"></div>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-4">

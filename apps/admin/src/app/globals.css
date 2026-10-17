@@ -10,3 +10,27 @@ body {
   color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
+
+/* Skeleton presentation mode (?skeleton=1): animated sweep over
+   placeholder blocks. Color comes from the Tailwind bg-* utilities
+   already present on each skeleton element. */
+.skeleton-shimmer {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(15 23 42 / 0.06), transparent);
+  animation: skeleton-sweep 1.4s infinite;
+}
+
+@keyframes skeleton-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}

@@ -17,12 +17,57 @@ function dayLabel(date: Date, locale: string): string {
   }).format(date);
 }
 
-export default async function ReservarPage({
-  params,
-}: {
+type ReservarPageProps = {
   params: Promise<{ id: string; locale: string }>;
-}) {
+  searchParams: Promise<{ skeleton?: string }>;
+};
+
+export default async function ReservarPage({ params, searchParams }: ReservarPageProps) {
   const { id, locale } = await params;
+  const { skeleton } = await searchParams;
+
+  // Presentation mode (?skeleton=1): placeholder-only layout for design review.
+  if (skeleton === '1') {
+    return (
+      <div className="relative min-h-dvh">
+        <Header />
+        <main className="mx-auto max-w-lg px-4 py-6">
+          <h1 className="skeleton-shimmer mt-2 h-8 w-1/3 rounded bg-zinc-800"></h1>
+          <p className="skeleton-shimmer mt-1 h-4 w-1/4 rounded bg-zinc-800/60"></p>
+          <div className="mt-6 space-y-4">
+            {[0, 1].map((blockIndex) => (
+              <div
+                key={blockIndex}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="skeleton-shimmer h-6 w-16 rounded bg-zinc-800"></div>
+                  <div className="skeleton-shimmer h-6 w-24 rounded bg-zinc-800/60"></div>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {[0, 1, 2, 3, 4].map((slotIndex) => (
+                    <div
+                      key={slotIndex}
+                      className="skeleton-shimmer h-8 w-16 rounded bg-zinc-800"
+                    ></div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              {[0, 1, 2].map((fieldIndex) => (
+                <div
+                  key={fieldIndex}
+                  className="skeleton-shimmer h-10 w-full rounded-xl bg-zinc-800/60"
+                ></div>
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const service = await getService(id);
   if (!service) {
     notFound();

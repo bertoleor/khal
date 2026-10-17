@@ -17,9 +17,50 @@ function depositLabel(service: Service): string | null {
   return null;
 }
 
-export default async function ServiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
+type ServiceDetailPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ skeleton?: string }>;
+};
+
+export default async function ServiceDetailPage({ params, searchParams }: ServiceDetailPageProps) {
   const { id } = await params;
+  const { skeleton } = await searchParams;
   const t = await getTranslations('catalog');
+
+  // Presentation mode (?skeleton=1): placeholder-only layout for design review.
+  if (skeleton === '1') {
+    return (
+      <div className="relative min-h-dvh">
+        <Header />
+        <main className="mx-auto max-w-lg px-4 pb-28">
+          <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
+            <div className="skeleton-shimmer h-16 w-16 rounded-full bg-zinc-800"></div>
+          </div>
+          <h1 className="skeleton-shimmer mt-5 h-10 w-1/2 rounded bg-zinc-800"></h1>
+          <p className="skeleton-shimmer mt-2 h-4 w-1/3 rounded bg-zinc-800/60"></p>
+          <dl className="mt-4 space-y-1">
+            <div className="flex justify-between border-b border-white/5 py-2.5">
+              <dt className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dt>
+              <dd className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dd>
+            </div>
+            <div className="flex justify-between border-b border-white/5 py-2.5">
+              <dt className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dt>
+              <dd className="skeleton-shimmer h-5 w-1/3 rounded bg-emerald-400/30"></dd>
+            </div>
+          </dl>
+        </main>
+        <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-black/70 backdrop-blur">
+          <div className="mx-auto flex max-w-lg items-center justify-between gap-4 px-4 py-3">
+            <span className="skeleton-shimmer h-8 w-1/4 rounded bg-zinc-800"></span>
+            <span className="skeleton-shimmer flex h-11 w-32 items-center justify-center rounded-full bg-emerald-400">
+              <span className="skeleton-shimmer h-4 w-1/2 rounded bg-zinc-900/80"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const service = await getService(id);
 
   if (!service) {

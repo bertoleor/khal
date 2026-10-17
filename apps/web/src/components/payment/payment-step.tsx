@@ -1,6 +1,6 @@
 'use client';
 
-import { buildWhatsAppLink, formatCents, createCheckoutPreference } from '@khal/utils';
+import { buildWhatsAppLink, createCheckoutPreference, formatCents } from '@khal/utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -20,6 +20,11 @@ export interface PaymentInfo {
 function CopyRow({ label, value }: { label: string; value: string }) {
   const t = useTranslations('payment');
   const [copied, setCopied] = useState(false);
+
+  // [KHAL-A1] A blank value must never render a copyable empty row.
+  if (value.length === 0) {
+    return null;
+  }
 
   async function handleCopy() {
     try {
@@ -54,7 +59,6 @@ function CopyRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-
 
 export function PaymentStep({
   payment,
@@ -123,7 +127,9 @@ export function PaymentStep({
       {payment.depositStatus === 'pending' ? (
         <div role="status" className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4">
           <p className="text-sm font-semibold text-amber-300">{t('depositPendingTitle')}</p>
-          <p className="mt-1 text-sm text-amber-200/90">{t('depositPendingBody', { amount: depositAmount })}</p>
+          <p className="mt-1 text-sm text-amber-200/90">
+            {t('depositPendingBody', { amount: depositAmount })}
+          </p>
         </div>
       ) : (
         <div
