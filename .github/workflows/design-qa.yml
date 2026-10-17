@@ -1,0 +1,35 @@
+name: Design QA Gate
+
+on:
+  pull_request:
+    paths: ["apps/web/**", "apps/admin/**", "packages/ui/**", "scripts/design-qa/**", ".github/workflows/design-qa.yml"]
+  push:
+    branches: ["main"]
+    paths: ["apps/web/**", "apps/admin/**", "packages/ui/**", "scripts/design-qa/**", ".github/workflows/design-qa.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  token-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Sanity — the gate must BITE
+        run: |
+          python3 scripts/design-qa/gate.py selftest
+      - name: Token ratchet check
+        run: |
+          python3 scripts/design-qa/gate.py check
+      - name: HTML token validation (if applicable)
+        run: |
+          if [ -f assets/design-tokens.css ]; then
+            python3 scripts/design-qa/html-token-validator.py
+          else
+            echo "::warning::assets/design-tokens.css ausente — validación HTML saltada (pendiente UUPM flujo 3)"
+          fi
