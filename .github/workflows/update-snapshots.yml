@@ -29,6 +29,12 @@ jobs:
     # snapshot changes, corrupting the release. workflow_dispatch is normally branch-only,
     # but this check is defense-in-depth against future workflow changes.
     if: github.ref_type == 'branch'
+    defaults:
+      run:
+        # Container jobs run steps with POSIX sh (dash) by default — `${REASON// }`
+        # below is bash-only and dies with "Bad substitution" before checkout.
+        # The Playwright image ships bash, so pin it for every step in this job.
+        shell: bash
 
     container:
       # Must match the image used in visual-tests.yml to produce identical baselines.
