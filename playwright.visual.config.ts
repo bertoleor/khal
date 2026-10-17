@@ -81,6 +81,12 @@ export default defineConfig({
       // animations: 'disabled' freezes CSS transitions + Web Animations API at
       // screenshot time via DevTools protocol. This is already the default.
       animations: 'disabled',
+      // 30s stability window: in dev mode the first tests after a cold boot run
+      // while on-demand compilation still streams chunks in the background —
+      // two consecutive screenshots can't agree within the 5s default on a
+      // loaded host. Once the page is settled, comparison takes <2s; only
+      // genuinely unstable pages pay the full window.
+      timeout: 30_000,
       maxDiffPixelRatio: 0.01, // allow up to 1% of pixels to differ
       // threshold: per-pixel color sensitivity (0–1).
       // 0.05 = a pixel must differ by >5% of full color range to count as changed.
