@@ -15,3 +15,4 @@ supabase
 .git
 .github
 openspec
+scripts/design-qa
