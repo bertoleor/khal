@@ -16,10 +16,10 @@
     "@tiptap/pm": "^2.26.1",
     "@tiptap/react": "^2.26.1",
     "@tiptap/starter-kit": "^2.26.1",
-    "next": "15.5.25",
+    "next": "15.5.28",
     "next-intl": "^4.14.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
     "zod": "^3.24.2"
   },
   "devDependencies": {

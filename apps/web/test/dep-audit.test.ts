@@ -32,6 +32,22 @@ import { describe, expect, it } from 'vitest';
  * [t_29caa871] source-map-js >= 1.2.2 — CVE-2026-93749 (DoS via crafted
  * source map, build-time/transitive via postcss & co). Installed 1.2.1,
  * fixed 1.2.2. Same override pattern as sharp/postcss above.
+ *
+ * [ORN-213/t_orn213_khal] Next.js Oct-14 RCE wave (2026-10-17):
+ *   - next >= 15.5.28
+ *       CVE-2026-96889 (unauthenticated RCE via SVG in the Image
+ *       Optimization API / next/og, sharp→librsvg use-after-free chain,
+ *       CVSS 9.5, public PoC) + GHSA-673q-mjm6-r5xr ('use cache' typed
+ *       arrays RCE) + GHSA-p3m5-59mp-jv5r (Server Actions DoS — khal uses
+ *       'use server' extensively). khal was pinned at 15.5.25.
+ *   - react / react-dom >= 19.2.9
+ *       CVE-2026-23870 (RSC DoS, public PoC) + GHSA-xqc2-xf4c-x3h3 +
+ *       GHSA-h3gv-c5rc-p453 (react/react-dom advisories, Oct 14). The
+ *       lockfile resolved 19.2.8 before this bump; the ORN-213 table's
+ *       "19.1.0" for khal was stale data.
+ *       Unlike sharp/postcss/source-map-js, these three floors are
+ *       enforced by the exact pins in apps/web/package.json (next 15.5.28,
+ *       react/react-dom 19.2.9), not by overrides.
  */
 const repoRoot = resolve(__dirname, '../../..');
 const lockPath = resolve(repoRoot, 'pnpm-lock.yaml');
@@ -40,6 +56,9 @@ const PATCHED_FLOOR = {
   sharp: '0.35.5',
   postcss: '8.5.23',
   'source-map-js': '1.2.2',
+  next: '15.5.28',
+  react: '19.2.9',
+  'react-dom': '19.2.9',
 } as const;
 
 /**
@@ -79,6 +98,9 @@ describe('supply-chain: patched dependency floors (pnpm audit HIGHs)', () => {
     { pkg: 'sharp', floor: PATCHED_FLOOR.sharp },
     { pkg: 'postcss', floor: PATCHED_FLOOR.postcss },
     { pkg: 'source-map-js', floor: PATCHED_FLOOR['source-map-js'] },
+    { pkg: 'next', floor: PATCHED_FLOOR.next },
+    { pkg: 'react', floor: PATCHED_FLOOR.react },
+    { pkg: 'react-dom', floor: PATCHED_FLOOR['react-dom'] },
   ] as const)('every resolved $pkg in pnpm-lock.yaml is >= $floor', ({ pkg, floor }) => {
     const versions = resolvedVersions(lock, pkg);
 
@@ -90,7 +112,9 @@ describe('supply-chain: patched dependency floors (pnpm audit HIGHs)', () => {
     expect(
       vulnerable,
       `vulnerable ${pkg} resolutions below ${floor}: ${vulnerable.join(', ')}\n` +
-        'expected: root package.json pnpm.overrides forces every resolution to the patched floor'
+        'expected: the exact pins in apps/web/package.json (next, react, react-dom) plus the ' +
+        'pnpm-workspace.yaml overrides (sharp, postcss, source-map-js) keep every resolution ' +
+        'at/above the patched floor'
     ).toEqual([]);
   });
 
