@@ -52,11 +52,11 @@ export function PhotoUploader({
   return (
     <div className="space-y-2">
       <div className="flex items-start gap-3">
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
+        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.06]">
           {url !== null ? (
             <Image src={url} alt={altLabel} fill sizes="96px" className="object-cover" />
           ) : (
-            <span className="absolute inset-0 flex items-center justify-center px-1 text-center text-[10px] leading-tight text-slate-500">
+            <span className="absolute inset-0 flex items-center justify-center px-1 text-center text-[10px] leading-tight text-zinc-400">
               {labels.empty}
             </span>
           )}
@@ -74,7 +74,7 @@ export function PhotoUploader({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-lg border border-white/20 bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-zinc-300 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy ? labels.uploading : labels.upload}
           </button>
@@ -82,7 +82,7 @@ export function PhotoUploader({
             <button
               type="button"
               onClick={() => onPhotoChange(null)}
-              className="rounded-lg px-1 py-0.5 text-left text-xs font-medium text-red-600 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+              className="rounded-lg px-1 py-0.5 text-left text-xs font-medium text-red-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400"
             >
               {labels.remove}
             </button>
@@ -90,7 +90,7 @@ export function PhotoUploader({
         </div>
       </div>
       {error !== null && (
-        <p role="alert" className="text-xs text-red-600">
+        <p role="alert" className="text-xs text-red-400">
           {error}
         </p>
       )}

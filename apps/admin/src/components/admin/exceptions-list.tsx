@@ -22,21 +22,21 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
     <div className="mt-4 space-y-4">
       <form
         action={handleAddException}
-        className="space-y-3 rounded-2xl border border-slate-200 p-4"
+        className="space-y-3 rounded-2xl border border-white/10 p-4"
       >
         <input
           name="title"
           placeholder={t('exceptions.addTitle')}
           aria-label={t('exceptions.addTitle')}
           required
-          className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-slate-400"
+          className="w-full rounded-xl border border-white/10 px-3 py-2 text-sm text-white outline-none focus:border-white/30"
         />
         <div className="flex gap-2">
           <select
             name="type"
             defaultValue="holiday"
             aria-label={t('exceptions.typeLabel')}
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900"
+            className="w-full rounded-xl border border-white/10 px-3 py-2 text-sm text-white"
           >
             <option value="holiday">{t('exceptions.addType.holiday')}</option>
             <option value="vacation">{t('exceptions.addType.vacation')}</option>
@@ -48,29 +48,29 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
             type="date"
             required
             aria-label={t('exceptions.dateLabel')}
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900"
+            className="w-full rounded-xl border border-white/10 px-3 py-2 text-sm text-white"
           />
         </div>
         <button
           type="submit"
-          className="w-full rounded-full bg-slate-900 px-6 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-medium text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
         >
           {t('exceptions.addButton')}
         </button>
       </form>
 
       {exceptions.length === 0 ? (
-        <p className="text-sm text-slate-500">{t('exceptions.empty')}</p>
+        <p className="text-sm text-zinc-400">{t('exceptions.empty')}</p>
       ) : (
         <ul className="space-y-2">
           {exceptions.map((exception) => (
             <li
               key={exception.id}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 p-3"
+              className="flex items-center justify-between rounded-2xl border border-white/10 p-3"
             >
               <div>
-                <p className="font-medium text-slate-900">{exception.title}</p>
-                <p className="text-sm text-slate-500">
+                <p className="font-medium text-white">{exception.title}</p>
+                <p className="text-sm text-zinc-400">
                   {exception.date} · {t(TYPE_KEY[exception.type])}
                 </p>
               </div>

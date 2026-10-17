@@ -5,16 +5,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const t = await getTranslations('Admin.nav');
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="min-h-dvh bg-white/[0.04]">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-20 focus:rounded-full focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-20 focus:rounded-full focus:bg-emerald-400 focus:px-4 focus:py-2 focus:text-sm focus:text-black"
       >
         Ir al contenido
       </a>
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/80 backdrop-blur">
+      <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur">
         <nav className="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3">
-          <span className="font-semibold tracking-tight text-slate-900">{t('brand')}</span>
+          <span className="font-semibold tracking-tight text-white">{t('brand')}</span>
           <AdminNav
             links={[
               { href: '/admin', label: t('agenda') },

@@ -18,7 +18,7 @@ export function AdminNav({ links }: { links: AdminNavLink[] }) {
           key={link.href}
           href={link.href}
           aria-current={pathname === link.href ? 'page' : undefined}
-          className="text-sm text-slate-600"
+          className="text-sm text-zinc-400"
         >
           {link.label}
         </Link>

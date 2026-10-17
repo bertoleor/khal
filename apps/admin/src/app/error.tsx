@@ -17,21 +17,21 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-white px-4">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-white/[0.04] px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{t('title')}</h1>
-        <p className="mt-2 text-slate-500">{t('description')}</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-white">{t('title')}</h1>
+        <p className="mt-2 text-zinc-400">{t('description')}</p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="inline-flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
           >
             {t('retry')}
           </button>
           <a
             href="/admin"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="inline-flex items-center justify-center rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
           >
             {t('home')}
           </a>

@@ -24,17 +24,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   if (skeleton === '1') {
     return (
       <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-4">
-        <h1 className="skeleton-shimmer h-8 w-1/3 rounded bg-slate-200"></h1>
-        <p className="skeleton-shimmer h-4 w-1/2 rounded bg-slate-100"></p>
-        <div className="skeleton-shimmer h-44 w-full rounded-2xl bg-slate-100"></div>
+        <h1 className="skeleton-shimmer h-8 w-1/3 rounded bg-white/[0.1]"></h1>
+        <p className="skeleton-shimmer h-4 w-1/2 rounded bg-white/[0.06]"></p>
+        <div className="skeleton-shimmer h-44 w-full rounded-2xl bg-white/[0.06]"></div>
       </main>
     );
   }
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-4">
-      <h1 className="text-xl font-semibold tracking-tight text-slate-900">{t('title')}</h1>
-      <p className="max-w-prose text-center text-sm text-slate-600">{t('subtitle')}</p>
+      <h1 className="text-xl font-semibold tracking-tight text-white">{t('title')}</h1>
+      <p className="max-w-prose text-center text-sm text-zinc-400">{t('subtitle')}</p>
       <LoginForm />
     </main>
   );

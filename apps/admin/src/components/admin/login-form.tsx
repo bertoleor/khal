@@ -113,16 +113,16 @@ export function LoginForm() {
   }
 
   const inputClass =
-    'w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500';
+    'w-full rounded-lg border border-white/20 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
   const buttonClass =
-    'w-full rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60';
+    'w-full rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60';
   const secondaryClass =
-    'text-sm font-medium text-slate-600 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600';
+    'text-sm font-medium text-zinc-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400';
 
   return (
-    <div className="w-full space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="w-full space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-sm">
       {error !== null && (
-        <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">
           {error}
         </p>
       )}
@@ -130,7 +130,7 @@ export function LoginForm() {
       {mode === 'code' && step === 'email' && (
         <form className="space-y-4" onSubmit={requestCode} noValidate>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="login-email">
+            <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="login-email">
               {t('email')}
             </label>
             <input
@@ -163,9 +163,9 @@ export function LoginForm() {
 
       {mode === 'code' && step === 'code' && (
         <form className="space-y-4" onSubmit={verifyCode} noValidate>
-          <p className="text-sm text-slate-600">{t('codeSent')}</p>
+          <p className="text-sm text-zinc-400">{t('codeSent')}</p>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="login-code">
+            <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="login-code">
               {t('code')}
             </label>
             <input
@@ -202,7 +202,7 @@ export function LoginForm() {
         <form className="space-y-4" onSubmit={signInWithPassword} noValidate>
           <div>
             <label
-              className="mb-1 block text-sm font-medium text-slate-700"
+              className="mb-1 block text-sm font-medium text-zinc-300"
               htmlFor="login-email-pw"
             >
               {t('email')}
@@ -221,7 +221,7 @@ export function LoginForm() {
           </div>
           <div>
             <label
-              className="mb-1 block text-sm font-medium text-slate-700"
+              className="mb-1 block text-sm font-medium text-zinc-300"
               htmlFor="login-password"
             >
               {t('password')}

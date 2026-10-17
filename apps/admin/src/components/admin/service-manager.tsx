@@ -280,8 +280,8 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
   }
 
   const inputClass =
-    'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500';
-  const errorClass = 'mt-1 text-xs text-red-600';
+    'w-full rounded-lg border border-white/20 px-3 py-2 text-sm text-white focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
+  const errorClass = 'mt-1 text-xs text-red-400';
 
   const formDialog =
     form !== null && dialog !== null ? (
@@ -290,21 +290,24 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
           role="dialog"
           aria-modal="true"
           aria-labelledby="service-dialog-title"
-          className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-6 shadow-xl sm:rounded-2xl"
+          className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white/[0.04] p-6 shadow-xl sm:rounded-2xl"
         >
-          <h2 id="service-dialog-title" className="mb-4 text-lg font-semibold text-slate-900">
+          <h2 id="service-dialog-title" className="mb-4 text-lg font-semibold text-white">
             {dialog.mode === 'create' ? t('dialog.newTitle') : t('dialog.editTitle')}
           </h2>
 
           {banner !== null && (
-            <p role="alert" className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p
+              role="alert"
+              className="mb-4 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300"
+            >
               {banner}
             </p>
           )}
 
           <form className="space-y-4" onSubmit={onSubmit} noValidate>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-name">
+              <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="svc-name">
                 {t('fields.name')}
               </label>
               <input
@@ -320,10 +323,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label
-                  className="mb-1 block text-sm font-medium text-slate-700"
-                  htmlFor="svc-price"
-                >
+                <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="svc-price">
                   {t('fields.price')}
                 </label>
                 <input
@@ -335,14 +335,14 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   value={form.price}
                   onChange={(e) => patchForm({ price: e.target.value })}
                 />
-                <p className="mt-1 text-xs text-slate-500">{t('fields.priceHint')}</p>
+                <p className="mt-1 text-xs text-zinc-400">{t('fields.priceHint')}</p>
                 {errors.price_cents !== undefined && (
                   <p className={errorClass}>{errors.price_cents}</p>
                 )}
               </div>
               <div>
                 <label
-                  className="mb-1 block text-sm font-medium text-slate-700"
+                  className="mb-1 block text-sm font-medium text-zinc-300"
                   htmlFor="svc-duration"
                 >
                   {t('fields.duration')}
@@ -356,7 +356,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   value={form.duration}
                   onChange={(e) => patchForm({ duration: e.target.value })}
                 />
-                <p className="mt-1 text-xs text-slate-500">{t('fields.durationHint')}</p>
+                <p className="mt-1 text-xs text-zinc-400">{t('fields.durationHint')}</p>
                 {errors.duration_minutes !== undefined && (
                   <p className={errorClass}>{errors.duration_minutes}</p>
                 )}
@@ -365,7 +365,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
 
             <div>
               <label
-                className="mb-1 block text-sm font-medium text-slate-700"
+                className="mb-1 block text-sm font-medium text-zinc-300"
                 htmlFor="svc-description"
               >
                 {t('fields.description')}
@@ -389,7 +389,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             </div>
 
             <div>
-              <span className="mb-1 block text-sm font-medium text-slate-700">
+              <span className="mb-1 block text-sm font-medium text-zinc-300">
                 {t('fields.photo')}
               </span>
               <PhotoUploader
@@ -408,7 +408,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  className="mb-1 block text-sm font-medium text-slate-700"
+                  className="mb-1 block text-sm font-medium text-zinc-300"
                   htmlFor="svc-deposit-mode"
                 >
                   {t('fields.deposit')}
@@ -429,7 +429,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               {form.deposit_mode !== DEPOSIT_NONE && (
                 <div>
                   <label
-                    className="mb-1 block text-sm font-medium text-slate-700"
+                    className="mb-1 block text-sm font-medium text-zinc-300"
                     htmlFor="svc-deposit-amount"
                   >
                     {form.deposit_mode === DEPOSIT_FIXED
@@ -458,7 +458,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  className="mb-1 block text-sm font-medium text-slate-700"
+                  className="mb-1 block text-sm font-medium text-zinc-300"
                   htmlFor="svc-buffer"
                 >
                   {t('fields.buffer')}
@@ -471,13 +471,13 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   value={form.buffer}
                   onChange={(e) => patchForm({ buffer: e.target.value })}
                 />
-                <p className="mt-1 text-xs text-slate-500">{t('fields.bufferHint')}</p>
+                <p className="mt-1 text-xs text-zinc-400">{t('fields.bufferHint')}</p>
                 {errors.buffer_minutes !== undefined && (
                   <p className={errorClass}>{errors.buffer_minutes}</p>
                 )}
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700" htmlFor="svc-sort">
+                <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="svc-sort">
                   {t('fields.sort')}
                 </label>
                 <input
@@ -488,17 +488,17 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   value={form.sort_order}
                   onChange={(e) => patchForm({ sort_order: e.target.value })}
                 />
-                <p className="mt-1 text-xs text-slate-500">{t('fields.sortHint')}</p>
+                <p className="mt-1 text-xs text-zinc-400">{t('fields.sortHint')}</p>
                 {errors.sort_order !== undefined && (
                   <p className={errorClass}>{errors.sort_order}</p>
                 )}
               </div>
             </div>
 
-            <label className="flex items-center gap-2 text-sm text-slate-700">
+            <label className="flex items-center gap-2 text-sm text-zinc-300">
               <input
                 type="checkbox"
-                className="h-4 w-4 rounded border-slate-300"
+                className="h-4 w-4 rounded border-white/20"
                 checked={form.is_visible}
                 onChange={(e) => patchForm({ is_visible: e.target.checked })}
               />
@@ -509,14 +509,14 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               <button
                 type="button"
                 onClick={closeDialog}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+                className="rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
               >
                 {t('actions.cancel')}
               </button>
               <button
                 type="submit"
                 disabled={busy}
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-lg bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {busy
                   ? t('actions.saving')
@@ -566,19 +566,19 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         <button
           type="button"
           onClick={openCreate}
-          className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
         >
           {t('new')}
         </button>
       </div>
 
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-sm text-slate-500">{t('count', { count: filtered.length })}</p>
+        <p className="text-sm text-zinc-400">{t('count', { count: filtered.length })}</p>
         {selected.size > 0 && (
           <button
             type="button"
             onClick={onBulkIncrease}
-            className="rounded-full border border-slate-900 px-3 py-1 text-xs font-medium text-slate-900 hover:bg-slate-900 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="rounded-full border border-emerald-400 px-3 py-1 text-xs font-medium text-emerald-400 hover:bg-emerald-400 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
           >
             {t('bulkIncrease', { count: selected.size })}
           </button>
@@ -586,7 +586,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
       </div>
 
       {listError !== null && (
-        <p role="alert" className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="mt-3 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">
           {listError}
         </p>
       )}
@@ -595,16 +595,16 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         {filtered.map((service) => (
           <article
             key={service.id}
-            className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4"
+            className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4"
           >
             <input
               type="checkbox"
               aria-label={service.name}
               checked={selected.has(service.id)}
               onChange={() => toggleSelected(service.id)}
-              className="mt-12 h-4 w-4 shrink-0 rounded border-slate-300"
+              className="mt-12 h-4 w-4 shrink-0 rounded border-white/20"
             />
-            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
+            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.06]">
               {service.photo_path !== undefined ? (
                 <Image
                   src={service.photo_path}
@@ -614,25 +614,25 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                   className="object-cover"
                 />
               ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-[10px] text-slate-500">
+                <span className="absolute inset-0 flex items-center justify-center text-[10px] text-zinc-400">
                   {t('photo.empty')}
                 </span>
               )}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h2 className="truncate font-medium text-slate-900">{service.name}</h2>
+                <h2 className="truncate font-medium text-white">{service.name}</h2>
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                     service.is_visible
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-slate-100 text-slate-500'
+                      ? 'bg-emerald-400/20 text-emerald-300'
+                      : 'bg-white/[0.06] text-zinc-400'
                   }`}
                 >
                   {service.is_visible ? t('visible') : t('hidden')}
                 </span>
               </div>
-              <p className="mt-0.5 text-sm text-slate-600">
+              <p className="mt-0.5 text-sm text-zinc-400">
                 {formatCents(service.price_cents, service.currency_code)} ·{' '}
                 {t('duration', { count: service.duration_minutes })}
                 {service.deposit_mode === 'percentage' &&
@@ -651,7 +651,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
               </p>
               {service.description !== undefined && service.description !== '' && (
                 <div
-                  className="prose-sm mt-2 max-w-none text-slate-600 [&_p]:m-0 [&_ul]:my-1 [&_ol]:my-1"
+                  className="prose-sm mt-2 max-w-none text-zinc-400 [&_p]:m-0 [&_ul]:my-1 [&_ol]:my-1"
                   dangerouslySetInnerHTML={{ __html: service.description }}
                 />
               )}
@@ -659,21 +659,21 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                 <button
                   type="button"
                   onClick={() => openEdit(service)}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
                 >
                   {t('actions.edit')}
                 </button>
                 <button
                   type="button"
                   onClick={() => void onToggle(service)}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
                 >
                   {service.is_visible ? t('actions.hide') : t('actions.show')}
                 </button>
                 <button
                   type="button"
                   onClick={() => void onDelete(service)}
-                  className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-500 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-400 transition-colors hover:border-red-500/30 hover:bg-red-500/15 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
                 >
                   {t('actions.delete')}
                 </button>
@@ -683,7 +683,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         ))}
 
         {filtered.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
+          <p className="rounded-2xl border border-dashed border-white/20 p-8 text-center text-sm text-zinc-400">
             {t('empty')}
           </p>
         )}

@@ -18,21 +18,21 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
   const t = useTranslations('Admin');
 
   if (rows.length === 0) {
-    return <p className="mt-6 text-slate-500">{t('clients.empty')}</p>;
+    return <p className="mt-6 text-zinc-400">{t('clients.empty')}</p>;
   }
 
   return (
     <ul className="mt-4 space-y-2">
       {rows.map(({ client, ltvCents }) => (
-        <li key={client.id} className="rounded-2xl border border-slate-200 p-4">
+        <li key={client.id} className="rounded-2xl border border-white/10 p-4">
           <div className="flex items-center justify-between">
             <div className="min-w-0">
-              <p className="truncate font-medium text-slate-900">{client.name}</p>
-              <p className="truncate text-sm text-slate-500">{client.phone}</p>
+              <p className="truncate font-medium text-white">{client.name}</p>
+              <p className="truncate text-sm text-zinc-400">{client.phone}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-slate-600">{t('clients.ltv')}</p>
-              <p className="font-medium text-slate-900">{formatCents(ltvCents, 'ARS')}</p>
+              <p className="text-xs text-zinc-400">{t('clients.ltv')}</p>
+              <p className="font-medium text-white">{formatCents(ltvCents, 'ARS')}</p>
             </div>
           </div>
 
@@ -40,13 +40,13 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
             {client.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600"
+                className="rounded-full bg-white/[0.06] px-2 py-0.5 text-xs text-zinc-400"
               >
                 {tag}
               </span>
             ))}
             {client.noShowCount > 0 ? (
-              <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-700">
+              <span className="rounded-full bg-red-500/10 px-2 py-0.5 text-xs text-red-300">
                 {t('clients.noShow', { count: client.noShowCount })}
               </span>
             ) : null}
@@ -58,8 +58,8 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               type="submit"
               className={
                 client.isBlacklisted
-                  ? 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700'
-                  : 'rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-red-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600'
+                  ? 'rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400'
+                  : 'rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400'
               }
             >
               {client.isBlacklisted ? t('clients.removeBlacklist') : t('clients.blacklist')}

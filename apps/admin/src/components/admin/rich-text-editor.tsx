@@ -43,10 +43,10 @@ function ToolbarButton({ label, active = false, disabled, onClick, children }: T
       aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
-      className={`h-8 min-w-8 rounded-md border px-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 ${
+      className={`h-8 min-w-8 rounded-md border px-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 ${
         active
-          ? 'border-slate-900 bg-slate-900 text-white'
-          : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+          ? 'border-emerald-400 bg-emerald-400 text-black'
+          : 'border-white/20 bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08]'
       } disabled:cursor-not-allowed disabled:opacity-50`}
     >
       {children}
@@ -72,7 +72,7 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm max-w-none min-h-24 w-full rounded-b-lg border border-t-0 border-slate-300 p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-500',
+          'prose-invert prose-sm max-w-none min-h-24 w-full rounded-b-lg border border-t-0 border-white/20 p-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/40',
         'aria-label': ariaLabel,
         role: 'textbox',
         'aria-multiline': 'true',
@@ -89,7 +89,7 @@ export function RichTextEditor({
   if (!editor) {
     return (
       <div
-        className="min-h-24 animate-pulse rounded-lg border border-slate-200 bg-slate-50"
+        className="min-h-24 animate-pulse rounded-lg border border-white/10 bg-white/[0.04]"
         aria-hidden="true"
       />
     );
@@ -102,7 +102,7 @@ export function RichTextEditor({
       <div
         role="toolbar"
         aria-label={ariaLabel}
-        className="flex flex-wrap gap-1 rounded-t-lg border border-slate-300 border-b-0 bg-slate-50 p-1"
+        className="flex flex-wrap gap-1 rounded-t-lg border border-white/20 border-b-0 bg-white/[0.04] p-1"
       >
         <ToolbarButton
           label={labels.bold}
@@ -136,7 +136,7 @@ export function RichTextEditor({
             S
           </span>
         </ToolbarButton>
-        <span aria-hidden="true" className="mx-1 w-px self-stretch bg-slate-300" />
+        <span aria-hidden="true" className="mx-1 w-px self-stretch bg-white/20" />
         <ToolbarButton
           label={labels.bulletList}
           active={editor.isActive('bulletList')}
@@ -151,7 +151,7 @@ export function RichTextEditor({
         >
           <span aria-hidden="true">1.</span>
         </ToolbarButton>
-        <span aria-hidden="true" className="mx-1 w-px self-stretch bg-slate-300" />
+        <span aria-hidden="true" className="mx-1 w-px self-stretch bg-white/20" />
         <ToolbarButton
           label={labels.undo}
           disabled={!editor.can().undo()}

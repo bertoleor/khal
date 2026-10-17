@@ -27,7 +27,7 @@ export function ServiceList({ services }: { services: Service[] }) {
       {services.map((service) => (
         <div
           key={service.id}
-          className="flex items-center gap-3 rounded-2xl border border-slate-200 p-3"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 p-3"
         >
           <input
             type="checkbox"
@@ -40,12 +40,12 @@ export function ServiceList({ services }: { services: Service[] }) {
           <div className="min-w-0 flex-1">
             <p
               className={`truncate font-medium ${
-                service.is_visible ? 'text-slate-900' : 'text-slate-500'
+                service.is_visible ? 'text-white' : 'text-zinc-400'
               }`}
             >
               {service.name}
             </p>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-zinc-400">
               {formatCents(service.price_cents, service.currency_code)}
             </p>
           </div>
@@ -54,7 +54,7 @@ export function ServiceList({ services }: { services: Service[] }) {
             name="id"
             value={service.id}
             type="submit"
-            className="shrink-0 rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+            className="shrink-0 rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
           >
             {service.is_visible ? t('services.hide') : t('services.show')}
           </button>
@@ -64,7 +64,7 @@ export function ServiceList({ services }: { services: Service[] }) {
       <button
         formAction={handleBulkIncrease}
         type="submit"
-        className="mt-4 w-full rounded-full bg-slate-900 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+        className="mt-4 w-full rounded-full bg-emerald-400 py-3 text-sm font-medium text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
       >
         {t('services.bulkIncrease')}
       </button>

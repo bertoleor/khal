@@ -33,8 +33,8 @@ function handleTransition(formData: FormData, confirmMessage: string): void {
 
 const STATUS_DOT: Record<AppointmentStatus, string> = {
   pendiente: 'bg-amber-400',
-  confirmado: 'bg-emerald-500',
-  cancelado: 'bg-slate-300',
+  confirmado: 'bg-emerald-400/100',
+  cancelado: 'bg-white/20',
   no_asistio: 'bg-red-500',
 };
 
@@ -42,7 +42,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
   const t = useTranslations('Admin');
 
   if (appointments.length === 0) {
-    return <p className="mt-6 text-slate-500">{t('appointments.empty')}</p>;
+    return <p className="mt-6 text-zinc-400">{t('appointments.empty')}</p>;
   }
 
   return (
@@ -50,17 +50,17 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
       {appointments.map((appointment) => (
         <li
           key={appointment.id}
-          className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 p-3"
+          className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 p-3"
         >
           <span aria-hidden className={`h-3 w-3 rounded-full ${STATUS_DOT[appointment.status]}`} />
           <span className="sr-only">{t(`appointments.status.${appointment.status}`)}</span>
           <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-slate-900">{appointment.clientName}</p>
-            <p className="truncate text-sm text-slate-500">
+            <p className="truncate font-medium text-white">{appointment.clientName}</p>
+            <p className="truncate text-sm text-zinc-400">
               {appointment.time} · {appointment.serviceName}
             </p>
           </div>
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-zinc-300">
             {formatCents(appointment.priceCents, 'ARS')}
           </span>
           <div className="flex gap-1">
@@ -73,7 +73,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
                   className={
                     to === 'confirmado'
                       ? 'rounded-full bg-emerald-600 px-3 py-1 text-xs font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
-                      : 'rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700'
+                      : 'rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400'
                   }
                 >
                   {t(ACTION_KEY[to])}
