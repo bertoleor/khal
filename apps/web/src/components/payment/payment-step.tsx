@@ -1,6 +1,6 @@
 'use client';
 
-import { buildWhatsAppLink, formatCents } from '@khal/utils';
+import { buildWhatsAppLink, formatCents, createCheckoutPreference } from '@khal/utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 
