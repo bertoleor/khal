@@ -176,7 +176,7 @@ jobs:
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
-          config: auto
+          config: .semgrep.yml
   supply-sign:
     name: SBOM sign (Sigstore keyless)
     runs-on: ubuntu-latest
