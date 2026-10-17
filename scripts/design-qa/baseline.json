@@ -1,0 +1,15 @@
+{
+  "total": 3,
+  "per_dir": {
+    "apps/web": 3,
+    "apps/admin": 0,
+    "packages/ui": 0
+  },
+  "scan_dirs": [
+    "apps/web",
+    "apps/admin",
+    "packages/ui"
+  ],
+  "taken_at": "2026-10-17",
+  "source_commit": "6ce899a399a777f7dce3f8abb6332fa9203b820b"
+}
