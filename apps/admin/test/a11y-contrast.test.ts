@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest';
 
 /**
  * C2–C4 — contrato estático de fuente (tema dark, 2026-10-17).
- * El admin es dark (#000 background): los tokens AA se verifican sobre negro.
- * Ratios sobre #000: zinc-400 #a1a1aa ≈ 8.3:1 ✓; red-300 #fca5a5 ≈ 10.6:1 ✓;
- * red-400 #f87171 ≈ 7.6:1 ✓ (botón blacklist); zinc-500 #71717a ≈ 4.3:1 —
+ * El admin es dark (fondo negro, var(--background)): los tokens AA se
+ * verifican sobre negro. Ratios de contraste aproximados: zinc-400 ~8.3:1 ✓;
+ * red-300 ~10.6:1 ✓; red-400 ~7.6:1 ✓ (botón blacklist); zinc-500 ~4.3:1 —
  * FALLA AA 4.5:1, por eso los guards negativos.
  * Los componentes admin importan alias @/ y server actions, irresolubles
  * bajo vitest sin jsdom/config extra; se verifica la clase exacta en el
