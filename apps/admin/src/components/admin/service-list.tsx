@@ -36,7 +36,7 @@ export function ServiceList({ services }: { services: Service[] }) {
             aria-label={service.name}
             className="h-4 w-4"
           />
-          <input type="hidden" name="next" value={!service.is_visible ? "true" : "false"} />
+          <input type="hidden" name="next" value={!service.is_visible ? 'true' : 'false'} />
           <div className="min-w-0 flex-1">
             <p
               className={`truncate font-medium ${
