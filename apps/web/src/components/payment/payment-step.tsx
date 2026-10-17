@@ -55,16 +55,21 @@ function CopyRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+
 export function PaymentStep({
   payment,
   serviceName,
   date,
   slot,
+  bookingId,
+  serviceId,
 }: {
   payment: PaymentInfo;
   serviceName: string;
   date: string;
   slot: string;
+  bookingId?: string;
+  serviceId?: string;
 }) {
   const t = useTranslations('payment');
   const locale = useLocale();
@@ -72,6 +77,7 @@ export function PaymentStep({
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
   const remainder = formatCents(payment.totalCents - payment.amountDueCents, payment.currencyCode);
+
   // Refill suggestion: booking date + 21 days. Fail-soft on non-ISO dates —
   // the note is dropped rather than crashing the payment screen.
   const refillMs = new Date(`${date}T12:00:00`).getTime();
@@ -83,14 +89,41 @@ export function PaymentStep({
         month: 'long',
       }).format(new Date(refillMs + 21 * 24 * 60 * 60 * 1000));
 
+  // [KHAL-A1] Safe fallback: the transfer section (alias/CVU copy rows,
+  // transfer instructions, WhatsApp receipt CTA) only renders when real
+  // settings came from global_settings. Without them the customer sees the
+  // booking confirmation + online payment — never a dummy CVU to copy.
+  const hasTransferDetails = payment.alias.length > 0 && payment.cvu.length > 0;
+  const [payerEmail, setPayerEmail] = useState('');
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  async function handlePayOnline() {
+    if (!bookingId || !serviceId || isRedirecting) {
+      return;
+    }
+    setCheckoutError(null);
+    setIsRedirecting(true);
+    try {
+      const result = await createCheckoutPreference(bookingId, serviceId, payerEmail.trim());
+      if (result.ok && result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
+        return;
+      }
+      setCheckoutError(t('checkoutError'));
+    } catch {
+      setCheckoutError(t('checkoutError'));
+    } finally {
+      setIsRedirecting(false);
+    }
+  }
+
   return (
     <div className="space-y-4">
       {payment.depositStatus === 'pending' ? (
         <div role="status" className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4">
           <p className="text-sm font-semibold text-amber-300">{t('depositPendingTitle')}</p>
-          <p className="mt-1 text-sm text-amber-200/90">
-            {t('depositPendingBody', { amount: depositAmount })}
-          </p>
+          <p className="mt-1 text-sm text-amber-200/90">{t('depositPendingBody', { amount: depositAmount })}</p>
         </div>
       ) : (
         <div
@@ -126,22 +159,58 @@ export function PaymentStep({
         </div>
       ) : null}
 
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-zinc-300">{t('transferTo')}</p>
-        <CopyRow label={t('alias')} value={payment.alias} />
-        <CopyRow label={t('cvu')} value={payment.cvu} />
-      </div>
+      {hasTransferDetails ? (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-slate-700">{t('transferTo')}</p>
+          <CopyRow label={t('alias')} value={payment.alias} />
+          <CopyRow label={t('cvu')} value={payment.cvu} />
+        </div>
+      ) : null}
 
-      <p className="text-sm text-zinc-400">{t('instructions', { amount: depositAmount })}</p>
+      {hasTransferDetails ? (
+        <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
+      ) : null}
 
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        className="block w-full rounded-full bg-emerald-400 px-6 py-3 text-center text-sm font-semibold text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98]"
-      >
-        {t('sendComprobante')}
-      </a>
+      {bookingId && serviceId ? (
+        <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
+          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-slate-700">
+            {t('payOnlineTitle')}
+          </label>
+          <input
+            id="mp-payer-email"
+            type="email"
+            autoComplete="email"
+            value={payerEmail}
+            onChange={(event) => setPayerEmail(event.target.value)}
+            placeholder="tu@email.com"
+            className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus-visible:outline-2 focus-visible:offset-2 focus-visible:outline-slate-500"
+          />
+          <button
+            type="button"
+            onClick={handlePayOnline}
+            disabled={isRedirecting || payerEmail.trim().length === 0}
+            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isRedirecting ? t('redirecting') : t('payOnline')}
+          </button>
+          {checkoutError ? (
+            <p role="alert" className="text-sm text-red-600">
+              {checkoutError}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+      {payment.whatsappPhone.length > 0 ? (
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+          className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:bg-emerald-800"
+        >
+          {t('sendComprobante')}
+        </a>
+      ) : null}
     </div>
   );
 }

@@ -3,8 +3,8 @@ import type { DaySlot } from '@/components/booking/slot-picker';
 import type { PaymentInfo } from '@/components/payment/payment-step';
 import { Header } from '@/components/shared/header';
 import { getService } from '@/lib/actions/catalog';
+import { getPaymentSettings } from '@/lib/actions/settings';
 import { blockedPeriodsFor, businessHoursFor } from '@/lib/mocks/schedule';
-import { storePaymentSettings } from '@/lib/mocks/settings';
 import { computeAvailableSlots, parseClock } from '@khal/db';
 import { computeAmountDueCents, formatCents, toIsoDate } from '@khal/utils';
 import { notFound } from 'next/navigation';
@@ -54,10 +54,14 @@ export default async function ReservarPage({
   }
 
   const isDeposit = service.deposit_mode === 'fixed' || service.deposit_mode === 'percentage';
+  // [KHAL-A1] Real payment settings from global_settings (migration 0008 anon
+  // surface). Null -> no transfer details: the payment step hides the transfer
+  // section instead of rendering a copyable dummy CVU (the A1 failure mode).
+  const storePayment = await getPaymentSettings();
   const payment: PaymentInfo = {
-    alias: storePaymentSettings.alias,
-    cvu: storePaymentSettings.cvu,
-    whatsappPhone: storePaymentSettings.whatsappPhone,
+    alias: storePayment?.alias ?? '',
+    cvu: storePayment?.cvu ?? '',
+    whatsappPhone: storePayment?.whatsappPhone ?? '',
     amountDueCents: computeAmountDueCents(
       service.price_cents,
       service.deposit_mode,
