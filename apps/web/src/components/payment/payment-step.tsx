@@ -167,19 +167,19 @@ export function PaymentStep({
 
       {hasTransferDetails ? (
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-slate-700">{t('transferTo')}</p>
+          <p className="text-sm font-semibold text-zinc-100">{t('transferTo')}</p>
           <CopyRow label={t('alias')} value={payment.alias} />
           <CopyRow label={t('cvu')} value={payment.cvu} />
         </div>
       ) : null}
 
       {hasTransferDetails ? (
-        <p className="text-sm text-slate-600">{t('instructions', { amount: depositAmount })}</p>
+        <p className="text-sm text-zinc-400">{t('instructions', { amount: depositAmount })}</p>
       ) : null}
 
       {bookingId && serviceId ? (
-        <div className="space-y-2 rounded-2xl border border-slate-200 p-4">
-          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-slate-700">
+        <div className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-zinc-100">
             {t('payOnlineTitle')}
           </label>
           <input
@@ -189,7 +189,7 @@ export function PaymentStep({
             value={payerEmail}
             onChange={(event) => setPayerEmail(event.target.value)}
             placeholder="tu@email.com"
-            className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus-visible:outline-2 focus-visible:offset-2 focus-visible:outline-slate-500"
+            className="w-full rounded-xl border border-white/20 px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
           />
           <button
             type="button"
@@ -200,7 +200,7 @@ export function PaymentStep({
             {isRedirecting ? t('redirecting') : t('payOnline')}
           </button>
           {checkoutError ? (
-            <p role="alert" className="text-sm text-red-600">
+            <p role="alert" className="text-sm text-red-300">
               {checkoutError}
             </p>
           ) : null}

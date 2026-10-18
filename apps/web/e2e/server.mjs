@@ -95,11 +95,43 @@ const services = [
   },
 ];
 
+/**
+ * global_settings rows mirroring supabase/seed.sql §6 (KHAL-A1 anon surface,
+ * migration 0008): the three storefront payment keys getPaymentSettings()
+ * reads. Values are the seed's jsonb strings — the E2E contract stays the
+ * same one production seeds.
+ */
+const globalSettings = [
+  {
+    organization_id: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+    setting_key: 'payment_alias',
+    value: 'khal.estudio',
+    updated_at: '2026-09-28T00:00:00Z',
+    deleted_at: null,
+  },
+  {
+    organization_id: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+    setting_key: 'payment_cvu',
+    value: '0000003100000000000001',
+    updated_at: '2026-09-28T00:00:00Z',
+    deleted_at: null,
+  },
+  {
+    organization_id: 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+    setting_key: 'payment_whatsapp_phone',
+    value: '5491100000000',
+    updated_at: '2026-09-28T00:00:00Z',
+    deleted_at: null,
+  },
+];
+
 /** Rows for other tables the anon client could theoretically touch. */
 function rowsFor(table) {
   switch (table) {
     case 'services':
       return services;
+    case 'global_settings':
+      return globalSettings;
     default:
       return [];
   }
@@ -139,6 +171,26 @@ function matches(row, searchParams) {
     }
     if (op === 'neq') {
       if (String(actual) === expected) {
+        return false;
+      }
+    }
+    if (op === 'in') {
+      // PostgREST in-list: ("a","b","c") — quoted, comma-separated.
+      const list = expected
+        .replace(/^\(/, '')
+        .replace(/\)$/, '')
+        .split(',')
+        .map(item => item.replace(/^"|"$/g, ''));
+      if (!list.includes(String(actual))) {
+        return false;
+      }
+    }
+    if (op === 'is') {
+      // SQL IS distinction: is.null must match a real null (not the string).
+      if (expected === 'null' && actual !== null) {
+        return false;
+      }
+      if (expected === 'not-null' && actual === null) {
         return false;
       }
     }
