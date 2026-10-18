@@ -180,7 +180,7 @@ function matches(row, searchParams) {
         .replace(/^\(/, '')
         .replace(/\)$/, '')
         .split(',')
-        .map(item => item.replace(/^"|"$/g, ''));
+        .map((item) => item.replace(/^"|"$/g, ''));
       if (!list.includes(String(actual))) {
         return false;
       }
