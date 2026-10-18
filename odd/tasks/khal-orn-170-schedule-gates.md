@@ -1,4 +1,4 @@
-> Parte de: [[INDICE-SISTEMA]] · Relacionados: [[docs/API-GUIDE]], [[docs/audits/rls-verify-khal-2026-10-07]]
+> Parte de: [[INDICE-SISTEMA]] · Relacionados: [[docs/API]], [[docs/audits/rls-verify-khal-2026-10-07]]
 
 # ODD Feature — khal-orn-170-schedule-gates
 

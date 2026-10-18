@@ -92,6 +92,23 @@ components:
     height: 52px
 ---
 
+## CSS Tokens (derived)
+
+--primary: #000000
+--secondary: #F4F4F5
+--tertiary: #34D399
+--accentSoft: #6EE7B7
+--textPrimary: #FFFFFF
+--textSecondary: #A1A1AA
+--textTertiary: #71717A
+--surface: rgba(255,255,255,0.04)
+--surfaceHover: rgba(255,255,255,0.07)
+--border: rgba(255,255,255,0.10)
+--borderStrong: rgba(255,255,255,0.15)
+--header: rgba(0,0,0,0.60)
+--error: #F87171
+--statusPending: #FBBF24
+
 ## Overview
 
 Khal is a lash-studio booking app with an iOS-strict, dark-first identity. The entire brand lives on one idea: a pure black canvas with a slow white particle aura (`BackgroundMesh`, canvas crossfade ~7s) that breathes behind everything. There is exactly one accent color — emerald — and it means one thing: action (book, confirm, pay, WhatsApp). No gradients, no glows, no second accent. The layout is a single centered app column (`max-w-lg`) that feels like a native app in a browser tab, mobile-first.
@@ -139,3 +156,5 @@ Three radii, locked: 12px (inputs, slots, day chips), 16px (cards, status boxes)
 - Don't style buttons non-pill or cards at radii other than 12/16.
 - Don't ship any interactive control without the `focus-visible` emerald ring (contract-tested, ORN-59).
 - Do keep all visible copy in voseo es-AR (`lang="es-AR"`, i18n messages).
+
+--background: #000000

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmación — Khal Wireframe</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
+      .wf-screen {
+        width: 375px;
+        min-height: 667px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .wf-content {
+        flex: 1;
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-align: center;
+      }
+      .wf-check {
+        width: 80px;
+        height: 80px;
+        border: 2px dashed #999;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        color: #888;
+      }
+      .wf-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #444;
+      }
+      .wf-code {
+        background: #e8e8e8;
+        border: 1px dashed #999;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #444;
+        letter-spacing: 2px;
+      }
+      .wf-detail {
+        background: #fff;
+        border: 1px dashed #ccc;
+        border-radius: 8px;
+        padding: 16px;
+        width: 100%;
+      }
+      .wf-detail-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+        padding: 8px 0;
+        border-bottom: 1px dashed #ddd;
+      }
+      .wf-detail-row:last-child {
+        border-bottom: none;
+      }
+      .wf-highlight {
+        background: #e8e8e8;
+        border: 1px dashed #999;
+        border-radius: 8px;
+        padding: 14px;
+        width: 100%;
+        font-size: 13px;
+        color: #555;
+        line-height: 1.5;
+        text-align: left;
+      }
+      .wf-button {
+        background: #ccc;
+        border: 1px dashed #999;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #444;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .wf-button-secondary {
+        background: transparent;
+        border: 1px dashed #999;
+        padding: 12px;
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .wf-footer {
+        font-size: 10px;
+        color: #aaa;
+        text-align: center;
+        padding: 8px;
+        border-top: 1px dashed #ddd;
+      }
+      a.wf-link {
+        color: inherit;
+        text-decoration: none;
+        display: contents;
+      }
+      a.wf-link:hover {
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wf-screen">
+      <div class="wf-content">
+        <div class="wf-check">✓</div>
+        <div class="wf-title">¡Turno reservado!</div>
+        <div style="font-size: 14px; color: #888">Guardá tu código de reserva</div>
+        <div class="wf-code">KHAL-2026-0184</div>
+
+        <div class="wf-detail">
+          <div class="wf-detail-row"><span>Servicio</span><span>Relleno clásico</span></div>
+          <div class="wf-detail-row"><span>Fecha</span><span>Sábado 18 de octubre</span></div>
+          <div class="wf-detail-row"><span>Horario</span><span>15:00 hs</span></div>
+          <div class="wf-detail-row"><span>Duración</span><span>90 min</span></div>
+        </div>
+
+        <div class="wf-highlight">
+          <strong>Seña para confirmar: $7.500</strong><br />
+          Coordiná el pago por WhatsApp. El turno queda activo 24hs hasta recibir la seña.
+        </div>
+
+        <a href="home.html" class="wf-link">
+          <div class="wf-button">Coordinar seña por WhatsApp</div>
+        </a>
+
+        <a href="home.html" class="wf-link">
+          <div class="wf-button-secondary">Volver al catálogo</div>
+        </a>
+      </div>
+
+      <div class="wf-footer">confirmacion — UC-002 success</div>
+    </div>
+  </body>
+</html>

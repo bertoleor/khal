@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Servicios — Khal Wireframe</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
+      .wf-screen {
+        width: 375px;
+        min-height: 667px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .wf-nav {
+        background: #e8e8e8;
+        border-bottom: 1px dashed #ccc;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+      }
+      .wf-content {
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .wf-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #444;
+      }
+      .wf-button {
+        background: #ccc;
+        border: 1px dashed #999;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #444;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .wf-card {
+        background: #fff;
+        border: 1px dashed #ccc;
+        border-radius: 4px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .wf-img-placeholder {
+        width: 48px;
+        height: 48px;
+        background: #ddd;
+        border: 1px dashed #bbb;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+      .wf-text-placeholder {
+        background: #e0e0e0;
+        height: 12px;
+        border-radius: 2px;
+      }
+      .wf-text-placeholder.medium {
+        width: 70%;
+      }
+      .wf-text-placeholder.short {
+        width: 40%;
+      }
+      .wf-badge {
+        font-size: 10px;
+        padding: 2px 8px;
+        border: 1px dashed #999;
+        border-radius: 4px;
+        color: #666;
+        flex-shrink: 0;
+      }
+      .wf-badge.inactive {
+        color: #aaa;
+      }
+      .wf-footer {
+        font-size: 10px;
+        color: #aaa;
+        text-align: center;
+        padding: 8px;
+        border-top: 1px dashed #ddd;
+      }
+      a.wf-link {
+        color: inherit;
+        text-decoration: none;
+        display: contents;
+      }
+      a.wf-link:hover {
+        opacity: 0.7;
+      }
+      .wf-back {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wf-screen">
+      <div class="wf-nav">
+        <a href="admin-dashboard.html" class="wf-link"><span class="wf-back">← Dashboard</span></a>
+        <span>Servicios</span>
+        <span></span>
+      </div>
+
+      <div class="wf-content">
+        <div style="display: flex; align-items: center; justify-content: space-between">
+          <div class="wf-title">Catálogo (3)</div>
+          <div class="wf-button" style="padding: 8px 16px">+ Nuevo</div>
+        </div>
+
+        <a href="admin-servicios.html" class="wf-link">
+          <div class="wf-card">
+            <div class="wf-img-placeholder"></div>
+            <div style="flex: 1">
+              <div class="wf-text-placeholder medium" style="margin-bottom: 6px"></div>
+              <div style="font-size: 12px; color: #888">$25.000 · 90 min</div>
+            </div>
+            <span class="wf-badge">activo</span>
+          </div>
+        </a>
+
+        <a href="admin-servicios.html" class="wf-link">
+          <div class="wf-card">
+            <div class="wf-img-placeholder"></div>
+            <div style="flex: 1">
+              <div class="wf-text-placeholder medium" style="margin-bottom: 6px"></div>
+              <div style="font-size: 12px; color: #888">$18.000 · 60 min</div>
+            </div>
+            <span class="wf-badge">activo</span>
+          </div>
+        </a>
+
+        <a href="admin-servicios.html" class="wf-link">
+          <div class="wf-card">
+            <div class="wf-img-placeholder"></div>
+            <div style="flex: 1">
+              <div class="wf-text-placeholder medium" style="margin-bottom: 6px"></div>
+              <div style="font-size: 12px; color: #888">$15.000 · 45 min</div>
+            </div>
+            <span class="wf-badge inactive">inactivo</span>
+          </div>
+        </a>
+
+        <div style="font-size: 12px; color: #888; text-align: center; margin-top: 8px">
+          Tap en un servicio para editar (Tiptap + foto, max 4MB)
+        </div>
+      </div>
+
+      <div class="wf-footer">admin-servicios — UC-004</div>
+    </div>
+  </body>
+</html>

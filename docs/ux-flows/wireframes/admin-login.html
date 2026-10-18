@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — Khal Wireframe</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
+      .wf-screen {
+        width: 375px;
+        min-height: 667px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .wf-content {
+        flex: 1;
+        padding: 32px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        justify-content: center;
+      }
+      .wf-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #444;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .wf-subtitle {
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+        margin-bottom: 24px;
+      }
+      .wf-label {
+        font-size: 12px;
+        color: #888;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .wf-input {
+        border: 1px dashed #ccc;
+        background: #fff;
+        padding: 14px;
+        font-size: 14px;
+        color: #999;
+        border-radius: 4px;
+        margin-bottom: 12px;
+      }
+      .wf-otp-grid {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .wf-otp-cell {
+        width: 44px;
+        height: 52px;
+        border: 1px dashed #bbb;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #444;
+        background: #fff;
+      }
+      .wf-otp-cell.filled {
+        border-style: solid;
+        border-color: #444;
+        background: #f0f0f0;
+      }
+      .wf-button {
+        background: #444;
+        border: 1px solid #333;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .wf-footer {
+        font-size: 10px;
+        color: #aaa;
+        text-align: center;
+        padding: 8px;
+        border-top: 1px dashed #ddd;
+      }
+      a.wf-link {
+        color: inherit;
+        text-decoration: none;
+        display: contents;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wf-screen">
+      <div class="wf-content">
+        <div class="wf-title">khal admin</div>
+        <div class="wf-subtitle">Panel de gestión de turnos</div>
+
+        <div class="wf-label">Email</div>
+        <div class="wf-input">lashartist@ejemplo.com</div>
+
+        <div class="wf-button" style="margin-bottom: 24px">Enviar código</div>
+
+        <div class="wf-label" style="text-align: center">Te enviamos un código de 6 dígitos</div>
+        <div class="wf-otp-grid">
+          <div class="wf-otp-cell filled">4</div>
+          <div class="wf-otp-cell filled">7</div>
+          <div class="wf-otp-cell filled">2</div>
+          <div class="wf-otp-cell filled">9</div>
+          <div class="wf-otp-cell">·</div>
+          <div class="wf-otp-cell">·</div>
+        </div>
+
+        <a href="admin-dashboard.html" class="wf-link">
+          <div class="wf-button">Ingresar</div>
+        </a>
+      </div>
+
+      <div class="wf-footer">admin-login — UC-003</div>
+    </div>
+  </body>
+</html>

@@ -11,14 +11,14 @@
 | Doc | Qué cubre |
 |---|---|
 | [01 — Qué es](01-que-es.md) | Qué es KHAL, para quién, propuesta de valor |
-| [02 — Arquitectura y stack](02-arquitectura-stack.md) | Cómo se arma: monorepo, apps, packages, framework/stack, datos |
+| [02 — Arquitectura y stack](../ARCHITECTURE.md) | Cómo se arma: monorepo, apps, packages, framework/stack, datos — **ahora vive en `ARCHITECTURE.md` de la raíz** (set v2); `02-arquitectura-stack.md` quedó como redirect |
 | [03 — Funciones](03-funciones.md) | Funciones web pública + admin + automatizaciones |
 | [04 — Branding e identidad visual](04-branding-identidad.md) | Branding, identidad visual, tokens, componentes |
 | [05 — Marketing y tono](05-marketing-tono.md) | Marketing, i18n es/en, tono es-AR, copys clave |
 | [06 — Estado y gates](06-estado-gates.md) | Baseline medida, gates bloqueantes, gaps, próximos pasos (re-baseline 2026-10-15) |
 | [Flujo de la clienta](flujo-cliente.md) | Journey de reserva punta a punta con diagrama (catálogo → seña → WhatsApp) |
 | [Flujo del admin](flujo-admin.md) | Panel operativo: auth fail-closed, turnos/servicios/clientas/excepciones |
-| [API Guide](API-GUIDE.md) | Superficie pública: PostgREST + RPC create_booking + contrato del stub |
+| [API](API.md) | Superficie de API: PostgREST + RPC create_booking + server actions + webhooks + stub |
 | [DESIGN.md (raíz)](../DESIGN.md) | Spec de tokens de identidad visual (formato Google design.md) — fuente normativa para cualquier UI nueva |
 | [ADR-0001 — Auth provisoria → JWT](adr/ADR-0001-auth-provisoria.md) | Admin auth: cookie mock → Supabase JWT claims (aplicada) |
 | [ADR-0002 — Pagos dual](adr/ADR-0002-payment-dual-flow.md) | MP checkout + transferencia manual como flujos oficiales |

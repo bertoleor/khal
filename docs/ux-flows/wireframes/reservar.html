@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservar — Khal Wireframe</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
+      .wf-screen {
+        width: 375px;
+        min-height: 667px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .wf-nav {
+        background: #e8e8e8;
+        border-bottom: 1px dashed #ccc;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+      }
+      .wf-content {
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .wf-section {
+        background: #fff;
+        border: 1px dashed #ccc;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .wf-label {
+        font-size: 12px;
+        color: #888;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+      .wf-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 12px;
+      }
+      .wf-date-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .wf-date {
+        padding: 10px 0;
+        text-align: center;
+        border: 1px dashed #bbb;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #888;
+        cursor: pointer;
+      }
+      .wf-date.available {
+        border-style: solid;
+        border-color: #999;
+        background: #f0f0f0;
+        color: #444;
+      }
+      .wf-date.selected {
+        background: #444;
+        color: #fff;
+        border-style: solid;
+        border-color: #444;
+      }
+      .wf-slot-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .wf-slot {
+        padding: 10px 16px;
+        border: 1px dashed #bbb;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #888;
+      }
+      .wf-slot.available {
+        border-style: solid;
+        border-color: #999;
+        color: #444;
+        background: #f0f0f0;
+        cursor: pointer;
+      }
+      .wf-slot.selected {
+        background: #444;
+        color: #fff;
+        border-style: solid;
+        border-color: #444;
+      }
+      .wf-input {
+        border: 1px dashed #ccc;
+        background: #fff;
+        padding: 12px;
+        font-size: 14px;
+        color: #999;
+        border-radius: 4px;
+        margin-bottom: 8px;
+      }
+      .wf-summary {
+        background: #e8e8e8;
+        border: 1px dashed #999;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .wf-summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+        padding: 6px 0;
+        border-bottom: 1px dashed #ddd;
+      }
+      .wf-summary-row.total {
+        font-weight: 600;
+        color: #444;
+        border-bottom: none;
+        padding-top: 10px;
+      }
+      .wf-button {
+        background: #444;
+        border: 1px solid #333;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 16px;
+      }
+      .wf-footer {
+        font-size: 10px;
+        color: #aaa;
+        text-align: center;
+        padding: 8px;
+        border-top: 1px dashed #ddd;
+      }
+      a.wf-link {
+        color: inherit;
+        text-decoration: none;
+        display: contents;
+      }
+      a.wf-link:hover {
+        opacity: 0.7;
+      }
+      .wf-back {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wf-screen">
+      <div class="wf-nav">
+        <a href="servicio-detalle.html" class="wf-link"><span class="wf-back">← Servicio</span></a>
+        <span>Reservar turno</span>
+        <span></span>
+      </div>
+
+      <div class="wf-content">
+        <!-- Sección 1: Fecha -->
+        <div class="wf-section">
+          <div class="wf-label">1 · Elegí la fecha</div>
+          <div class="wf-date-grid">
+            <div class="wf-date">Lun 13</div>
+            <div class="wf-date available">Mar 14 ✓</div>
+            <div class="wf-date available">Mié 15 ✓</div>
+            <div class="wf-date">Jue 16</div>
+            <div class="wf-date available">Vie 17 ✓</div>
+            <div class="wf-date selected">Sáb 18</div>
+            <div class="wf-date">Dom 19</div>
+            <div class="wf-date available">Lun 20 ✓</div>
+          </div>
+        </div>
+
+        <!-- Sección 2: Horario -->
+        <div class="wf-section">
+          <div class="wf-label">2 · Elegí el horario (sábado 18)</div>
+          <div class="wf-slot-grid">
+            <div class="wf-slot">09:00</div>
+            <div class="wf-slot available">10:00</div>
+            <div class="wf-slot available">11:00</div>
+            <div class="wf-slot available">14:00</div>
+            <div class="wf-slot selected">15:00</div>
+            <div class="wf-slot">16:00</div>
+            <div class="wf-slot available">17:00</div>
+          </div>
+        </div>
+
+        <!-- Sección 3: Datos -->
+        <div class="wf-section">
+          <div class="wf-label">3 · Tus datos</div>
+          <div class="wf-input">Nombre y apellido</div>
+          <div class="wf-input">WhatsApp (ej: 11 2345 6789)</div>
+          <div class="wf-input">Notas (opcional) — alergias, referencias…</div>
+        </div>
+
+        <!-- Resumen + CTA -->
+        <div class="wf-summary">
+          <div class="wf-summary-row"><span>Relleno clásico</span><span>$25.000</span></div>
+          <div class="wf-summary-row"><span>Sábado 18 · 15:00</span><span>90 min</span></div>
+          <div class="wf-summary-row"><span>Seña (30%)</span><span>$7.500</span></div>
+          <div class="wf-summary-row total">
+            <span>Saldo el día del turno</span><span>$17.500</span>
+          </div>
+        </div>
+
+        <a href="confirmacion.html" class="wf-link">
+          <div class="wf-button">Confirmar reserva</div>
+        </a>
+      </div>
+
+      <div class="wf-footer">reservar — UC-002 (flujo crítico)</div>
+    </div>
+  </body>
+</html>

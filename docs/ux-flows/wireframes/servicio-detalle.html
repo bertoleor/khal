@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle Servicio — Khal Wireframe</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
+      .wf-screen {
+        width: 375px;
+        min-height: 667px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .wf-nav {
+        background: #e8e8e8;
+        border-bottom: 1px dashed #ccc;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+      }
+      .wf-content {
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .wf-img-large {
+        width: 100%;
+        height: 180px;
+        background: #ddd;
+        border: 1px dashed #bbb;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        font-size: 14px;
+      }
+      .wf-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #444;
+      }
+      .wf-subtitle {
+        font-size: 14px;
+        color: #888;
+      }
+      .wf-list-item {
+        background: #fff;
+        border: 1px dashed #ccc;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+      }
+      .wf-list-item + .wf-list-item {
+        border-top: none;
+      }
+      .wf-button {
+        background: #ccc;
+        border: 1px dashed #999;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #444;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .wf-text-placeholder {
+        background: #e0e0e0;
+        height: 12px;
+        border-radius: 2px;
+      }
+      .wf-text-placeholder.full {
+        width: 100%;
+      }
+      .wf-text-placeholder.short {
+        width: 40%;
+      }
+      .wf-footer {
+        font-size: 10px;
+        color: #aaa;
+        text-align: center;
+        padding: 8px;
+        border-top: 1px dashed #ddd;
+      }
+      .wf-cta-bar {
+        position: sticky;
+        bottom: 0;
+        background: #e8e8e8;
+        border-top: 1px dashed #ccc;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      a.wf-link {
+        color: inherit;
+        text-decoration: none;
+        display: contents;
+      }
+      a.wf-link:hover {
+        opacity: 0.7;
+      }
+      .wf-back {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wf-screen">
+      <div class="wf-nav">
+        <a href="home.html" class="wf-link"><span class="wf-back">← Catálogo</span></a>
+        <span>Servicio</span>
+        <span></span>
+      </div>
+
+      <div class="wf-content">
+        <div class="wf-img-large">[ Foto del servicio ]</div>
+        <div class="wf-title">Relleno clásico</div>
+        <div class="wf-text-placeholder full" style="margin-bottom: 4px"></div>
+        <div class="wf-text-placeholder full" style="margin-bottom: 4px"></div>
+        <div class="wf-text-placeholder short"></div>
+
+        <div style="border: 1px dashed #ccc; border-radius: 4px; overflow: hidden">
+          <div class="wf-list-item"><span>Precio</span><span>$25.000</span></div>
+          <div class="wf-list-item"><span>Duración</span><span>90 min</span></div>
+          <div class="wf-list-item"><span>Seña para reservar</span><span>$7.500 (30%)</span></div>
+        </div>
+      </div>
+
+      <div class="wf-cta-bar">
+        <span style="font-size: 14px; color: #666">$25.000</span>
+        <a href="reservar.html" class="wf-link">
+          <div class="wf-button" style="padding: 12px 24px">Reservar turno →</div>
+        </a>
+      </div>
+
+      <div class="wf-footer">servicio-detalle — UC-001 → UC-002</div>
+    </div>
+  </body>
+</html>

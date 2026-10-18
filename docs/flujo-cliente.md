@@ -3,7 +3,7 @@
 > **Fecha:** 2026-10-15 · **Autor:** 24-gentle (hermes) · **Motivo:** documentar el journey completo de reserva tras el re-baseline del catálogo 100% pestañas
 > **Búsqueda:** keywords: `flujo, reserva, clienta, booking, happy-path, e2e` · clasificación: `product` · estado: `vigente`
 > **Resumen:** Journey punta a punta de la clienta sobre la web pública (`/es`): catálogo, detalle de servicio, selección de día/horario, datos, confirmación vía RPC `create_booking` y pantalla de seña con WhatsApp. Para ventas, onboarding y QA.
-> **Parte de:** [[README]] · Relacionados: [[03-funciones]], [[06-estado-gates]], [[API-GUIDE]], [[flujo-admin]]
+> **Parte de:** [[README]] · Relacionados: [[03-funciones]], [[06-estado-gates]], [[API]], [[flujo-admin]]
 
 ## Journey completo
 
