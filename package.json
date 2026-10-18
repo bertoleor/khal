@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "knip": "knip",
+    "biome:scan": "npx -y @biomejs/biome lint apps/web/src apps/admin/src packages",
     "prepare": "husky",
     "changeset": "changeset",
     "version": "changeset version",
