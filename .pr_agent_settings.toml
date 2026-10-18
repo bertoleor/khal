@@ -1,0 +1,27 @@
+# PR-Agent configuration — see https://qodo-ai-pr-agent docs
+# Model: NVIDIA NIM OpenAI-compatible endpoint (set in the workflow env)
+
+[config]
+model = "openai/nvidia/nemotron-3-super-120b-a12b"
+fallback_models = ["openai/z-ai/glm-5.3-flash"]
+max_model_tokens = 28000
+git_provider = "github"
+publish_output = true
+verbosity_level = 1
+
+[pr_reviewer]
+require_score_review = true
+require_security_review = true
+require_tests_review = true
+num_code_suggestions = 4
+
+[pr_description]
+publish_labels = true
+add_original_user_description = true
+
+[pr_custom_labels]
+enable = false
+
+[ignore]
+# Global ignore glob list for PR review and /improve
+ignore_glob = ["**/*.lock", "**/snapshots/**", "**/package-lock.json"]
