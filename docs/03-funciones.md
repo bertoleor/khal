@@ -35,7 +35,7 @@ Fuente: `docs/reporte-producto-marketing-estilo-2026-09-12.md` §1 +
 | Clientes / CRM | LTV, no-show count, lista negra, tags visuales, notas por turno |
 | Servicios | Crear/editar precio, mostrar-ocultar, alta, acciones bulk (ej. "Subir 10% a seleccionados") |
 | Bloqueos | `holiday/vacation/event/block` — se restan de la disponibilidad |
-| Auth | `requireAuth` + JWT `app_metadata.role` (**código listo**, fallback a cookie `khal_role` mock hasta provisionar — ver ADR-0001) |
+| Auth | `requireAuth` + JWT `app_metadata.role` (aplicada — ADR-0001/ORN-79: mock cookie `khal_role` removido, fail-closed; login OTP real, staff user con claim `admin` provisionado) |
 
 ## Automatizaciones (`apps/api-workers` + `docs/automations.md`)
 

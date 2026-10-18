@@ -28,6 +28,10 @@
   {admin, manager}. Until staff users are provisioned in Supabase Auth with
   that claim, admin actions fail closed (by design).
 - Exit criteria: ~~Supabase project linked + JWT claims issued + fallback
-  removed + E2E login test~~ — project linked + fallback removed: DONE.
-  Remaining: provision staff users with `app_metadata.role` claim (owner/
-  Supabase dashboard) + E2E login flow once the sign-in form exists.
+  removed + E2E login test~~ — project linked + fallback removed + staff user
+  provisioned: DONE (verified live 2026-10-18, ORN-167: `auth.users` holds the
+  owner account, confirmed, with `app_metadata.role = admin` + `org_id`).
+  Login flow: real OTP sign-in shipped (`apps/admin/src/components/admin/login-form.tsx`,
+  T3 khal-admin-100-operable) and covered by contract tests (`login-contract.test.ts`
+  7/7, `auth.test.ts` 10/10 — 17/17 green); admin playwright e2e remains out of
+  scope by cycle decision (playwright infra is web-only).

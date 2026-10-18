@@ -40,7 +40,9 @@ desde el celular; la dueña gestiona todo desde un backoffice.
   (`apps/web/src/lib/mocks/*`: servicios, schedule, settings con alias
   `khal.estudio`, CBU y WhatsApp provisorios).
 - **Código listo, sin verificar:** Mercado Pago (preferencia + webhook HMAC +
-  re-fetch del pago), auth JWT Supabase (ADR-0001, fallback a cookie mock
-  `khal_role`), RLS y RPC `create_booking` (migraciones en
-  `supabase/migrations/0001-0003`, sin proyecto vivo linkeado).
+  re-fetch del pago), RLS y RPC `create_booking` (migraciones en
+  `supabase/migrations/0001-0003`).
+- **Auth admin aplicada y verificada:** JWT Supabase `app_metadata.role` vía
+  `requireAuth` (ADR-0001/ORN-79) — mock cookie `khal_role` removido,
+  fail-closed; login OTP real; staff user con claim `admin` provisionado.
 - Sin URL productiva verificada, sin `LICENSE`.

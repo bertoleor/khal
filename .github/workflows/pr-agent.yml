@@ -18,8 +18,11 @@ jobs:
     steps:
       - name: PR Agent action step
         id: pragent
-        uses: The-PR-Agent/pr-agent@main
+        uses: docker://pragent/pr-agent:github_action
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          OPENAI_API_BASE: https://integrate.api.nvidia.com/v1
+          OPENAI__API_BASE: https://integrate.api.nvidia.com/v1
+          CONFIG__MODEL: openai/nvidia/nemotron-3-super-120b-a12b
+          CONFIG__FALLBACK_MODELS: '["openai/z-ai/glm-5.3-flash"]'
+          CONFIG__MAX_OUTPUT_TOKENS: '8192'

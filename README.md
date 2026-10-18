@@ -29,8 +29,10 @@ strictly at boot (`apps/web/src/config/env.ts`).
 
 ## Production gates (blocking)
 
-- **Auth**: admin auth is provisional (cookie `khal_role` mock). Swap to
-  Supabase JWT custom claims (`app_metadata.role`) before production.
+- **Auth**: resolved (ADR-0001 applied, ORN-79) — the `khal_role` cookie mock is
+  fully removed; `requireAuth` verifies a Supabase session and resolves the role
+  from the JWT `app_metadata.role` claim, fail-closed. Real OTP login ships in
+  `apps/admin` (`login-form.tsx`); the staff user holds the `admin` claim.
 - **RLS**: policies ship in `supabase/migrations/0001_initial_schema.sql`
   but no live Supabase project is linked — UNVERIFIED against a real DB.
 - **Payments**: manual transfer flow (alias/CBU + WhatsApp proof). No
