@@ -1,53 +1,41 @@
 #!/usr/bin/env sh
-# ============================================================================
-# khal pre-commit hook — gitleaks (secretos) + lint-staged (fmt/lint)
-# Se ejecuta vía .husky/_/h (core.hooksPath=.husky/_). No tocar eso.
-#
-# REQUISITO gitleaks (obligatorio para scan local): instalá gitleaks en tu máquina
-#   - macOS/Linux : brew install gitleaks
-#   - Windows     : winget install Gitleaks.Gitleaks   |   scoop install gitleaks
-#                   |   choco install gitleaks
-#   Si el binario NO está, este hook sigue adelante (graceful skip): el job
-#   "Gitleaks" en CI (gitleaks/gitleaks-action@v2) igualmente bloquea secretos.
-# Reglas compartidas local+CI: .gitleaks.toml (allowlist de paths build/deps/docs).
-# ============================================================================
+# Robust pre-commit hook: gitleaks + lint-staged
+# Follows the pattern from khal and santisima-trinidad as per decision.
 
-# Guard contra cuelgues: si encuentra `timeout` del sistema, acota cada comando.
-# 300s: eslint+prettier sobre 8+ archivos puede superar 60s en el host cargado
-# (4 vCPU con la flota residente) — 60s mataba el run a mitad (exit 124 = fail
-# intermitente del pre-commit, diagnosticado 2026-10-16).
 _TIMEOUT=""
-if command -v timeout >/dev/null 2>&1; then
-  _TIMEOUT="timeout 300"
+if [ -x /usr/bin/timeout ]; then
+  _TIMEOUT="/usr/bin/timeout 300"
 fi
 
-# >>> gitleaks-pre-commit
 if command -v gitleaks >/dev/null 2>&1; then
-  if $_TIMEOUT gitleaks protect --staged --redact --exit-code 1 --no-banner --config .gitleaks.toml; then
-    echo "✅ gitleaks: sin secretos en staged"
+  if [ -f .gitleaks.toml ]; then
+    $_TIMEOUT gitleaks protect --staged --redact --no-banner --config .gitleaks.toml < /dev/null
   else
-    echo "❌ gitleaks detectó un secreto en los cambios staged." >&2
-    echo "   Corregí el archivo señalado, volvé a agregarlo y reintentá el commit." >&2
-    echo "   Ver reglas/reglas excluidas en .gitleaks.toml." >&2
-    exit 1
+    $_TIMEOUT gitleaks protect --staged --redact --no-banner < /dev/null
+  fi
+  exit_code=$?
+  if [ $exit_code -eq 0 ]; then
+    echo "gitleaks: no leaks found"
+  else
+    echo "gitleaks: leak detected" >&2
+    exit $exit_code
   fi
 else
-  echo "⚠️ gitleaks no instalado — skip local (cubierto por CI). Instalá con:" >&2
-  echo "   brew install gitleaks | winget install Gitleaks.Gitleaks | scoop/choco install gitleaks" >&2
+  echo "gitleaks no instalado — skip local (cubierto por CI)" >&2
+  echo "Instalá gitleaks: scoop install gitleaks" >&2
 fi
-# <= gitleaks-pre-commit
-# husky v9: no se necesita el shim de v8 (`. "$(dirname -- "$0")/_/husky.sh"`)
-# — el hook corre via core.hooksPath=.husky/_ y la línea deprecada generaba
-# warnings y comportamiento intermitente (husky avisa: WILL FAIL in v10).
 
 # lint-staged: solo archivos staged; --no-stash evita el cuelgue histórico del stash.
 if [ -x node_modules/.bin/lint-staged ]; then
-  if $_TIMEOUT node_modules/.bin/lint-staged --no-stash 2>&1; then
-    echo "✅ Pre-commit: lint-staged OK"
-  else
-    echo "❌ Pre-commit: lint-staged falló — revisá los archivos señalados arriba." >&2
-    exit 1
+  $_TIMEOUT node_modules/.bin/lint-staged --no-stash < /dev/null
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+    echo "lint-staged falló" >&2
+    exit $exit_code
   fi
 else
-  echo "⚠️ lint-staged no instalado en node_modules — corré pnpm install." >&2
+  echo "lint-staged no instalado en node_modules — corré pnpm install." >&2
+  exit 1
 fi
+
+echo "✅ Pre-commit: lint-staged passed"
