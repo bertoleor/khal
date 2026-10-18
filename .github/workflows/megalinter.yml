@@ -1,0 +1,43 @@
+name: MegaLinter Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply_fixes:
+        description: "Apply auto-fixes (yes/no)"
+        required: false
+        default: "no"
+
+permissions:
+  contents: read
+
+jobs:
+  megalinter:
+    name: MegaLinter (${{ matrix.flavor }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        flavor: [javascript, documentation]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: MegaLinter
+        uses: oxsecurity/megalinter@v10
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          # Linters already enforced by khal's own gates — skip to avoid duplication:
+          DISABLE: TYPESCRIPT_ESLINT,ESLINT,PRETTIER,TSC
+          GITLEAKS_ENABLE: false # already covered by husky pre-commit gitleaks
+          APPLY_FIXES: ${{ github.event.inputs.apply_fixes == 'yes' && 'all' || 'none' }}
+          REPORT_OUTPUT_FOLDER: megalinter-reports
+      - name: Archive reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: megalinter-reports-${{ matrix.flavor }}
+          path: |
+            megalinter-reports
+            report.megalinter-*.json
+          if-no-files-found: ignore

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [".husky/pre-commit", "scripts/**/*.cjs"],
+      "ignore": [
+        "apps/web/src/lib/actions/payment.ts",
+        "apps/web/src/lib/mercadopago.ts",
+        "apps/web/src/lib/mocks/**"
+      ]
+    },
+    "apps/*": {},
+    "packages/*": {}
+  },
+  "ignoreDependencies": ["lint-staged"]
+}
