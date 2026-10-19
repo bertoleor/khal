@@ -1,6 +1,6 @@
 # Flujo de la clienta — reserva de turnos (web pública)
 
-> **Fecha:** 2026-10-15 · **Autor:** 24-gentle (hermes) · **Motivo:** documentar el journey completo de reserva tras el re-baseline del catálogo 100% pestañas
+> **Fecha:** 2026-10-19 · **Autor:** 24-gentle (hermes) · **Motivo:** documentar el journey completo de reserva tras el re-baseline del catálogo 100% pestañas + features del batch 10-16 (políticas, relleno +21d, fotos)
 > **Búsqueda:** keywords: `flujo, reserva, clienta, booking, happy-path, e2e` · clasificación: `product` · estado: `vigente`
 > **Resumen:** Journey punta a punta de la clienta sobre la web pública (`/es`): catálogo, detalle de servicio, selección de día/horario, datos, confirmación vía RPC `create_booking` y pantalla de seña con WhatsApp. Para ventas, onboarding y QA.
 > **Parte de:** [[README]] · Relacionados: [[03-funciones]], [[06-estado-gates]], [[API]], [[flujo-admin]]
@@ -32,6 +32,15 @@ flowchart TD
 | 5. Datos | `BookingForm` + `Field` | Nombre / Teléfono / Correo, labels explícitos (a11y), todos required. Sin Turnstile todavía (pendiente P2). |
 | 6. Confirmación | server action `createBooking` | Llama RPC `create_booking` contra la DB viva. Errores mapeados a mensajes i18n: `error.duplicate`, `error.conflict`, `error.unavailable`, `error.blacklisted`, `error.invalid`. |
 | 7. Seña | `PaymentStep` | Monto = 30% del servicio (o total si no define seña). Alias + CVU con botón copiar (`aria-live` "Copiado"). CTA WhatsApp con mensaje pre-armado (servicio, fecha, horario). |
+
+## Features del sitio — batch 2026-10-16
+
+Agregadas para las demos (commits 237f744, 3491864, 78c15d2), verificadas en código:
+
+- **Página `/politicas` (es+en):** políticas de seña, cancelación, no-show y puntualidad (traducciones `policies.*` de next-intl). Enlazada desde header y footer; incluida en `sitemap.ts`. Soporta modo presentación `?skeleton=1`.
+- **Sugerencia de relleno (+21 días):** en `PaymentStep`, tras confirmar la reserva, card `role="note"` que sugiere agendar el relleno a fecha de turno + 21 días (formateada según locale). Fail-soft: fecha no-ISO → la card no se muestra y la pantalla de pago sigue funcional.
+- **Fotos del servicio (`photo_path`):** cards del catálogo y detalle de servicio muestran la foto desde `services.photo_path` con `next/image`; campo opcional, sin foto no se muestra el bloque.
+- **SEO:** JSON-LD `BeautySalon` con `sameAs` Instagram (`khal.estudiook`) en el layout, footer social con Instagram oficial, geo metas y localidad de Vicente López en el copy.
 
 ## Qué NO hace el flujo (hoy)
 
