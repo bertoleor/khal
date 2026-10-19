@@ -25,3 +25,6 @@ enable = false
 [ignore]
 # Global ignore glob list for PR review and /improve
 ignore_glob = ["**/*.lock", "**/snapshots/**", "**/package-lock.json"]
+
+[ticket_pr_compliance_check]
+enable = false
