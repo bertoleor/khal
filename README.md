@@ -44,4 +44,5 @@ strictly at boot (`apps/web/src/config/env.ts`).
 - `docs/` — constitution, automations, Supabase migration notes.
 - `docs/auditoria-nocturna-2026-09-12.md` — latest full audit (UNVERIFIED).
 - `openspec/` — specs (`virtual-agenda`, `limpiar-codigo-errores-warnings-tree`).
-- `SECURITY.md` — disclosure policy.
+- `docs/SECURITY.md` — disclosure policy (pendiente mover a raíz, ORN-220).
+- Set infaltables v2 (rutas canónicas): [AGENTS.md](AGENTS.md) · [CONTRIBUTING.md](CONTRIBUTING.md) · [CHANGELOG.md](CHANGELOG.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [LICENSE](LICENSE) · [DESIGN.md](docs/DESIGN.md) · [API.md](docs/API.md) · [DATABASE.md](docs/DATABASE.md) · [plan-accion-2026-09-12.md](docs/plan-accion-2026-09-12.md).

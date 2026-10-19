@@ -28,3 +28,12 @@ or
 STATUS: FAILED
 
 If FAILED, list: `file:line - rule violated - issue`
+
+## Docs del proyecto — rutas canónicas (set infaltables v2)
+
+> Convención de flota: `E:/Hermes/docs/sistema/docs-infaltables-proyectos.md` — raíz = lo que las herramientas consumen; `docs/` = biblioteca con nombre fijo.
+
+- **Raíz:** `README.md` · `AGENTS.md` · `SECURITY.md` · `CONTRIBUTING.md` · `CHANGELOG.md` · `ARCHITECTURE.md` · `LICENSE`
+- **`docs/`:** `docs/DESIGN.md` · `docs/API.md` · `docs/DATABASE.md` · `docs/marca.md` · `docs/plan-accion-YYYY-MM-DD.md` · `docs/runbooks/`
+
+Pendientes en este proyecto (audit 19-writer 2026-10-19): `SECURITY.md` en raíz (hoy `docs/SECURITY.md` — mover, ORN-220) · `docs/marca.md` (≈ `docs/04-branding-identidad.md`) · `docs/runbooks/` (ORN-217) · `DESIGN.md` dup en raíz (higiene, ORN-224)
