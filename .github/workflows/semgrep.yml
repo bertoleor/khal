@@ -17,7 +17,7 @@ jobs:
     container:
       image: semgrep/semgrep
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Semgrep scan (TS/JS/React rulesets)
         run: semgrep --config p/typescript --config p/javascript --config p/react --config p/nextjs --error --skip-unknown-extensions apps packages
       - name: Semgrep scan (security audit, non-blocking report)

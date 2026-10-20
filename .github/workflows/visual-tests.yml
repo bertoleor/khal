@@ -31,7 +31,7 @@ jobs:
       - name: Install git (checkout needs it inside the container)
         run: apt-get update && apt-get install -y --no-install-recommends git
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install pnpm (packageManager pin)
         run: npm install -g pnpm@12.3.4

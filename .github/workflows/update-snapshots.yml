@@ -75,7 +75,7 @@ jobs:
       - name: Install git (checkout + commit need it inside the container)
         run: apt-get update && apt-get install -y --no-install-recommends git
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # actions/checkout with token sets up the git credential helper automatically.
           # No need to manually configure git remote or credential.helper — it's handled.
