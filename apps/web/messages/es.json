@@ -71,5 +71,18 @@
     "noShowBody": "Si no asistís a tu turno sin avisar, la seña se pierde. Avisanos con tiempo por WhatsApp y lo reprogramamos.",
     "punctualityTitle": "Puntualidad",
     "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente."
+  },
+  "pagoResult": {
+    "exitoTitle": "¡Pago recibido!",
+    "exitoBody": "Tu pago quedó registrado. Estamos confirmando la seña de tu turno: en cuanto se acredite te avisamos. Tu turno ya está reservado.",
+    "pendienteTitle": "Pago pendiente de acreditación",
+    "pendienteBody": "Tu pago quedó pendiente (por ejemplo, una transferencia recién enviada o un pago en efectivo). En cuanto se acredite te avisamos. Si tarda en reflejarse, escribinos por WhatsApp.",
+    "errorTitle": "No se pudo completar el pago",
+    "errorBody": "El pago no se concretó. Podés reintentarlo desde tu reserva o coordinar la seña por transferencia. Si el cobro aparece igual en tu cuenta, escribinos por WhatsApp antes de reintentar.",
+    "paymentLabel": "Pago N.º {id}",
+    "backToCatalog": "Volver al catálogo",
+    "whatsappHelp": "Consultanos por WhatsApp",
+    "whatsappMessage": "¡Hola! Hice un pago online para mi turno (pago {paymentId}) y tengo una consulta.",
+    "whatsappMessageNoId": "¡Hola! Vengo de la pantalla de pago online y tengo una consulta."
   }
 }

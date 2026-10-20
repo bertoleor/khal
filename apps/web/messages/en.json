@@ -71,5 +71,18 @@
     "noShowBody": "If you do not attend your appointment without notice, the deposit is forfeited. Let us know in advance via WhatsApp and we will reschedule.",
     "punctualityTitle": "Punctuality",
     "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting."
+  },
+  "pagoResult": {
+    "exitoTitle": "Payment received!",
+    "exitoBody": "Your payment was registered. We're confirming the deposit for your booking — you'll get a confirmation as soon as it clears. Your booking is already reserved.",
+    "pendienteTitle": "Payment pending",
+    "pendienteBody": "Your payment is pending (for example, a transfer just sent or a cash payment). We'll let you know as soon as it clears. If it takes a while, message us on WhatsApp.",
+    "errorTitle": "We couldn't complete the payment",
+    "errorBody": "The payment didn't go through. You can try again from your booking or arrange the deposit by bank transfer. If the charge shows up in your account, message us on WhatsApp before retrying.",
+    "paymentLabel": "Payment #{id}",
+    "backToCatalog": "Back to catalog",
+    "whatsappHelp": "Message us on WhatsApp",
+    "whatsappMessage": "Hi! I made an online payment for my booking (payment {paymentId}) and I have a question.",
+    "whatsappMessageNoId": "Hi! I just came from the online payment screen and I have a question."
   }
 }
