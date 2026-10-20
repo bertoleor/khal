@@ -25,7 +25,7 @@ versión re-sincroniza el doc con el estado real del repo.
 |---|---|---|---|
 | G1 | Auth mock → JWT Supabase | UNVERIFIED | **APLICADO** (ADR-0001, superseded 09-27): cookie mock eliminado (ORN-79), JWT `app_metadata.role` única vía, **fail-closed**, proyecto linkeado. 10-16: **login real OTP + staff provisionado** (khal-admin-100-operable); restante: E2E login |
 | G2 | RLS verificado en DB viva | UNVERIFIED | **UNVERIFIED** — migraciones 0001→0003 existen (incl. `0002_auth_roles.sql`); falta `db push` + tests RPC contra DB viva (el E2E usa stub, no la toca) |
-| G3 | Pagos: MP vs manual-only | Decisión dueña pendiente | **Decisión EFECTIVA en código**: dual flow (MP checkout + alias/CVU + WhatsApp en `payment-step.tsx`, ver ADR-0002). En vivo UNVERIFIED: `MP_ACCESS_TOKEN`/webhook sin verificar contra producción |
+| G3 | Pagos: MP vs manual-only | Decisión dueña pendiente | **Decisión EFECTIVA en código**: dual flow (MP checkout + alias/CVU + WhatsApp en `payment-step.tsx`, ver ADR-0002). 10-20: **code-complete** — back_urls `/pago/exito|pendiente|error` implementadas (40/40 tests) + webhook endurecido en main (query-param delivery, rollback del claim, manifest corto; 4865376, ORN-13). En vivo UNVERIFIED: falta provisionar `MP_ACCESS_TOKEN`/`MP_WEBHOOK_SECRET`/`APP_URL` y registrar el webhook en el panel MP (checklist: `docs/pagos-mp-go-live.md`) |
 | G4 | Reserva real sin doble-booking | UNVERIFIED | **UNVERIFIED** — `create_booking` via PostgREST RPC existe en código; falta test de concurrencia contra DB viva |
 
 ## Avances 09-15 → 10-15 (antes no registrados aquí)
@@ -54,7 +54,9 @@ versión re-sincroniza el doc con el estado real del repo.
 **Para cerrar "producción real" falta (decisiones de la dueña):**
 1. Provisionar staff users con `app_metadata.role` + login form.
 2. `db push` + verificación RLS/RPC contra la DB viva.
-3. MP en vivo (provisionar token/webhook) o declarar manual-only oficial.
+3. MP en vivo — provisionar `MP_ACCESS_TOKEN`/`MP_WEBHOOK_SECRET`/`APP_URL` y
+   registrar el webhook (checklist paso a paso en `docs/pagos-mp-go-live.md`)
+   o declarar manual-only oficial.
 4. Test de concurrencia de reservas (sin doble-booking).
 
 ## Gaps P1/P2 (actualizados 2026-10-15)
