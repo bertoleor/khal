@@ -1,0 +1,105 @@
+# ODD Feature — khal-ux-skeletons-v2 (anti-AI layout redesign + new business rules)
+
+> **Búsqueda:** keywords: `khal, skeletons, layout, anti-ai, seña, comprobante, telegram bot, admin, booking flow` · clasificación: `odd-feature` · estado: `in-progress` · actualizado: 2026-10-20
+
+## Objective
+Redesign the full clienta + admin screen set as reference-first, anti-AI layout skeletons (structure layer), capturing the new business rules (manual seña, terms, dueña's Telegram bot), and produce the handoff plan for 01-frontend.
+
+## Problem / Why
+1. Current site (and the 2026-10-17 wireframes) shows statistical-average AI distribution — centered stacks, uniform card rows, generic header/footer. Owner requirement: **anti-AI-design**, especially header and footer.
+2. Business rules evolved after the last flow pass (owner dictation 2026-10-20, below) — the flow docs (UC-002) must absorb them before skeletons.
+
+## Owner business rules (verbatim source: chat 2026-10-20, normalized)
+- **No in-app payments.** The seña is MANUAL: clienta transfers to the WhatsApp alias, then presses **"Enviar comprobante por WhatsApp"**. Nothing automatic in the app.
+- **Terms the clienta accepts before the seña:** arrive without makeup · 15-minute tolerance · reschedule at least 24h before · seña non-refundable · must disclose if coming with work from another place (external work → extra cost; mala praxis → another cost) · more terms TBD ("y así un par de cosas") → **terms content must be admin-editable, never hardcoded**.
+- **Dueña's Telegram bot** (admin channel — not a clienta feature): alerts on every booking with the clienta's entered data; per-booking a ready-to-forward comprobante-request message; day + next-day agenda digests; 2-day follow-up reminders for clientas awaiting follow-up. Admin panel surfaces bot status/config.
+- **Admin must include:** calendar (day/week), approve/reject comprobantes queue, clienta fichas (manual load by dueña + history), catalog editor, editable settings: redes y alias, seña amount, terms content.
+- **Clienta lifecycle messages** (dueña forwards via WhatsApp; we design the templates): welcome with pending confirmation · confirmed (comprobante approved) · post-service questionnaire (did she get the service done?) · refill reminder at 18 days · etc.
+- **Error paths are 10-uiux's responsibility** ("vos te toca pensar el lado errores y si algo sale mal").
+
+## Decisions (mine, owner can override)
+- **D1 — Terms placement** (answers owner's "antes o después"): summary checkbox + "ver todo" at the booking review step (the commit moment); the 2–3 money-critical terms (seña no devoluble, 24hs reprogramar) repeated on the comprobante screen; full terms on `/terminos` linked from footer. NO legal wall before the catalog — it kills conversion.
+- **D2 — Slot policy (CONFIRMED by owner 2026-10-20):** slot stays HELD for 12 HOURS as `pendiente de confirmacion` (her words: "para que no haya malentendidos"). After 12h without comprobante it auto-releases; dueña can re-confirm manually if the comprobante arrives late and the slot is still free; bot nudges her before expiry.
+- **D3 — External work:** checkbox in the booking form ("¿venís con trabajo de otro lugar?") → surfaces as a flag in the approval queue + ficha.
+- **D4 — Booking state machine:** `pendiente_comprobante → confirmada → completada` (+ `liberada` / `reprogramada` / `no-show`). Confirmation screen tells the clienta her booking is PENDING until the seña is validated.
+- **D5 — Layers:** skeletons = structure only (this feature). Visual direction (fondo dinámico + glass, editorial-luxe) applies on top AFTER structure approval (= the pending "preview v4", merged into this pipeline as T8+).
+- **D6 — Canvas (owner OK 2026-10-20):** animated particle background REMOVED — canvas is pure black. Any "fondo dinámico" becomes an optional variant in the T8 board, not a default. v2 skin = glass + editorial typography over solid black (raw-editorial palette).
+- **D7 — Admin device (owner, T8 review 2026-10-20):** the dueña runs the admin mostly from her PHONE — admin must resolve on phone FIRST; desktop/tablet stays as the big-screen version. Applied to all 6 admin screens: seg-tabs (hoy/mañana/señas), swipeable day calendar, queue list → full-screen sheet with thumb-zone actions, ficha tabs + sticky actions, catalog list + FAB, settings one-section-per-screen. Board now shows phone frame + desktop frame side by side per admin screen.
+- **D8 — Device targets (owner, 2026-10-20):** reference device = iPhone 12 Pro — 390×844 pt (notch + home indicator). All skeleton phone frames and every audit capture already match 390×844 exactly. Same logical size covers iPhone 12/13 family; Android 360–430 handled by implementation breakpoints. Admin (dueña) = iOS phone-first.
+- **D10 — Interactive background (owner + clienta, 2026-10-20):** `flow-gradient-hero-section` (21st.dev, @hardikkashiyani123456788) CONFIRMED — same responsive, motion, colors, light+dark with a visible toggle. Amends D6: canvas is NOT static black anymore. Verified from the live bundle: three.js liquid gradient + shader grain + kinetic type; pointermove/touchmove/pointerdown handlers (interactive on PC AND phone); native theme param (light/dark). 4 reference captures: docs/audits/skeletons-v2-audit/fondo-elegido-*.png. Flags: license UNKNOWN (verify pre-ship; fallback = shadergradient / paper-design MeshGradient, same look, clean license); source pull via 01-frontend t21st MCP; iOS perf gate on real device.
+- **D11 — Rounding & border discipline (owner, 2026-10-20):** AI-abuse guard — NO default rounded boxes. border-radius ≤ 2px (sharp editorial); separation by whitespace/scale/typography, NOT hairlines or bordered boxes. Borders only where functional (sticky bar top edge). No shadow+radius combos.
+- **D12 — Clienta background (owner, 2026-10-20):** flow-gradient runs DARK by default; light mode available via the toggle. Dark = primary.
+- **D13 — Admin background (owner, 2026-10-20):** admin = SOLID DARK, NO animated background (resource budget for the dueña's phone). Phase 2 (later): one static blurred image layered on top of the solid. The flow-gradient is CLIENTA-only.
+
+## Scope
+- **In:** new layout skeletons ~14 screens — clienta (home/servicios, detalle, reservar with terms checkbox + external-work Q, comprobante/seña, confirmación/estado, terminos) + admin (login, dashboard hoy/mañana with comprobante queue, calendario semana, ficha clienta, catálogo editor, settings incl. redes/alias/seña/terms/bot) · mobile-first clienta / desktop-first admin · anti-AI checklist per screen · cited reference per screen · lifecycle message map + bot templates · error-path matrix · handoff plan for 01.
+- **Out:** implementing the redesign in code (01-frontend) · payments automation · building the Telegram bot (design its messages/flows only; implementation → backend/11-automation) · final wording of terms (dueña owns content).
+
+## Constraints
+- Preview → owner approval → implementation. Nothing ships to the real repo UI without her pick.
+- Reference sources: free only (Refero paid MCP already rejected by fleet rule). Mobbin free tier, goodui, designspells, godly/land-book/awwwards, local awesome-design-md (84 brands), owner moodboard (19 pins) + `docs/design/owner-taste-references.md`.
+- This doc in English (fleet rule); UX deliverable docs in es-AR matching existing khal docs convention.
+- **iOS implementation constraints (T9 acceptance criteria):**
+  - Sticky bars (reservar CTA, seña WhatsApp, admin APROBAR) use position:sticky + `padding-bottom: env(safe-area-inset-bottom)` — never under the home indicator.
+  - `viewport-fit=cover` + safe-area insets on both apps; `100dvh` (not `100vh`) for full-height panels (iOS address-bar resize).
+  - Touch targets ≥ 44pt; zero hover-dependent affordances (no hover on touch).
+  - Motion: transform/opacity only. `backdrop-filter` (glass) on SMALL surfaces only — never full page (iOS Safari perf/battery). Particle canvas already removed (D6).
+  - Admin lists/sheets: native-feel scrolling, no scroll-trapping; images lazy + sized (no layout shift).
+  - QA gate: admin flows verified on the dueña's real iPhone before launch; Playwright-WebKit engine pass in CI where feasible.
+- Engram mirror pending — profile 10 has no Engram MCP; this file is the recovery source.
+
+## Tasks (stable IDs)
+- [x] T1: Audit current site — screenshots (clienta + admin, móvil + desktop) + concrete anti-pattern list (header, footer, home, reservar)
+  - evidence: docs/audits/skeletons-v2-audit/AUDIT.md (9 anti-patterns named + keep-list + empty-catalog flag) + 10 PNGs (home/politicas x2 viewports, 2 wireframes). Catalog empty in dev → detalle/reservar audited from wireframe HTML structure; admin app deep-capture folded into T6 (needs its own server + login). 2026-10-20.
+- [x] T2: Reference sheet per screen type (2–3 real screens each, distribution stated in one line)
+  - evidence: docs/ux-flows/referencias-skeletons-v2.md (12 screens with named refs + one-line distributions; godly + land-book pulled live 2026-10-20; designspells llms.txt read, homepage challenge-walled for curl so spells deferred to skin phase; Fresha/Booksy/GlossGenius booking patterns cited per screen). KEY CALL: catalog as LIST ROWS not card grid (industry-wide beauty-booking pattern). 2026-10-20.
+- [x] T3: Update flow docs with business rules — UC-002 rework (terms, comprobante states), new UCs (bot digests, follow-up), state diagram update
+  - evidence: use-cases.md — UC-002 v2 (12h hold in button copy, terms checkbox D1, external-work flag D3, seña receipt screen, honest PENDIENTE state) + UC-007 (cola señas A/R/L), UC-008 (bot digests/nudges + bot-down fallback), UC-009 (6-message lifecycle incl. 18-day refill), UC-010 (editable settings). states.md — state machine extended: pending_deposit(hold 12h) → confirmed/released/rejected → completed/no-show/rescheduled. screen-map.md — +5 screens (estado, ficha, cola, calendario, settings). UX-FLOWS.md — v2 section with D1–D6 + artifact links. 2026-10-20.
+- [x] T4: Error-path matrix — slot race, comprobante never arrives → release, double-tap, duplicate booking, no-show at 15min+1, reschedule <24h, external-work flag, bot-down fallback (admin queue is source of truth)
+  - evidence: matrix documented in 3 layers — v2-flujos-completos.html §09 (7 situations, plain language for the dueña); UC-002 v2 alternative flows (race, idempotencia anti double-tap, auto-release at 12h + manual re-confirm, <24h reschedule via WhatsApp, active-day duplicate warning); UC-008 (bot-down → admin panel is source of truth). AUDIT.md §hallazgo operativo (empty catalog) separately flagged to owner. 2026-10-20.
+- [x] T5: Clienta skeletons (mobile-first) — home/servicios, detalle, reservar, comprobante, confirmación/estado, terminos · each passes anti-AI checklist + cites reference
+  - evidence: docs/ux-flows/skeletons-v2-board.html screens 01–06 (phone frames). Each carries cited reference + anti-AI checklist badges + red distribution annotations. Key calls: catalog as LIST rows with one featured service; seña price visible in detalle; date REEL not calendar wall; receipt-style seña screen with 12h status bar; honest PENDIENTE confirmation; Stripe-style numbered términos. Playwright: 6/6 screens render, board-clienta-check.png. 2026-10-20.
+- [x] T6: Admin skeletons (desktop-first) — dashboard, calendario, cola comprobantes, ficha clienta, catálogo, settings
+  - evidence: same board screens 07–12 (desktop frames): hoy/mañana split 60/40 with 12h seña queue; week grid with khal flags (pendiente/bloqueado); comprobantes master-detail with keyboard A/R/L actions + message triggers; clienta ficha with ⚑ flags + manual add + 18-day refill clock; catalog inline-edit table; settings with editable Términos + live preview + bot on/off. Playwright: 12/12 screens render, board check screenshot. 2026-10-20.
+- [x] T7: Bot + message templates — telegram alerts (new booking, forwardable comprobante request, day/next-day digest, 2-day follow-up nudge) + clienta lifecycle map (welcome, confirmed, 24h reminder, post-service questionnaire, 18-day refill, no-show follow-up)
+  - evidence: all templates drafted in docs/ux-flows/v2-flujos-completos.html (S06 bot alerts + S07 six clienta lifecycle messages) + v2-flujos-completos.pdf (245 KB, playwright A4) — 2026-10-20
+- [ ] T8: Clickable board HTML → `::preview` → owner approval gate
+  - evidence: (pending)
+
+- [ ] T11: Flow-gradient background demo — khal wordmark + light/dark toggle over the chosen component (PC + touch emulation) → owner approval → integration spec for T9 (source via 01-frontend t21st MCP, license check, iOS perf calibration).
+  - evidence: demo BUILT + VERIFIED 2026-10-20 — docs/ux-flows/fondo-demo-khal.html (the real 21st bundle adapted: title=KHAL in Bodoni serif, CTA=Agendá tu turno, typographic no-box toggle kicker/toggle overlay, native pause-btn kept). Playwright verification 4/4: canvas renders, h1=KHAL, toggle present, serif font applied — captures: docs/audits/skeletons-v2-audit/demo-khal-*.png. Delivered ::preview. AWAITING owner+clienta visual approval; integration spec goes to T9 after OK.
+  - iteration 1 (owner feedback 2026-10-20): serif title override REJECTED — component's original Syne restored (reference fidelity rule logged in docs/design/owner-taste-references.md); CTA double-line fixed with white-space:nowrap — verified 4/4 combos: font=Syne, cta single-line (45px móvil / 51px desktop), fits viewport, canvas+toggle OK. Re-delivered ::preview.
+  - iteration 2 (owner feedback 2026-10-20): header OVERLAP fixed — my toggle collided with the component's native pause-btn (measured: toggle ended 1344 vs pause 1294 @1366px; kicker also hit the toggle @390px). Fixed: toggle anchored right:84px (right:68px <480px, 12px clear of pause), kicker shortened to 'estudio de pestañas'. Verified no-collision both viewports + re-captured 4/4.
+  - BRAND FONT (owner, 2026-10-20): khal's real logo font = **TAN Nightingale** by TanType (art-deco elongated serif). Purchase path: Creative Market $17 — https://creativemarket.com/tantype/5457550-TAN-NIGHTINGALE — package INCLUDES .otf/.ttf/.woff/.woff2 (webfiles). Free downloads exist but are PERSONAL-USE only; khal is commercial → license required. CAUTION: a DIFFERENT 'Nightingale' font exists by Teweka on MyFonts — not the same. Pending: owner purchases + hands over the .woff2 → wired as wordmark font (h1/header/footer) with fallback stack.
+  - iteration 3 (2026-10-20): RESOLVED — owner delivered the licensed TAN Nightingale package (otf/ttf/woff2). Files copied to docs/brand/fonts/ (all 3 formats). Wired in the demo via @font-face (local woff2, font-display:swap) — .title-main now uses 'TAN Nightingale' with serif fallback. VERIFIED with playwright: document.fonts.check('TAN Nightingale')=true, h1 computed font = TAN Nightingale, canvas renders, 4/4 captures re-taken (desktop-claro re-captured after a blank first frame). The wordmark is now the REAL brand font.
+  - iteration 4 (owner feedback 2026-10-20): wordmark set to 'Khal' (capitalizada sola — owner choice over all-caps). Removed the bundle's 'Made By Haik' author credit (preview-only artifact, not for khal) + hid the native pause-btn (prefers-reduced-motion handles it in the app; toggle re-anchored to the corner right:24/16). VERIFIED: madeByLinks=0, pauseHidden=true, toggleRight=24px, h1='Khal' in TAN Nightingale, font loads, canvas renders.
+- [x] T9: Handoff plan for 01-frontend — task breakdown, specs, anti-AI checklist as acceptance criteria, DESIGN.md token update (after visual layer) → ticket via orchestrador (24), never direct
+  - evidence: docs/plans/plan-implementacion-v2.md (6 fases, F0-F6, criterios de aceptación por fase, mapa de fuentes canon, riesgos con mitigaciones). DESIGN.md v2 addendum written (Nightingale wordmark, dark-default, D11 radius/border discipline, D12/D13 backgrounds per app). 14 skills físicamente copiadas al perfil de 01-frontend (verified missing first, additive): layout-composition, ui-animation, frontend-component-canon, premium-frontend-effects, design-taste-frontend, redesign-existing-projects, full-output-enforcement, frontend-slides + uupm suite x6. Plan dispatched to orquestador (24) via message_agent 2026-10-20 with the 3 flags (branch coordination, license gate, bot co-work).
+  - evidence: (pending)
+
+## Anti-AI checklist (pass/fail per screen — no vibes)
+1. Reference cited (2–3 real screens of that type, distribution stated)
+2. No row of 3+ identical cards; bento only with EXACT cell count
+3. Not everything centered — deliberate asymmetry / off-grid moment
+4. Section-Layout-Repetition ban (no two sections same structure back-to-back)
+5. Zigzag alternation capped; one deliberate contrast moment
+6. Header/footer treated as designed pieces (editorial), not utility dumps
+7. Responsive pair shown (clienta móvil-first, admin desktop-first)
+8. Max ONE "spell" (micro-delight) — after distribution is solid
+
+## Accepted changes and rationale
+- 2026-10-20: Merged "preview v4" (visual layer) into this pipeline as post-T8 instead of separate work — one approval chain, two owner gates (structure → skin).
+
+## Next step
+T1 (audit current site with captures) + T2 (reference sheet) — then T3/T4 in parallel.
+
+## Progress
+- 2026-10-20: Doc created from owner's business-rule dictation + approved pipeline. No code touched.
+- 2026-10-20: Owner confirmed D2 = 12h hold. Shipped flows-complete deliverable for the dueña: docs/ux-flows/v2-flujos-completos.html (cover + 10 sections: journey, reserva steps, 12h rule, state machine, terms, bot mockups, 6 clienta lifecycle drafts, panel, error matrix, next steps) + PDF via playwright. Git commit deferred: repo is on branch khal/changelog-batch-1016 (another workstream) — orchestrator to coordinate branch at handoff (T9).
+- 2026-10-20: T1 DONE — audit at docs/audits/skeletons-v2-audit/AUDIT.md. Owner OK'd killing the particle animation (D6). Operational flag raised: catalog EMPTY in dev — asked owner whether prod shows services. Vision key exhausted today → structural audit from DOM/code; PNGs on disk for owner visual check.
+- 2026-10-20: Dev finding for T9 handoff: apps/web/src/app/not-found.tsx has no root layout (Next.js dev error on every 404 render; pages still render). Pre-existing — goes on 01-frontend's fix list. Also: stale error notification arrived from the FIRST dev server process (killed on purpose); live server is proc_53065a532247.
+- 2026-10-20: T5+T6 DONE — full 12-screen board at docs/ux-flows/skeletons-v2-board.html (verified: 12 screens, 0 broken). T8 gate is now the owner's review — board delivered via ::preview in chat. Skin layer (glass + editorial typography on solid black, D6) comes ONLY after structure approval.
+- 2026-10-20 (later): T3+T4 DONE — repo flow docs synced with v2 rules (use-cases UC-002 v2 + UC-007..010, 12h state machine, screen map +5, UX-FLOWS v2 section). Remaining: T8 owner review of the 12-screen board, then T9 handoff plan via orchestrator.
+- 2026-10-20 (T8 feedback): Owner LIKES the skeletons and the flow — one revision: admin must also resolve on phone (dueña's primary device). Applied: admin block rebuilt with phone frames (D7). Board re-verified (12 screens / 12 phones / 6 desktops, render check + evidence screenshot). Awaiting final OK to close T8.
+- 2026-10-20 (final): owner approved the demo visual after 4 iterations (Syne kept, CTA single-line, overlaps fixed, TAN Nightingale wired + verified, wordmark 'Khal', credit + pause removed, toggle cornered). Owner GO for T9 with three new directives: D11 (sharp corners, minimal borders), D12 (animated bg = dark default, clienta), D13 (admin = solid dark, no animation, static blurred image later).
+- 2026-10-20 (T9 closed): owner GO with D11 (sharp corners / minimal borders), D12 (dark default for the animated bg), D13 (admin solid dark, no animation, blurred static image later). Plan written, tokens registered, skills copied to 01, dispatch sent to 24. Workstream design phase COMPLETE.
