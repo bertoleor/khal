@@ -32,11 +32,25 @@ stateDiagram-v2
         ServerError --> [*]: mostrar retry
     }
 
-    CreandoReserva --> ReservaConfirmada: status=pending_deposit
+    CreandoReserva --> ReservaConfirmada: status=pending_deposit + hold 12h
     state ReservaConfirmada {
-        [*] --> MostrarDetalle
-        MostrarDetalle --> WhatsAppAbierto: tap botón WhatsApp
+        [*] --> MostrarRecibo
+        MostrarRecibo --> CopiarAlias: tap COPIAR
+        MostrarRecibo --> WhatsAppAbierto: tap "enviar comprobante"
     }
 
-    ReservaConfirmada --> [*]: clienta cierra o va a WhatsApp
+    ReservaConfirmada --> EsperandoComprobante: comprobante reenviado a la dueña
+    state EsperandoComprobante {
+        [*] --> Pendiente12h
+        Pendiente12h --> Confirmada: dueña APROBA (UC-007)
+        Pendiente12h --> Liberada: 12h sin comprobante (auto-release)
+        Pendiente12h --> Rechazada: dueña RECHAZA (externo/mala praxis)
+    }
+    Liberada --> [*]: slot vuelve a estar disponible
+    Rechazada --> [*]: mensaje con tacto + slot liberado
+
+    Confirmada --> Completada: día del turno, servicio hecho
+    Confirmada --> NoShow: 15 min de tolerancia agotados
+    Confirmada --> Reprogramada: la dueña coordina (>=24h antes, vía WhatsApp)
+    Completada --> [*]: arranca el reloj del retoque (18 días, UC-009)
 ```

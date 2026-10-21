@@ -10,18 +10,23 @@ graph TD
         ReservarFecha["Reservar: Fecha<br/>(/servicios/[id]/reservar#fecha)"]
         ReservarHorario["Reservar: Horario<br/>(/servicios/[id]/reservar#horario)"]
         ReservarDatos["Reservar: Datos<br/>(/servicios/[id]/reservar#datos)"]
-        Confirmacion["Confirmación<br/>Código + Seña + WhatsApp"]
-        Politicas["Políticas<br/>(/politicas)"]
+        Confirmacion["Confirmación + Seña (recibo)<br/>alias COPIAR + 12h countdown<br/>CTA único: comprobante x WhatsApp"]
+        Estado["Estado del turno<br/>badge PENDIENTE → CONFIRMADA"]
+        Politicas["Políticas / Términos<br/>(/politicas) — editables por la dueña"]
     end
 
     subgraph Admin["🔐 Admin (apps/admin)"]
         Login["Login OTP<br/>(/login)"]
         CodigoOTP["Código OTP<br/>Ingreso 6 dígitos"]
-        Dashboard["Dashboard<br/>(/admin)"]
+        Dashboard["Hoy / Mañana (/admin)<br/>agenda + cola de señas 12h"]
         Servicios["Servicios<br/>(/admin/servicios)"]
         ServicioEditor["Editor Servicio<br/>Tiptap + Foto upload"]
         Bloqueos["Bloqueos<br/>(/admin/bloqueos)"]
         Clientes["Clientes<br/>(/admin/clientes)"]
+        FichaClienta["Ficha clienta<br/>flags ⚑ + notas + alta manual"]
+        ColaSenas["Cola de señas<br/>aprobar A / rechazar R / liberar L"]
+        Calendario["Calendario semana/mes<br/>pendientes + bloqueos"]
+        Settings["Configuración<br/>alias · seña · redes · términos · bot"]
     end
 
     Home -->|"tap servicio"| ServicioDetalle
@@ -29,7 +34,8 @@ graph TD
     ReservarFecha -->|"fecha seleccionada"| ReservarHorario
     ReservarHorario -->|"horario seleccionado"| ReservarDatos
     ReservarDatos -->|"Confirmar"| Confirmacion
-    Confirmacion -->|"WhatsApp"| Home
+    Confirmacion -->|"comprobante enviado"| Estado
+    Estado -->|"WhatsApp"| Home
 
     Login -->|"email enviado"| CodigoOTP
     CodigoOTP -->|"código válido"| Dashboard
@@ -37,6 +43,11 @@ graph TD
     Servicios --> ServicioEditor
     Dashboard --> Bloqueos
     Dashboard --> Clientes
+    Dashboard --> ColaSenas
+    Dashboard --> Calendario
+    Dashboard --> Settings
+    Clientes --> FichaClienta
+    ColaSenas -->|"APROBAR"| Dashboard
 
     Home -.-> Politicas
 

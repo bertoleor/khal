@@ -30,33 +30,38 @@
 
 ---
 
-## UC-002: Reservar turno con seña ⭐ CRÍTICO
+## UC-002: Reservar turno con seña ⭐ CRÍTICO — v2 (2026-10-20)
 
 | Campo | Descripción |
 |--------|-------------|
 | ID | UC-002 |
-| Name | Reservar turno con seña 30% |
-| Actors | Clienta, Sistema (Supabase), WhatsApp |
-| Preconditions | Servicio activo con precio definido · Horario disponible existe · Config de seña activa (30%) |
+| Name | Reservar turno con seña manual + retención 12 h |
+| Actors | Clienta, Sistema (Supabase), WhatsApp, Bot Telegram (aviso a la dueña) |
+| Preconditions | Servicio activo con precio definido · Horario disponible existe · Config de seña activa (monto o %, editable) · Términos del estudio definidos (editables por la dueña) |
 
 **Main Flow:**
-1. Clienta toca "Reservar" en detalle de servicio (`/servicios/[id]/reservar`)
-2. Ve date picker con próximos 30 días (días con disponibilidad resaltados)
-3. Selecciona fecha → time slots para esa fecha aparecen
+1. Clienta toca "Reservar" en detalle de servicio (`/servicios/[id]/reservar`) — el precio de la seña ya es visible en el detalle
+2. Tira de fechas horizontal (reel, próximos 30 días, disponibles resaltados)
+3. Selecciona fecha → time slots aparecen (horarios tomados se muestran tachados)
 4. Selecciona horario disponible
-5. Completa datos: nombre, WhatsApp, notas opcionales
-6. Ve resumen: servicio, fecha, horario, precio total, seña 30% (monto)
-7. Toca "Confirmar reserva"
-8. Sistema crea booking en Supabase (RPC `create_booking`)
-9. Ve pantalla de confirmación con: código de reserva, detalle del turno, monto de seña, botón de WhatsApp para coordinar pago + confirmar asistencia
+5. Completa datos: nombre, WhatsApp, y **checkbox "vengo con pestañas de otro lugar"** (⚑ flag → visible para la dueña en cola y ficha)
+6. Ve resumen + **casilla de términos obligatoria** (resumen corto + "ver todo"): sin maquillaje · tolerancia 15 min · cambios con 24 h · seña no reembolsable · avisar trabajo externo
+7. Toca "Confirmar — reserva por 12 h" (la promesa de retención va en el botón)
+8. Sistema crea booking (RPC `create_booking`) con status `pending_deposit` + **hold de 12 horas** (`hold_expires_at`); el slot queda tomado para otros — nadie más lo puede agarrar
+9. Bot notifica a la dueña: datos de la clienta + flag ⚑ + mensaje listo para reenviar pidiendo el comprobante
+10. Clienta ve pantalla de seña (estilo recibo): monto, alias con botón COPIAR, CBU alternativo, barra de countdown de las 12 h, y **un solo CTA: "Enviar comprobante por WhatsApp"** (la transferencia es manual — no hay pagos en la app)
+11. Pantalla de estado: badge PENDIENTE DE CONFIRMACIÓN + countdown + "qué pasa ahora" en 3 pasos (la dueña valida → mensaje de confirmación → recordatorio 24 h)
 
 **Alternative Flows:**
-- Horario tomado entre pasos 4-7 (race condition): sistema refresca slots, muestra "Ese horario acaba de tomarse", clienta elige otro
+- Horario tomado entre pasos 4-7 (race condition): sistema refresca slots, muestra "Ese horario recín se tomó", clienta elige otro sin perder sus datos
+- **Doble-tap en confirmar (idempotencia):** una sola reserva se crea — el botón se bloquea al confirmar
 - Cliente ya tiene turno activo ese día: warning "Ya tenés un turno el [fecha]" con opción de continuar o cancelar
 - Error de red al confirmar: mensaje de error con retry, booking no se crea
-- Fecha sin slots: date picker la marca como no disponible
+- Fecha sin slots: la tira la marca como no disponible
+- **Comprobante nunca llega:** a las 12 h el turno se libera solo (status `released`); el bot avisó a la dueña antes de vencer; si el comprobante llega tarde y el slot sigue libre, la dueña puede re-confirmar a mano (la última palabra es suya — ver UC-007)
+- **Reprogramar con menos de 24 h:** la app no lo permite self-service — deriva al WhatsApp de la dueña, que decide caso por caso
 
-**Postconditions:** Booking creado con status `pending_deposit`. Clienta tiene código de reserva y link de WhatsApp. La lash artist ve el turno en su calendario admin.
+**Postconditions:** Booking creado con status `pending_deposit` y hold de 12 h. La clienta ve el estado con countdown y la vía de seña por WhatsApp. La dueña recibió la alerta del bot y ve el turno en su cola de señas. NINGÚN turno está confirmado hasta que la dueña aprueba el comprobante (UC-007).
 
 ---
 
@@ -157,3 +162,91 @@
 - Buscar por nombre: filter en tiempo real
 
 **Postconditions:** Admin tiene visibilidad completa de su cartera de clientas.
+
+---
+
+## UC-007: Dueña aprueba, rechaza o libera señas ⭐ (v2)
+
+| Campo | Descripción |
+|--------|-------------|
+| ID | UC-007 |
+| Name | Cola de comprobantes — la dueña decide |
+| Actors | Dueña, Sistema, Bot Telegram, WhatsApp |
+| Preconditions | Existe booking `pending_deposit` con hold activo · Comprobante reenviado por WhatsApp (o ausente) |
+
+**Main Flow:**
+1. La cola de señas ordena por urgencia (vence primero arriba) con countdown y flag ⚑ visible
+2. Dueña abre el detalle: foto del comprobante, datos de la clienta, monto esperado, hace cuánto reservó
+3. APROBAR (tecla A): status → `confirmed` · dispara el mensaje "turno confirmado" listo para reenviar por WhatsApp
+4. La ficha de la clienta se actualiza; el turno pasa a la agenda como confirmado
+
+**Alternative Flows:**
+- RECHAZAR (R): status → `rejected` (mala praxis, externo no aceptado) · dispara mensaje con tacto · slot se libera
+- LIBERAR (L): status → `released` sin mensaje de rechazo (solo aviso de liberación)
+- PEDIR DE NUEVO (W): re-envía el pedido de comprobante a la clienta
+- 12 h vencidas sin comprobante: auto-release — el bot avisó antes; si el comprobante llega tarde y el slot sigue libre, la dueña re-confirma a mano
+
+**Postconditions:** Booking en estado final del caso; mensaje correspondiente generado; ficha y agenda actualizadas.
+
+---
+
+## UC-008: Bot de Telegram informa a la dueña (v2)
+
+| Campo | Descripción |
+|--------|-------------|
+| ID | UC-008 |
+| Name | Canal bot — alertas y digests |
+| Actors | Bot Telegram, Dueña, Sistema |
+| Preconditions | Bot configurado (on/off y destinataria desde Configuración) |
+
+**Main Flow:**
+1. Nueva reserva: alerta instantánea — datos de la clienta + flag ⚑ + hold hasta cuándo + mensaje listo para reenviar pidiendo comprobante
+2. Cada mañana: digest de la agenda de hoy y mañana + pendientes de seña
+3. Vencimiento próximo: nudge ("se libera en 3 horas — re-confirmar o dejar que se libere")
+4. Seguimiento: cada 2 días, clientas pendientes de respuesta o con retoque pronto (18 días)
+
+**Alternative Flows:**
+- Bot caído: el panel es la fuente de verdad — todo sigue visible; el bot es aviso, no origen
+
+**Postconditions:** La dueña está informada sin abrir el panel; nada se pierde si el bot falla.
+
+---
+
+## UC-009: Ciclo de mensajes a clientas — retención (v2)
+
+| Campo | Descripciñn |
+|--------|-------------|
+| ID | UC-009 |
+| Name | Lifecycle: del cuestionario al retoque de 18 días |
+| Actors | Dueña, Clienta (vía WhatsApp), Sistema |
+
+**Main Flow (mensajes, redactados en docs/ux-flows/v2-flujos-completos.html §07):**
+1. Bienvenida + "turno a confirmar" (reserva creada)
+2. "Turno confirmado ✓" (seña aprobada — dispara UC-007)
+3. Recordatorio 24 h antes (reduce no-shows — el mensaje que más plata salva)
+4. Post-servicio: cuestionario "cómo te quedaron"
+5. +18 días del turno completado: recordatorio de retoque (motor de recompra)
+6. No-show (15 min + 1): mensaje con tacto — seña no reembolsable + cómo reprogramar
+
+**Postconditions:** Ficha de clienta con el historial del ciclo; rellenos agendados; dueña nunca tipea de cero.
+
+---
+
+## UC-010: Dueña gestiona contenido editable — alias, seña, redes, términos (v2)
+
+| Campo | Descripciñn |
+|--------|-------------|
+| ID | UC-010 |
+| Name | Configuración — el negocio cambia sin depender de nadie |
+| Actors | Dueña, Sistema |
+
+**Main Flow:**
+1. Configuración → secciones: Alias & CBU · Seña (monto o %) · Redes sociales · Términos · Bot
+2. Edita y guarda → impacto en vivo en la app (alias y monto en la pantalla de seña; redes en el footer; términos en `/politicas` y en la casilla del reservar)
+3. El editor de términos tiene preview en vivo de lo que ve la clienta
+
+**Alternative Flows:**
+- Término nuevo con reserva en curso: aplica a reservas nuevas — no retroactivo
+- Seña cambia de monto a %: el porcentaje se calcula sobre el precio vigente del servicio
+
+**Postconditions:** Contenido gestionado por la dueña; cero dependencia técnica para cambios de negocio.

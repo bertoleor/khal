@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KHAL — Flujos completos v2</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 15mm 14mm;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --ink: #0d0d0d;
+        --soft: #555;
+        --faint: #8a8a8a;
+        --hair: #d9d9d9;
+        --fill: #f6f6f6;
+        --ghost: #efefef;
+        --serif: 'Bodoni MT', 'Didot', 'Playfair Display', Georgia, serif;
+        --sans: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        --mono: 'Consolas', 'Courier New', monospace;
+      }
+      body {
+        background: #fff;
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 13.5px;
+        line-height: 1.62;
+      }
+      .doc {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 56px 40px 40px;
+      }
+
+      /* ---- cover ---- */
+      .cover {
+        text-align: left;
+        padding: 30px 0 10px;
+        border-bottom: 3px solid var(--ink);
+        margin-bottom: 46px;
+      }
+      .cover .kicker {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        letter-spacing: 4px;
+        color: var(--faint);
+        text-transform: uppercase;
+      }
+      .cover h1 {
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 74px;
+        letter-spacing: 2px;
+        line-height: 1;
+        margin: 18px 0 10px;
+      }
+      .cover .sub {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 21px;
+        color: var(--soft);
+      }
+      .cover .meta {
+        margin-top: 26px;
+        display: flex;
+        gap: 34px;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--faint);
+        letter-spacing: 1px;
+      }
+      .cover .meta b {
+        color: var(--ink);
+        font-weight: 400;
+      }
+
+      /* ---- sections ---- */
+      section {
+        position: relative;
+        padding: 34px 0 22px;
+        margin-bottom: 20px;
+        break-inside: auto;
+      }
+      .num {
+        position: absolute;
+        top: -8px;
+        right: -6px;
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 150px;
+        line-height: 1;
+        color: var(--ghost);
+        z-index: 0;
+      }
+      .kicker {
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 3.5px;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+      h2 {
+        font-family: var(--serif);
+        font-size: 33px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        margin-bottom: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      h2 em {
+        font-style: italic;
+        font-weight: 400;
+      }
+      p.lead {
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: 16.5px;
+        color: var(--soft);
+        margin-bottom: 18px;
+        max-width: 640px;
+        position: relative;
+        z-index: 1;
+      }
+      section p {
+        position: relative;
+        z-index: 1;
+      }
+      .rule {
+        border: none;
+        border-top: 1px solid var(--hair);
+        margin: 26px 0;
+      }
+      strong {
+        font-weight: 600;
+      }
+
+      /* ---- journey ---- */
+      .journey {
+        display: flex;
+        gap: 0;
+        margin: 22px 0 8px;
+        position: relative;
+        z-index: 1;
+      }
+      .stop {
+        flex: 1;
+        padding: 0 10px;
+        text-align: center;
+        position: relative;
+      }
+      .stop .dot {
+        width: 44px;
+        height: 44px;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--serif);
+        font-size: 19px;
+        font-weight: 700;
+        background: #fff;
+        position: relative;
+        z-index: 1;
+      }
+      .stop .line {
+        position: absolute;
+        top: 22px;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background: var(--ink);
+        z-index: 0;
+      }
+      .stop:last-child .line {
+        display: none;
+      }
+      .stop h3 {
+        font-size: 12.5px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+      .stop small {
+        color: var(--soft);
+        font-size: 10.5px;
+        line-height: 1.45;
+        display: block;
+      }
+      .journey-note {
+        font-family: var(--serif);
+        font-style: italic;
+        color: var(--soft);
+        text-align: center;
+        margin: 16px 0 0;
+        font-size: 14px;
+      }
+
+      /* ---- step list ---- */
+      .steps {
+        counter-reset: paso;
+        margin: 16px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .step {
+        display: flex;
+        gap: 18px;
+        padding: 13px 0;
+        border-top: 1px solid var(--hair);
+      }
+      .step:first-child {
+        border-top: 3px solid var(--ink);
+      }
+      .step .n {
+        font-family: var(--serif);
+        font-size: 27px;
+        font-weight: 700;
+        min-width: 34px;
+        line-height: 1.1;
+      }
+      .step .t b {
+        display: block;
+        font-size: 13.5px;
+        margin-bottom: 2px;
+      }
+      .step .t span {
+        color: var(--soft);
+        font-size: 12.5px;
+      }
+
+      /* ---- policy / timeline ---- */
+      .policy {
+        border: 2px solid var(--ink);
+        padding: 24px 26px;
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+        background: #fff;
+      }
+      .policy .tag {
+        position: absolute;
+        top: -11px;
+        left: 22px;
+        background: #fff;
+        padding: 0 10px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+      }
+      .policy h3 {
+        font-family: var(--serif);
+        font-size: 26px;
+        margin-bottom: 10px;
+      }
+      .tl {
+        margin: 22px 0 10px;
+      }
+      .tl-bar {
+        height: 10px;
+        border: 2px solid var(--ink);
+        display: flex;
+        position: relative;
+      }
+      .tl-bar .seg {
+        flex: 12;
+        background: repeating-linear-gradient(
+          45deg,
+          #0d0d0d,
+          #0d0d0d 4px,
+          transparent 4px,
+          transparent 8px
+        );
+        border-right: 2px solid var(--ink);
+      }
+      .tl-bar .seg.free {
+        flex: 3;
+        background: none;
+      }
+      .tl-labels {
+        display: flex;
+        font-family: var(--mono);
+        font-size: 9.5px;
+        color: var(--soft);
+        margin-top: 7px;
+        letter-spacing: 0.5px;
+      }
+      .tl-labels div {
+        flex: 1;
+        text-align: center;
+      }
+      .policy ul {
+        margin: 12px 0 4px 18px;
+      }
+      .policy li {
+        margin-bottom: 7px;
+        font-size: 12.8px;
+      }
+
+      /* ---- states ---- */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 18px 0;
+        position: relative;
+        z-index: 1;
+        font-size: 12.3px;
+      }
+      th {
+        font-family: var(--mono);
+        font-size: 9.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 9px 10px;
+        border-bottom: 2.5px solid var(--ink);
+        color: var(--soft);
+      }
+      td {
+        padding: 10px;
+        border-bottom: 1px solid var(--hair);
+        vertical-align: top;
+      }
+      td b {
+        font-weight: 700;
+      }
+      .st {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+
+      /* ---- terms ---- */
+      .terms {
+        border: 2px solid var(--ink);
+        padding: 24px 28px 20px;
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .terms .tag {
+        position: absolute;
+        top: -11px;
+        left: 22px;
+        background: #fff;
+        padding: 0 10px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+      }
+      .terms ol {
+        margin-left: 20px;
+      }
+      .terms li {
+        margin-bottom: 9px;
+        font-size: 13px;
+      }
+      .terms .check {
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--hair);
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--soft);
+      }
+      .terms .check::before {
+        content: '☑ ';
+        font-size: 15px;
+        color: var(--ink);
+      }
+
+      /* ---- chat mockups ---- */
+      .chat {
+        max-width: 420px;
+        margin: 18px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .bubble {
+        border: 1.5px solid var(--ink);
+        border-radius: 14px 14px 14px 2px;
+        padding: 13px 16px;
+        margin-bottom: 12px;
+        background: var(--fill);
+        font-size: 12.6px;
+        line-height: 1.55;
+        position: relative;
+      }
+      .bubble.right {
+        border-radius: 14px 14px 2px 14px;
+        background: #fff;
+        margin-left: 40px;
+        border-style: dashed;
+      }
+      .bubble .who {
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 6px;
+      }
+      .bubble .bubble-label {
+        font-family: var(--mono);
+        font-size: 9.5px;
+        letter-spacing: 1px;
+        color: var(--soft);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .bubble .when {
+        position: absolute;
+        bottom: 6px;
+        right: 12px;
+        font-family: var(--mono);
+        font-size: 8.5px;
+        color: var(--faint);
+      }
+      .chat-pair {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+      .chat-pair .chat {
+        flex: 1;
+        min-width: 320px;
+      }
+
+      /* ---- grid cards ---- */
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 18px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .card {
+        border: 1.5px solid var(--ink);
+        padding: 17px 19px 15px;
+        background: #fff;
+      }
+      .card h4 {
+        font-family: var(--serif);
+        font-size: 17.5px;
+        margin-bottom: 6px;
+      }
+      .card small {
+        color: var(--soft);
+        font-size: 12px;
+        line-height: 1.5;
+        display: block;
+      }
+      .card .u {
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--faint);
+        display: block;
+        margin-bottom: 7px;
+      }
+
+      /* ---- next steps ---- */
+      .next {
+        display: flex;
+        gap: 0;
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .next .ns {
+        flex: 1;
+        border-top: 3px solid var(--ink);
+        padding: 14px 14px 0 0;
+        margin-right: 14px;
+      }
+      .next .ns:last-child {
+        margin-right: 0;
+      }
+      .next .ns b {
+        font-family: var(--serif);
+        font-size: 16px;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .next .ns small {
+        color: var(--soft);
+        font-size: 11.5px;
+        line-height: 1.5;
+      }
+
+      /* ---- footer ---- */
+      footer {
+        border-top: 3px solid var(--ink);
+        margin-top: 44px;
+        padding-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+      footer .brand {
+        font-family: var(--serif);
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+      footer .fmeta {
+        font-family: var(--mono);
+        font-size: 9px;
+        color: var(--faint);
+        line-height: 1.7;
+        max-width: 430px;
+      }
+
+      svg {
+        display: block;
+        margin: 18px auto;
+        position: relative;
+        z-index: 1;
+      }
+      svg text {
+        font-family: var(--sans);
+      }
+      .svg-mono {
+        font-family: var(--mono);
+      }
+
+      @media print {
+        .doc {
+          padding: 0;
+          max-width: none;
+        }
+        section {
+          break-before: page;
+        }
+        section:first-of-type {
+          break-before: avoid;
+        }
+        .num {
+          color: #f2f2f2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="doc">
+      <!-- ============ COVER ============ -->
+      <div class="cover">
+        <div class="kicker">Documento de flujos · Versión 2 · Para aprobación</div>
+        <h1>KHAL</h1>
+        <div class="sub">Cómo va a funcionar tu app de turnos — de principio a fin.</div>
+        <div class="meta">
+          <div>PARA<br /><b>La dueña del estudio</b></div>
+          <div>FECHA<br /><b>20 de octubre, 2026</b></div>
+          <div>ALCANCE<br /><b>Clienta · Seña · Bot · Panel</b></div>
+          <div>ESTADO<br /><b>Para tu OK</b></div>
+        </div>
+      </div>
+
+      <!-- ============ 01 JOURNEY ============ -->
+      <section>
+        <div class="num">01</div>
+        <div class="kicker">El recorrido de la clienta</div>
+        <h2>De entrar por el celu a tener el turno <em>confirmado</em></h2>
+        <p class="lead">
+          Todo el camino que hace una clienta, sin registro y sin vueltas. La plata nunca pasa por
+          la app: la seña es por WhatsApp, siempre.
+        </p>
+
+        <div class="journey">
+          <div class="stop">
+            <div class="line"></div>
+            <div class="dot">1</div>
+            <h3>Catálogo</h3>
+            <small
+              >Entra desde el celu y ve el estudio: servicios con foto, precio y duración.</small
+            >
+          </div>
+          <div class="stop">
+            <div class="line"></div>
+            <div class="dot">2</div>
+            <h3>Servicio</h3>
+            <small>Toca el servicio y ve los detalles, cuánto cuesta y el monto de la seña.</small>
+          </div>
+          <div class="stop">
+            <div class="line"></div>
+            <div class="dot">3</div>
+            <h3>Reserva</h3>
+            <small>Elige día y horario, deja sus datos, acepta los términos y confirma.</small>
+          </div>
+          <div class="stop">
+            <div class="line"></div>
+            <div class="dot">4</div>
+            <h3>Seña</h3>
+            <small
+              >La app le da el alias y el monto exacto, con el botón para mandarte el
+              comprobante.</small
+            >
+          </div>
+          <div class="stop">
+            <div class="line"></div>
+            <div class="dot">5</div>
+            <h3>Confirmación</h3>
+            <small
+              >El turno queda reservado 12 horas esperando tu OK. Aprobás y queda confirmado.</small
+            >
+          </div>
+          <div class="stop">
+            <div class="dot">6</div>
+            <h3>WhatsApp</h3>
+            <small
+              >Todo el contacto sigue por WhatsApp: comprobante, cambios y recordatorios.</small
+            >
+          </div>
+        </div>
+        <p class="journey-note">
+          — sin contraseñas, sin pagos automáticos, sin apps que descargar —
+        </p>
+      </section>
+
+      <!-- ============ 02 RESERVA PASO A PASO ============ -->
+      <section>
+        <div class="num">02</div>
+        <div class="kicker">La reserva, paso a paso</div>
+        <h2>Cinco toques y listo — <em>con los términos adentro</em></h2>
+        <p class="lead">
+          Los términos van justo en el momento de confirmar: un resumen corto con casilla, y el
+          texto completo a un toque. Nunca una pared de letra chica antes de los servicios.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="n">1</div>
+            <div class="t">
+              <b>Elige el día</b
+              ><span
+                >Calendario con los próximos 30 días; los días con turnos disponibles van
+                resaltados, los bloqueados (feriados, vacaciones) tachados.</span
+              >
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <div class="t">
+              <b>Elige el horario</b
+              ><span
+                >Solo horarios realmente libres. Si no hay ninguno, la app lo dice y la invita a
+                probar otro día.</span
+              >
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <div class="t">
+              <b>Deja sus datos</b
+              ><span
+                >Nombre y WhatsApp. Y una pregunta clave: "¿Venís con pestañas de otro lugar?" — la
+                respuesta llega marcada a tu panel.</span
+              >
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">4</div>
+            <div class="t">
+              <b>Acepta los términos</b
+              ><span
+                >Resumen corto con casilla obligatoria: sin maquillaje · tolerancia 15 min · cambios
+                con 24 hs · seña no reembolsable. Botón "ver todo" para el texto completo.</span
+              >
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">5</div>
+            <div class="t">
+              <b>Confirma la reserva</b
+              ><span
+                >Un solo botón. Ahí el turno queda tomado por 12 horas en estado "pendiente de
+                confirmación" — y arranca el paso de la seña.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="terms">
+          <div class="tag">Si dos eligen lo mismo a la vez</div>
+          <p style="font-size: 13px; line-height: 1.6">
+            Si dos clientas tocan el mismo horario casi al mismo tiempo,
+            <strong>gana la primera</strong>. La segunda ve:
+            <em>"Ese horario recién se tomó, elegí otro"</em> — y vuelve a los horarios sin perder
+            sus datos. <strong>No existe el doble turno, jamás.</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ 03 LAS 12 HORAS ============ -->
+      <section>
+        <div class="num">03</div>
+        <div class="kicker">La regla central</div>
+        <h2>El turno queda tomado <em>12 horas</em>, esperando tu palabra</h2>
+
+        <div class="policy">
+          <div class="tag">Cómo funciona</div>
+          <h3>12 horas de prioridad — ni más, ni menos</h3>
+          <div class="tl">
+            <div class="tl-bar">
+              <div class="seg"></div>
+              <div class="seg free"></div>
+            </div>
+            <div class="tl-labels">
+              <div>0 h — reserva creada</div>
+              <div>12 h — se libera solo</div>
+              <div>libre para otra clienta</div>
+            </div>
+          </div>
+          <ul>
+            <li>
+              <strong>Nadie más puede agarrar ese horario</strong> mientras está reservado — evita
+              que dos clientas crean tener el mismo turno (los malentendidos se mueren acá).
+            </li>
+            <li>
+              <strong>La clienta lo sabe desde el primer momento:</strong> "tu turno queda reservado
+              por 12 horas esperando tu seña".
+            </li>
+            <li>
+              <strong>Vos lo veés todo el tiempo</strong> en tu panel, con el contador en vivo. El
+              bot te avisa antes de que se venza.
+            </li>
+            <li>
+              <strong>Si se vence, el turno se libera solo</strong> y vuelve a estar disponible para
+              cualquiera.
+            </li>
+            <li>
+              <strong>La última palabra siempre es tuya:</strong> si el comprobante llega un poco
+              tarde y el horario sigue libre, lo re-confirmás a mano con un toque.
+            </li>
+          </ul>
+        </div>
+        <p class="journey-note">
+          La tolerancia también es tuya: la app no cancela nada sola — solo libera el horario. Cada
+          excepción la manejás vos.
+        </p>
+      </section>
+
+      <!-- ============ 04 ESTADOS ============ -->
+      <section>
+        <div class="num">04</div>
+        <div class="kicker">Estados de un turno</div>
+        <h2>La vida de un turno, <em>en seis estados</em></h2>
+
+        <svg
+          width="740"
+          height="250"
+          viewBox="0 0 740 250"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Diagrama de estados de un turno"
+        >
+          <!-- row 1 -->
+          <rect x="10" y="40" width="160" height="52" fill="#0d0d0d" />
+          <text x="90" y="62" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">
+            PENDIENTE DE
+          </text>
+          <text x="90" y="78" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">
+            CONFIRMACIÓN
+          </text>
+          <rect
+            x="250"
+            y="40"
+            width="150"
+            height="52"
+            fill="none"
+            stroke="#0d0d0d"
+            stroke-width="2.5"
+          />
+          <text x="325" y="62" text-anchor="middle" font-size="12" font-weight="700">
+            CONFIRMADA
+          </text>
+          <text x="325" y="78" text-anchor="middle" font-size="10" fill="#8a8a8a">
+            (seña aprobada)
+          </text>
+          <rect
+            x="480"
+            y="40"
+            width="150"
+            height="52"
+            fill="none"
+            stroke="#0d0d0d"
+            stroke-width="2.5"
+          />
+          <text x="555" y="62" text-anchor="middle" font-size="12" font-weight="700">
+            COMPLETADA
+          </text>
+          <text x="555" y="78" text-anchor="middle" font-size="10" fill="#8a8a8a">
+            (servicio hecho)
+          </text>
+          <!-- arrows row 1 -->
+          <line x1="170" y1="66" x2="243" y2="66" stroke="#0d0d0d" stroke-width="2" />
+          <polygon points="243,66 235,62 235,70" fill="#0d0d0d" />
+          <line x1="400" y1="66" x2="473" y2="66" stroke="#0d0d0d" stroke-width="2" />
+          <polygon points="473,66 465,62 465,70" fill="#0d0d0d" />
+          <text x="206" y="30" text-anchor="middle" font-size="9" class="svg-mono" fill="#555">
+            comprobante ✓
+          </text>
+          <text x="436" y="30" text-anchor="middle" font-size="9" class="svg-mono" fill="#555">
+            día del turno
+          </text>
+          <!-- row 2 -->
+          <rect
+            x="250"
+            y="170"
+            width="150"
+            height="48"
+            fill="#f6f6f6"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <text x="325" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#555">
+            LIBERADA
+          </text>
+          <text x="325" y="205" text-anchor="middle" font-size="9.5" fill="#8a8a8a">
+            12 hs sin comprobante
+          </text>
+          <rect
+            x="480"
+            y="170"
+            width="150"
+            height="48"
+            fill="#f6f6f6"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <text x="555" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#555">
+            NO-SHOW
+          </text>
+          <text x="555" y="205" text-anchor="middle" font-size="9.5" fill="#8a8a8a">
+            15 min de tolerancia
+          </text>
+          <rect
+            x="10"
+            y="170"
+            width="160"
+            height="48"
+            fill="#f6f6f6"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <text x="90" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="#555">
+            REPROGRAMADA
+          </text>
+          <text x="90" y="205" text-anchor="middle" font-size="9.5" fill="#8a8a8a">
+            con 24 hs +, la maneja la dueña
+          </text>
+          <!-- arrows row 2 -->
+          <line
+            x1="140"
+            y1="92"
+            x2="290"
+            y2="168"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <polygon points="290,168 279,165 284,157" fill="#8a8a8a" />
+          <line
+            x1="480"
+            y1="170"
+            x2="360"
+            y2="94"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <polygon points="360,94 366,104 371,97" fill="#8a8a8a" />
+          <line
+            x1="170"
+            y1="66"
+            x2="85"
+            y2="168"
+            stroke="#8a8a8a"
+            stroke-width="1.5"
+            stroke-dasharray="5,4"
+          />
+          <polygon points="85,168 82,157 91,161" fill="#8a8a8a" />
+        </svg>
+
+        <table>
+          <tr>
+            <th style="width: 24%">Estado</th>
+            <th>Qué ve la clienta</th>
+            <th>Qué ves vos</th>
+          </tr>
+          <tr>
+            <td class="st">PENDIENTE</td>
+            <td>"Tu turno está reservado 12 hs. Mandanos el comprobante para confirmarlo."</td>
+            <td>En tu panel con contador. El bot te avisa de cada reserva nueva.</td>
+          </tr>
+          <tr>
+            <td class="st">CONFIRMADA</td>
+            <td>"¡Listo! Tu turno quedó confirmado ✓" + recordatorio 24 hs antes.</td>
+            <td>Turno en la agenda. Ya es tuyo para trabajar.</td>
+          </tr>
+          <tr>
+            <td class="st">COMPLETADA</td>
+            <td>Cuestionario: "¿cómo te quedaron tus pestañas?"</td>
+            <td>Historial de la clienta + arranca el reloj del retoque a 18 días.</td>
+          </tr>
+          <tr>
+            <td class="st">LIBERADA</td>
+            <td>Su reserva dejó de existir; puede volver a reservar.</td>
+            <td>El bot te avisó antes de que se venza; fue tu decisión dejarla ir.</td>
+          </tr>
+          <tr>
+            <td class="st">NO-SHOW</td>
+            <td>Mensaje: la seña no se reembolsa + cómo reprogramar.</td>
+            <td>Marca en la ficha de la clienta. Tres no-shows = la dueña decide.</td>
+          </tr>
+          <tr>
+            <td class="st">REPROGRAMADA</td>
+            <td>La cambia tu WhatsApp, no la app — vos coordinás directo.</td>
+            <td>El turno viejo se libera, el nuevo queda confirmado a mano por vos.</td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- ============ 05 SEÑA Y TÉRMINOS ============ -->
+      <section>
+        <div class="num">05</div>
+        <div class="kicker">La seña y los términos</div>
+        <h2>Lo que la clienta acepta <em>antes de señar</em></h2>
+        <p class="lead">
+          La transferencia es manual — del celu de la clienta a tu alias, y el comprobante te llega
+          por WhatsApp. La app nunca toca plata.
+        </p>
+
+        <div class="terms">
+          <div class="tag">Términos del estudio</div>
+          <ol>
+            <li><strong>Llegar sin maquillaje</strong> — la cara limpia es parte del trabajo.</li>
+            <li>
+              <strong>Tolerancia de 15 minutos</strong> — a los 15 minutos de espera el turno se
+              considera no-show.
+            </li>
+            <li><strong>Reprogramar o cancelar con al menos 24 horas</strong> de anticipación.</li>
+            <li><strong>La seña no es reembolsable.</strong></li>
+            <li>
+              <strong>Avisar si venís con trabajo de otro lugar.</strong> Si es trabajo externo
+              tiene un costo extra; si vino con mala praxis, otro.
+            </li>
+          </ol>
+          <div class="check">
+            Leí y acepto las políticas del estudio — casilla obligatoria para confirmar la reserva
+          </div>
+        </div>
+
+        <p style="font-size: 12.5px; color: var(--soft)">
+          Los términos, el alias, el monto de la seña y tus redes se editan
+          <strong>vos misma</strong> desde Configuración en tu panel. Cuando quieras sumar una regla
+          nueva, entra, escribila, guardá — y ya aparece para todas las clientas. No dependés de
+          nadie.
+        </p>
+      </section>
+
+      <!-- ============ 06 BOT ============ -->
+      <section>
+        <div class="num">06</div>
+        <div class="kicker">Tu bot de Telegram</div>
+        <h2>Lo que te llega <em>sin que preguntes</em></h2>
+        <p class="lead">
+          Un bot privado en tu Telegram te mantiene al tanto de todo. Vos nunca tenés que abrir la
+          app para saber qué pasa — la app te avisa a vos.
+        </p>
+
+        <div class="chat-pair">
+          <div class="chat">
+            <div class="bubble">
+              <div class="who">Bot → Dueña</div>
+              <div class="bubble-label">Cada reserva nueva, al instante</div>
+              <strong>🆕 Nueva reserva</strong><br />
+              Martina G. · Pestañas clásicas<br />
+              Jueves 24, 15:00 · 11 5555-4444<br />
+              Señó pendiente — turno reservado hasta viernes 25, 15:00 (12 hs)<br />
+              ⚑ Marcó que viene con pestañas de otro lugar
+            </div>
+            <div class="bubble right">
+              <div class="who">Mensaje listo para reenviar</div>
+              ¡Hola Martina! Soy de <em>[tu estudio]</em> 🌸 Tu turno de pestañas clásicas quedó
+              reservado para el jueves 24 a las 15:00. Para confirmarlo, mandame por este chat el
+              comprobante de la seña ($9.000) al alias <em>[tu alias]</em>. ¡Te espero!
+            </div>
+          </div>
+          <div class="chat">
+            <div class="bubble">
+              <div class="who">Bot → Dueña</div>
+              <div class="bubble-label">Cada mañana, tu agenda</div>
+              <strong>📅 Hoy jueves 24</strong> — 3 turnos<br />
+              · 10:00 Ana · relleno<br />
+              · 12:30 Martina · clásicas ⚑ externo<br />
+              · 15:00 Sofi · volumen ruso<br /><br />
+              <strong>Mañana viernes 25</strong> — 2 turnos<br />
+              · 11:00 Carla · diseño<br />
+              · 16:30 Ana · hidratación<br /><br />
+              ⏳ Pendientes de seña: 1 (se libera hoy 15:00)
+            </div>
+            <div class="bubble">
+              <div class="who">Bot → Dueña</div>
+              <div class="bubble-label">Cuando algo urge, te busca</div>
+              ⏰ Hace 2 días que Martina G. está pendiente de seña (jueves 24, 15:00).
+              <strong>Se libera en 3 horas.</strong><br />
+              → [Re-confirmar a mano]&nbsp;&nbsp;[Dejar que se libere]
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 12.5px; color: var(--soft)">
+          Los mensajes que ves arriba son <strong>borradores editables</strong> — el tono, los
+          emojis y las palabras las definís vos. Y si un día el bot falla, no perdés nada: tu panel
+          siempre muestra todo. El bot es tu comodidad, la app es la fuente.
+        </p>
+      </section>
+
+      <!-- ============ 07 MENSAJES A CLIENTAS ============ -->
+      <section>
+        <div class="num">07</div>
+        <div class="kicker">Los mensajes a tus clientas</div>
+        <h2>El ciclo completo, <em>ya redactado</em></h2>
+        <p class="lead">
+          Cada clienta recibe el mensaje justo en el momento justo — vos lo reenvías con un toque
+          desde tu ficha, o el bot te lo acerca listo. Borradores para que los hables tuyos.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <span class="u">1 · Reserva creada</span>
+            <h4>Bienvenida con turno a confirmar</h4>
+            <small
+              >"¡Hola Martina! Recibimos tu turno de pestañas clásicas para el jueves 24 a las 15:00
+              🌸 Queda reservado por 12 horas esperando tu seña de $9.000. Mandanos el comprobante
+              por este chat para confirmarlo — alias: <em>[tu alias]</em>. Nos vemos con la carita
+              limpia 😉"</small
+            >
+          </div>
+          <div class="card">
+            <span class="u">2 · Seña aprobada</span>
+            <h4>Turno confirmado</h4>
+            <small
+              >"¡Listo, Martina! Tu turno del jueves 24 a las 15:00 quedó confirmado ✓ Te aviso 24
+              horas antes para que no se te pase. Si necesitás cambiarlo, avisame con un día de
+              anticipación. ¡Gracias por confiar!"</small
+            >
+          </div>
+          <div class="card">
+            <span class="u">3 · 24 hs antes</span>
+            <h4>Recordatorio del turno</h4>
+            <small
+              >"Hola Martina ✨ Mañana es tu turno: pestañas clásicas, jueves a las 15:00. Llegá con
+              la cara limpia, sin maquillaje. Si venís con pestañas de otro lado, respondeme este
+              mensaje y lo charlamos."</small
+            >
+          </div>
+          <div class="card">
+            <span class="u">4 · Post-servicio</span>
+            <h4>Cuestionario de cómo quedó</h4>
+            <small
+              >"¡Hola Martina! ¿Cómo te quedaron tus pestañas? Contame en una palabra 🌸 Si algo no
+              te encantó, decime — me ayuda a que la próxima te quede perfecta. Y si querés, mandame
+              una foto para mi portfolio 💕"</small
+            >
+          </div>
+          <div class="card">
+            <span class="u">5 · 18 días después</span>
+            <h4>Recordatorio de retoque</h4>
+            <small
+              >"¡Martina! Tus pestañas cumplen 18 días 💫 Es el momento del relleno para que sigan
+              como nuevas. ¿Te agendo? Los rellenos salen más económico y rápido que un turno nuevo
+              😉"</small
+            >
+          </div>
+          <div class="card">
+            <span class="u">6 · No-show</span>
+            <h4>Seguimiento con tacto</h4>
+            <small
+              >"Hola Martina, te esperamos el jueves a las 15:00 y no pudiste llegar. Como te
+              comenté al reservar, la seña no se reembolsa. Cuando quieras reprogramar, hablame por
+              acá y lo resolvemos 💜"</small
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 08 PANEL ============ -->
+      <section>
+        <div class="num">08</div>
+        <div class="kicker">Tu panel</div>
+        <h2>Todo tu estudio <em>en una pantalla</em></h2>
+        <p class="lead">
+          Pensado para usarlo desde tu compu o tu tablet, grande y legible. Cada cosa en su lugar,
+          sin ruido.
+        </p>
+
+        <table>
+          <tr>
+            <th style="width: 26%">Sección</th>
+            <th>Qué hacés acá</th>
+          </tr>
+          <tr>
+            <td><b>Hoy y mañana</b></td>
+            <td>
+              Tu agenda del día y del siguiente, más la <strong>cola de señas pendientes</strong>:
+              cada comprobante se aprueba o rechaza con un toque, y el turno se libera solo si
+              vence.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Calendario</b></td>
+            <td>
+              La semana y el mes completos: ocupación, huecos libres, bloqueos de feriados y
+              vacaciones.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Fichas de clientas</b></td>
+            <td>
+              Historial de cada clienta: sus turnos, sus señas, si vino con trabajo externo, sus
+              no-shows. Podés <strong>cargar clientas a mano</strong> y anotar lo que quieras
+              recordar de cada una.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Catálogo</b></td>
+            <td>
+              Servicios con foto, precio, duración y monto de seña. Publicás o sacás un servicio
+              cuando quieras.
+            </td>
+          </tr>
+          <tr>
+            <td><b>Configuración</b></td>
+            <td>
+              Tu alias, el monto de la seña, tus redes, los términos del estudio (editables) y el
+              bot on/off. Todo lo que cambia en tu negocio, lo cambiás vos.
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- ============ 09 ERRORES ============ -->
+      <section>
+        <div class="num">09</div>
+        <div class="kicker">Cuando algo sale mal</div>
+        <h2>Todo lo que puede fallar, <em>y cómo queda resuelto</em></h2>
+
+        <table>
+          <tr>
+            <th style="width: 34%">Situación</th>
+            <th>Cómo queda resuelto</th>
+          </tr>
+          <tr>
+            <td>El horario se lo llevó otra clienta un segundo antes</td>
+            <td>
+              La segunda ve "ese horario recién se tomó" y elige otro sin perder sus datos. La base
+              de datos no permite dobles turnos, jamás.
+            </td>
+          </tr>
+          <tr>
+            <td>La clienta toca "confirmar" dos veces seguidas</td>
+            <td>Se crea una sola reserva — protección anti-duplicado automática.</td>
+          </tr>
+          <tr>
+            <td>No llega el comprobante en 12 horas</td>
+            <td>
+              El turno se libera solo. El bot te avisó antes; y si preferís esperarla más, lo
+              re-confirmás a mano.
+            </td>
+          </tr>
+          <tr>
+            <td>Quiere reprogramar con menos de 24 hs</td>
+            <td>La app no lo permite sola: la deriva a tu WhatsApp y decidís vos caso por caso.</td>
+          </tr>
+          <tr>
+            <td>Comprobante llega tarde pero el turno sigue libre</td>
+            <td>Lo confirmás a mano con un toque — la última palabra es tuya.</td>
+          </tr>
+          <tr>
+            <td>Clienta con pestañas de otro lugar</td>
+            <td>
+              Queda marcada en el formulario; ves la marca antes de aprobar su seña y en su ficha
+              para siempre.
+            </td>
+          </tr>
+          <tr>
+            <td>Se cae el bot o tu internet</td>
+            <td>
+              Tu panel muestra igual todos los turnos y pendientes. El bot es aviso, no origen: nada
+              se pierde.
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- ============ 10 PRÓXIMOS PASOS ============ -->
+      <section>
+        <div class="num">10</div>
+        <div class="kicker">Próximos pasos</div>
+        <h2>Lo que viene <em>después de tu OK</em></h2>
+        <p class="lead">
+          Nada toca tu app real hasta que des el visto bueno final. Este documento es el plano — el
+          diseño viene ahora.
+        </p>
+
+        <div class="next">
+          <div class="ns">
+            <b>1 · Esqueletos</b
+            ><small
+              >Todas las pantallas diseñadas en blanco y estructura, con referencias reales — nada
+              de plantilla genérica de IA.</small
+            >
+          </div>
+          <div class="ns">
+            <b>2 · Tu aprobación</b
+            ><small
+              >Ves todo interactivo en un tablero y señalás lo que te gusta. Ajustamos lo que
+              falte.</small
+            >
+          </div>
+          <div class="ns">
+            <b>3 · La piel</b
+            ><small
+              >Sobre lo aprobado va el estilo: fondo dinámico, vidrio iPhone, tipografía
+              editorial.</small
+            >
+          </div>
+          <div class="ns">
+            <b>4 · Construcción</b
+            ><small
+              >El plan completo pasa al desarrollador con cada detalle escrito. Vos solo disfrutás
+              el resultado.</small
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FOOTER ============ -->
+      <footer>
+        <div class="brand">KHAL</div>
+        <div class="fmeta">
+          <strong>Búsqueda:</strong> keywords:
+          <em
+            >khal, flujos, reserva, seña, 12 horas, bot telegram, ciclo de clienta, panel admin,
+            términos</em
+          >
+          · clasificación: <em>ux-flows</em> · estado: <em>draft para aprobación</em> · actualizado:
+          2026-10-20<br />
+          Documento de trabajo para aprobación de la dueña. Los textos de mensajes son borradores
+          editables. Montos, alias y nombres de ejemplo.
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

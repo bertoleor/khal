@@ -76,3 +76,17 @@ Abrí `wireframes/home.html` en cualquier browser — todo clickable, zero JS.
 ```
 
 Los wireframes pueden exportarse a Figma con el integration oficial **Code to Canvas** (requiere Figma desktop + Dev Mode MCP). Pedí "export to figma" si lo querés.
+
+---
+
+## v2 — 2026-10-20 · Reglas de negocio nuevas (fuente: dictado de la owner)
+
+> **Búsqueda:** keywords: `khal, v2, 12 horas, seña manual, términos, bot telegram, ciclo de clienta` · clasificación: `ux-flows` · estado: `canónico` · actualizado: 2026-10-20
+
+**Decisiones (D1–D6) y artefactos v2:**
+- **D2 — Regla de las 12 horas:** el turno queda TOMADO 12 h como `pending_deposit` ("para que no haya malentendidos"); vencido sin comprobante → auto-release; la dueña puede re-confirmar a mano (UC-002/UC-007).
+- **D1 — Términos en el commit:** casilla con resumen en el paso de confirmar; texto completo en `/politicas` + footer; repetidos los de plata en la pantalla de seña.
+- **D3 — Flag externo:** checkbox en el formulario → visible en cola y ficha.
+- **D5/D6 — Seña manual via WhatsApp (sin pagos en app) · canvas negro puro, sin partículas.**
+- Artefactos: [flujos completos para la dueña (HTML+PDF)](./v2-flujos-completos.html) · [referencias por pantalla](./referencias-skeletons-v2.md) · [board de esqueletos 12 pantallas](./skeletons-v2-board.html) · [auditoría anti-IA](../audits/skeletons-v2-audit/AUDIT.md) · [ODD con tareas y evidencia](../../odd/tasks/khal-ux-skeletons-v2.md)
+- UCs nuevos: UC-007 (cola de señas), UC-008 (bot telegram), UC-009 (ciclo de mensajes / retoque 18 días), UC-010 (contenido editable).
