@@ -29,3 +29,6 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - resend@6.28.1
+  - '@paper-design/shaders-react@0.0.82'
+  - '@paper-design/shaders@0.0.82'
+  - lucide-react@1.61.0

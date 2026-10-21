@@ -21,7 +21,13 @@ export default defineConfig({
   esbuild: { jsx: 'automatic' },
   test: {
     environment: 'node',
-    include: ['packages/**/test/**/*.test.{ts,tsx}', 'apps/**/test/**/*.test.{ts,tsx}'],
+    // tests/unit = cross-app contract tests (design system, v2 tokens) —
+    // they read sources of several apps at once, so they live at the root.
+    include: [
+      'packages/**/test/**/*.test.{ts,tsx}',
+      'apps/**/test/**/*.test.{ts,tsx}',
+      'tests/unit/**/*.test.{ts,tsx}',
+    ],
   },
   plugins: [
     {

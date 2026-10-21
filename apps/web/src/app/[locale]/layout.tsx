@@ -1,4 +1,5 @@
 import BackgroundMesh from '@/components/BackgroundMesh';
+import { ThemeProvider } from '@/components/shared/theme-provider';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -54,8 +55,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale === 'es' ? 'es-AR' : locale}>
-      <body className="bg-black">
+    <html lang={locale === 'es' ? 'es-AR' : locale} suppressHydrationWarning>
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -81,8 +82,12 @@ export default async function RootLayout({
             }),
           }}
         />
+        {/* F0: el aura v1 sigue mientras F1 aterriza el hero interactivo
+            (que la reemplaza SOLO en la home). */}
         <BackgroundMesh />
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

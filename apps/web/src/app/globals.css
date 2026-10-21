@@ -1,12 +1,105 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #000000;
-  --foreground: #ffffff;
+/* ==========================================================================
+   khal v2 — design tokens (docs/DESIGN.md, addendum 2026-10-20)
+   D11  radius ≤ 2px everywhere (sharp editorial, no template rounding)
+   D12  dark = default on clienta; light via typographic toggle (persisted,
+        system preference on first visit)
+   Brand wordmark: TAN Nightingale (licensed) — wordmark ONLY.
+   ========================================================================== */
+
+/* Radius discipline: every rounded-* utility (rounded, rounded-sm …
+   rounded-4xl, bare and directional) resolves through these tokens, so the
+   2px cap is enforced app-wide. */
+@theme {
+  --radius: 2px;
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
+
+  /* Brand fonts. Wordmark = TAN Nightingale (serif fallback stack);
+     kickers/labels use the editorial mono voice. */
+  --font-wordmark: 'TAN Nightingale', 'Bodoni MT', Georgia, serif;
+  --font-mono-khal: ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace;
 }
 
-html {
+/* D11: pills are template-AI boxes — the rounded-full utility joins the 2px
+   discipline. (The flow-gradient hero CTA reproduces the owner-approved
+   component look with its own scoped class, not a rounded-* utility.) */
+@utility rounded-full {
+  border-radius: 2px;
+}
+
+/* Class-based theme switching (next-themes attribute="class"). */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
+
+/* Semantic color utilities (bg-background, text-muted, border-hairline, …).
+   `inline` keeps the utilities pointing at the runtime vars so the toggle
+   flips every surface without rebuilding utilities. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--text-secondary);
+  --color-faint: var(--text-tertiary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-pending: var(--status-pending);
+  --color-danger: var(--error);
+}
+
+@font-face {
+  font-family: 'TAN Nightingale';
+  src: url('/fonts/TAN-NIGHTINGALE-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- Dark (default, D12): v1 palette, contract-tested. --- */
+:root {
   color-scheme: dark;
+  --background: #000000;
+  --foreground: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+  --accent: #34d399;
+  --accent-soft: #6ee7b7;
+  --accent-contrast: #000000;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-strong: rgba(255, 255, 255, 0.15);
+  --status-pending: #fbbf24;
+  --error: #f87171;
+}
+
+/* --- Light: warm editorial paper, ONE accent per mode (emerald-700 AA). --- */
+html.light {
+  color-scheme: light;
+  --background: #f6f4f1;
+  --foreground: #101014;
+  --text-secondary: #52525b;
+  --text-tertiary: #6b6b74;
+  --accent: #047857;
+  --accent-soft: #059669;
+  --accent-contrast: #ffffff;
+  --surface: rgba(16, 16, 20, 0.05);
+  --surface-hover: rgba(16, 16, 20, 0.08);
+  --hairline: rgba(16, 16, 20, 0.14);
+  --hairline-strong: rgba(16, 16, 20, 0.22);
+  --status-pending: #b45309;
+  --error: #b91c1c;
 }
 
 body {
@@ -17,9 +110,23 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection {
+/* iOS (D8): sticky bars pad the home-indicator area, never hide under it. */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+:root ::selection {
   background: rgb(52 211 153 / 0.35);
   color: #ffffff;
+}
+
+html.light ::selection {
+  background: rgb(4 120 87 / 0.22);
+  color: #101014;
 }
 
 /* Skeleton presentation mode (?skeleton=1): animated sweep over
@@ -38,6 +145,10 @@ body {
   transform: translateX(-100%);
   background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.07), transparent);
   animation: skeleton-sweep 1.4s infinite;
+}
+
+html.light .skeleton-shimmer::after {
+  background: linear-gradient(90deg, transparent, rgb(16 16 20 / 0.06), transparent);
 }
 
 @keyframes skeleton-sweep {
