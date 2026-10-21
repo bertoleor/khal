@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop, "khal/**"]
+    branches: [main, develop, "khal/**", "feat/ux-skeletons-v2"]
   pull_request:
     branches: [main, develop]
 

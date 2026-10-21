@@ -2,7 +2,7 @@ name: Visual Regression Tests
 
 on:
   push:
-    branches: [main, "khal/**"]
+    branches: [main, "khal/**", "feat/ux-skeletons-v2"]
   pull_request:
     branches: [main]
 
