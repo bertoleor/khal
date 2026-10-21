@@ -7,9 +7,12 @@
     "title": "Nuestros servicios",
     "tagline": "Elegí tu servicio y agendá tu turno.",
     "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
+    "emptyCta": "Escribinos por WhatsApp",
     "book": "Agendar cita",
     "duration": "Duración",
-    "deposit": "Seña"
+    "deposit": "Seña",
+    "price": "Precio",
+    "back": "volver"
   },
   "booking": {
     "pickDay": "Elegí el día",
@@ -74,7 +77,11 @@
     "noShowTitle": "Inasistencia",
     "noShowBody": "Si no asistís a tu turno sin avisar, la seña se pierde. Avisanos con tiempo por WhatsApp y lo reprogramamos.",
     "punctualityTitle": "Puntualidad",
-    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente."
+    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente.",
+    "externalWorkTitle": "Pestañas de otro lugar",
+    "externalWorkBody": "Si venís con trabajo de otro estudio, avisá antes de reservar — el retiro y el retrabajo tienen costo extra y la dueña lo evalúa antes de confirmar.",
+    "back": "volver",
+    "more": "…y las que la dueña sume — editables desde su panel."
   },
   "pagoResult": {
     "exitoTitle": "¡Pago recibido!",

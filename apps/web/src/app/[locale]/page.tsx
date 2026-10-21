@@ -1,8 +1,9 @@
-import { CatalogGrid } from '@/components/catalog/catalog-grid';
+import { CatalogList } from '@/components/catalog/catalog-list';
 import { FlowGradientHero } from '@/components/home/flow-gradient-hero';
 import { Header } from '@/components/shared/header';
 import SiteFooter from '@/components/shared/site-footer';
 import { getCatalog } from '@/lib/actions/catalog';
+import { getPaymentSettings } from '@/lib/actions/settings';
 import { getTranslations } from 'next-intl/server';
 
 type HomePageProps = {
@@ -56,6 +57,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   }
 
   const services = await getCatalog();
+  const settings = await getPaymentSettings();
 
   return (
     <div className="relative min-h-dvh">
@@ -67,12 +69,18 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         tabIndex={-1}
         className="mx-auto w-full max-w-lg px-4 pb-16 pt-14 sm:max-w-6xl sm:px-6"
       >
-        {/* Catalog — el ancla del CTA del hero (#servicios). */}
+        {/* Catalog — el ancla del CTA del hero (#servicios). Filas, no cards
+            (board s1); la primera fila es el servicio firma. */}
         <section id="servicios" className="scroll-mt-4">
-          <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-zinc-400">
+          <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-faint">
             {t('title')}
           </h2>
-          <CatalogGrid services={services} emptyMessage={t('empty')} />
+          <CatalogList
+            services={services}
+            emptyMessage={t('empty')}
+            emptyCtaLabel={t('emptyCta')}
+            whatsappPhone={settings?.whatsappPhone ?? ''}
+          />
         </section>
       </main>
       <SiteFooter />

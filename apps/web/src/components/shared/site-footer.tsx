@@ -7,26 +7,23 @@ export default async function SiteFooter() {
   const instagramUrl = 'https://www.instagram.com/khal.estudiook/';
 
   return (
-    <footer className="mx-auto w-full max-w-lg px-4 pb-10 pt-14 sm:max-w-6xl sm:px-6">
-      {/* D9: cierre tipográfico del espacio — sin border-top, la separación
-          la hace el aire. */}
-      <div className="flex items-center justify-between gap-4 text-sm">
-        <p className="text-faint">
-          <span className="font-wordmark text-[15px] leading-none text-foreground">Khal</span>
-          <span> · Pestañas · Vicente López, Buenos Aires</span>
-        </p>
-        <nav aria-label="Redes del estudio" className="flex items-center gap-4">
-          <Link
-            href="/politicas"
-            className="font-medium text-muted transition-colors hover:text-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            Políticas
-          </Link>
+    <footer className="mx-auto w-full max-w-lg px-4 pb-12 pt-16 sm:max-w-6xl sm:px-6">
+      {/* D9 (board s1): cierre tipográfico — el wordmark fantasma ES la
+          transición (sin border-top, sin caja gris); debajo, la fila de
+          contacto en mono chiquito. La jerarquía la hacen escala y aire. */}
+      <div
+        aria-hidden="true"
+        className="select-none font-wordmark text-[clamp(64px,20vw,124px)] font-bold leading-[0.8] tracking-[2px] text-foreground/[0.07]"
+      >
+        KHAL
+      </div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 font-mono-khal text-[10px] uppercase tracking-[2px]">
+        <nav aria-label="Redes del estudio" className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
             href={instagramUrl}
             target="_blank"
             rel="noreferrer"
-            className="font-medium text-muted transition-colors hover:text-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             Instagram
           </a>
@@ -34,11 +31,18 @@ export default async function SiteFooter() {
             href={`https://wa.me/${whatsappPhone}`}
             target="_blank"
             rel="noreferrer"
-            className="font-medium text-muted transition-colors hover:text-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             WhatsApp
           </a>
+          <Link
+            href="/politicas"
+            className="text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            Políticas
+          </Link>
         </nav>
+        <span className="text-faint">Vicente López · Buenos Aires</span>
       </div>
     </footer>
   );

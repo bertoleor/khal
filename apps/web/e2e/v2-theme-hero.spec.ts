@@ -60,16 +60,36 @@ test.describe('khal v2 — F0: wordmark, theme toggle, radius discipline', () =>
     expect(classReload).toBe(classAfter);
   });
 
-  test('D11 radius cap: a rounded-full element computes ≤ 2px', async ({ page }) => {
+  test('D11 radius cap: every element inside main computes ≤ 2px radius', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Nuestros servicios' })).toBeVisible();
-    const radius = await page.evaluate(() => {
-      const el = document.querySelector<HTMLElement>('.rounded-full');
-      return el ? getComputedStyle(el).borderRadius : null;
+    // Walk every element in main and take the max computed border-radius:
+    // the 2px cap is a runtime contract, not just a CSS-source one. (The
+    // flow-gradient hero CTA sits OUTSIDE main and keeps its owner-approved
+    // 30px glass pill — asserted separately below.)
+    const maxRadius = await page.evaluate(() => {
+      let max = 0;
+      const main = document.querySelector('main');
+      if (!main) return -1;
+      for (const el of main.querySelectorAll('*')) {
+        const v = parseFloat(getComputedStyle(el).borderRadius);
+        if (!Number.isNaN(v) && v > max) max = v;
+      }
+      return max;
     });
-    expect(radius).not.toBeNull();
-    const px = parseFloat(radius as string);
-    expect(px).toBeGreaterThan(0);
-    expect(px).toBeLessThanOrEqual(2.01);
+    expect(maxRadius).toBeGreaterThanOrEqual(0);
+    expect(maxRadius).toBeLessThanOrEqual(2.01);
+  });
+
+  test('hero CTA keeps the owner-approved 30px glass pill (documented exception)', async ({
+    page,
+  }) => {
+    const ctaRadius = await page.evaluate(() => {
+      const cta = Array.from(document.querySelectorAll('a')).find(
+        (a) => a.textContent?.trim() === 'Agendá tu turno'
+      );
+      return cta ? parseFloat(getComputedStyle(cta).borderRadius) : -1;
+    });
+    expect(ctaRadius).toBe(30);
   });
 });
 

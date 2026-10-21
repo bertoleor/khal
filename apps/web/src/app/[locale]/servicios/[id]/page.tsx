@@ -7,12 +7,13 @@ import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-function depositLabel(service: Service): string | null {
+/** Monto de la seña en centavos (percentage → proporcional, fixed → fijo). */
+function depositAmountCents(service: Service): number | null {
   if (service.deposit_mode === 'percentage' && service.deposit_percentage_bp != null) {
-    return `${service.deposit_percentage_bp / 100}%`;
+    return Math.round((service.price_cents * service.deposit_percentage_bp) / 10000);
   }
   if (service.deposit_mode === 'fixed' && service.deposit_fixed_cents != null) {
-    return formatCents(service.deposit_fixed_cents, service.currency_code);
+    return service.deposit_fixed_cents;
   }
   return null;
 }
@@ -67,52 +68,90 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
     notFound();
   }
 
-  const deposit = depositLabel(service);
+  const deposit = depositAmountCents(service);
 
   return (
     <div className="relative min-h-dvh">
       <Header />
-      <main className="mx-auto max-w-lg px-4 pb-28">
+      <main className="mx-auto max-w-lg px-4 pb-36">
+        {/* "Atrás" tipográfico (D9): parte del texto, cero píldoras. */}
+        <Link
+          href="/"
+          className="mt-4 inline-block font-mono-khal text-[11px] uppercase tracking-[2px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          ← {t('back')}
+        </Link>
+
+        {/* Imagen protagonista (board s2). */}
         {service.photo_path ? (
-          <div className="mt-4 h-48 overflow-hidden rounded-2xl border border-white/10">
+          <div className="mt-3 h-52 overflow-hidden sm:h-64">
             <Image
               src={service.photo_path}
               alt={service.name}
               width={512}
-              height={192}
+              height={256}
               className="h-full w-full object-cover"
             />
           </div>
         ) : (
-          <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-5xl font-semibold text-white/80 backdrop-blur-sm">
+          <div className="mt-3 flex h-52 items-center justify-center bg-surface text-6xl font-semibold text-foreground/80 sm:h-64">
             {service.name.slice(0, 1)}
           </div>
         )}
-        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-white">{service.name}</h1>
-        {service.description ? <p className="mt-2 text-zinc-400">{service.description}</p> : null}
 
-        <dl className="mt-4 space-y-1 text-sm text-zinc-400">
-          <div className="flex justify-between border-b border-white/5 py-2.5">
-            <dt>{t('duration')}</dt>
-            <dd className="text-zinc-200">{service.duration_minutes} min</dd>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-foreground">
+          {service.name}
+        </h1>
+
+        {/* Cluster de datos (board s2): borde funcional a la izquierda, filas
+            con hairline — la seña se ve ANTES de entrar al flujo. */}
+        <dl className="mt-4 border-l-2 border-foreground pl-4 text-[13px]">
+          <div className="flex items-baseline justify-between border-b border-hairline py-2.5">
+            <dt className="text-faint">{t('duration')}</dt>
+            <dd className="font-semibold text-foreground">{service.duration_minutes} min</dd>
           </div>
-          {deposit ? (
-            <div className="flex justify-between border-b border-white/5 py-2.5">
-              <dt>{t('deposit')}</dt>
-              <dd className="text-emerald-300">{deposit}</dd>
+          <div className="flex items-baseline justify-between border-b border-hairline py-2.5">
+            <dt className="text-faint">{t('price')}</dt>
+            <dd className="font-semibold text-foreground">
+              {formatCents(service.price_cents, service.currency_code)}
+            </dd>
+          </div>
+          {deposit != null ? (
+            <div className="flex items-baseline justify-between py-2.5">
+              <dt className="text-faint">
+                {t('deposit')}
+                {service.deposit_mode === 'percentage' && service.deposit_percentage_bp != null
+                  ? ` (${service.deposit_percentage_bp / 100}%)`
+                  : ''}
+              </dt>
+              <dd className="font-semibold text-accent-soft">
+                {formatCents(deposit, service.currency_code)}
+              </dd>
             </div>
           ) : null}
         </dl>
+
+        {service.description ? (
+          <p className="mt-4 text-sm leading-relaxed text-muted">{service.description}</p>
+        ) : null}
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-black/70 backdrop-blur">
+      {/* CTA sticky — borde funcional de barra (D11) + safe area iOS (D8). */}
+      <div className="fixed inset-x-0 bottom-0 border-t border-hairline bg-background/85 backdrop-blur pb-safe">
         <div className="mx-auto flex max-w-lg items-center justify-between gap-4 px-4 py-3">
-          <span className="text-lg font-semibold text-white">
-            {formatCents(service.price_cents, service.currency_code)}
-          </span>
+          <div>
+            <span className="block text-lg font-semibold leading-tight text-foreground">
+              {formatCents(service.price_cents, service.currency_code)}
+            </span>
+            {deposit != null ? (
+              <span className="block font-mono-khal text-[9px] uppercase tracking-[1.5px] text-faint">
+                {t('deposit')} {formatCents(deposit, service.currency_code)}
+              </span>
+            ) : null}
+          </div>
           <Link
             href={`/servicios/${service.id}/reservar`}
-            className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98]"
+            className="bg-accent px-6 py-3 text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
           >
             {t('book')}
           </Link>

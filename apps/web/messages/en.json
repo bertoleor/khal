@@ -7,9 +7,12 @@
     "title": "Our services",
     "tagline": "Pick a service and book your appointment.",
     "empty": "No services available yet. Check back soon.",
+    "emptyCta": "Message us on WhatsApp",
     "book": "Book Appointment",
     "duration": "Duration",
-    "deposit": "Deposit"
+    "deposit": "Deposit",
+    "price": "Price",
+    "back": "back"
   },
   "booking": {
     "pickDay": "Pick a day",
@@ -74,7 +77,11 @@
     "noShowTitle": "No-shows",
     "noShowBody": "If you do not attend your appointment without notice, the deposit is forfeited. Let us know in advance via WhatsApp and we will reschedule.",
     "punctualityTitle": "Punctuality",
-    "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting."
+    "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting.",
+    "externalWorkTitle": "Lash work from elsewhere",
+    "externalWorkBody": "If you are coming with work from another studio, let us know before booking — removal and rework carry an extra cost the owner assesses before confirming.",
+    "back": "back",
+    "more": "…and any the owner adds — editable from her panel."
   },
   "pagoResult": {
     "exitoTitle": "Payment received!",
