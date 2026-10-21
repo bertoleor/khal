@@ -63,10 +63,10 @@ Redesign the full clienta + admin screen set as reference-first, anti-AI layout 
   - evidence: same board screens 07–12 (desktop frames): hoy/mañana split 60/40 with 12h seña queue; week grid with khal flags (pendiente/bloqueado); comprobantes master-detail with keyboard A/R/L actions + message triggers; clienta ficha with ⚑ flags + manual add + 18-day refill clock; catalog inline-edit table; settings with editable Términos + live preview + bot on/off. Playwright: 12/12 screens render, board check screenshot. 2026-10-20.
 - [x] T7: Bot + message templates — telegram alerts (new booking, forwardable comprobante request, day/next-day digest, 2-day follow-up nudge) + clienta lifecycle map (welcome, confirmed, 24h reminder, post-service questionnaire, 18-day refill, no-show follow-up)
   - evidence: all templates drafted in docs/ux-flows/v2-flujos-completos.html (S06 bot alerts + S07 six clienta lifecycle messages) + v2-flujos-completos.pdf (245 KB, playwright A4) — 2026-10-20
-- [ ] T8: Clickable board HTML → `::preview` → owner approval gate
-  - evidence: (pending)
+- [x] T8: Clickable board HTML → `::preview` → owner approval gate
+  - evidence: 12-screen board at docs/ux-flows/skeletons-v2-board.html delivered via ::preview 2026-10-20; owner LIKES skeletons and flow, one revision applied (admin must resolve on phone — rebuilt with phone frames, D7), re-verified 12 screens / 12 phones / 6 desktops. Final owner GO recorded 2026-10-20 (see Progress: "owner approved the demo visual after 4 iterations"). Closed 2026-10-21 by 24-orquestador against the doc's own log — checkbox was left unchecked while the log recorded approval.
 
-- [ ] T11: Flow-gradient background demo — khal wordmark + light/dark toggle over the chosen component (PC + touch emulation) → owner approval → integration spec for T9 (source via 01-frontend t21st MCP, license check, iOS perf calibration).
+- [x] T11: Flow-gradient background demo — khal wordmark + light/dark toggle over the chosen component (PC + touch emulation) → owner approval → integration spec for T9 (source via 01-frontend t21st MCP, license check, iOS perf calibration).
   - evidence: demo BUILT + VERIFIED 2026-10-20 — docs/ux-flows/fondo-demo-khal.html (the real 21st bundle adapted: title=KHAL in Bodoni serif, CTA=Agendá tu turno, typographic no-box toggle kicker/toggle overlay, native pause-btn kept). Playwright verification 4/4: canvas renders, h1=KHAL, toggle present, serif font applied — captures: docs/audits/skeletons-v2-audit/demo-khal-*.png. Delivered ::preview. AWAITING owner+clienta visual approval; integration spec goes to T9 after OK.
   - iteration 1 (owner feedback 2026-10-20): serif title override REJECTED — component's original Syne restored (reference fidelity rule logged in docs/design/owner-taste-references.md); CTA double-line fixed with white-space:nowrap — verified 4/4 combos: font=Syne, cta single-line (45px móvil / 51px desktop), fits viewport, canvas+toggle OK. Re-delivered ::preview.
   - iteration 2 (owner feedback 2026-10-20): header OVERLAP fixed — my toggle collided with the component's native pause-btn (measured: toggle ended 1344 vs pause 1294 @1366px; kicker also hit the toggle @390px). Fixed: toggle anchored right:84px (right:68px <480px, 12px clear of pause), kicker shortened to 'estudio de pestañas'. Verified no-collision both viewports + re-captured 4/4.
@@ -92,6 +92,7 @@ Redesign the full clienta + admin screen set as reference-first, anti-AI layout 
 
 ## Next step
 T1 (audit current site with captures) + T2 (reference sheet) — then T3/T4 in parallel.
+(2026-10-21 update: design phase closed — T1-T9, T11 all done with owner GO; next is 01-frontend executing plan-implementacion-v2.md per its Fase 0 dispatch.)
 
 ## Progress
 - 2026-10-20: Doc created from owner's business-rule dictation + approved pipeline. No code touched.
