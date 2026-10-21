@@ -1,4 +1,8 @@
 {
+  "hero": {
+    "cta": "Book your appointment",
+    "sectionLabel": "Cover"
+  },
   "catalog": {
     "title": "Our services",
     "tagline": "Pick a service and book your appointment.",

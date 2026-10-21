@@ -1,4 +1,8 @@
 {
+  "hero": {
+    "cta": "Agendá tu turno",
+    "sectionLabel": "Portada"
+  },
   "catalog": {
     "title": "Nuestros servicios",
     "tagline": "Elegí tu servicio y agendá tu turno.",

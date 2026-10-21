@@ -1,4 +1,3 @@
-import BackgroundMesh from '@/components/BackgroundMesh';
 import { ThemeProvider } from '@/components/shared/theme-provider';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
@@ -82,9 +81,9 @@ export default async function RootLayout({
             }),
           }}
         />
-        {/* F0: el aura v1 sigue mientras F1 aterriza el hero interactivo
-            (que la reemplaza SOLO en la home). */}
-        <BackgroundMesh />
+        {/* v2 (D10/D12): el aura de partículas v1 se retira — el fondo
+            interactivo vive SOLO en el hero de la home (chunk lazy); el
+            resto de la app es canvas negro puro / papel según el modo. */}
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
         </ThemeProvider>
