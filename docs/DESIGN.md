@@ -158,3 +158,28 @@ Three radii, locked: 12px (inputs, slots, day chips), 16px (cards, status boxes)
 - Do keep all visible copy in voseo es-AR (`lang="es-AR"`, i18n messages).
 
 --background: #000000
+
+---
+
+## v2 addendum — 2026-10-20 (khal-ux-skeletons-v2 · 10-uiux · approved by owner)
+
+> **Búsqueda:** keywords: `khal, design tokens v2, tan nightingale, dark default, sharp corners, flow gradient` · clasificación: `design-tokens` · estado: `canónico v2` · actualizado: 2026-10-20
+
+### Brand
+- **Wordmark font: TAN Nightingale** (TanType, licensed) — files in `docs/brand/fonts/` (.otf/.ttf/.woff2). Use for the wordmark ONLY (header, hero, footer ghost, favicon/OG monogram). Body stays system/UI font. `font-display: swap`, self-hosted from `public/fonts`.
+- Wordmark text: **"Khal"** (capitalizada sola, no all-caps).
+
+### Modes (D12)
+- **Dark = DEFAULT** on the clienta app (flow-gradient hero). Light mode available via the typographic toggle (persisted, defaults to system preference on first visit).
+- Token model: each mode defines surface/text/accent tokens; ONE accent per mode.
+
+### Backgrounds (D12/D13)
+- **Clienta:** flow-gradient-hero-section (21st.dev, chosen by owner+clienta) — three.js liquid gradient, interactive on pointer AND touch, light/dark variants. Dark preferred. Code lands as owned source; license verified pre-ship (fallback: shadergradient / paper-design MeshGradient).
+- **Admin:** **solid dark, NO animation** (phone resource budget). Phase 2: static blurred image layered on top.
+
+### Form discipline (D11 — anti-AI guard)
+- `border-radius`: ≤ 2px everywhere (sharp editorial). NO rounded card/button defaults.
+- Separation = whitespace + scale + typography. Borders ONLY functional (sticky bar top edge). No shadow+radius stacks.
+
+### Skeletons = spec
+- `docs/ux-flows/skeletons-v2-board.html` (12 screens, clienta móvil-first + admin teléfono-primario) is the structural contract; `docs/ux-flows/base-diseno-v2.md` is the element-source map.
