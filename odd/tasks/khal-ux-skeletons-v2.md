@@ -1,6 +1,6 @@
 # ODD Feature — khal-ux-skeletons-v2 (anti-AI layout redesign + new business rules)
 
-> **Búsqueda:** keywords: `khal, skeletons, layout, anti-ai, seña, comprobante, telegram bot, admin, booking flow` · clasificación: `odd-feature` · estado: `in-progress` · actualizado: 2026-10-20
+> **Búsqueda:** keywords: `khal, skeletons, layout, anti-ai, seña, comprobante, telegram bot, admin, booking flow` · clasificación: `odd-feature` · estado: `in-progress` · actualizado: 2026-10-22
 
 ## Objective
 Redesign the full clienta + admin screen set as reference-first, anti-AI layout skeletons (structure layer), capturing the new business rules (manual seña, terms, dueña's Telegram bot), and produce the handoff plan for 01-frontend.
@@ -104,3 +104,4 @@ T1 (audit current site with captures) + T2 (reference sheet) — then T3/T4 in p
 - 2026-10-20 (T8 feedback): Owner LIKES the skeletons and the flow — one revision: admin must also resolve on phone (dueña's primary device). Applied: admin block rebuilt with phone frames (D7). Board re-verified (12 screens / 12 phones / 6 desktops, render check + evidence screenshot). Awaiting final OK to close T8.
 - 2026-10-20 (final): owner approved the demo visual after 4 iterations (Syne kept, CTA single-line, overlaps fixed, TAN Nightingale wired + verified, wordmark 'Khal', credit + pause removed, toggle cornered). Owner GO for T9 with three new directives: D11 (sharp corners, minimal borders), D12 (animated bg = dark default, clienta), D13 (admin = solid dark, no animation, static blurred image later).
 - 2026-10-20 (T9 closed): owner GO with D11 (sharp corners / minimal borders), D12 (dark default for the animated bg), D13 (admin solid dark, no animation, blurred static image later). Plan written, tokens registered, skills copied to 01, dispatch sent to 24. Workstream design phase COMPLETE.
+- 2026-10-22 (F4 unit 1 — 12h hold rule, executed inline in the owner's chat, fleet paused): hold TTL 15min -> 12h. Migration `supabase/migrations/0011_booking_hold_ttl_12h.sql` (+ `.down.sql` restoring the 0007 body) — full-body replacement, 0007 pattern; the ONLY behavioral change is `hold_expires_at = now() + interval '12 hours'` (D2). Contract test `apps/web/test/migration-0011-hold-ttl-contract.test.ts`: RED observed first (9/9 fail, migration missing), then GREEN 9/9. Receipts: suite 35 files / 258 tests pass; typecheck 8/8; eslint + prettier clean. Next F4 units: auto-release job for expired holds, manual re-confirm RPC (admin phase hookup).
