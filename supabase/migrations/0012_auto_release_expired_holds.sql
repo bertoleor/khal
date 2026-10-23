@@ -58,8 +58,11 @@ end;
 $$;
 
 -- ACL (0009 hardening discipline): maintenance helper — nobody but the cron
--- owner (postgres) and service_role may invoke it.
-revoke all on function public.release_expired_holds() from public;
+-- owner (postgres) and service_role may invoke it. Supabase grants EXECUTE on
+-- new public-schema functions to anon/authenticated via ALTER DEFAULT
+-- PRIVILEGES, so revoking PUBLIC alone is NOT enough (live evidence
+-- 2026-10-22: routine_privileges showed anon+authenticated right after apply).
+revoke all on function public.release_expired_holds() from public, anon, authenticated;
 grant execute on function public.release_expired_holds() to service_role;
 
 -- Sweep every 10 minutes. Overlap safety does not depend on this schedule

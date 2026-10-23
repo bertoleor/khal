@@ -70,9 +70,13 @@ describe('migration 0012 — auto-release expired holds (owner rule D2)', () => 
     expect(mig).toContain('public.release_expired_holds()');
   });
 
-  it('locks the helper down (revoke public, grant service_role for manual runs)', () => {
+  it('locks the helper down: revoke PUBLIC + anon + authenticated (Supabase default privileges), grant service_role', () => {
     const mig = read(migPath);
-    expect(mig).toMatch(/revoke all on function public\.release_expired_holds\(\) from public/);
+    // Live evidence 2026-10-22: revoking PUBLIC alone left anon+authenticated
+    // with EXECUTE (Supabase ALTER DEFAULT PRIVILEGES on public functions).
+    expect(mig).toMatch(
+      /revoke all on function public\.release_expired_holds\(\) from public, anon, authenticated/
+    );
     expect(mig).toMatch(
       /grant execute on function public\.release_expired_holds\(\) to service_role/
     );
