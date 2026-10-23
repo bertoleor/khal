@@ -54,6 +54,7 @@ export function BookingForm({
         serviceName={service.name}
         date={selectedDate}
         slot={selectedSlot}
+        bookingId={state.bookingId}
       />
     );
   }

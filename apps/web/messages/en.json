@@ -76,6 +76,24 @@
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof.",
     "refillSuggestion": "We suggest booking your refill for {date}: that keeps your set full with the least amount of new lashes."
   },
+  "estado": {
+    "title": "appointment status",
+    "pendiente": "pending confirmation",
+    "confirmado": "confirmed",
+    "cancelado": "released",
+    "no_asistio": "missed",
+    "holdLabel": "Held for 12 h — expires in {remaining}",
+    "holdExpired": "expired",
+    "holdExpiredBody": "The hold expired: if your receipt did not arrive, the slot is released. Message us on WhatsApp to rebook.",
+    "stepsTitle": "What happens now",
+    "step1": "Send us the deposit receipt via WhatsApp.",
+    "step2": "The owner validates the receipt and confirms your booking.",
+    "step3": "You get the confirmation and we see you at the studio.",
+    "confirmedBody": "All set! Your booking is confirmed. See you at the studio.",
+    "releasedBody": "This slot was released. Message us on WhatsApp to book again.",
+    "notFound": "We could not find that booking. Check the link on your receipt.",
+    "receiptLink": "view my booking status"
+  },
   "policies": {
     "title": "Studio policies",
     "intro": "Clear rules so your appointment, and everyone else's, stays protected.",

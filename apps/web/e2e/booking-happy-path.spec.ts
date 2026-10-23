@@ -95,6 +95,19 @@ test.describe('Booking happy path (public storefront)', () => {
     await expect(page.getByText('0000003100000000000001')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Enviar comprobante por WhatsApp' })).toBeVisible();
 
+    // 6b. T-F2.5 — the estado door: the receipt links to the live booking
+    //     state (board s05). The stub answers the seeded booking as
+    //     PENDIENTE with a live 12h hold — the badge + the 3 steps of
+    //     "qué pasa ahora" must render.
+    const estadoLink = page.getByRole('link', { name: 'ver estado de mi turno' });
+    await expect(estadoLink).toBeVisible();
+    await estadoLink.click();
+    await expect(page).toHaveURL(/\/es\/estado\/99999999-9999-4999-8999-999999999999$/);
+    await expect(page.getByText('pendiente de confirmación')).toBeVisible();
+    await expect(page.getByText('Lifting de Pestañas')).toBeVisible();
+    await expect(page.getByText('Qué pasa ahora')).toBeVisible();
+    await expect(page.getByText('Envianos el comprobante de la seña por WhatsApp.')).toBeVisible();
+
     // 7. The real server action forwarded the booking through the stub: the
     //    RPC payload must carry the 0003 contract inputs (service, guest
     //    data, selected date/slot). The stub exposes its recordings for the

@@ -76,6 +76,24 @@
     "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago.",
     "refillSuggestion": "Te sugerimos anotar el relleno para el {date}: así conservás el diseño con la menor cantidad de pestañas nuevas."
   },
+  "estado": {
+    "title": "estado del turno",
+    "pendiente": "pendiente de confirmación",
+    "confirmado": "confirmada",
+    "cancelado": "liberada",
+    "no_asistio": "no asistió",
+    "holdLabel": "Reservado por 12 h — vence en {remaining}",
+    "holdExpired": "venció",
+    "holdExpiredBody": "La retención venció: si tu comprobante no llegó, el turno se libera. Escribinos por WhatsApp para reprogramar.",
+    "stepsTitle": "Qué pasa ahora",
+    "step1": "Envianos el comprobante de la seña por WhatsApp.",
+    "step2": "La dueña valida el comprobante y confirma tu turno.",
+    "step3": "Recibís la confirmación y nos vemos en el estudio.",
+    "confirmedBody": "¡Listo! Tu turno está confirmado. Te esperamos en el estudio.",
+    "releasedBody": "Este turno quedó liberado. Escribinos por WhatsApp para reservar de nuevo.",
+    "notFound": "No encontramos ese turno. Revisá el link de tu comprobante.",
+    "receiptLink": "ver estado de mi turno"
+  },
   "policies": {
     "title": "Políticas del estudio",
     "intro": "Reglas claras para que tu turno y el de todas estén siempre protegidos.",

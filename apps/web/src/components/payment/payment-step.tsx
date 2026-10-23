@@ -1,7 +1,8 @@
 'use client';
 
 import { buildWhatsAppLink, formatCents } from '@khal/utils';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export type DepositStatus = 'pending' | 'confirmed';
@@ -95,13 +96,17 @@ export function PaymentStep({
   serviceName,
   date,
   slot,
+  bookingId,
 }: {
   payment: PaymentInfo;
   serviceName: string;
   date: string;
   slot: string;
+  bookingId?: string;
 }) {
   const t = useTranslations('payment');
+  const tEstado = useTranslations('estado');
+  const locale = useLocale();
   const message = t('whatsappMessage', { service: serviceName, date, slot });
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
@@ -185,6 +190,17 @@ export function PaymentStep({
         >
           {t('sendComprobante')}
         </a>
+      ) : null}
+
+      {/* T-F2.5 — the door to the revisitable estado (board s05): the
+          clienta can come back any time to see the live state of her turn. */}
+      {bookingId ? (
+        <Link
+          href={`/${locale}/estado/${bookingId}`}
+          className="block text-center font-mono-khal text-[10px] uppercase tracking-[2px] text-faint underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          {tEstado('receiptLink')}
+        </Link>
       ) : null}
     </div>
   );
