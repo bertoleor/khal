@@ -1,7 +1,7 @@
 'use client';
 
-import { buildWhatsAppLink, createCheckoutPreference, formatCents } from '@khal/utils';
-import { useLocale, useTranslations } from 'next-intl';
+import { buildWhatsAppLink, formatCents } from '@khal/utils';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export type DepositStatus = 'pending' | 'confirmed';
@@ -17,7 +17,20 @@ export interface PaymentInfo {
   depositStatus: DepositStatus;
 }
 
-function CopyRow({ label, value }: { label: string; value: string }) {
+/**
+ * T-F2.4 (board s04) — receipt copy row. Sharp hairline rows (D11); the
+ * alias renders prominent, the CBU stays small; COPIAR is a typographic
+ * action, not a boxed button.
+ */
+function CopyRow({
+  label,
+  value,
+  prominent = false,
+}: {
+  label: string;
+  value: string;
+  prominent?: boolean;
+}) {
   const t = useTranslations('payment');
   const [copied, setCopied] = useState(false);
 
@@ -37,19 +50,24 @@ function CopyRow({ label, value }: { label: string; value: string }) {
   }
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm">
+    <div className="flex items-baseline justify-between gap-3 border-b border-hairline py-3">
       <div className="min-w-0">
-        <p className="text-xs text-zinc-500">{label}</p>
-        <p className="truncate font-mono text-sm text-zinc-100">{value}</p>
+        <p className="font-mono-khal text-[10px] uppercase tracking-[2px] text-faint">{label}</p>
+        <p
+          className={
+            prominent
+              ? 'truncate font-mono text-lg text-foreground'
+              : 'truncate font-mono text-xs text-muted'
+          }
+        >
+          {value}
+        </p>
       </div>
-      <span role="status" className="sr-only">
-        {copied ? `${t('copied')}: ${value}` : ''}
-      </span>
       <button
         type="button"
         onClick={handleCopy}
         aria-label={`${t('copy')}: ${value}`}
-        className="shrink-0 rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium text-zinc-200 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:bg-white/20"
+        className="shrink-0 font-mono-khal text-[10px] uppercase tracking-[2px] text-accent-soft underline-offset-4 transition-colors hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {copied ? t('copied') : t('copy')}
       </button>
@@ -60,159 +78,110 @@ function CopyRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * T-F2.4 — the seña RECEIPT (v2 comprobante screen, board s04): what the
+ * clienta sees right after confirming. Receipt anatomy per the approved
+ * board: kicker · honest PENDIENTE state (UC-002 v2) · monto ENORME ·
+ * the D2 12h hold bar · alias COPIAR + CBU chico · CTA único WhatsApp ·
+ * money-critical terms repeated (D1).
+ *
+ * The dormant MP checkout section (dead in every call path — no caller
+ * ever passed bookingId+serviceId) is out of the receipt per the F2
+ * dead-code precedent; the MP infrastructure (action, webhook, /pago
+ * return pages) stays untouched per the owner rule.
+ */
 export function PaymentStep({
   payment,
   serviceName,
   date,
   slot,
-  bookingId,
-  serviceId,
 }: {
   payment: PaymentInfo;
   serviceName: string;
   date: string;
   slot: string;
-  bookingId?: string;
-  serviceId?: string;
 }) {
   const t = useTranslations('payment');
-  const locale = useLocale();
   const message = t('whatsappMessage', { service: serviceName, date, slot });
   const link = buildWhatsAppLink(payment.whatsappPhone, message);
   const depositAmount = formatCents(payment.amountDueCents, payment.currencyCode);
   const remainder = formatCents(payment.totalCents - payment.amountDueCents, payment.currencyCode);
 
-  // Refill suggestion: booking date + 21 days. Fail-soft on non-ISO dates —
-  // the note is dropped rather than crashing the payment screen.
-  const refillMs = new Date(`${date}T12:00:00`).getTime();
-  const refillDate = Number.isNaN(refillMs)
-    ? null
-    : new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-      }).format(new Date(refillMs + 21 * 24 * 60 * 60 * 1000));
-
   // [KHAL-A1] Safe fallback: the transfer section (alias/CVU copy rows,
   // transfer instructions, WhatsApp receipt CTA) only renders when real
-  // settings came from global_settings. Without them the customer sees the
-  // booking confirmation + online payment — never a dummy CVU to copy.
+  // settings came from global_settings — never a dummy CVU to copy.
   const hasTransferDetails = payment.alias.length > 0 && payment.cvu.length > 0;
-  const [payerEmail, setPayerEmail] = useState('');
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
-  const [isRedirecting, setIsRedirecting] = useState(false);
-
-  async function handlePayOnline() {
-    if (!bookingId || !serviceId || isRedirecting) {
-      return;
-    }
-    setCheckoutError(null);
-    setIsRedirecting(true);
-    try {
-      const result = await createCheckoutPreference(bookingId, serviceId, payerEmail.trim());
-      if (result.ok && result.checkoutUrl) {
-        window.location.href = result.checkoutUrl;
-        return;
-      }
-      setCheckoutError(t('checkoutError'));
-    } catch {
-      setCheckoutError(t('checkoutError'));
-    } finally {
-      setIsRedirecting(false);
-    }
-  }
 
   return (
-    <div className="space-y-4">
-      {payment.depositStatus === 'pending' ? (
-        <div role="status" className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4">
-          <p className="text-sm font-semibold text-amber-300">{t('depositPendingTitle')}</p>
-          <p className="mt-1 text-sm text-amber-200/90">
+    <div className="space-y-6">
+      {/* Kicker — the receipt opens like a ticket stub. */}
+      <p className="font-mono-khal text-[11px] uppercase tracking-[2px] text-faint">
+        {t('receiptTitle')}
+      </p>
+
+      {/* Honest state (UC-002 v2): PENDIENTE until the dueña validates. */}
+      <div role="status">
+        <p className="text-sm font-semibold text-foreground">
+          {payment.depositStatus === 'pending'
+            ? t('depositPendingTitle')
+            : t('depositConfirmedTitle')}
+        </p>
+        {payment.depositStatus === 'pending' ? (
+          <p className="mt-1 text-sm text-muted">
             {t('depositPendingBody', { amount: depositAmount })}
           </p>
-        </div>
-      ) : (
-        <div
-          role="status"
-          className="rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-4"
-        >
-          <p className="text-sm font-semibold text-emerald-300">{t('depositConfirmedTitle')}</p>
-        </div>
-      )}
-
-      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center backdrop-blur-sm">
-        <p className="text-sm text-zinc-400">
-          {payment.isDeposit ? t('depositAmountLabel') : t('amountDue')}
-        </p>
-        <p className="mt-1 text-3xl font-bold text-white">{depositAmount}</p>
-        {payment.isDeposit ? (
-          <>
-            <p className="mt-2 text-xs text-zinc-500">
-              {t('totalLabel', { amount: formatCents(payment.totalCents, payment.currencyCode) })}
-            </p>
-            <p className="mt-1 text-xs text-zinc-500">
-              {t('remainderAtStore', { amount: remainder })}
-            </p>
-          </>
         ) : null}
       </div>
 
-      {refillDate ? (
-        <div role="note" className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-4">
-          <p className="text-sm text-emerald-200/90">
-            {t('refillSuggestion', { date: refillDate })}
+      {/* Monto ENORME — the receipt hero amount (fits 390px via clamp). */}
+      <div>
+        <p className="font-mono-khal text-[10px] uppercase tracking-[2px] text-faint">
+          {payment.isDeposit ? t('depositAmountLabel') : t('amountDue')}
+        </p>
+        <p className="mt-1 text-[clamp(2.75rem,14vw,4.5rem)] font-bold leading-none tracking-tight text-foreground">
+          {depositAmount}
+        </p>
+        {payment.isDeposit ? (
+          <p className="mt-2 text-xs text-muted">
+            {t('totalLabel', { amount: formatCents(payment.totalCents, payment.currencyCode) })} ·{' '}
+            {t('remainderAtStore', { amount: remainder })}
           </p>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
+      {/* D2 barra 12 h: the hold made visible at the commit moment. */}
+      <div>
+        <div aria-hidden="true" className="h-0.5 w-full bg-accent" />
+        <p className="mt-2 font-mono-khal text-[10px] uppercase tracking-[2px] text-accent-soft">
+          {t('holdBarLabel')}
+        </p>
+        <p className="mt-0.5 text-xs text-muted">{t('holdBarBody')}</p>
+      </div>
+
+      {/* Alias COPIAR (prominent) + CBU chico + instructions. */}
       {hasTransferDetails ? (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-zinc-100">{t('transferTo')}</p>
-          <CopyRow label={t('alias')} value={payment.alias} />
+        <div>
+          <CopyRow label={t('alias')} value={payment.alias} prominent />
           <CopyRow label={t('cvu')} value={payment.cvu} />
+          <p className="mt-3 text-sm text-muted">{t('instructions', { amount: depositAmount })}</p>
         </div>
       ) : null}
 
-      {hasTransferDetails ? (
-        <p className="text-sm text-zinc-400">{t('instructions', { amount: depositAmount })}</p>
-      ) : null}
-
-      {bookingId && serviceId ? (
-        <div className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-          <label htmlFor="mp-payer-email" className="text-sm font-semibold text-zinc-100">
-            {t('payOnlineTitle')}
-          </label>
-          <input
-            id="mp-payer-email"
-            type="email"
-            autoComplete="email"
-            value={payerEmail}
-            onChange={(event) => setPayerEmail(event.target.value)}
-            placeholder="tu@email.com"
-            className="w-full rounded-xl border border-white/20 px-4 py-2.5 text-sm text-white placeholder:text-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-          />
-          <button
-            type="button"
-            onClick={handlePayOnline}
-            disabled={isRedirecting || payerEmail.trim().length === 0}
-            className="w-full rounded-full bg-sky-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isRedirecting ? t('redirecting') : t('payOnline')}
-          </button>
-          {checkoutError ? (
-            <p role="alert" className="text-sm text-red-300">
-              {checkoutError}
-            </p>
-          ) : null}
+      {/* D1: the money-critical terms come back on the comprobante screen. */}
+      {payment.isDeposit ? (
+        <div className="border-t border-hairline pt-3">
+          <p className="text-xs text-muted">· {t('termsNonRefundable')}</p>
+          <p className="text-xs text-muted">· {t('termsReschedule')}</p>
         </div>
       ) : null}
 
+      {/* CTA único — send the comprobante to the dueña. */}
       {payment.whatsappPhone.length > 0 ? (
         <a
           href={link}
           target="_blank"
           rel="noreferrer"
-          className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:bg-emerald-800"
+          className="block w-full bg-accent px-6 py-3 text-center text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
         >
           {t('sendComprobante')}
         </a>

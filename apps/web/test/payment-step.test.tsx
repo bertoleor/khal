@@ -18,6 +18,11 @@ vi.mock('next-intl', () => {
     totalLabel: 'Total: {amount}',
     remainderAtStore: 'Resto {amount} en el local',
     transferTo: 'Transferir a',
+    receiptTitle: 'comprobante de seña',
+    holdBarLabel: 'Reservado por 12 h',
+    holdBarBody: 'Pasadas las 12 h sin tu comprobante, el turno se libera automáticamente.',
+    termsNonRefundable: 'La seña no se devuelve.',
+    termsReschedule: 'Para reprogramar, avisá con 24 h de anticipación.',
     instructions:
       'Transferí {amount} por CBU o alias y después enviá el comprobante por WhatsApp para confirmar tu turno.',
     depositPendingTitle: 'Seña pendiente',
@@ -64,8 +69,11 @@ function clean(s: string): string {
 describe('PaymentStep (manual payment UI)', () => {
   it('A3: announces copy result via a dedicated live status region (not a plain button)', () => {
     const html = renderPayment();
-    // A <span role="status"> live region must exist to announce the copied value to SR.
-    expect(html).toContain('<span role="status"');
+    // A dedicated live region must exist to announce the copied value to SR.
+    // v2 receipt: single span carrying aria-live polite + role status —
+    // attribute order is irrelevant, both markers must be present.
+    expect(html).toContain('role="status"');
+    expect(html).toContain('aria-live="polite"');
   });
 
   it('A3: copy button exposes the value being copied via aria-label', () => {

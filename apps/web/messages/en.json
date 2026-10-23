@@ -68,6 +68,11 @@
     "redirecting": "Redirecting…",
     "checkoutError": "We couldn't start the online payment. Try again or pay by bank transfer.",
     "sendComprobante": "Send receipt via WhatsApp",
+    "receiptTitle": "deposit receipt",
+    "holdBarLabel": "Held for 12 h",
+    "holdBarBody": "If your payment receipt does not arrive within 12 h, the slot is released automatically.",
+    "termsNonRefundable": "The deposit is non-refundable.",
+    "termsReschedule": "To reschedule, give at least 24 h notice.",
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof.",
     "refillSuggestion": "We suggest booking your refill for {date}: that keeps your set full with the least amount of new lashes."
   },

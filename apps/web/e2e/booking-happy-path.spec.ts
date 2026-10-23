@@ -88,7 +88,9 @@ test.describe('Booking happy path (public storefront)', () => {
     await expect(page.getByText('Seña pendiente')).toBeVisible();
     await expect(page.getByText(/Tu turno está reservado\./)).toBeVisible();
     await expect(page.getByText('Seña a transferir')).toBeVisible();
-    await expect(page.locator('p.text-3xl')).toHaveText(/\$\s?13\.500,00/);
+    // v2 receipt: the amount is the receipt hero (clamp-sized), so assert the
+    // text itself instead of a size class.
+    await expect(page.getByText(/\$\s?13\.500,00/).first()).toBeVisible();
     await expect(page.getByText('khal.estudio')).toBeVisible();
     await expect(page.getByText('0000003100000000000001')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Enviar comprobante por WhatsApp' })).toBeVisible();

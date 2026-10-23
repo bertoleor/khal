@@ -68,6 +68,11 @@
     "redirecting": "Redirigiendo…",
     "checkoutError": "No pudimos iniciar el pago online. Probá de nuevo o pagá por transferencia.",
     "sendComprobante": "Enviar comprobante por WhatsApp",
+    "receiptTitle": "comprobante de seña",
+    "holdBarLabel": "Reservado por 12 h",
+    "holdBarBody": "Pasadas las 12 h sin tu comprobante, el turno se libera automáticamente.",
+    "termsNonRefundable": "La seña no se devuelve.",
+    "termsReschedule": "Para reprogramar, avisá con 24 h de anticipación.",
     "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago.",
     "refillSuggestion": "Te sugerimos anotar el relleno para el {date}: así conservás el diseño con la menor cantidad de pestañas nuevas."
   },
