@@ -39,6 +39,9 @@ export const bookingInputSchema = z.object({
   // D3 — "¿venís con trabajo de otro lugar?": absent = false, so the v1 form
   // and the e2e happy path keep validating unchanged.
   externalWork: z.boolean().default(false),
+  // D1 — the clienta must accept the studio terms at the review step
+  // (literal true: unchecked or missing rejects the submit server-side).
+  termsAccepted: z.literal(true),
 });
 
 export type BookingInput = z.infer<typeof bookingInputSchema>;

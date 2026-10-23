@@ -66,17 +66,20 @@ test.describe('Booking happy path (public storefront)', () => {
     const slotSection = page
       .getByRole('heading', { name: 'Elegí el horario' })
       .locator('xpath=following-sibling::div[1]');
-    const firstSlot = slotSection.locator('button').first();
+    const firstSlot = slotSection.locator('button:not([disabled])').first();
     await expect(firstSlot).toBeVisible();
     await firstSlot.click();
 
     // 5. Fill the guest form and submit. Inputs are wrapped in <label> (Field
-    //    component), so they are addressable by accessible label.
+    //    component), so they are addressable by accessible label. The D1
+    //    terms checkbox is required (enforced server-side too), so the flow
+    //    must check it before the 12h-hold submit button.
     await expect(page.getByLabel('Nombre')).toBeVisible();
     await page.getByLabel('Nombre').fill('Valentina Prueba');
     await page.getByLabel('Teléfono').fill('+54 9 11 5555 5555');
     await page.getByLabel('Correo').fill('deposit@example.com');
-    await page.getByRole('button', { name: 'Confirmar turno' }).click();
+    await page.getByLabel('Acepto los términos del estudio').check();
+    await page.getByRole('button', { name: 'Confirmar — reserva por 12 h' }).click();
 
     // 6. Payment screen: deposit banner + amounts + transfer rows + WhatsApp.
     //    Lifting: percentage deposit 30% of $ 45.000,00 -> seña $ 13.500,00
@@ -106,5 +109,7 @@ test.describe('Booking happy path (public storefront)', () => {
     expect(rpcCall.p_slot_start_minutes).toBeGreaterThanOrEqual(0);
     expect(rpcCall.p_slot_start_minutes).toBeLessThanOrEqual(1439);
     expect(typeof rpcCall.p_idempotency_key).toBe('string');
+    // D3 — the unchecked ⚑ travels as false through the real server action.
+    expect(rpcCall.p_external_work).toBe(false);
   });
 });

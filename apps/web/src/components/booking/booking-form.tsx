@@ -3,8 +3,8 @@
 import { SlotPicker, type DaySlot } from '@/components/booking/slot-picker';
 import { PaymentStep, type PaymentInfo } from '@/components/payment/payment-step';
 import { Field } from '@/components/shared/field';
+import { Link } from '@/i18n/navigation';
 import { createBooking, type BookingState } from '@/lib/actions/booking';
-import { formatCents } from '@khal/utils';
 import type { Service } from '@khal/validations';
 import { useTranslations } from 'next-intl';
 import { useActionState, useState } from 'react';
@@ -83,20 +83,54 @@ export function BookingForm({
           <Field label={t('name')} name="name" type="text" autoComplete="name" />
           <Field label={t('phone')} name="phone" type="tel" autoComplete="tel" />
           <Field label={t('email')} name="email" type="email" autoComplete="email" />
+
+          {/* D3 — "¿venís con trabajo de otro lugar?": persists via
+              create_booking (0014) and surfaces in the approval queue. */}
+          <div className="flex items-start gap-2 pt-1">
+            <input
+              id="externalWork"
+              name="externalWork"
+              type="checkbox"
+              className="mt-0.5 size-4 accent-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            />
+            <label htmlFor="externalWork" className="cursor-pointer text-sm text-muted">
+              {t('externalWorkLabel')}
+            </label>
+          </div>
+
+          {/* D1 — terms gate: required client-side AND enforced server-side
+              (bookingInputSchema.termsAccepted is z.literal(true)). */}
+          <div className="flex items-start gap-2 pt-1">
+            <input
+              id="termsAccepted"
+              name="termsAccepted"
+              type="checkbox"
+              required
+              className="mt-0.5 size-4 accent-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            />
+            <p className="text-sm text-muted">
+              <label htmlFor="termsAccepted" className="cursor-pointer">
+                {t('termsLabel')}
+              </label>{' '}
+              <Link
+                href="/politicas"
+                className="font-mono-khal text-[11px] uppercase tracking-[1.5px] text-accent-soft underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {t('termsLink')}
+              </Link>
+            </p>
+          </div>
+
           {error ? <p className="text-sm text-red-400">{error}</p> : null}
           <button
             type="submit"
             disabled={isPending}
-            className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full bg-accent px-6 py-3 text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending ? t('submitting') : t('confirm')}
+            {isPending ? t('submitting') : t('confirmHold')}
           </button>
         </form>
       ) : null}
-
-      <p className="pb-4 text-xs text-zinc-500">
-        {formatCents(service.price_cents, service.currency_code)}
-      </p>
     </div>
   );
 }

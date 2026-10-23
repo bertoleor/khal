@@ -62,3 +62,27 @@ export function computeAvailableSlots(
 
   return result;
 }
+
+// T-F2.3 (slots con tachados): the FULL slot reel for a window — every
+// cadence start whose [start, start + duration + buffer) fits, with NO
+// blocking logic. The picker renders taken slots as the complement:
+// taken = candidateSlots(...) − computeAvailableSlots(...).
+// MUST stay a superset of computeAvailableSlots (same loop bounds + step) —
+// the contract is pinned by packages/db/test/candidate-slots.test.ts.
+export function candidateSlots(
+  open: TimeRange,
+  durationMinutes: number,
+  bufferMinutes: number,
+  stepMinutes = 15
+): string[] {
+  const block = durationMinutes + bufferMinutes;
+  const openStart = toMinutes(open.start);
+  const openEnd = toMinutes(open.end);
+  const result: string[] = [];
+
+  for (let start = openStart; start + block <= openEnd; start += stepMinutes) {
+    result.push(formatClock(start));
+  }
+
+  return result;
+}

@@ -67,8 +67,10 @@ const RING_OFFSET = 'focus-visible:outline-offset-2';
  * forbids the sub-AA slate-400 token on any audited text surface.
  */
 describe('[ORN-59 H1] price & LTV text contrast on dark surfaces', () => {
-  it('booking form price line does not use the sub-AA slate-400 token', () => {
-    const src = read('apps/web/src/components/booking/booking-form.tsx');
+  it('booking price line does not use the sub-AA slate-400 token', () => {
+    // v2 (F2 unit 3a-ii): the price line lives in the reservar page header
+    // (upgraded zinc-500 -> foreground), still well above the 4.5:1 AA floor.
+    const src = read('apps/web/src/app/[locale]/servicios/[id]/reservar/page.tsx');
     const lines = src.split('\n');
     const contentIdx = lines.findIndex((l) => l.includes('formatCents(service.price_cents'));
     expect(contentIdx).toBeGreaterThan(-1);
@@ -78,7 +80,7 @@ describe('[ORN-59 H1] price & LTV text contrast on dark surfaces', () => {
       .reverse()
       .find((l) => l.includes('className='));
     expect(opening).toBeDefined();
-    expect(opening).toContain('text-zinc-500');
+    expect(opening).toContain('text-foreground');
     expect(opening).not.toContain('text-slate-400');
   });
 

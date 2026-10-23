@@ -59,6 +59,8 @@ export async function createBooking(
     email: formData.get('email'),
     // D3 — checkbox "¿venís con trabajo de otro lugar?": 'on' -> true.
     externalWork: formData.get('externalWork') === 'on',
+    // D1 — terms checkbox: the submit is rejected server-side without it.
+    termsAccepted: formData.get('termsAccepted') === 'on',
   };
 
   const parsed = bookingInputSchema.safeParse(raw);
