@@ -57,6 +57,8 @@ export async function createBooking(
     name: formData.get('name'),
     phone: formData.get('phone'),
     email: formData.get('email'),
+    // D3 — checkbox "¿venís con trabajo de otro lugar?": 'on' -> true.
+    externalWork: formData.get('externalWork') === 'on',
   };
 
   const parsed = bookingInputSchema.safeParse(raw);
@@ -95,6 +97,7 @@ export async function createBooking(
     p_slot_start_minutes: slotMinutes,
     p_idempotency_key: idempotencyKey,
     p_client_ip: null,
+    p_external_work: input.externalWork,
   });
 
   if (error) {

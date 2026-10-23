@@ -36,6 +36,9 @@ export const bookingInputSchema = z.object({
   name: z.string().trim().min(2).max(120),
   phone: phoneSchema,
   email: emailSchema,
+  // D3 — "¿venís con trabajo de otro lugar?": absent = false, so the v1 form
+  // and the e2e happy path keep validating unchanged.
+  externalWork: z.boolean().default(false),
 });
 
 export type BookingInput = z.infer<typeof bookingInputSchema>;
