@@ -27,6 +27,13 @@ export default defineConfig({
       'packages/**/test/**/*.test.{ts,tsx}',
       'apps/**/test/**/*.test.{ts,tsx}',
       'tests/unit/**/*.test.{ts,tsx}',
+      // Cwd-relative pattern so the per-package `vitest run` (turbo's test
+      // task runs from the package dir) finds the package's own test/ dir —
+      // the root-relative patterns above match nothing from a package cwd
+      // (CI failure 2026-10-23: "No test files found" for @khal/db and
+      // @khal/validations). From the root this pattern matches no file
+      // (no root-level test/ dir), so the root suite is unchanged.
+      'test/**/*.test.{ts,tsx}',
     ],
   },
   plugins: [
