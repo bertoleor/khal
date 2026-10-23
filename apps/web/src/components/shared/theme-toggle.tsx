@@ -1,5 +1,6 @@
 'use client';
 
+import { useHydrated } from '@/lib/use-hydrated';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -7,11 +8,14 @@ import { useTheme } from 'next-themes';
  * Toggle claro/oscuro tipográfico (D12) — sin caja, sol/luna lucide,
  * mono chiquito, igual al aprobado en docs/ux-flows/fondo-demo-khal.html
  * (#khal-toggle). Persiste en el dispositivo (next-themes localStorage).
- * SSR-safe: antes de hidratar asumimos dark (el default) y corregimos al montar.
+ * SSR-safe: antes de hidratar asumimos dark (el default) y corregimos al
+ * montar — el gate `mounted` hace que el primer render del cliente sea
+ * idéntico al HTML del servidor (React 19 estricto con hidratación).
  */
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const isDark = resolvedTheme !== 'light';
+  const mounted = useHydrated();
+  const isDark = !mounted || resolvedTheme !== 'light';
 
   return (
     <button

@@ -1,6 +1,7 @@
 'use client';
 
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { useHydrated } from '@/lib/use-hydrated';
 import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import type { PointerEvent as ReactPointerEvent } from 'react';
@@ -36,7 +37,12 @@ const clamp = (v: number) => Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, v));
 
 export function FlowGradientHero() {
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== 'light';
+  const mounted = useHydrated();
+  // Hydration-safe (next-themes pattern): SSR cannot know the theme, so the
+  // hydration render keeps the dark default — identical to the server HTML;
+  // React flips to the real theme right after hydration. Without this gate
+  // the fallback palette disagrees with the SSR markup and React 19 throws.
+  const isDark = !mounted || resolvedTheme !== 'light';
   const t = useTranslations('hero');
 
   const [reducedMotion, setReducedMotion] = useState(false);
