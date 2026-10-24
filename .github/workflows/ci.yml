@@ -95,10 +95,13 @@ jobs:
         uses: pnpm/action-setup@v6
         with:
                     run_install: false
+      # Node 22 (not the repo-wide 20): cspell 10.4 requires >=22.18 —
+      # the first CI run failed with "Unsupported NodeJS version (20.20.2)".
+      # The other jobs stay on 20 until the repo bumps engines together.
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
