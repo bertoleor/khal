@@ -26,7 +26,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         >
           <section className="grid grid-cols-1 items-center gap-6 sm:grid-cols-12">
             <div className="space-y-3 sm:col-span-8">
-              <h1 className="skeleton-shimmer h-10 w-2/3 rounded bg-zinc-800 sm:h-12 lg:h-14"></h1>
+              <h1
+                aria-hidden="true"
+                className="skeleton-shimmer h-10 w-2/3 rounded bg-zinc-800 sm:h-12 lg:h-14"
+              ></h1>
               <p className="skeleton-shimmer h-5 w-1/2 rounded bg-zinc-800/60 sm:h-6"></p>
             </div>
             <div className="hidden justify-end sm:col-span-4 sm:flex">
@@ -34,7 +37,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </div>
           </section>
           <section className="mt-10 sm:mt-12">
-            <h2 className="skeleton-shimmer mb-4 h-3 w-32 rounded bg-zinc-800/60"></h2>
+            <h2
+              aria-hidden="true"
+              className="skeleton-shimmer mb-4 h-3 w-32 rounded bg-zinc-800/60"
+            ></h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
               {[0, 1, 2, 3].map((cardIndex) => (
                 <div

@@ -1,0 +1,48 @@
+name: CodeQL
+
+# SAST via CodeQL — free for public repositories (GitHub Advanced Security
+# zero-cost tier). Runs the extended security query suite on every push/PR to
+# main plus a weekly scheduled scan. Complements semgrep.yml (pattern SAST)
+# with data-flow/taint analysis across the whole codebase.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, Wednesday 05:30 UTC — catches new queries over unchanged code.
+    - cron: '30 5 * * 3'
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      # required for uploading SARIF results
+      security-events: write
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # javascript-typescript covers apps/packages; python covers the
+        # design-qa tooling scripts.
+        language: [javascript-typescript, python]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          # security-extended: the deeper security rules beyond the default
+          # suite — free on public repos.
+          queries: security-extended
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: '/language:${{ matrix.language }}'

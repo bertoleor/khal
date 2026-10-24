@@ -19,23 +19,34 @@ export interface PagoResultProps {
   whatsappHref: string | null;
 }
 
-const STATUS_ACCENT: Record<PagoStatus, { card: string; title: string; body: string }> = {
-  exito: {
-    card: 'border-emerald-400/30 bg-emerald-400/10',
-    title: 'text-emerald-300',
-    body: 'text-emerald-200/90',
-  },
-  pendiente: {
-    card: 'border-amber-400/30 bg-amber-400/10',
-    title: 'text-amber-300',
-    body: 'text-amber-200/90',
-  },
-  error: {
-    card: 'border-red-400/30 bg-red-400/10',
-    title: 'text-red-300',
-    body: 'text-red-200/90',
-  },
-};
+type StatusAccent = { card: string; title: string; body: string };
+
+/**
+ * Per-status accent classes — exhaustive switch over PagoStatus
+ * (compile-checked named access, no dynamic key indexing).
+ */
+function statusAccent(status: PagoStatus): StatusAccent {
+  switch (status) {
+    case 'exito':
+      return {
+        card: 'border-emerald-400/30 bg-emerald-400/10',
+        title: 'text-emerald-300',
+        body: 'text-emerald-200/90',
+      };
+    case 'pendiente':
+      return {
+        card: 'border-amber-400/30 bg-amber-400/10',
+        title: 'text-amber-300',
+        body: 'text-amber-200/90',
+      };
+    case 'error':
+      return {
+        card: 'border-red-400/30 bg-red-400/10',
+        title: 'text-red-300',
+        body: 'text-red-200/90',
+      };
+  }
+}
 
 export function PagoResult({
   status,
@@ -47,7 +58,7 @@ export function PagoResult({
   whatsappLabel,
   whatsappHref,
 }: PagoResultProps) {
-  const accent = STATUS_ACCENT[status];
+  const accent = statusAccent(status);
 
   return (
     <div className="space-y-4">

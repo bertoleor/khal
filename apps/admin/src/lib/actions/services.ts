@@ -85,9 +85,25 @@ export async function updateService(
   const parsed = serviceFormSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: firstIssueMessage(parsed.error) };
 
-  // organization_id is deliberately NOT updatable from the form.
-  const { organization_id: _ignored, ...row } = parsed.data as Record<string, unknown>;
-  void _ignored;
+  // The update payload is an explicit allow-list of the form schema's own
+  // columns (typed — no cast, no dynamic keys): organization_id can never
+  // be form-updatable, not because it is stripped on the way in, but because
+  // only these fields are ever sent. A future schema column becomes
+  // updatable only by being consciously added here.
+  const row = {
+    name: parsed.data.name,
+    description: parsed.data.description,
+    price_cents: parsed.data.price_cents,
+    currency_code: parsed.data.currency_code,
+    duration_minutes: parsed.data.duration_minutes,
+    buffer_minutes: parsed.data.buffer_minutes,
+    is_visible: parsed.data.is_visible,
+    sort_order: parsed.data.sort_order,
+    photo_path: parsed.data.photo_path,
+    deposit_mode: parsed.data.deposit_mode,
+    deposit_fixed_cents: parsed.data.deposit_fixed_cents,
+    deposit_percentage_bp: parsed.data.deposit_percentage_bp,
+  };
 
   const supabase = await getSupabaseServerClient();
   const { data, error } = await supabase

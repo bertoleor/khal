@@ -9,6 +9,13 @@ REJECT if:
 - Empty catch blocks
 - `console.log` in production code (use logger)
 
+## Lint disables (standing rule — dueña, 2026-10-23)
+REJECT any inline eslint-disable UNLESS the comment documents up to FIVE
+distinct real-solution attempts that failed (rename, extract helper,
+type-safe access, restructure...). A finding fired for a reason: try the
+REAL fix first — the disable with documented attempts is the last resort,
+not the first move. Quality code with documentation beats silenced signals.
+
 ## Frontend
 REJECT if:
 - `style=` inline or hardcoded hex in className (use Tailwind + `cn()`)

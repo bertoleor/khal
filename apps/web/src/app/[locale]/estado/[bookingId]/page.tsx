@@ -36,8 +36,10 @@ export default async function EstadoPage({ params }: EstadoPageProps) {
     );
   }
 
+  // Extracted from a nested ternary (sonarjs/no-nested-conditional).
+  const intlLocale = locale === 'en' ? 'en-US' : 'es-AR';
   const scheduledAt = status.scheduledAt
-    ? new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'es-AR', {
+    ? new Intl.DateTimeFormat(intlLocale, {
         weekday: 'long',
         day: 'numeric',
         month: 'long',

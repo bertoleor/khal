@@ -55,7 +55,10 @@ export const appointmentStatusSchema = z.enum([
 
 export type AppointmentStatus = z.infer<typeof appointmentStatusSchema>;
 
-// ECOM-03 — strict state machine; no arbitrary jumps.
+// ECOM-03 — strict state machine; no arbitrary jumps. The table below stays
+// the single source of truth; `canTransitionAppointment` reads it through an
+// exhaustive, compile-checked switch (named property access per status — no
+// dynamic key indexing).
 export const VALID_APPOINTMENT_TRANSITIONS: Record<AppointmentStatus, AppointmentStatus[]> = {
   pendiente: ['confirmado', 'cancelado', 'no_asistio'],
   confirmado: ['cancelado', 'no_asistio'],
@@ -64,7 +67,16 @@ export const VALID_APPOINTMENT_TRANSITIONS: Record<AppointmentStatus, Appointmen
 };
 
 export function canTransitionAppointment(from: AppointmentStatus, to: AppointmentStatus): boolean {
-  return VALID_APPOINTMENT_TRANSITIONS[from].includes(to);
+  switch (from) {
+    case 'pendiente':
+      return VALID_APPOINTMENT_TRANSITIONS.pendiente.includes(to);
+    case 'confirmado':
+      return VALID_APPOINTMENT_TRANSITIONS.confirmado.includes(to);
+    case 'cancelado':
+      return VALID_APPOINTMENT_TRANSITIONS.cancelado.includes(to);
+    case 'no_asistio':
+      return VALID_APPOINTMENT_TRANSITIONS.no_asistio.includes(to);
+  }
 }
 
 export const appointmentSchema = z.object({

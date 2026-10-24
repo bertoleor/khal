@@ -1,3 +1,4 @@
+import { getCatalog, getService } from '@/lib/actions/catalog';
 import { serviceSchema, type Service } from '@khal/validations';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -68,8 +69,6 @@ vi.mock('@/lib/supabase/booking-client', () => ({
   ),
   createBookingSupabaseClient: vi.fn(() => ({ from: mockFrom })),
 }));
-
-import { getCatalog, getService } from '@/lib/actions/catalog';
 
 beforeEach(() => {
   vi.resetModules();

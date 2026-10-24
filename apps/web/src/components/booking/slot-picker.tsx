@@ -45,6 +45,10 @@ export function SlotPicker({
         <div className="mt-3 flex gap-5 overflow-x-auto pb-2">
           {days.map((day) => {
             const isActive = day.date === selectedDate;
+            // Extracted from a nested ternary (sonarjs/no-nested-conditional).
+            const dayStateClass = isActive
+              ? 'border-accent text-foreground'
+              : 'border-transparent text-muted hover:text-foreground';
             return (
               <button
                 key={day.date}
@@ -56,9 +60,7 @@ export function SlotPicker({
                   'shrink-0 border-b-2 pb-1 font-mono-khal text-xs uppercase tracking-[1.5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                   day.closed
                     ? 'cursor-not-allowed border-transparent text-faint line-through'
-                    : isActive
-                      ? 'border-accent text-foreground'
-                      : 'border-transparent text-muted hover:text-foreground'
+                    : dayStateClass
                 )}
               >
                 {day.label}
@@ -80,6 +82,10 @@ export function SlotPicker({
               {reel.map((slot) => {
                 const isTaken = !activeDay.slots.includes(slot);
                 const isSelected = selectedSlot === slot;
+                // Extracted from a nested ternary (sonarjs/no-nested-conditional).
+                const slotStateClass = isSelected
+                  ? 'bg-accent font-semibold text-accent-contrast'
+                  : 'text-foreground hover:text-accent-soft';
                 return (
                   <button
                     key={slot}
@@ -90,11 +96,7 @@ export function SlotPicker({
                     aria-label={isTaken ? `${slot} — ${t('slotTaken')}` : slot}
                     className={cn(
                       'rounded-[2px] py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                      isTaken
-                        ? 'cursor-not-allowed text-faint line-through'
-                        : isSelected
-                          ? 'bg-accent font-semibold text-accent-contrast'
-                          : 'text-foreground hover:text-accent-soft'
+                      isTaken ? 'cursor-not-allowed text-faint line-through' : slotStateClass
                     )}
                   >
                     {slot}

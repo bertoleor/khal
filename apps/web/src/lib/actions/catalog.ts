@@ -18,22 +18,24 @@ import { serviceSchema, type Service } from '@khal/validations';
 // NULLs arrive as null and are dropped from the object before parsing (zod
 // .optional() rejects null); unknown keys (organization_id, timestamps,
 // deleted_at) are stripped by the zod object default.
-const NULLABLE_TO_OPTIONAL_KEYS = [
-  'description',
-  'photo_path',
-  'deposit_mode',
-  'deposit_fixed_cents',
-  'deposit_percentage_bp',
-] as const;
+
+/**
+ * Drops the SQL NULLs of the five nullable columns, by name (explicit
+ * per-key statements — no dynamic key access). Returns a fresh object so
+ * the caller's row is never mutated.
+ */
+function dropSqlNulls(row: Record<string, unknown>): Record<string, unknown> {
+  const normalized: Record<string, unknown> = { ...row };
+  if (normalized.description === null) delete normalized.description;
+  if (normalized.photo_path === null) delete normalized.photo_path;
+  if (normalized.deposit_mode === null) delete normalized.deposit_mode;
+  if (normalized.deposit_fixed_cents === null) delete normalized.deposit_fixed_cents;
+  if (normalized.deposit_percentage_bp === null) delete normalized.deposit_percentage_bp;
+  return normalized;
+}
 
 function parseRow(row: Record<string, unknown>): Service | null {
-  const normalized: Record<string, unknown> = { ...row };
-  for (const key of NULLABLE_TO_OPTIONAL_KEYS) {
-    if (normalized[key] === null) {
-      delete normalized[key];
-    }
-  }
-  const parsed = serviceSchema.safeParse(normalized);
+  const parsed = serviceSchema.safeParse(dropSqlNulls(row));
   return parsed.success ? parsed.data : null;
 }
 

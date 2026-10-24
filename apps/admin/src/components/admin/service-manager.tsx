@@ -58,6 +58,9 @@ function toNumber(raw: string): number {
 
 function serviceToForm(s: Service): FormState {
   const mode = (s.deposit_mode ?? DEPOSIT_NONE) as FormState['deposit_mode'];
+  // Extracted from a nested ternary (sonarjs/no-nested-conditional).
+  const percentageAmount =
+    mode === DEPOSIT_PERCENTAGE ? ((s.deposit_percentage_bp ?? 0) / 100).toString() : '';
   return {
     name: s.name,
     price: (s.price_cents / 100).toString(),
@@ -69,11 +72,7 @@ function serviceToForm(s: Service): FormState {
     sort_order: s.sort_order.toString(),
     deposit_mode: mode,
     deposit_amount:
-      mode === DEPOSIT_FIXED
-        ? ((s.deposit_fixed_cents ?? 0) / 100).toString()
-        : mode === DEPOSIT_PERCENTAGE
-          ? ((s.deposit_percentage_bp ?? 0) / 100).toString()
-          : '',
+      mode === DEPOSIT_FIXED ? ((s.deposit_fixed_cents ?? 0) / 100).toString() : percentageAmount,
   };
 }
 
@@ -90,6 +89,54 @@ function emptyForm(nextSort: number): FormState {
     deposit_mode: DEPOSIT_PERCENTAGE,
     deposit_amount: '30',
   };
+}
+
+/**
+ * FormState -> serviceFormSchema input. Unparseable numbers flow through as
+ * NaN so zod reports them as validation errors (the form never pre-rejects:
+ * single error surface — NaN survives Math.round unchanged). A selected
+ * deposit mode with an unparseable amount reaches zod as NaN; unselected
+ * modes send null (no deposit).
+ */
+function formToCandidate(form: FormState) {
+  return {
+    name: form.name,
+    description: form.description === '' ? null : form.description,
+    price_cents: Math.round(toNumber(form.price) * 100),
+    currency_code: 'ARS',
+    duration_minutes: toNumber(form.duration),
+    buffer_minutes: toNumber(form.buffer),
+    is_visible: form.is_visible,
+    sort_order: Math.round(toNumber(form.sort_order)),
+    photo_path: form.photo_path,
+    deposit_mode:
+      form.deposit_mode === DEPOSIT_NONE ? null : (form.deposit_mode as 'fixed' | 'percentage'),
+    deposit_fixed_cents:
+      form.deposit_mode === DEPOSIT_FIXED ? Math.round(toNumber(form.deposit_amount) * 100) : null,
+    deposit_percentage_bp:
+      form.deposit_mode === DEPOSIT_PERCENTAGE
+        ? Math.round(toNumber(form.deposit_amount) * 100)
+        : null,
+  };
+}
+
+/**
+ * zod issues -> first error message per field key, accumulated through a
+ * Map (no dynamic Record indexing: keys are our own schema's issue paths).
+ * `Object.fromEntries` yields the Record the JSX then reads with literal
+ * keys (errors.name, errors.price_cents, ...).
+ */
+function collectFieldErrors(
+  issues: readonly { path: readonly (string | number | symbol)[]; message: string }[]
+): Record<string, string> {
+  const byField = new Map<string, string>();
+  for (const issue of issues) {
+    const key = issue.path[0];
+    if (typeof key === 'string' && !byField.has(key)) {
+      byField.set(key, issue.message);
+    }
+  }
+  return Object.fromEntries(byField);
 }
 
 export function ServiceManager({ initialServices }: { initialServices: Service[] }) {
@@ -157,48 +204,9 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
     e.preventDefault();
     if (form === null || dialog === null) return;
 
-    const price = toNumber(form.price);
-    const duration = toNumber(form.duration);
-    const buffer = toNumber(form.buffer);
-    const sortOrder = toNumber(form.sort_order);
-    const depositAmount = toNumber(form.deposit_amount);
-
-    const candidate = {
-      name: form.name,
-      description: form.description === '' ? null : form.description,
-      price_cents: Number.isFinite(price) ? Math.round(price * 100) : Number.NaN,
-      currency_code: 'ARS',
-      duration_minutes: duration,
-      buffer_minutes: Number.isFinite(buffer) ? buffer : Number.NaN,
-      is_visible: form.is_visible,
-      sort_order: Number.isFinite(sortOrder) ? Math.round(sortOrder) : Number.NaN,
-      photo_path: form.photo_path,
-      deposit_mode:
-        form.deposit_mode === DEPOSIT_NONE ? null : (form.deposit_mode as 'fixed' | 'percentage'),
-      deposit_fixed_cents:
-        form.deposit_mode === DEPOSIT_FIXED && Number.isFinite(depositAmount)
-          ? Math.round(depositAmount * 100)
-          : form.deposit_mode === DEPOSIT_FIXED
-            ? Number.NaN
-            : null,
-      deposit_percentage_bp:
-        form.deposit_mode === DEPOSIT_PERCENTAGE && Number.isFinite(depositAmount)
-          ? Math.round(depositAmount * 100)
-          : form.deposit_mode === DEPOSIT_PERCENTAGE
-            ? Number.NaN
-            : null,
-    };
-
-    const parsed = serviceFormSchema.safeParse(candidate);
+    const parsed = serviceFormSchema.safeParse(formToCandidate(form));
     if (!parsed.success) {
-      const fieldErrors: Record<string, string> = {};
-      for (const issue of parsed.error.issues) {
-        const key = issue.path[0];
-        if (typeof key === 'string' && fieldErrors[key] === undefined) {
-          fieldErrors[key] = issue.message;
-        }
-      }
-      setErrors(fieldErrors);
+      setErrors(collectFieldErrors(parsed.error.issues));
       return;
     }
 
@@ -282,6 +290,10 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
   const inputClass =
     'w-full rounded-lg border border-white/20 px-3 py-2 text-sm text-white focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
   const errorClass = 'mt-1 text-xs text-red-400';
+
+  // Extracted from a nested ternary (sonarjs/no-nested-conditional). Only
+  // consumed inside `formDialog`, which renders null while dialog is null.
+  const idleSubmitLabel = dialog?.mode === 'create' ? t('actions.create') : t('actions.save');
 
   const formDialog =
     form !== null && dialog !== null ? (
@@ -518,11 +530,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                 disabled={busy}
                 className="rounded-lg bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {busy
-                  ? t('actions.saving')
-                  : dialog.mode === 'create'
-                    ? t('actions.create')
-                    : t('actions.save')}
+                {busy ? t('actions.saving') : idleSubmitLabel}
               </button>
             </div>
           </form>

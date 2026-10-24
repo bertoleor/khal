@@ -34,7 +34,10 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
       <div className="relative min-h-dvh">
         <Header />
         <main className="mx-auto max-w-lg px-4 py-6">
-          <h1 className="skeleton-shimmer mt-2 h-8 w-1/3 rounded bg-zinc-800"></h1>
+          <h1
+            aria-hidden="true"
+            className="skeleton-shimmer mt-2 h-8 w-1/3 rounded bg-zinc-800"
+          ></h1>
           <p className="skeleton-shimmer mt-1 h-4 w-1/4 rounded bg-zinc-800/60"></p>
           <div className="mt-6 space-y-4">
             {[0, 1].map((blockIndex) => (

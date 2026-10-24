@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
@@ -49,9 +48,13 @@ export default defineConfig({
         const rel = relative(appsDir, importer);
         if (rel.startsWith('..') || isAbsolute(rel)) return null;
         const appName = rel.split(sep)[0];
-        const srcRoot = join(appsDir, appName, 'src');
-        if (!existsSync(srcRoot)) return null;
-        const candidate = join(srcRoot, source.slice(2));
+        // No fs existence probe on the computed `apps/<app>/src` root: when
+        // the directory does not exist, the candidate path simply fails to
+        // resolve below (this.resolve -> null -> fall through to the global
+        // '@' alias). A dynamic existsSync on a computed path is exactly the
+        // pattern security/detect-non-literal-fs-filename exists to catch;
+        // the resolver already answers the question the probe asked.
+        const candidate = join(appsDir, appName, 'src', source.slice(2));
         const resolved = await this.resolve(candidate, importer, { skipSelf: true });
         return resolved ? resolved.id : null;
       },

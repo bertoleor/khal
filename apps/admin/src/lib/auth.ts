@@ -47,7 +47,6 @@ function roleFromClaims(appMetadata: Record<string, unknown> | undefined): Role 
  * A bare `khal_role` cookie is inert — it is no longer read at all.
  */
 export function getRole(_request: NextRequest): Role {
-  void _request;
   return 'anon';
 }
 

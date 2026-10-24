@@ -37,7 +37,10 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
           <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
             <div className="skeleton-shimmer h-16 w-16 rounded-full bg-zinc-800"></div>
           </div>
-          <h1 className="skeleton-shimmer mt-5 h-10 w-1/2 rounded bg-zinc-800"></h1>
+          <h1
+            aria-hidden="true"
+            className="skeleton-shimmer mt-5 h-10 w-1/2 rounded bg-zinc-800"
+          ></h1>
           <p className="skeleton-shimmer mt-2 h-4 w-1/3 rounded bg-zinc-800/60"></p>
           <dl className="mt-4 space-y-1">
             <div className="flex justify-between border-b border-white/5 py-2.5">

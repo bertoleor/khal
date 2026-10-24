@@ -1,4 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+// vitest hoists vi.mock calls above all imports, so the module-under-test
+// still sees the mocked 'resend' factory regardless of this import's position.
+import { sendBookingReminder } from '../src/lib/send-reminder';
 
 const { sendMock, ResendMock } = vi.hoisted(() => ({
   sendMock: vi.fn(),
@@ -16,10 +19,6 @@ vi.mock('resend', () => ({
     }
   },
 }));
-
-// Imported after the hoisted vi.mock so the module-under-test sees the mocked
-// 'resend' factory.
-import { sendBookingReminder } from '../src/lib/send-reminder';
 
 describe('sendBookingReminder (Resend client)', () => {
   beforeEach(() => {

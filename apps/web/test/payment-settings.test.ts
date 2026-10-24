@@ -1,3 +1,4 @@
+import { getPaymentSettings } from '@/lib/actions/settings';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -33,8 +34,6 @@ vi.mock('@/lib/supabase/booking-client', () => ({
   ),
   createBookingSupabaseClient: vi.fn(() => ({ from: mockFrom })),
 }));
-
-import { getPaymentSettings } from '@/lib/actions/settings';
 
 // Rows shaped like supabase/seed.sql §6 (snake_case columns, jsonb `value`
 // arrives from PostgREST as the parsed JSON string).
