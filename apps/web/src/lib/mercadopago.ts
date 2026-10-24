@@ -10,8 +10,8 @@ const MP_API_BASE = 'https://api.mercadopago.com';
 
 const preferenceResponseSchema = z.object({
   id: z.string(),
-  init_point: z.string().url(),
-  sandbox_init_point: z.string().url().optional(),
+  init_point: z.url(),
+  sandbox_init_point: z.url().optional(),
 });
 
 const paymentResponseSchema = z.object({

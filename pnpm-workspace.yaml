@@ -14,12 +14,16 @@ packages:
 # Registry verificado 2026-09-17: sharp 0.35.4 y postcss 8.5.28 = patched.
 # [t_29caa871] source-map-js >=1.2.2 CVE-2026-93749 (DoS via crafted source
 # map, transitive via postcss/next tooling). Registry verificado 2026-10-09.
+# [FQ2-security t_29caa871] markdown-it >=14.3.3 GHSA-gfr2-rv44-r23c
+# (quadratic-time rendering / ReDoS, transitive via @tiptap/starter-kit >
+# prosemirror-markdown, installed 14.3.2). Registry verificado 2026-10-24.
 # pnpm >=11 reads overrides from pnpm-workspace.yaml only (package.json#pnpm
 # is ignored). Enforced by apps/web/test/dep-audit.test.ts.
 overrides:
   sharp: '>=0.35.5'
   postcss: '>=8.5.28'
   source-map-js: '>=1.2.2'
+  markdown-it: '^14.3.3'
 
 allowBuilds:
   '@parcel/watcher': true

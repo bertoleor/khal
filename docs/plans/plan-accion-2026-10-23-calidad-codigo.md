@@ -76,6 +76,29 @@ re-espejada — source y copia sincronizados.
 - Verificar/crear dependabot.yml (updates semanales de deps).
 - **Criterio de aceptación:** CI rojo si entra código muerto, copy-paste, typo o CVE alto.
 
+**Progreso 2026-10-24 (CIERRE):** FQ2 COMPLETA. Baselines medidos antes de
+tocar: knip 14 hallazgos, jscpd 15 clones (3.63%, CSS 38% duplicado), cspell
+1.287 hallazgos/465 palabras únicas. Todo resuelto con soluciones reales:
+(1) unit A — 3 archivos muertos verificados con grep y retirados, 11 exports
+arreglados caso por caso (uno eliminado directo: unexport habría creado un
+local no leído), tokens de diseño unificados en packages/ui/src/tokens.css
+(verificado compilando con el plugin real de Tailwind; el test de tokens
+re-anchorado a la fuente única 18/18), helper cadenceStarts() compartido en
+packages/db (la duplicación de horarios imposible por construcción), jscpd
+15→9 clones (3.63%→1.83%). (2) unit B — diccionario rioplatense de 458
+palabras (.cspell-words.txt vía dictionaryDefinitions; el voseo es léxico de
+marca, jamás "corregido"), 10 typos reales arreglados en prosa (cero toques a
+slugs/rutas), job "Quality Gates" en CI con knip + jscpd (umbral 3%
+documentado, flag verificado empíricamente) + cspell + audit. (3) security
+unit — las 4 CVEs del audit cerradas: next 15.5.25→15.5.28 (RCE crítico
+GHSA-2464 + DoS GHSA-p3m5), migración mayor zod 3→4.6.7 (10 archivos, skill
+zod-4 como guía, cero re-anchors: ningún test pinea mensajes de zod), override
+markdown-it 14.3.3 en pnpm-workspace.yaml (pnpm >=11 ignora package.json#pnpm).
+Suite: 43/305 (base nueva — el re-anchor de tokens consolidó 6 asserts).
+Gate final del pariente: e2e happy path PASSED en Next 15.5.28 (8.3 min).
+dependabot.yml verificado existente. 3 moderadas preexistentes quedan bajo el
+umbral high (next-intl x2, tiptap) — documentadas, fuera del gate.
+
 ### FQ3 — Cobertura medible + a11y del DOM real
 **Objetivo:** saber qué tan bien cubiertos estamos y escanear lo que la clienta ve.
 - Instalar `@vitest/coverage-v8`, medir el % actual → fijarlo como **piso** (ratchet: el piso sube, nunca baja).
@@ -90,7 +113,7 @@ re-espejada — source y copia sincronizados.
 - Medir en CI: tiempo de biome scan vs eslint — los números alimentan la decisión futura de migración (si algún día oxlint/Biome 3 cierra la brecha de hooks, la migración se evalúa con datos).
 - **Criterio de aceptación:** job de Biome corriendo en CI sin falsos positivos duplicados + métrica de tiempo documentada.
 
-### FQ6 — (agregada por decisión de la dueña: "mientras sea gratuito, costéalo") Blindaje de los datos de plata
+### FQ6 — (agregada por decisión de la dueña: "mientras sea gratuito, costealo") Blindaje de los datos de plata
 **Objetivo:** las funciones que tocan dinero y turnos pasan de "bien testeadas" a "matemáticamente probadas".
 - **Mutation testing Scoped** (Stryker) SOLO sobre `packages/utils` (formatCents y las funciones de dinero — el código que calcula la seña): si un mutante sobrevive, el test tiene un agujero. Corre en CI (gratuito, ~5 min); nunca local (el disco haría eterna la corrida).
 - **Property-based tests** (fast-check, gratuito): formatCents/deposit-math/slot-computation bajo miles de entradas aleatorias — el redondeo del peso argentino ($13.500,00 con NBSP) queda a prueba de valores extraños.

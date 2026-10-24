@@ -12,9 +12,11 @@ export interface CheckoutPreferenceState {
 }
 
 const preferenceInputSchema = z.object({
-  bookingId: z.string().uuid(),
-  serviceId: z.string().uuid(),
-  payerEmail: z.string().trim().email().max(320),
+  bookingId: z.uuid(),
+  serviceId: z.uuid(),
+  // zod 4 pipe preserves the zod 3 trim-before-validate order (see
+  // emailSchema in @khal/validations).
+  payerEmail: z.string().trim().max(320).pipe(z.email()),
 });
 
 /**

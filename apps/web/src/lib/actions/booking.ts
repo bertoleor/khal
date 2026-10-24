@@ -16,7 +16,7 @@ export interface BookingState {
 const createBookingResultSchema = z.object({
   ok: z.boolean(),
   code: z.string(),
-  booking_id: z.string().uuid().nullable(),
+  booking_id: z.uuid().nullable(),
 });
 
 type CreateBookingResult = z.infer<typeof createBookingResultSchema>;

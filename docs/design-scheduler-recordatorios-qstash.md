@@ -59,7 +59,7 @@ interface ReminderEvent {
 
 ## 4. Env vars (`.env.example`, nombres vacíos, sin secretos)
 
-Ya presentes (huerfanas hoy, ahora con dueño):
+Ya presentes (huérfanas hoy, ahora con dueño):
 - `UPSTASH_QSTASH_TOKEN` — para crear/ver el scheduler QStash (setup inicial, terminal/CI).
 - `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` — reservados para idempotencia persistida si se usa Upstash Redis; hoy opcional.
 - `QSTASH_CURRENT_SIGNING_KEY` — verificación `Upstash-Signature` en el endpoint.

@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export type DepositStatus = 'pending' | 'confirmed';
+type DepositStatus = 'pending' | 'confirmed';
 
 export interface PaymentInfo {
   alias: string;

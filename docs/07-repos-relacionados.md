@@ -16,7 +16,7 @@ KHAL está libre en este nicho.
 | Repo | Stack | Qué mirar | Relación con KHAL |
 |------|-------|-----------|-------------------|
 | [kenigbolo/openSalon](https://github.com/kenigbolo/openSalon) | Booking + management para belleza/peluquería | Modelo de datos proveedor↔cliente, gestión de servicios | El más cercano en concepto; KHAL es más chico (sin login de clienta, seña por transferencia + WhatsApp) |
-| [clawnify/OpenSalon](https://github.com/clawnify/OpenSalon) | Alternativa open-source a Fresha/Salonist | Alcance tipo marketplace (multi-salong) | Alcance opuesto: KHAL es single-estudio, sin marketplace |
+| [clawnify/OpenSalon](https://github.com/clawnify/OpenSalon) | Alternativa open-source a Fresha/Salonist | Alcance tipo marketplace (multi-salón) | Alcance opuesto: KHAL es single-estudio, sin marketplace |
 | [salonbooking/salonbooking](https://github.com/salonbooking/salonbooking) | Plugin WordPress de reservas | Reglas de agenda (servicios, duraciones, bloqueos) | Referencia de reglas de negocio, no de stack (KHAL: Next.js + Supabase) |
 | [salonkee-open-source](https://github.com/salonkee-open-source) | Org open-source (Salonkee) | Cómo una org comercial abre parte del código | Referencia de licensing, no de código directo |
 | [DinukaEk/salon-booking-system](https://github.com/DinukaEk/salon-booking-system) | Sistema sólo-staff | Flujo interno de gestión de turnos | KHAL invierte el foco: la clienta se agenda sola |

@@ -16,7 +16,7 @@ import type { NextRequest } from 'next/server';
  */
 export type Role = 'admin' | 'manager' | 'anon';
 
-export type AuthContext = {
+type AuthContext = {
   role: Role;
   userId: string;
   /** Org from the JWT `app_metadata.org_id` claim — undefined when absent. */

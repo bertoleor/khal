@@ -19,7 +19,7 @@ const bookingStatusResultSchema = z.object({
   hold_expires_at: z.string().nullable(),
 });
 
-export type BookingStatusValue = 'pendiente' | 'confirmado' | 'cancelado' | 'no_asistio';
+type BookingStatusValue = 'pendiente' | 'confirmado' | 'cancelado' | 'no_asistio';
 
 export interface BookingStatus {
   ok: boolean;
@@ -31,7 +31,7 @@ export interface BookingStatus {
 
 export async function getBookingStatus(bookingId: string): Promise<BookingStatus> {
   // The capability IS the UUID — a malformed id never reaches the DB.
-  const isUuid = z.string().uuid().safeParse(bookingId);
+  const isUuid = z.uuid().safeParse(bookingId);
   if (!isUuid.success) {
     return { ok: false };
   }

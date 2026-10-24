@@ -31,14 +31,14 @@ const webhookBodySchema = z.object({
   data: z.object({ id: z.union([z.string(), z.number()]).optional() }).optional(),
 });
 
-const uuidSchema = z.string().uuid();
+const uuidSchema = z.uuid();
 
 // REMINDERS-01 — additive booking reminder (Resend). Shown copy is the es-AR
 // voseo formatReminderEsAR from packages/utils. Best-effort: any failure here
 // is swallowed so it can never fail the confirm path (n8n stays canonical).
 const reminderRowSchema = z.object({
-  scheduled_at: z.string().datetime(),
-  clients: z.object({ name: z.string().min(1), email: z.string().email() }).nullable(),
+  scheduled_at: z.iso.datetime(),
+  clients: z.object({ name: z.string().min(1), email: z.email() }).nullable(),
 });
 
 const ARGENTINA_TZ = 'America/Argentina/Buenos_Aires';

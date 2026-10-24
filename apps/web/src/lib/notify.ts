@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 const notifyPayloadSchema = z.object({
   event: z.string(),
-  appointmentId: z.string().uuid(),
+  appointmentId: z.uuid(),
   paymentId: z.string(),
 });
 

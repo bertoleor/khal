@@ -17,7 +17,7 @@
     "format:check": "prettier --check .",
     "knip": "knip",
     "biome:scan": "npx -y @biomejs/biome lint apps/web/src apps/admin/src packages",
-    "copy-paste:check": "jscpd apps packages",
+    "copy-paste:check": "jscpd apps packages --threshold 3",
     "spell:check": "cspell docs README.md CONTRIBUTING.md ARCHITECTURE.md",
     "prepare": "husky",
     "changeset": "changeset",

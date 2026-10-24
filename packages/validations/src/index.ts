@@ -7,12 +7,15 @@ export const phoneSchema = z
   .max(24, 'Invalid phone')
   .regex(/^\+?[0-9\s-]+$/, 'Invalid phone format');
 
-export const emailSchema = z.string().trim().email().max(320);
+// zod 4: z.email() runs the format check BEFORE chained transforms, so the
+// trim-first zod 3 order (.trim().email()) is preserved with a pipe — a
+// pasted " maria@example.com " still trims before validating.
+export const emailSchema = z.string().trim().max(320).pipe(z.email());
 
 export const depositModeSchema = z.enum(['full', 'fixed', 'percentage']);
 
 export const serviceSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().min(1),
   description: z.string().optional(),
   price_cents: z.number().int().nonnegative(),
@@ -30,7 +33,7 @@ export const serviceSchema = z.object({
 export type Service = z.infer<typeof serviceSchema>;
 
 export const bookingInputSchema = z.object({
-  serviceId: z.string().uuid(),
+  serviceId: z.uuid(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   slotStart: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   name: z.string().trim().min(2).max(120),
@@ -80,7 +83,7 @@ export function canTransitionAppointment(from: AppointmentStatus, to: Appointmen
 }
 
 export const appointmentSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   clientName: z.string().min(1),
   serviceName: z.string().min(1),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -92,7 +95,7 @@ export const appointmentSchema = z.object({
 export type Appointment = z.infer<typeof appointmentSchema>;
 
 export const clientSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().min(1),
   phone: z.string().min(6),
   tags: z.array(z.string()),
@@ -107,7 +110,7 @@ export const exceptionTypeSchema = z.enum(['holiday', 'vacation', 'event', 'bloc
 export type ExceptionType = z.infer<typeof exceptionTypeSchema>;
 
 export const calendarExceptionSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   title: z.string().min(1),
   type: exceptionTypeSchema,
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
