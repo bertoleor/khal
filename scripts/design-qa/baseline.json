@@ -1,7 +1,7 @@
 {
-  "total": 3,
+  "total": 29,
   "per_dir": {
-    "apps/web": 3,
+    "apps/web": 29,
     "apps/admin": 0,
     "packages/ui": 0
   },
@@ -10,6 +10,7 @@
     "apps/admin",
     "packages/ui"
   ],
-  "taken_at": "2026-10-17",
-  "source_commit": "6ce899a399a777f7dce3f8abb6332fa9203b820b"
+  "taken_at": "2026-10-25",
+  "source_commit": "1ea0126d65c73275298382099a17063aa3dcd39b",
+  "rationale": "v2 merge (1ea0126): the owner-approved interactive fondo (D10, boards s1) lands 29 hex usages that cannot be var(--color-*) tokens — 16 in mesh-gradient-canvas.tsx (WebGL shader uniforms need resolved hex strings, plus the provenance comment documenting the approved bundle's uColor palette), 12 in flow-gradient-hero.tsx (owner-approved scoped gradient, CTA tint, and their design comments), 1 in opengraph-image.tsx (satori renders PNGs where CSS vars do not resolve). None are stray UI colors: apps/admin and packages/ui remain at 0, and the FQ3 contrast pass tokenized field.tsx DOWN by 8. The ratchet now guards from 29 — any NEW hardcoded color in regular UI code fails this gate."
 }
