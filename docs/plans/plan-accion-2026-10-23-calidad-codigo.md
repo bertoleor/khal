@@ -134,9 +134,11 @@ hover:text-muted. Exclusión documentada de decoración pura: el ghost wordmark
 del footer (D9 board s1 — WCAG 1.4.3 exime la decoración; `exclude` acotado al
 contraste, nunca a las reglas semánticas). Happy path con escaneo: PASSED
 45,7s. Gates: unit 305/305, lint 0, typecheck 8/8, CI 9/9 verde en el push de
-la unit A. VRT: los fixes de contraste mueven píxeles en light — tras este push
-las baselines se regeneran por el flujo diseñado (update-snapshots + dispatch
-del VRT) y el VRT verde es parte del cierre.
+la unit A. VRT: **verde contra las baselines vigentes** (run 40159438103,
+1m33s) — el cambio visual resultó sub-umbral: todo el contraste corregido vive
+en light mode (dark intacto) y los tokens reemplazados son idénticos en dark
+(hairline-strong = white/15, accent = emerald-400, faint = zinc-500); la
+regeneración no fue necesaria.
 
 ### FQ4 — (re-scopedada por la dueña: "¿no vale la pena en paralelo?") Biome como escáner PARALELO
 **Objetivo:** dos pares de ojos > uno. Biome NO reemplaza a ESLint — corre AL LADO, en su territorio exclusivo.
