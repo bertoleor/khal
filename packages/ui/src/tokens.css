@@ -97,7 +97,7 @@ html.light {
   --text-secondary: #52525b;
   --text-tertiary: #6b6b74;
   --accent: #047857;
-  --accent-soft: #059669;
+  --accent-soft: #047857; /* FQ3: emerald-600 (#059669) measured 3.43:1 on paper — under the 4.5:1 AA floor for the mono kickers that use it. soft = accent in light, per "ONE accent per mode". */
   --accent-contrast: #ffffff;
   --surface: rgba(16, 16, 20, 0.05);
   --surface-hover: rgba(16, 16, 20, 0.08);

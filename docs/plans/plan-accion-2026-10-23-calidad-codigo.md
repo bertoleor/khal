@@ -105,6 +105,39 @@ umbral high (next-intl x2, tiptap) — documentadas, fuera del gate.
 - Instalar `@axe-core/playwright` → el e2e del happy path escanea las 5 pantallas con 0 violaciones serias (critical/serious).
 - **Criterio de aceptación:** reporte de coverage con piso enforcado + axe scan verde.
 
+**Progreso 2026-10-25 (CIERRE):** FQ3 COMPLETA en dos unidades. (1) Piso de
+coverage — `@vitest/coverage-v8` 3.2.7 (fijado a la versión resuelta de vitest):
+suite completa 305/305 mide statements/lines 22,78% (1104/4846), branches 74,02%
+(265/358), functions 70,34% (102/145) sobre los 98 archivos de runtime
+(`apps/*/src` + `packages/*/src`; `packages/types` excluido — type-only con 0
+exports de runtime, verificado; la app admin sin tests unit arrastra lines —
+honesto para demo stage). Pisos en `vitest.config.ts` (`coverage.thresholds`),
+cada métrica 0,5 bajo lo medido para absorber el drift V8 local (Node 24) vs CI
+(Node 20) — drift verificado REAL en la primera corrida de CI: branches 74,09%
+en CI vs 74,02% local. Job CI `coverage` corre la suite FULL (no `--affected`:
+un subconjunto móvil no da piso) y sube el reporte HTML como artifact. Sonda
+negativa: corrida de 1 archivo contra los pisos → exit 1 ("Coverage for lines
+(0.41%) does not meet global threshold (22%)") — el gate muerde. El piso sólo
+sube: subir los 4 valores al mejorar, bajar exige justificar la pérdida en
+review. (2) Escáner a11y — `@axe-core/playwright` 4.14 integrado al happy path
+(5 paradas: catálogo, detalle, reservar con formulario completo, recibo de
+seña, estado del turno), gate sobre critical/serious con `expect.soft` (una
+pantalla rota no tapa los hallazgos de las demás; el error nombra la regla y
+los selectores). Primera corrida: 23 nodos violando en las 5 pantallas, TODOS
+`color-contrast`. Causas raíz resueltas de verdad, no silenciadas:
+`--accent-soft` light #059669 medía 3,43:1 sobre el papel → #047857 (5,00:1 —
+"ONE accent per mode" ahora es cierta también para soft); el componente Field
+estaba hardcodeado para dark (label zinc-300 = 1,35:1 en light) → tokens del DS
+(text-muted, bg-surface, border-hairline-strong, outline-accent); el toggle
+"modo" usaba opacity-75 sobre muted (~3,9:1) → text-faint (4,81:1) +
+hover:text-muted. Exclusión documentada de decoración pura: el ghost wordmark
+del footer (D9 board s1 — WCAG 1.4.3 exime la decoración; `exclude` acotado al
+contraste, nunca a las reglas semánticas). Happy path con escaneo: PASSED
+45,7s. Gates: unit 305/305, lint 0, typecheck 8/8, CI 9/9 verde en el push de
+la unit A. VRT: los fixes de contraste mueven píxeles en light — tras este push
+las baselines se regeneran por el flujo diseñado (update-snapshots + dispatch
+del VRT) y el VRT verde es parte del cierre.
+
 ### FQ4 — (re-scopedada por la dueña: "¿no vale la pena en paralelo?") Biome como escáner PARALELO
 **Objetivo:** dos pares de ojos > uno. Biome NO reemplaza a ESLint — corre AL LADO, en su territorio exclusivo.
 - Wire `biome:scan` (el script YA existe) como job de CI: primero informativo (baseline de qué encuentra), luego decidir si bloquea.

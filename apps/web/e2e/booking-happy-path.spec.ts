@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { expectNoSeriousA11yViolations } from './a11y';
+
 /**
  * KHAL-A6 — E2E happy path for the booking flow (the repo's hottest spot,
  * 7 churn commits, previously zero integration coverage).
@@ -17,6 +19,10 @@ import { expect, test } from '@playwright/test';
  * it asserts the flow end-to-end through real pages and the real server
  * action, not against the schedule mocks' internals — when availability
  * moves to DB reads, only the stub fixtures change, not this spec.
+ *
+ * FQ3 — the journey doubles as the accessibility circuit: an axe scan
+ * runs at each of the 5 client screens (stop markers below), gating on
+ * critical/serious violations of the rendered DOM.
  */
 
 const LIFTING_ID = '11111111-1111-4111-8111-111111111111';
@@ -28,6 +34,8 @@ test.describe('Booking happy path (public storefront)', () => {
     await expect(page.getByRole('heading', { name: 'Nuestros servicios' })).toBeVisible();
     const firstService = page.locator('a', { hasText: 'Lifting de Pestañas' }).first();
     await expect(firstService).toBeVisible();
+    // FQ3 axe stop 1/5: catálogo.
+    await expectNoSeriousA11yViolations(page, 'home — catálogo');
 
     // 2. Service detail page shows duration and the booking CTA.
     await firstService.click();
@@ -39,6 +47,8 @@ test.describe('Booking happy path (public storefront)', () => {
     });
     await expect(page.getByRole('heading', { name: 'Lifting de Pestañas' })).toBeVisible();
     await expect(page.getByText('60 min')).toBeVisible();
+    // FQ3 axe stop 2/5: detalle del servicio.
+    await expectNoSeriousA11yViolations(page, 'detalle del servicio');
 
     // 3. Reservar page: 7-day strip, Sunday closed; slots come from business
     //    hours 09:00-18:00 (today additionally blocks 10:00-11:15 and
@@ -79,6 +89,9 @@ test.describe('Booking happy path (public storefront)', () => {
     await page.getByLabel('Teléfono').fill('+54 9 11 5555 5555');
     await page.getByLabel('Correo').fill('deposit@example.com');
     await page.getByLabel('Acepto los términos del estudio').check();
+    // FQ3 axe stop 3/5: reservar with day + slot picked and the form filled
+    // — the fullest interactive state the client works with.
+    await expectNoSeriousA11yViolations(page, 'reservar — formulario completo');
     await page.getByRole('button', { name: 'Confirmar — reserva por 12 h' }).click();
 
     // 6. Payment screen: deposit banner + amounts + transfer rows + WhatsApp.
@@ -94,6 +107,8 @@ test.describe('Booking happy path (public storefront)', () => {
     await expect(page.getByText('khal.estudio')).toBeVisible();
     await expect(page.getByText('0000003100000000000001')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Enviar comprobante por WhatsApp' })).toBeVisible();
+    // FQ3 axe stop 4/5: recibo de seña.
+    await expectNoSeriousA11yViolations(page, 'recibo de seña');
 
     // 6b. T-F2.5 — the estado door: the receipt links to the live booking
     //     state (board s05). The stub answers the seeded booking as
@@ -107,6 +122,8 @@ test.describe('Booking happy path (public storefront)', () => {
     await expect(page.getByText('Lifting de Pestañas')).toBeVisible();
     await expect(page.getByText('Qué pasa ahora')).toBeVisible();
     await expect(page.getByText('Envianos el comprobante de la seña por WhatsApp.')).toBeVisible();
+    // FQ3 axe stop 5/5: estado del turno.
+    await expectNoSeriousA11yViolations(page, 'estado del turno');
 
     // 7. The real server action forwarded the booking through the stub: the
     //    RPC payload must carry the 0003 contract inputs (service, guest
