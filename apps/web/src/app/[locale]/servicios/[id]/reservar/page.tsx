@@ -5,8 +5,9 @@ import { Header } from '@/components/shared/header';
 import { getService } from '@/lib/actions/catalog';
 import { getPaymentSettings } from '@/lib/actions/settings';
 import { blockedPeriodsFor, businessHoursFor } from '@/lib/mocks/schedule';
-import { computeAvailableSlots, parseClock } from '@khal/db';
+import { candidateSlots, computeAvailableSlots, parseClock } from '@khal/db';
 import { computeAmountDueCents, formatCents, toIsoDate } from '@khal/utils';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 function dayLabel(date: Date, locale: string): string {
@@ -25,6 +26,7 @@ type ReservarPageProps = {
 export default async function ReservarPage({ params, searchParams }: ReservarPageProps) {
   const { id, locale } = await params;
   const { skeleton } = await searchParams;
+  const tCatalog = await getTranslations('catalog');
 
   // Presentation mode (?skeleton=1): placeholder-only layout for design review.
   if (skeleton === '1') {
@@ -32,7 +34,10 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
       <div className="relative min-h-dvh">
         <Header />
         <main className="mx-auto max-w-lg px-4 py-6">
-          <h1 className="skeleton-shimmer mt-2 h-8 w-1/3 rounded bg-zinc-800"></h1>
+          <h1
+            aria-hidden="true"
+            className="skeleton-shimmer mt-2 h-8 w-1/3 rounded bg-zinc-800"
+          ></h1>
           <p className="skeleton-shimmer mt-1 h-4 w-1/4 rounded bg-zinc-800/60"></p>
           <div className="mt-6 space-y-4">
             {[0, 1].map((blockIndex) => (
@@ -90,11 +95,21 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
           service.buffer_minutes
         )
       : [];
+    // T-F2.3 (tachados): the full reel minus the available ones = taken
+    // starts, rendered crossed out by the picker.
+    const taken = hours
+      ? candidateSlots(
+          { start: parseClock(hours.open), end: parseClock(hours.close) },
+          service.duration_minutes,
+          service.buffer_minutes
+        ).filter((slot) => !slots.includes(slot))
+      : [];
     days.push({
       date: isoDate,
       label: dayLabel(date, locale),
       closed: hours === null,
       slots,
+      taken,
     });
   }
 
@@ -123,10 +138,17 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
     <div className="relative min-h-dvh">
       <Header />
       <main className="mx-auto max-w-lg px-4 py-6">
-        <h1 className="text-xl font-semibold tracking-tight text-white">{service.name}</h1>
-        <p className="mt-1 font-medium text-emerald-300">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{service.name}</h1>
+        <p className="mt-1 text-lg font-semibold text-foreground">
           {formatCents(service.price_cents, service.currency_code)}
         </p>
+        {/* La seña se ve ANTES de entrar al flujo (board s3 — same call as the
+            detail page's sticky bar). */}
+        {isDeposit ? (
+          <p className="mt-0.5 font-mono-khal text-[9px] uppercase tracking-[1.5px] text-accent-soft">
+            {tCatalog('deposit')} {formatCents(payment.amountDueCents, service.currency_code)}
+          </p>
+        ) : null}
         <div className="mt-6">
           <BookingForm service={service} days={days} payment={payment} />
         </div>

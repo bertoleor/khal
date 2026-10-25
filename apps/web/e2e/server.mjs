@@ -236,6 +236,28 @@ const server = http.createServer((req, res) => {
     // create_booking RPC (booking.ts action — PostgREST /rest/v1/rpc/<fn> POST)
     const rpcMatch = url.pathname.match(/^\/rest\/v1\/rpc\/([a-z_]+)$/);
     if (rpcMatch) {
+      // get_booking_status RPC (booking-status.ts — T-F2.5 estado door):
+      // answers the seeded booking as PENDIENTE with a live 12h hold,
+      // mirroring the 0015 contract (public-safe fields only).
+      if (req.method === 'POST' && rpcMatch[1] === 'get_booking_status') {
+        let statusPayload = {};
+        try {
+          statusPayload = body ? JSON.parse(body) : {};
+        } catch {
+          statusPayload = {};
+        }
+        if (statusPayload.p_booking_id !== BOOKING_ID) {
+          return send(res, 200, { ok: false, code: 'not_found' });
+        }
+        return send(res, 200, {
+          ok: true,
+          code: 'ok',
+          status: 'pendiente',
+          service_name: 'Lifting de Pestañas',
+          scheduled_at: '2026-11-02T14:00:00Z',
+          hold_expires_at: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+        });
+      }
       if (req.method !== 'POST' || rpcMatch[1] !== 'create_booking') {
         return send(res, 404, { message: 'not found' });
       }
@@ -346,7 +368,13 @@ server.listen(STUB_PORT, '127.0.0.1', () => {
     const okHome = await warmRoute('/es');
     const okService = await warmRoute(`/es/servicios/${services[0].id}`);
     const okReservar = await warmRoute(`/es/servicios/${services[0].id}/reservar`);
-    if (!okHome || !okService || !okReservar) {
+    // T-F2.5: the estado door — App Router soft nav does not change the URL
+    // until the target route resolves, so the spec's toHaveURL(estado) after
+    // clicking the receipt link would eat the cold compile of this dynamic
+    // route. Warm it with the seeded BOOKING_ID (get_booking_status answers
+    // exactly that id with a live 12h hold).
+    const okEstado = await warmRoute(`/es/estado/${BOOKING_ID}`);
+    if (!okHome || !okService || !okReservar || !okEstado) {
       // Fail loudly: a green gate with a dead app produces only confusing
       // ERR_CONNECTION_REFUSED failures inside the specs.
       process.exit(1);

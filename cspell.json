@@ -2,6 +2,13 @@
   "version": "0.2",
   "language": "en,es",
   "import": ["@cspell/dict-es-es/cspell-ext.json"],
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./.cspell-words.txt"
+    }
+  ],
+  "dictionaries": ["project-words"],
   "useGitignore": true,
   "files": ["**/*.md", "**/*.mdx", "README.md", "**/README.md"],
   "ignorePaths": [

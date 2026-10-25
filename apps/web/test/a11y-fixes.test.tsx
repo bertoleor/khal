@@ -21,14 +21,16 @@ describe('a11y fixes (web)', () => {
     expect(html).toContain('Ir al contenido');
   });
 
-  it('C1: el precio del servicio usa text-zinc-500 AA sobre superficie oscura (no slate-400) — contrato p2 ratio ~5.75:1', () => {
+  it('C1: el precio del servicio usa un token AA sobre superficie oscura (no slate-400) — contrato p2', () => {
     const src = readFileSync(
-      join(__dirname, '..', 'src', 'components', 'booking', 'booking-form.tsx'),
+      join(__dirname, '..', 'src', 'app', '[locale]', 'servicios', '[id]', 'reservar', 'page.tsx'),
       'utf-8'
     );
-    // Dark theme (2026-10-15): surfaces are #000 (BackgroundMesh brand), so the
-    // AA price token is zinc-500 (#71717a on #000 ~ 5.75:1, WCAG 1.4.3 AA).
-    expect(src).toContain('text-zinc-500');
+    // v2 (2026-10-23, F2 unit 3a-ii): the price line moved from the booking
+    // form to the reservar page header, upgraded from zinc-500 (~5.75:1) to
+    // the foreground token on the dark background — comfortably WCAG 1.4.3
+    // AA. The contract still forbids the sub-AA slate-400 token everywhere.
+    expect(src).toContain('text-foreground');
     expect(src).not.toContain('slate-400');
     expect(src).not.toContain('text-slate-400');
   });

@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop, "khal/**"]
+    branches: [main, develop, "khal/**", "feat/ux-skeletons-v2"]
   pull_request:
     branches: [main, develop]
 
@@ -81,6 +81,84 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Run tests
         run: pnpm exec turbo run test --affected
+
+  coverage:
+    name: Coverage floor (ratchet)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+                    run_install: false
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # FQ3 — the coverage floor is enforced on the FULL suite, not on the
+      # affected-only unit job: affected subsets measure a moving slice of
+      # the code, so a floor on them would mean nothing. The floors live in
+      # vitest.config.ts (coverage.thresholds) — vitest itself fails this
+      # run when any metric drops below them. The floor only goes up.
+      - name: Run full suite with coverage (floor enforced)
+        run: pnpm test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+                    run_install: false
+      # Node 22 (not the repo-wide 20): cspell 10.4 requires >=22.18 —
+      # the first CI run failed with "Unsupported NodeJS version (20.20.2)".
+      # The other jobs stay on 20 until the repo bumps engines together.
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # Knip gate: exit 0 = no dead code. Wired as a required gate; knip
+      # findings are signals — dead-code removal lives with the code unit.
+      - name: Knip (dead code gate)
+        run: pnpm knip
+      # jscpd gate: threshold is set in package.json (--threshold 3) — fails
+      # when duplication exceeds 3%. 3% is the documented ceiling for reviewed
+      # leftovers (test-fixture similarity, deliberate patterns) after the
+      # FQ2 dedup pass. The gate exists to block NEW duplication, not to
+      # re-litigate clones already reviewed by the owner.
+      - name: Copy-paste (duplication gate)
+        run: pnpm copy-paste:check
+      # cspell gate: es-AR project dictionary (cspell.json + .cspell-words.txt).
+      # Rioplatense/voseo is the brand voice — curated, never "corrected".
+      - name: Spell check (docs dictionary gate)
+        run: pnpm spell:check
+      # Prod-deps audit: high/critical CVEs block the build. Moderate/low are
+      # triaged by the owner — dependency bumps are an explicit owner decision.
+      - name: Audit prod dependencies
+        run: pnpm audit --prod --audit-level=high
 
   e2e:
     name: E2E Tests

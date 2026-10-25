@@ -53,7 +53,7 @@
 11. Pantalla de estado: badge PENDIENTE DE CONFIRMACIÓN + countdown + "qué pasa ahora" en 3 pasos (la dueña valida → mensaje de confirmación → recordatorio 24 h)
 
 **Alternative Flows:**
-- Horario tomado entre pasos 4-7 (race condition): sistema refresca slots, muestra "Ese horario recín se tomó", clienta elige otro sin perder sus datos
+- Horario tomado entre pasos 4-7 (race condition): sistema refresca slots, muestra "Ese horario recién se tomó", clienta elige otro sin perder sus datos
 - **Doble-tap en confirmar (idempotencia):** una sola reserva se crea — el botón se bloquea al confirmar
 - Cliente ya tiene turno activo ese día: warning "Ya tenés un turno el [fecha]" con opción de continuar o cancelar
 - Error de red al confirmar: mensaje de error con retry, booking no se crea
@@ -214,7 +214,7 @@
 
 ## UC-009: Ciclo de mensajes a clientas — retención (v2)
 
-| Campo | Descripciñn |
+| Campo | Descripción |
 |--------|-------------|
 | ID | UC-009 |
 | Name | Lifecycle: del cuestionario al retoque de 18 días |
@@ -234,7 +234,7 @@
 
 ## UC-010: Dueña gestiona contenido editable — alias, seña, redes, términos (v2)
 
-| Campo | Descripciñn |
+| Campo | Descripción |
 |--------|-------------|
 | ID | UC-010 |
 | Name | Configuración — el negocio cambia sin depender de nadie |

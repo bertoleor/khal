@@ -1,11 +1,18 @@
 {
+  "hero": {
+    "cta": "Agendá tu turno",
+    "sectionLabel": "Portada"
+  },
   "catalog": {
     "title": "Nuestros servicios",
     "tagline": "Elegí tu servicio y agendá tu turno.",
     "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
+    "emptyCta": "Escribinos por WhatsApp",
     "book": "Agendar cita",
     "duration": "Duración",
-    "deposit": "Seña"
+    "deposit": "Seña",
+    "price": "Precio",
+    "back": "volver"
   },
   "booking": {
     "pickDay": "Elegí el día",
@@ -15,7 +22,11 @@
     "name": "Nombre",
     "phone": "Teléfono",
     "email": "Correo",
-    "confirm": "Confirmar turno",
+    "confirmHold": "Confirmar — reserva por 12 h",
+    "externalWorkLabel": "Vengo con trabajo de otro lugar",
+    "termsLabel": "Acepto los términos del estudio",
+    "termsLink": "ver todo",
+    "slotTaken": "No disponible",
     "submitting": "Enviando…",
     "pendingTitle": "Turno agendado",
     "pendingBody": "Tu turno quedó pendiente de confirmación. Te contactamos por WhatsApp.",
@@ -57,8 +68,31 @@
     "redirecting": "Redirigiendo…",
     "checkoutError": "No pudimos iniciar el pago online. Probá de nuevo o pagá por transferencia.",
     "sendComprobante": "Enviar comprobante por WhatsApp",
+    "receiptTitle": "comprobante de seña",
+    "holdBarLabel": "Reservado por 12 h",
+    "holdBarBody": "Pasadas las 12 h sin tu comprobante, el turno se libera automáticamente.",
+    "termsNonRefundable": "La seña no se devuelve.",
+    "termsReschedule": "Para reprogramar, avisá con 24 h de anticipación.",
     "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago.",
     "refillSuggestion": "Te sugerimos anotar el relleno para el {date}: así conservás el diseño con la menor cantidad de pestañas nuevas."
+  },
+  "estado": {
+    "title": "estado del turno",
+    "pendiente": "pendiente de confirmación",
+    "confirmado": "confirmada",
+    "cancelado": "liberada",
+    "no_asistio": "no asistió",
+    "holdLabel": "Reservado por 12 h — vence en {remaining}",
+    "holdExpired": "venció",
+    "holdExpiredBody": "La retención venció: si tu comprobante no llegó, el turno se libera. Escribinos por WhatsApp para reprogramar.",
+    "stepsTitle": "Qué pasa ahora",
+    "step1": "Envianos el comprobante de la seña por WhatsApp.",
+    "step2": "La dueña valida el comprobante y confirma tu turno.",
+    "step3": "Recibís la confirmación y nos vemos en el estudio.",
+    "confirmedBody": "¡Listo! Tu turno está confirmado. Te esperamos en el estudio.",
+    "releasedBody": "Este turno quedó liberado. Escribinos por WhatsApp para reservar de nuevo.",
+    "notFound": "No encontramos ese turno. Revisá el link de tu comprobante.",
+    "receiptLink": "ver estado de mi turno"
   },
   "policies": {
     "title": "Políticas del estudio",
@@ -70,7 +104,11 @@
     "noShowTitle": "Inasistencia",
     "noShowBody": "Si no asistís a tu turno sin avisar, la seña se pierde. Avisanos con tiempo por WhatsApp y lo reprogramamos.",
     "punctualityTitle": "Puntualidad",
-    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente."
+    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente.",
+    "externalWorkTitle": "Pestañas de otro lugar",
+    "externalWorkBody": "Si venís con trabajo de otro estudio, avisá antes de reservar — el retiro y el retrabajo tienen costo extra y la dueña lo evalúa antes de confirmar.",
+    "back": "volver",
+    "more": "…y las que la dueña sume — editables desde su panel."
   },
   "pagoResult": {
     "exitoTitle": "¡Pago recibido!",

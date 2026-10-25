@@ -54,7 +54,7 @@ Juez dual según plantilla (hallazgo = defecto solo si es verificable en archivo
 ### H7 — SUGGESTION — `metadata` no usa plantilla por locale
 - `apps/web/src/app/[locale]/layout.tsx:8-11` — title/description hardcodeados en español aunque el site es es/en. Puro SEO+i18n, no bloqueante.
 
-## Lo que NO es defecto (verificado, no assumido)
+## Lo que NO es defecto (verificado, no asumido)
 - Fondo negro `bg-black` + `BackgroundMesh` decorativo: correcto, decoración exenta.
 - Disabled day button `text-slate-300` 1.42:1: WCAG 1.4.3 exime controles deshabilitados (exception).
 - `sky-600` 4.1:1 con texto blanco en botón grande: pasa AA-large (3:1), aceptable.

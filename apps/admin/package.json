@@ -16,11 +16,13 @@
     "@tiptap/pm": "^2.26.1",
     "@tiptap/react": "^2.26.1",
     "@tiptap/starter-kit": "^2.26.1",
-    "next": "15.5.25",
+    "lucide-react": "^1.61.0",
+    "next": "15.5.28",
     "next-intl": "^4.14.2",
+    "next-themes": "^0.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "zod": "^3.24.2"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",

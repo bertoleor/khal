@@ -1,3 +1,4 @@
+import { POST } from '@/app/api/webhooks/mercadopago/route';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock Next runtime before importing the route module. vi.hoisted keeps the
@@ -85,8 +86,6 @@ const supabase = vi.hoisted(() => {
 vi.mock('@/lib/mercadopago', () => mercadopago);
 vi.mock('@/lib/notify', () => notify);
 vi.mock('@supabase/supabase-js', () => supabase);
-
-import { POST } from '@/app/api/webhooks/mercadopago/route';
 
 const validUuid = '123e4567-e89b-12d3-a456-426614174000';
 

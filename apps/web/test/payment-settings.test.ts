@@ -1,3 +1,4 @@
+import { getPaymentSettings } from '@/lib/actions/settings';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -33,8 +34,6 @@ vi.mock('@/lib/supabase/booking-client', () => ({
   ),
   createBookingSupabaseClient: vi.fn(() => ({ from: mockFrom })),
 }));
-
-import { getPaymentSettings } from '@/lib/actions/settings';
 
 // Rows shaped like supabase/seed.sql §6 (snake_case columns, jsonb `value`
 // arrives from PostgREST as the parsed JSON string).
@@ -304,8 +303,10 @@ describe('[KHAL-A1] booking flow — payment settings source of truth', () => {
     const step = readApp(STEP_PATH);
     expect(step).toContain('hasTransferDetails');
     expect(step).toMatch(/\{hasTransferDetails \? \(/);
-    // The transfer-to header + copy rows only render with settings present.
-    expect(step).toContain("t('transferTo')");
+    // v2 receipt (T-F2.4): the gated section carries the copy rows inside the
+    // hasTransferDetails conditional and opens with the receipt kicker —
+    // the rows never render without real settings.
+    expect(step).toContain("t('receiptTitle')");
   });
 
   it('payment step hides the WhatsApp CTA without a real phone number', () => {

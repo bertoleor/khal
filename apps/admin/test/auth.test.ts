@@ -1,3 +1,5 @@
+import { getRole, requireAuth } from '@/lib/auth';
+import type { NextRequest } from 'next/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 /**
  * [ORN-79] Unit tests for the admin auth layer (mock -> Supabase JWT).
@@ -21,9 +23,6 @@ vi.mock('@/lib/supabase/server', () => ({
 // NOTE: no `next/headers` mock needed — after ORN-79 `requireAuth` never reads
 // cookies (the mock fallback is gone) and `server.ts` is mocked above, so the
 // real module (which imports `next/headers`) never loads in this test.
-
-import { getRole, requireAuth } from '@/lib/auth';
-import type { NextRequest } from 'next/server';
 
 function userWith(appMetadata: Record<string, unknown> | undefined) {
   return { data: { user: { id: 'user-1', app_metadata: appMetadata } }, error: null };

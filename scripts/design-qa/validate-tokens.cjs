@@ -57,7 +57,11 @@ Checks for:
  */
 const patterns = {
   hexColor: {
-    regex: /#([0-9A-Fa-f]{3}){1,2}\b/g,
+    // Fixed-length alternation instead of the nested quantifier
+    // `([0-9A-Fa-f]{3}){1,2}` — same matches (greedy: 6 digits first, then
+    // 3), but linear-time: no group with a quantifier inside a quantifier
+    // (security/detect-unsafe-regex).
+    regex: /#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g,
     message: 'Hardcoded hex color',
     suggestion: 'Use var(--color-*) token'
   },

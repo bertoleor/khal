@@ -11,11 +11,25 @@ import { useTranslations } from 'next-intl';
 
 const DESTRUCTIVE_STATUSES: ReadonlySet<AppointmentStatus> = new Set(['cancelado', 'no_asistio']);
 
-const ACTION_KEY: Record<string, string> = {
-  confirmado: 'appointments.confirm',
-  cancelado: 'appointments.cancel',
-  no_asistio: 'appointments.noShow',
-};
+/**
+ * i18n key for each transition button — exhaustive switch over the status
+ * union (compile-checked named access, no dynamic key indexing).
+ */
+function transitionActionKey(to: AppointmentStatus): string {
+  switch (to) {
+    case 'confirmado':
+      return 'appointments.confirm';
+    case 'cancelado':
+      return 'appointments.cancel';
+    case 'no_asistio':
+      return 'appointments.noShow';
+    case 'pendiente':
+      // Unreachable through the state machine (no transition targets
+      // pendiente), but the switch stays exhaustive over the union; the
+      // status label is the only sensible key for it.
+      return 'appointments.status.pendiente';
+  }
+}
 
 function handleTransition(formData: FormData, confirmMessage: string): void {
   const to = String(formData.get('to') ?? '') as AppointmentStatus;
@@ -65,7 +79,10 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
           </span>
           <div className="flex gap-1">
             {VALID_APPOINTMENT_TRANSITIONS[appointment.status].map((to) => (
-              <form key={to} action={(formData) => handleTransition(formData, t(ACTION_KEY[to]))}>
+              <form
+                key={to}
+                action={(formData) => handleTransition(formData, t(transitionActionKey(to)))}
+              >
                 <input type="hidden" name="id" value={appointment.id} />
                 <input type="hidden" name="to" value={to} />
                 <button
@@ -76,7 +93,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
                       : 'rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400'
                   }
                 >
-                  {t(ACTION_KEY[to])}
+                  {t(transitionActionKey(to))}
                 </button>
               </form>
             ))}

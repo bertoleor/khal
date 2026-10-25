@@ -16,7 +16,7 @@ import type { NextRequest } from 'next/server';
  */
 export type Role = 'admin' | 'manager' | 'anon';
 
-export type AuthContext = {
+type AuthContext = {
   role: Role;
   userId: string;
   /** Org from the JWT `app_metadata.org_id` claim — undefined when absent. */
@@ -47,7 +47,6 @@ function roleFromClaims(appMetadata: Record<string, unknown> | undefined): Role 
  * A bare `khal_role` cookie is inert — it is no longer read at all.
  */
 export function getRole(_request: NextRequest): Role {
-  void _request;
   return 'anon';
 }
 

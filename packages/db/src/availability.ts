@@ -34,6 +34,23 @@ export function rangesOverlap(a: TimeRange, b: TimeRange): boolean {
   return aStart < bEnd && bStart < aEnd;
 }
 
+// Cadence starts (SCH-01/SCH-02): every `stepMinutes` tick whose
+// [start, start + durationMinutes + bufferMinutes) block fits inside the
+// open window. Reeled once here and consumed by both computeAvailableSlots
+// (conflict-filtered) and candidateSlots (full reel) so their loop bounds
+// and step can never drift apart.
+function cadenceStarts(open: TimeRange, block: number, stepMinutes: number): number[] {
+  const openStart = toMinutes(open.start);
+  const openEnd = toMinutes(open.end);
+  const starts: number[] = [];
+
+  for (let start = openStart; start + block <= openEnd; start += stepMinutes) {
+    starts.push(start);
+  }
+
+  return starts;
+}
+
 // SCH-01/SCH-02 — availability is computed, never pre-generated.
 // A slot at `start` is offered only when [start, start + duration + buffer)
 // fits within the open window and does not overlap any blocked period.
@@ -45,11 +62,9 @@ export function computeAvailableSlots(
   stepMinutes = 15
 ): string[] {
   const block = durationMinutes + bufferMinutes;
-  const openStart = toMinutes(open.start);
-  const openEnd = toMinutes(open.end);
   const result: string[] = [];
 
-  for (let start = openStart; start + block <= openEnd; start += stepMinutes) {
+  for (const start of cadenceStarts(open, block, stepMinutes)) {
     const candidate: TimeRange = {
       start: fromMinutes(start),
       end: fromMinutes(start + block),
@@ -61,4 +76,21 @@ export function computeAvailableSlots(
   }
 
   return result;
+}
+
+// T-F2.3 (slots con tachados): the FULL slot reel for a window — every
+// cadence start whose [start, start + duration + buffer) fits, with NO
+// blocking logic. The picker renders taken slots as the complement:
+// taken = candidateSlots(...) − computeAvailableSlots(...).
+// MUST stay a superset of computeAvailableSlots (same loop bounds + step) —
+// guaranteed here by construction: both reel from cadenceStarts. The
+// contract is pinned by packages/db/test/candidate-slots.test.ts.
+export function candidateSlots(
+  open: TimeRange,
+  durationMinutes: number,
+  bufferMinutes: number,
+  stepMinutes = 15
+): string[] {
+  const block = durationMinutes + bufferMinutes;
+  return cadenceStarts(open, block, stepMinutes).map((start) => formatClock(start));
 }

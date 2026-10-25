@@ -40,7 +40,7 @@ const valueSchemas = {
   whatsappPhone: z
     .string()
     .trim()
-    .regex(/^\+?[0-9]{8,15}$/, 'Invalid phone format'),
+    .regex(/^\+?\d{8,15}$/, 'Invalid phone format'),
 } as const;
 
 /**

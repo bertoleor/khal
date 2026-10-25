@@ -16,7 +16,7 @@ export interface BookingState {
 const createBookingResultSchema = z.object({
   ok: z.boolean(),
   code: z.string(),
-  booking_id: z.string().uuid().nullable(),
+  booking_id: z.uuid().nullable(),
 });
 
 type CreateBookingResult = z.infer<typeof createBookingResultSchema>;
@@ -57,6 +57,10 @@ export async function createBooking(
     name: formData.get('name'),
     phone: formData.get('phone'),
     email: formData.get('email'),
+    // D3 — checkbox "¿venís con trabajo de otro lugar?": 'on' -> true.
+    externalWork: formData.get('externalWork') === 'on',
+    // D1 — terms checkbox: the submit is rejected server-side without it.
+    termsAccepted: formData.get('termsAccepted') === 'on',
   };
 
   const parsed = bookingInputSchema.safeParse(raw);
@@ -95,6 +99,7 @@ export async function createBooking(
     p_slot_start_minutes: slotMinutes,
     p_idempotency_key: idempotencyKey,
     p_client_ip: null,
+    p_external_work: input.externalWork,
   });
 
   if (error) {

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const workerEnvSchema = z.object({
-  N8N_WEBHOOK_URL: z.string().url(),
+  N8N_WEBHOOK_URL: z.url(),
   N8N_WEBHOOK_SECRET: z.string().min(1).optional(),
   TELEGRAM_BOT_TOKEN: z.string().min(1).optional(),
   TELEGRAM_CHAT_ID: z.string().optional(),

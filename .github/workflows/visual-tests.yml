@@ -2,9 +2,13 @@ name: Visual Regression Tests
 
 on:
   push:
-    branches: [main, "khal/**"]
+    branches: [main, "khal/**", "feat/ux-skeletons-v2"]
   pull_request:
     branches: [main]
+  # Manual dispatch: update-snapshots.yml commits via GITHUB_TOKEN, which
+  # never triggers workflows (GitHub loop prevention) — so verifying freshly
+  # regenerated baselines REQUIRES a manual run. This closes that flow hole.
+  workflow_dispatch:
 
 permissions:
   contents: read

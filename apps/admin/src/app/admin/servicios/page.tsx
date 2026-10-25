@@ -28,7 +28,7 @@ export default async function ServiciosPage({ searchParams }: ServiciosPageProps
   if (skeleton === '1') {
     return (
       <main id="main" tabIndex={-1} className="mx-auto max-w-3xl px-4 py-6">
-        <h1 className="skeleton-shimmer h-10 w-1/4 rounded bg-white/[0.1]"></h1>
+        <h1 aria-hidden="true" className="skeleton-shimmer h-10 w-1/4 rounded bg-white/[0.1]"></h1>
         <p className="skeleton-shimmer mt-1 h-4 w-1/3 rounded bg-white/[0.06]"></p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3, 4].map((cardIndex) => (

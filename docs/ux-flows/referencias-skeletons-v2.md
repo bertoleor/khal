@@ -45,7 +45,7 @@
 - Success de reserva: confirmación con un solo movimiento (no confeti genérico)
 
 ## D7 — El admin vive en el teléfono de la dueña (owner, T8)
-Las 6 pantallas admin resuelven PRIMERO en teléfono: pestañas de un toque (hoy/mañana/señas), calendario deslizable día a día, cola → hoja completa con acciones en zona de pulgar, ficha con tabs + acciones fijas, catélogo lista + botón flotante, settings una sección por pantalla. Desktop queda como la versión grande del mismo contenido.
+Las 6 pantallas admin resuelven PRIMERO en teléfono: pestañas de un toque (hoy/mañana/señas), calendario deslizable día a día, cola → hoja completa con acciones en zona de pulgar, ficha con tabs + acciones fijas, catálogo lista + botón flotante, settings una sección por pantalla. Desktop queda como la versión grande del mismo contenido.
 
 ## D8 — Dispositivo de referencia: iPhone 12 Pro (owner, 2026-10-20)
 390×844 pt con notch y home indicator — los frames del board ya son ese tamaño exacto. Implementación iOS (criterios de aceptación T9): safe-area en barras fijas, viewport-fit=cover, 100dvh, targets ≥44pt, motion solo transform/opacity, backdrop-filter solo en superficies chicas, QA en el iPhone real de la dueña antes de lanzar.

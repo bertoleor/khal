@@ -2,9 +2,13 @@
 # Robust pre-commit hook: gitleaks + lint-staged
 # Follows the pattern from khal and santisima-trinidad as per decision.
 
+# [2026-10-23] 300s -> 900s: on this 13-year-old storm-disk box, lint-staged
+# (eslint --fix + prettier over ~36 staged files) measuredly exceeds 300s on
+# cold/contended runs — three FQ1 commits died at exactly timeout's 124.
+# Gates still run to completion; this only raises the patience budget.
 _TIMEOUT=""
 if [ -x /usr/bin/timeout ]; then
-  _TIMEOUT="/usr/bin/timeout 300"
+  _TIMEOUT="/usr/bin/timeout 900"
 fi
 
 if command -v gitleaks >/dev/null 2>&1; then

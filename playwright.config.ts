@@ -48,10 +48,11 @@ export default defineConfig({
     // from a previous run would leak its recordings into the spec.
     reuseExistingServer: false,
     // Cold-route compile MEASURED on the Windows dev box: /es ~117s, each
-    // deeper dynamic route 2-3 min, sequential warmup of all three routes
-    // ≈ 8-12 min worst case on this slow disk (measured across three cold
-    // boots: gate 200 landed at minute ~7-10). 1200s covers it with margin;
-    // CI (ubuntu, tmpfs) compiles in a fraction of that.
+    // deeper dynamic route 2-3 min, sequential warmup of all four routes
+    // (catalog, detalle, reservar, estado — T-F2.5) ≈ 10-15 min worst case
+    // on this slow disk (measured across cold boots: gate 200 landed at
+    // minute ~7-10 + one more route). 1200s covers it with margin; CI
+    // (ubuntu, tmpfs) compiles in a fraction of that.
     timeout: 1_200_000,
   },
 });

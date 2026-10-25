@@ -13,13 +13,13 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-medium text-zinc-300">{label}</span>
+      <span className="text-sm font-medium text-muted">{label}</span>
       <input
         name={name}
         type={type}
         autoComplete={autoComplete}
         required
-        className="mt-1 w-full rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 text-white outline-none transition-colors placeholder-zinc-500 focus:border-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+        className="mt-1 w-full rounded-xl border border-hairline-strong bg-surface px-3 py-2 text-foreground outline-none transition-colors placeholder:text-faint focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       />
     </label>
   );

@@ -1,8 +1,8 @@
 'use client';
 
-import Underline from '@tiptap/extension-underline';
+import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor, type Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { StarterKit } from '@tiptap/starter-kit';
 
 /**
  * Rich text editor for service descriptions (khal-admin-100-operable T4).

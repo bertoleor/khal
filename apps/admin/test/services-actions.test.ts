@@ -1,3 +1,13 @@
+import {
+  bulkIncrease,
+  createService,
+  deleteService,
+  fetchServices,
+  toggleVisibility,
+  updateService,
+  uploadServicePhoto,
+} from '@/lib/actions/services';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 /**
@@ -29,17 +39,6 @@ vi.mock('@/lib/supabase/server', () => ({
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
 }));
-
-import {
-  bulkIncrease,
-  createService,
-  deleteService,
-  fetchServices,
-  toggleVisibility,
-  updateService,
-  uploadServicePhoto,
-} from '@/lib/actions/services';
-import { getSupabaseServerClient } from '@/lib/supabase/server';
 
 type AnyRecord = Record<string, unknown>;
 

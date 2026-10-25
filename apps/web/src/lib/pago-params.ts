@@ -15,7 +15,7 @@ const paymentIdSchema = z
   .trim()
   .regex(/^\d{1,15}$/, 'payment id must be 1-15 digits');
 
-const externalReferenceSchema = z.string().uuid();
+const externalReferenceSchema = z.uuid();
 
 export interface PagoSearchParams {
   paymentId: string | null;

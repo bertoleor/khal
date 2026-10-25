@@ -36,7 +36,7 @@ Rediseño integral de khal en 3 frentes: **(1)** app clienta con el fondo intera
 - **Aceptación:** toggle persiste y funciona en ambas apps; wordmark renderiza en Nightingale (document.fonts.check); cero componente con radius >2px.
 
 ### Fase 1 — Fondo clienta (el visual aprobado)
-- **T-F1.1** **Verificar licencia** del componente (actualmente "unknown" en 21st.dev) ANTES de integrar. Si no es permissiva → **fallback decidido**: reimplementar el mismo look con shadergradient o paper-design MeshGradient (repos verificados, licencia limpia) — avisar a la owner antes de cambiar.
+- **T-F1.1** **Verificar licencia** del componente (actualmente "unknown" en 21st.dev) ANTES de integrar. Si no es permisiva → **fallback decidido**: reimplementar el mismo look con shadergradient o paper-design MeshGradient (repos verificados, licencia limpia) — avisar a la owner antes de cambiar.
 - **T-F1.2** Traer el código fuente vía MCP `t21st` (API key de 01) → **aterriza como fuente propia** en el repo (regla de flota), tokens intercambiados, sin link de crédito del autor.
 - **T-F1.3** Integración: dark default (D12), `prefers-reduced-motion` respeta la pausa (el pause-btn visible NO va), pausa cuando la pestaña no está visible, densidad calibrada en móvil.
 - **T-F1.4** QA perf iOS: framerate en iPhone 12 Pro real (gate D8); three.js en **code-splitting** (solo la home carga el bundle 3D).

@@ -1,11 +1,18 @@
 {
+  "hero": {
+    "cta": "Book your appointment",
+    "sectionLabel": "Cover"
+  },
   "catalog": {
     "title": "Our services",
     "tagline": "Pick a service and book your appointment.",
     "empty": "No services available yet. Check back soon.",
+    "emptyCta": "Message us on WhatsApp",
     "book": "Book Appointment",
     "duration": "Duration",
-    "deposit": "Deposit"
+    "deposit": "Deposit",
+    "price": "Price",
+    "back": "back"
   },
   "booking": {
     "pickDay": "Pick a day",
@@ -15,7 +22,11 @@
     "name": "Name",
     "phone": "Phone",
     "email": "Email",
-    "confirm": "Confirm booking",
+    "confirmHold": "Confirm — held for 12 h",
+    "externalWorkLabel": "I am coming with work from another place",
+    "termsLabel": "I accept the studio terms",
+    "termsLink": "view all",
+    "slotTaken": "Not available",
     "submitting": "Submitting…",
     "pendingTitle": "Booked",
     "pendingBody": "Your booking is pending confirmation. We will contact you on WhatsApp.",
@@ -57,8 +68,31 @@
     "redirecting": "Redirecting…",
     "checkoutError": "We couldn't start the online payment. Try again or pay by bank transfer.",
     "sendComprobante": "Send receipt via WhatsApp",
+    "receiptTitle": "deposit receipt",
+    "holdBarLabel": "Held for 12 h",
+    "holdBarBody": "If your payment receipt does not arrive within 12 h, the slot is released automatically.",
+    "termsNonRefundable": "The deposit is non-refundable.",
+    "termsReschedule": "To reschedule, give at least 24 h notice.",
     "whatsappMessage": "Hi! I booked {service} on {date} at {slot}. Attached is my payment proof.",
     "refillSuggestion": "We suggest booking your refill for {date}: that keeps your set full with the least amount of new lashes."
+  },
+  "estado": {
+    "title": "appointment status",
+    "pendiente": "pending confirmation",
+    "confirmado": "confirmed",
+    "cancelado": "released",
+    "no_asistio": "missed",
+    "holdLabel": "Held for 12 h — expires in {remaining}",
+    "holdExpired": "expired",
+    "holdExpiredBody": "The hold expired: if your receipt did not arrive, the slot is released. Message us on WhatsApp to rebook.",
+    "stepsTitle": "What happens now",
+    "step1": "Send us the deposit receipt via WhatsApp.",
+    "step2": "The owner validates the receipt and confirms your booking.",
+    "step3": "You get the confirmation and we see you at the studio.",
+    "confirmedBody": "All set! Your booking is confirmed. See you at the studio.",
+    "releasedBody": "This slot was released. Message us on WhatsApp to book again.",
+    "notFound": "We could not find that booking. Check the link on your receipt.",
+    "receiptLink": "view my booking status"
   },
   "policies": {
     "title": "Studio policies",
@@ -70,7 +104,11 @@
     "noShowTitle": "No-shows",
     "noShowBody": "If you do not attend your appointment without notice, the deposit is forfeited. Let us know in advance via WhatsApp and we will reschedule.",
     "punctualityTitle": "Punctuality",
-    "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting."
+    "punctualityBody": "Please arrive 5 minutes before your appointment. Delays shorten the session so the next client is not kept waiting.",
+    "externalWorkTitle": "Lash work from elsewhere",
+    "externalWorkBody": "If you are coming with work from another studio, let us know before booking — removal and rework carry an extra cost the owner assesses before confirming.",
+    "back": "back",
+    "more": "…and any the owner adds — editable from her panel."
   },
   "pagoResult": {
     "exitoTitle": "Payment received!",
