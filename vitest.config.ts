@@ -34,6 +34,38 @@ export default defineConfig({
       // (no root-level test/ dir), so the root suite is unchanged.
       'test/**/*.test.{ts,tsx}',
     ],
+    // FQ3 — coverage floor ("el piso que sólo sube"). The thresholds live
+    // here on purpose: vitest itself fails the run when any metric drops
+    // under its floor, so the gate is enforced by the same tool that
+    // measures it — no second mechanism to drift out of sync.
+    coverage: {
+      provider: 'v8',
+      reporter: ['text-summary', 'json-summary', 'html'],
+      reportsDirectory: 'coverage',
+      // Runtime source only, full-suite scope (the CI coverage job runs the
+      // root suite, NOT the affected-only unit job: affected subsets measure
+      // a moving slice of code, so a floor on them would mean nothing).
+      include: ['apps/*/src/**/*.{ts,tsx}', 'packages/*/src/**/*.{ts,tsx}'],
+      // packages/types is type-only by design (zero runtime exports,
+      // verified 2026-10-24) and compiles to an empty module — measuring it
+      // is noise, not coverage signal.
+      exclude: ['**/*.d.ts', 'packages/types/src/**'],
+      // FQ3 floor, measured on the full suite 2026-10-24: statements/lines
+      // 22.78% (1104/4846), branches 74.02% (265/358), functions 70.34%
+      // (102/145), 305 tests — the admin app is untested at unit level and
+      // drags lines down; honest for demo stage. Each floor sits 0.5 under
+      // the measured value to absorb V8 remapping drift between the local
+      // host (Node 24) and CI (Node 20).
+      // THE FLOOR ONLY GOES UP: when coverage improves, raise all four to
+      // (measured - 0.5, rounded down to 0.5) and update this comment; a
+      // lowering diff must justify the lost coverage in review.
+      thresholds: {
+        lines: 22,
+        branches: 73.5,
+        functions: 69.5,
+        statements: 22,
+      },
+    },
   },
   plugins: [
     {

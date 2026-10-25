@@ -82,6 +82,41 @@ jobs:
       - name: Run tests
         run: pnpm exec turbo run test --affected
 
+  coverage:
+    name: Coverage floor (ratchet)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+                    run_install: false
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      # FQ3 — the coverage floor is enforced on the FULL suite, not on the
+      # affected-only unit job: affected subsets measure a moving slice of
+      # the code, so a floor on them would mean nothing. The floors live in
+      # vitest.config.ts (coverage.thresholds) — vitest itself fails this
+      # run when any metric drops below them. The floor only goes up.
+      - name: Run full suite with coverage (floor enforced)
+        run: pnpm test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
   quality-gates:
     name: Quality Gates
     runs-on: ubuntu-latest
