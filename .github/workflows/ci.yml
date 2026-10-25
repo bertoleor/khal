@@ -110,7 +110,7 @@ jobs:
       - name: Run full suite with coverage (floor enforced)
         run: pnpm test:coverage
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-report
