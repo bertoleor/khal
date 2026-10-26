@@ -24,14 +24,14 @@ Visual spec de referencia: E:/Hermes/scratch/khal-preview-v7/index.html (aprobad
 
 ## Tasks
 
-- T1 (S1,S12,S13): tokens B/W + radios 16/12/pill + re-anchor contratos de tokens. Route: inline.
-- T2 (S2,S4,S11): home linktree + conocenos + footer. Route: writer.
-- T3 (S3,S5): catálogo foto + detalle. Route: writer.
-- T4 (S6,S9): reservar + extras + recibo (con copy buttons). Route: writer.
-- T5 (S10): estado 4 estados. Route: writer.
-- T6 (S6): persistencia extras (migración 0016 addons jsonb + RPC + contracts). Route: writer.
-- T7 (S7,S8,S14): data SQL con backup (seña fija, duración 1h, catálogo real). Route: inline.
-- T8: e2e rewrite + warmup + contratos + VRT baselines. Route: writer.
+- T1 (S1,S12,S13): tokens B/W + radios 16/12/pill + re-anchor contratos de tokens. Route: inline. ✅ e6a37ad
+- T2 (S2,S4,S11): home linktree + conocenos + footer. Route: writer. ✅ a06e3f7
+- T3 (S3,S5): catálogo foto + detalle. Route: writer. ✅ a06e3f7
+- T4 (S6,S9): reservar + extras + recibo (con copy buttons). Route: writer. 🔄 en curso
+- T5 (S10): estado 4 estados. Route: writer. 🔄 en curso
+- T6 (S6): persistencia extras (migración 0016 addons jsonb + RPC + contracts). Route: writer. 🔄 en curso
+- T7 (S7,S8,S14): data SQL con backup (seña fija, duración 1h, catálogo real). Route: inline. ✅ migración 0017 aplicada vía Management API + read-back verificado (23 servicios, 23/23 fixed $10k, 23/23 60min, 19 wired al provider nuevo; appointments intactas).
+- T8: e2e rewrite + warmup + contratos + VRT baselines. Route: writer. Pendiente (nota para T8: mocks/services.ts aún sirve el catálogo viejo al stub e2e — reconciliar con el catálogo real o dejar el stub como fixture).
 - T9: gates + merge + deploy + live check. Route: inline.
 
 ## Log
