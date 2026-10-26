@@ -85,7 +85,10 @@
   --accent: #ffffff;
   --accent-soft: #ffffff;
   --accent-contrast: #000000;
-  --surface: rgba(255, 255, 255, 0.04);
+  /* v7 glass (owner-approved preview): surfaces sit at white 6-7% on the
+     #000 canvas — bg-surface 0.06 is the resting glass, bg-surface-hover
+     0.07 the interactive lift. */
+  --surface: rgba(255, 255, 255, 0.06);
   --surface-hover: rgba(255, 255, 255, 0.07);
   --hairline: rgba(255, 255, 255, 0.1);
   --hairline-strong: rgba(255, 255, 255, 0.15);
@@ -104,7 +107,8 @@ html.light {
   --accent: #0d0d0d;
   --accent-soft: #0d0d0d;
   --accent-contrast: #ffffff;
-  --surface: rgba(16, 16, 20, 0.05);
+  /* v7 light glass: ink at 4% over the paper, hover at 8%. */
+  --surface: rgba(16, 16, 20, 0.04);
   --surface-hover: rgba(16, 16, 20, 0.08);
   --hairline: rgba(16, 16, 20, 0.14);
   --hairline-strong: rgba(16, 16, 20, 0.22);

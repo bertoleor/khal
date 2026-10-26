@@ -1,4 +1,5 @@
 import { Header } from '@/components/shared/header';
+import SiteFooter from '@/components/shared/site-footer';
 import { Link } from '@/i18n/navigation';
 import { getService } from '@/lib/actions/catalog';
 import { formatCents } from '@khal/utils';
@@ -18,11 +19,24 @@ function depositAmountCents(service: Service): number | null {
   return null;
 }
 
+/** Duración legible (S8: todo viaja a 1 h hasta que la dueña confirme
+ *  las duraciones reales — "1 h", nunca "60 min"). */
+function durationLabel(minutes: number): string {
+  return minutes % 60 === 0 ? `${minutes / 60} h` : `${minutes} min`;
+}
+
 type ServiceDetailPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ skeleton?: string }>;
 };
 
+/**
+ * Servicio v7 (S5 — approved preview): photo slot (real photos pending),
+ * description, the TOTAL big in mono, duración and seña on quiet glass
+ * rows, then the solid pill CTA. No "el resto al pagar al llegar" (the
+ * dueña called it redundant) and no sticky bar — the CTA breathes in the
+ * flow. Back door goes to the catálogo (S3), typographic kicker style.
+ */
 export default async function ServiceDetailPage({ params, searchParams }: ServiceDetailPageProps) {
   const { id } = await params;
   const { skeleton } = await searchParams;
@@ -31,36 +45,44 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
   // Presentation mode (?skeleton=1): placeholder-only layout for design review.
   if (skeleton === '1') {
     return (
-      <div className="relative min-h-dvh">
+      <div className="relative flex min-h-dvh flex-col">
         <Header />
-        <main className="mx-auto max-w-lg px-4 pb-28">
-          <div className="mt-4 flex h-48 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
-            <div className="skeleton-shimmer h-16 w-16 rounded-full bg-zinc-800"></div>
-          </div>
-          <h1
+        <main id="main" tabIndex={-1} className="mx-auto w-full max-w-lg flex-1 px-5 pb-16">
+          <div
             aria-hidden="true"
-            className="skeleton-shimmer mt-5 h-10 w-1/2 rounded bg-zinc-800"
-          ></h1>
-          <p className="skeleton-shimmer mt-2 h-4 w-1/3 rounded bg-zinc-800/60"></p>
-          <dl className="mt-4 space-y-1">
-            <div className="flex justify-between border-b border-white/5 py-2.5">
-              <dt className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dt>
-              <dd className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dd>
-            </div>
-            <div className="flex justify-between border-b border-white/5 py-2.5">
-              <dt className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></dt>
-              <dd className="skeleton-shimmer h-5 w-1/3 rounded bg-emerald-400/30"></dd>
-            </div>
-          </dl>
-        </main>
-        <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-black/70 backdrop-blur">
-          <div className="mx-auto flex max-w-lg items-center justify-between gap-4 px-4 py-3">
-            <span className="skeleton-shimmer h-8 w-1/4 rounded bg-zinc-800"></span>
-            <span className="skeleton-shimmer flex h-11 w-32 items-center justify-center rounded-full bg-emerald-400">
-              <span className="skeleton-shimmer h-4 w-1/2 rounded bg-zinc-900/80"></span>
-            </span>
+            className="skeleton-shimmer mt-3 h-2 w-20 rounded bg-zinc-800/60"
+          ></div>
+          <div
+            aria-hidden="true"
+            className="skeleton-shimmer mt-3 aspect-[4/3] w-full rounded-md bg-zinc-800/60"
+          ></div>
+          <div
+            aria-hidden="true"
+            className="skeleton-shimmer mt-[13px] h-5 w-1/2 rounded bg-zinc-800"
+          ></div>
+          <div
+            aria-hidden="true"
+            className="skeleton-shimmer mt-2 h-3 w-2/3 rounded bg-zinc-800/60"
+          ></div>
+          <div
+            aria-hidden="true"
+            className="skeleton-shimmer mt-3.5 h-8 w-28 rounded bg-zinc-800"
+          ></div>
+          <div className="mt-3 space-y-2.5">
+            {[0, 1].map((rowIndex) => (
+              <div
+                key={rowIndex}
+                aria-hidden="true"
+                className="skeleton-shimmer h-9 w-full rounded-lg bg-zinc-800/60"
+              ></div>
+            ))}
           </div>
-        </div>
+          <div
+            aria-hidden="true"
+            className="skeleton-shimmer mt-3 h-12 w-full rounded-full bg-zinc-800"
+          ></div>
+        </main>
+        <SiteFooter />
       </div>
     );
   }
@@ -74,92 +96,90 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
   const deposit = depositAmountCents(service);
 
   return (
-    <div className="relative min-h-dvh">
+    <div className="relative flex min-h-dvh flex-col">
       <Header />
-      <main className="mx-auto max-w-lg px-4 pb-36">
-        {/* "Atrás" tipográfico (D9): parte del texto, cero píldoras. */}
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-lg flex-1 px-5 pb-16">
+        {/* "Atrás" tipográfico (S12): parte del texto, cero píldoras. */}
         <Link
-          href="/"
-          className="mt-4 inline-block font-mono-khal text-[11px] uppercase tracking-[2px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          href="/catalogo"
+          className="mt-3 inline-block font-mono-khal text-[8px] uppercase tracking-[2.5px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          ← {t('back')}
+          ← {t('backCatalog')}
         </Link>
 
-        {/* Imagen protagonista (board s2). */}
+        {/* Foto del servicio (S5): slot con borde punteado hasta que
+            lleguen las fotos reales de la dueña. */}
         {service.photo_path ? (
-          <div className="mt-3 h-52 overflow-hidden sm:h-64">
+          <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-md">
             <Image
               src={service.photo_path}
               alt={service.name}
-              width={512}
-              height={256}
-              className="h-full w-full object-cover"
+              fill
+              sizes="(max-width: 640px) 100vw, 512px"
+              className="object-cover"
             />
           </div>
         ) : (
-          <div className="mt-3 flex h-52 items-center justify-center bg-surface text-6xl font-semibold text-foreground/80 sm:h-64">
-            {service.name.slice(0, 1)}
+          <div className="mt-3 flex aspect-[4/3] flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-hairline bg-surface text-faint backdrop-blur-lg">
+            <span aria-hidden="true" className="text-[20px] leading-none opacity-40">
+              ◉
+            </span>
+            <span className="text-[10.5px]">{t('photoSlot')}</span>
           </div>
         )}
 
-        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-foreground">
+        <h1 className="mt-[13px] text-[18px] font-bold tracking-[-0.02em] text-foreground">
           {service.name}
         </h1>
 
-        {/* Cluster de datos (board s2): borde funcional a la izquierda, filas
-            con hairline — la seña se ve ANTES de entrar al flujo. */}
-        <dl className="mt-4 border-l-2 border-foreground pl-4 text-[13px]">
-          <div className="flex items-baseline justify-between border-b border-hairline py-2.5">
-            <dt className="text-faint">{t('duration')}</dt>
-            <dd className="font-semibold text-foreground">{service.duration_minutes} min</dd>
-          </div>
-          <div className="flex items-baseline justify-between border-b border-hairline py-2.5">
-            <dt className="text-faint">{t('price')}</dt>
+        {service.description ? (
+          <p className="mt-[7px] text-[12.5px] leading-[1.55] text-muted">{service.description}</p>
+        ) : null}
+
+        {/* El TOTAL en grande (S5): kicker "total" + número mono. Sin
+            "el resto al llegar" — redundante (dueña, v7). */}
+        <div className="mt-3.5">
+          <p className="font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
+            {t('total')}
+          </p>
+          <p className="mt-1.5 font-mono-khal text-[30px] font-bold leading-none tracking-[-1px] tabular-nums text-foreground">
+            {formatCents(service.price_cents, service.currency_code)}
+          </p>
+        </div>
+
+        {/* Datos (S5): duración y seña en filas delicadas py-2.5 px-3.5. */}
+        <dl className="mt-3 divide-y divide-hairline rounded-lg border border-hairline bg-surface backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)]">
+          <div className="flex items-center justify-between px-3.5 py-2.5 text-xs">
+            <dt className="text-muted">{t('duration')}</dt>
             <dd className="font-semibold text-foreground">
-              {formatCents(service.price_cents, service.currency_code)}
+              {durationLabel(service.duration_minutes)}
             </dd>
           </div>
           {deposit != null ? (
-            <div className="flex items-baseline justify-between py-2.5">
-              <dt className="text-faint">
-                {t('deposit')}
-                {service.deposit_mode === 'percentage' && service.deposit_percentage_bp != null
-                  ? ` (${service.deposit_percentage_bp / 100}%)`
-                  : ''}
-              </dt>
-              <dd className="font-semibold text-accent-soft">
+            <div className="flex items-center justify-between px-3.5 py-2.5 text-xs">
+              <dt className="text-muted">{t('depositToBook')}</dt>
+              <dd className="font-semibold text-foreground">
                 {formatCents(deposit, service.currency_code)}
               </dd>
             </div>
           ) : null}
         </dl>
 
-        {service.description ? (
-          <p className="mt-4 text-sm leading-relaxed text-muted">{service.description}</p>
-        ) : null}
-      </main>
-
-      {/* CTA sticky — borde funcional de barra (D11) + safe area iOS (D8). */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-hairline bg-background/85 backdrop-blur pb-safe">
-        <div className="mx-auto flex max-w-lg items-center justify-between gap-4 px-4 py-3">
-          <div>
-            <span className="block text-lg font-semibold leading-tight text-foreground">
-              {formatCents(service.price_cents, service.currency_code)}
-            </span>
-            {deposit != null ? (
-              <span className="block font-mono-khal text-[9px] uppercase tracking-[1.5px] text-faint">
-                {t('deposit')} {formatCents(deposit, service.currency_code)}
-              </span>
-            ) : null}
-          </div>
+        {/* CTA (S2/S12): la única píldora sólida de la pantalla, arrow
+            con aire propio. */}
+        <div className="mt-3">
           <Link
             href={`/servicios/${service.id}/reservar`}
-            className="bg-accent px-6 py-3 text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
+            className="flex items-center justify-center rounded-full bg-accent px-[17px] py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
           >
             {t('book')}
+            <span aria-hidden="true" className="pl-4 text-[11px] font-normal opacity-45">
+              →
+            </span>
           </Link>
         </div>
-      </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }

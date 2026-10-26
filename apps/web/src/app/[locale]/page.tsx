@@ -1,93 +1,131 @@
-import { CatalogList } from '@/components/catalog/catalog-list';
-import { FlowGradientHero } from '@/components/home/flow-gradient-hero';
 import { Header } from '@/components/shared/header';
 import SiteFooter from '@/components/shared/site-footer';
-import { getCatalog } from '@/lib/actions/catalog';
+import { Link } from '@/i18n/navigation';
 import { getPaymentSettings } from '@/lib/actions/settings';
+import { whatsappUrl } from '@/lib/socials';
 import { getTranslations } from 'next-intl/server';
 
+/**
+ * Home v7 (S2 — approved preview): a personal linktree, not a storefront.
+ * Wordmark "Khal" (TAN Nightingale) + tagline + ONLY four doors: Agendá tu
+ * turno (solid pill), Catálogo, Conocenos, WhatsApp ↗. Prices do NOT live
+ * here (S2) — the funnel starts at the catálogo. Delicacy scale (S12):
+ * buttons 11px/17px padding, 13px text, 9px stack gap, real pills; arrows
+ * are their own span with air (pl-4, 11px, 45% ink) — never glued to the
+ * text. Desktop puts wordmark and doors side by side (preview v7 §2).
+ */
 type HomePageProps = {
   searchParams: Promise<{ skeleton?: string }>;
 };
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const { skeleton } = await searchParams;
-  const t = await getTranslations('catalog');
+  const t = await getTranslations('home');
+  const settings = await getPaymentSettings();
+  const whatsappPhone = settings?.whatsappPhone ?? '';
 
   // Presentation mode (?skeleton=1): placeholder-only layout for design review.
   if (skeleton === '1') {
     return (
-      <div className="relative min-h-dvh">
+      <div className="relative flex min-h-dvh flex-col">
         <Header />
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-lg px-4 pb-16 pt-10 sm:max-w-6xl sm:px-6 sm:pt-16"
+          className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
         >
-          <section className="grid grid-cols-1 items-center gap-6 sm:grid-cols-12">
-            <div className="space-y-3 sm:col-span-8">
-              <h1
+          <div className="flex flex-1 flex-col items-center justify-center gap-8 sm:flex-row sm:gap-9">
+            <div className="text-center">
+              <div
                 aria-hidden="true"
-                className="skeleton-shimmer h-10 w-2/3 rounded bg-zinc-800 sm:h-12 lg:h-14"
-              ></h1>
-              <p className="skeleton-shimmer h-5 w-1/2 rounded bg-zinc-800/60 sm:h-6"></p>
+                className="skeleton-shimmer mx-auto h-[46px] w-32 rounded bg-zinc-800"
+              ></div>
+              <div
+                aria-hidden="true"
+                className="skeleton-shimmer mx-auto mt-3 h-2 w-40 rounded bg-zinc-800/60"
+              ></div>
             </div>
-            <div className="hidden justify-end sm:col-span-4 sm:flex">
-              <div className="skeleton-shimmer h-28 w-28 rounded-2xl bg-zinc-800 lg:h-36 lg:w-36"></div>
-            </div>
-          </section>
-          <section className="mt-10 sm:mt-12">
-            <h2
-              aria-hidden="true"
-              className="skeleton-shimmer mb-4 h-3 w-32 rounded bg-zinc-800/60"
-            ></h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-              {[0, 1, 2, 3].map((cardIndex) => (
+            <div className="flex w-full flex-col gap-[9px] sm:max-w-[360px]">
+              {[0, 1, 2, 3].map((buttonIndex) => (
                 <div
-                  key={cardIndex}
-                  className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm"
-                >
-                  <div className="skeleton-shimmer h-14 w-14 shrink-0 rounded-full bg-zinc-800"></div>
-                  <div className="min-w-0 flex-1">
-                    <div className="skeleton-shimmer h-5 w-2/3 rounded bg-zinc-800"></div>
-                    <div className="skeleton-shimmer mt-2 h-4 w-1/3 rounded bg-zinc-800/60"></div>
-                  </div>
-                </div>
+                  key={buttonIndex}
+                  aria-hidden="true"
+                  className="skeleton-shimmer h-10 w-full rounded-full bg-zinc-800"
+                ></div>
               ))}
             </div>
-          </section>
+          </div>
         </main>
         <SiteFooter />
       </div>
     );
   }
 
-  const services = await getCatalog();
-  const settings = await getPaymentSettings();
+  // Glass door (S12): token surface + hairline + blur + inset highlight.
+  const doorClass =
+    'flex items-center rounded-full border border-hairline bg-surface px-[17px] py-[11px] text-[13px] font-semibold tracking-[-0.005em] text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.985]';
+  // The prime door is the only solid pill (S2): accent ink, contrast text.
+  const primeClass =
+    'flex items-center rounded-full bg-accent px-[17px] py-[11px] text-[13px] font-semibold tracking-[-0.005em] text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.985]';
+  // Arrows breathe on their own (S12): own span, 11px, 45% ink, pl-4 air.
+  const arrowClass = 'ml-auto pl-4 text-[11px] font-normal opacity-45';
 
   return (
-    <div className="relative min-h-dvh">
-      {/* v2 (D10/D12): la portada ES el hero interactivo aprobado — el
-          catálogo vive debajo en el mismo flujo vertical (sin navbar). */}
-      <FlowGradientHero />
+    <div className="relative flex min-h-dvh flex-col">
+      <Header />
       <main
         id="main"
         tabIndex={-1}
-        className="mx-auto w-full max-w-lg px-4 pb-16 pt-14 sm:max-w-6xl sm:px-6"
+        className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
       >
-        {/* Catalog — el ancla del CTA del hero (#servicios). Filas, no cards
-            (board s1); la primera fila es el servicio firma. */}
-        <section id="servicios" className="scroll-mt-4">
-          <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-faint">
-            {t('title')}
-          </h2>
-          <CatalogList
-            services={services}
-            emptyMessage={t('empty')}
-            emptyCtaLabel={t('emptyCta')}
-            whatsappPhone={settings?.whatsappPhone ?? ''}
-          />
-        </section>
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
+            <div className="text-center sm:basis-[230px] sm:shrink-0">
+              <h1 className="select-none font-wordmark text-[46px] leading-[0.95] text-foreground sm:text-[52px]">
+                Khal
+              </h1>
+              <p className="mt-2.5 font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
+                {t('tagline')}
+              </p>
+            </div>
+            <nav
+              aria-label="Enlaces del estudio"
+              className="mt-[30px] flex w-full flex-col gap-[9px] sm:mt-0 sm:max-w-[360px] sm:flex-1"
+            >
+              <Link href="/catalogo" className={primeClass}>
+                {t('book')}
+                <span aria-hidden="true" className={arrowClass}>
+                  →
+                </span>
+              </Link>
+              <Link href="/catalogo" className={doorClass}>
+                {t('catalog')}
+                <span aria-hidden="true" className={arrowClass}>
+                  →
+                </span>
+              </Link>
+              <Link href="/conocenos" className={doorClass}>
+                {t('about')}
+                <span aria-hidden="true" className={arrowClass}>
+                  →
+                </span>
+              </Link>
+              {whatsappPhone ? (
+                <a
+                  href={whatsappUrl(whatsappPhone)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={doorClass}
+                >
+                  {t('whatsapp')}
+                  <span aria-hidden="true" className={arrowClass}>
+                    ↗
+                  </span>
+                </a>
+              ) : null}
+            </nav>
+          </div>
+        </div>
       </main>
       <SiteFooter />
     </div>

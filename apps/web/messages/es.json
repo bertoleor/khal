@@ -1,18 +1,30 @@
 {
-  "hero": {
-    "cta": "Agendá tu turno",
-    "sectionLabel": "Portada"
+  "home": {
+    "tagline": "tu mirada, nuestra prioridad",
+    "book": "Agendá tu turno",
+    "catalog": "Catálogo",
+    "about": "Conocenos",
+    "whatsapp": "WhatsApp"
   },
   "catalog": {
-    "title": "Nuestros servicios",
-    "tagline": "Elegí tu servicio y agendá tu turno.",
+    "title": "Catálogo",
     "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
     "emptyCta": "Escribinos por WhatsApp",
     "book": "Agendar cita",
     "duration": "Duración",
     "deposit": "Seña",
-    "price": "Precio",
-    "back": "volver"
+    "back": "volver",
+    "backCatalog": "catálogo",
+    "photoFallback": "foto",
+    "photoSlot": "foto del servicio",
+    "total": "total",
+    "depositToBook": "Seña para reservar"
+  },
+  "conocenos": {
+    "back": "volver",
+    "title": "Conocenos",
+    "blurb": "Estudio de pestañas y cejas en Vicente López. Mirada cuidada, higiene de ley, tiempos que se respetan.",
+    "social": "redes"
   },
   "booking": {
     "pickDay": "Elegí el día",

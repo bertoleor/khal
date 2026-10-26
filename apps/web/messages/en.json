@@ -1,18 +1,30 @@
 {
-  "hero": {
-    "cta": "Book your appointment",
-    "sectionLabel": "Cover"
+  "home": {
+    "tagline": "your gaze, our priority",
+    "book": "Book your appointment",
+    "catalog": "Catalog",
+    "about": "About us",
+    "whatsapp": "WhatsApp"
   },
   "catalog": {
-    "title": "Our services",
-    "tagline": "Pick a service and book your appointment.",
+    "title": "Catalog",
     "empty": "No services available yet. Check back soon.",
     "emptyCta": "Message us on WhatsApp",
     "book": "Book Appointment",
     "duration": "Duration",
     "deposit": "Deposit",
-    "price": "Price",
-    "back": "back"
+    "back": "back",
+    "backCatalog": "catalog",
+    "photoFallback": "photo",
+    "photoSlot": "service photo",
+    "total": "total",
+    "depositToBook": "Deposit to book"
+  },
+  "conocenos": {
+    "back": "back",
+    "title": "About us",
+    "blurb": "A lash and brow studio in Vicente López. Thoughtful work, strict hygiene, schedules we respect.",
+    "social": "social"
   },
   "booking": {
     "pickDay": "Pick a day",
