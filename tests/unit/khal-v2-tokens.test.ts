@@ -36,25 +36,26 @@ function css(app: 'web' | 'admin'): string {
   return readFileSync(resolve(root, `apps/${app}/src/app/globals.css`), 'utf8');
 }
 
-const RADIUS_TOKENS = [
-  '--radius:',
-  '--radius-xs:',
-  '--radius-sm:',
-  '--radius-md:',
-  '--radius-lg:',
-  '--radius-xl:',
-  '--radius-2xl:',
-  '--radius-3xl:',
-  '--radius-4xl:',
-];
+const RADIUS_SCALE: Record<string, string> = {
+  '--radius:': '16px',
+  '--radius-xs:': '12px',
+  '--radius-sm:': '12px',
+  '--radius-md:': '14px',
+  '--radius-lg:': '16px',
+  '--radius-xl:': '16px',
+  '--radius-2xl:': '16px',
+  '--radius-3xl:': '16px',
+  '--radius-4xl:': '16px',
+};
 
-describe('khal v2 tokens — D11 radius discipline', () => {
-  it.each(RADIUS_TOKENS)('shared tokens.css pins %s 2px', (token) => {
-    expect(tokens()).toMatch(new RegExp(`${token.replace(':', '\\s*:\\s*')}2px`));
+describe('khal v7 tokens — iOS-glass radius scale (owner-approved)', () => {
+  it.each(Object.keys(RADIUS_SCALE))('shared tokens.css pins %s to the v7 scale', (token) => {
+    const value = RADIUS_SCALE[token];
+    expect(tokens()).toMatch(new RegExp(`${token.replace(':', '\\s*:\\s*')}${value}`));
   });
 
-  it('rounded-full utility joins the 2px cap (no pill boxes)', () => {
-    expect(tokens()).toMatch(/@utility rounded-full[\s\S]{0,80}border-radius:\s*2px/);
+  it('rounded-full is a real pill (999px, the v7 iOS language)', () => {
+    expect(tokens()).toMatch(/@utility rounded-full[\s\S]{0,80}border-radius:\s*999px/);
   });
 
   it('both apps import the single shared token source', () => {
@@ -82,16 +83,16 @@ describe('khal v2 tokens — wordmark font (TAN Nightingale, licensed)', () => {
 });
 
 describe('khal v2 tokens — D12/D13 theme modes', () => {
-  it('dark is the default palette in :root (shared source)', () => {
+  it('dark is the default palette in :root — v7 monochrome accent', () => {
     const s = tokens();
     expect(s).toMatch(/:root\s*\{[\s\S]*?--background:\s*#000000/);
-    expect(s).toMatch(/:root\s*\{[\s\S]*?--accent:\s*#34d399/);
+    expect(s).toMatch(/:root\s*\{[\s\S]*?--accent:\s*#ffffff/);
   });
 
-  it('light mode overrides exist with their own single accent (emerald-700 AA)', () => {
+  it('light mode overrides exist — ink accent, monochrome in both modes', () => {
     const s = tokens();
     expect(s).toMatch(/html\.light\s*\{[\s\S]*?--background:\s*#f6f4f1/);
-    expect(s).toMatch(/html\.light\s*\{[\s\S]*?--accent:\s*#047857/);
+    expect(s).toMatch(/html\.light\s*\{[\s\S]*?--accent:\s*#0d0d0d/);
     expect(s).toMatch(/html\.light\s*\{[\s\S]*?--foreground:\s*#101014/);
   });
 
