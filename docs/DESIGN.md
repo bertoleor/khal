@@ -1,20 +1,25 @@
 ---
 version: alpha
 name: Khal
-description: iOS-strict dark identity for a lash-studio booking app. Black canvas with a living white particle aura, emerald as the single action accent, system typography, translucent surfaces.
+description: B/W ink identity (v7) — strict black-and-white brand, iOS glass surfaces, TAN Nightingale wordmark only, system typography with mono kickers, dark default plus warm paper light mode.
 colors:
   primary: "#000000"
-  secondary: "#F4F4F5"
-  tertiary: "#34D399"
-  accentSoft: "#6EE7B7"
-  textPrimary: "#FFFFFF"
-  textSecondary: "#A1A1AA"
-  textTertiary: "#71717A"
-  surface: "rgba(255,255,255,0.04)"
+  secondary: "#a1a1aa"
+  tertiary: "#ffffff"
+  accentSoft: "#ffffff"
+  accentContrast: "#000000"
+  textPrimary: "#ffffff"
+  textSecondary: "#a1a1aa"
+  textTertiary: "#71717a"
+  surface: "rgba(255,255,255,0.06)"
   surfaceHover: "rgba(255,255,255,0.07)"
   border: "rgba(255,255,255,0.10)"
   borderStrong: "rgba(255,255,255,0.15)"
+  glassHighlight: "rgba(255,255,255,0.08)"
   header: "rgba(0,0,0,0.60)"
+  paper: "#f6f4f1"
+  paperInk: "#101014"
+  paperAccent: "#0d0d0d"
   error: "#F87171"
   statusPending: "#FBBF24"
 typography:
@@ -30,20 +35,25 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
   price:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
-    fontSize: 0.875rem
+    fontFamily: "ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace"
     fontWeight: 500
     lineHeight: 1.4
+  kicker:
+    fontFamily: "ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace"
+    fontSize: 8px
+    fontWeight: 500
+    letterSpacing: 2.5px
+    lineHeight: 1.2
   wordmark:
-    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+    fontFamily: "'TAN Nightingale', 'Bodoni MT', Georgia, serif"
     fontSize: 1.125rem
-    fontWeight: 600
-    letterSpacing: "-0.025em"
+    fontWeight: 400
     lineHeight: 1.2
 rounded:
   sm: 12px
-  md: 16px
-  pill: 9999px
+  md: 14px
+  lg: 16px
+  pill: 999px
 spacing:
   sm: 8px
   md: 16px
@@ -51,40 +61,31 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.tertiary}"
-    textColor: "#000000"
+    textColor: "{colors.accentContrast}"
     rounded: "{rounded.pill}"
-    padding: 12px
-  button-primary-hover:
-    backgroundColor: "{colors.accentSoft}"
-    textColor: "#000000"
-    rounded: "{rounded.pill}"
-    padding: 12px
+    padding: 11px
   card-surface:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.textPrimary}"
-    rounded: "{rounded.md}"
-    padding: 16px
+    rounded: "{rounded.lg}"
+    padding: 13px
   input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.textPrimary}"
     rounded: "{rounded.sm}"
-    padding: 8px
+    padding: 10px
   slot-selected:
     backgroundColor: "{colors.tertiary}"
-    textColor: "#000000"
-    rounded: "{rounded.sm}"
+    textColor: "{colors.accentContrast}"
+    rounded: "{rounded.pill}"
     padding: 8px
   slot-idle:
     backgroundColor: "{colors.surface}"
-    textColor: "#E4E4E7"
-    rounded: "{rounded.sm}"
+    textColor: "{colors.textSecondary}"
+    rounded: "{rounded.pill}"
     padding: 8px
-  price-text:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.accentSoft}"
-    typography: "{typography.price}"
-  secondary-text:
-    backgroundColor: "{colors.primary}"
+  kicker-label:
+    typography: "{typography.kicker}"
     textColor: "{colors.textTertiary}"
   header-bar:
     backgroundColor: "{colors.header}"
@@ -183,3 +184,49 @@ Three radii, locked: 12px (inputs, slots, day chips), 16px (cards, status boxes)
 
 ### Skeletons = spec
 - `docs/ux-flows/skeletons-v2-board.html` (12 screens, clienta móvil-first + admin teléfono-primario) is the structural contract; `docs/ux-flows/base-diseno-v2.md` is the element-source map.
+
+---
+
+## v7 addendum — 2026-10-26 (clienta B/W glass · preview v7 approved by owner · branch feat/v7-clienta-bw-glass)
+
+> **Source:** khal-ui-preview skill (v7 spec) + `packages/ui/src/tokens.css` (shipped tokens) + approved preview `E:/Hermes/scratch/khal-preview-v7/index.html` · estado: `canónico v7` · supersedes v1 accents and the v2 D11 radius cap · actualizado: 2026-10-26
+
+### Supersessions (explicit — read before "fixing" anything)
+
+- **The brand is black/white ONLY. The emerald accents (#34D399 / #6EE7B7) are GONE.** The accent IS the ink: `--accent: #ffffff` on dark, `--accent: #0d0d0d` on light; pill text uses `--accent-contrast` (the opposite ink). Any color sneaking back into the clienta UI is a regression.
+- **The D11 "radius ≤ 2px" cap is DEAD** (explicit owner approval of the glass system; see `packages/ui/src/tokens.css`). Radius scale now: inputs **12px**, cards **14–16px**, buttons/chips/slots = **real pills (999px)** — enforced through the `--radius-*` tokens and pinned by `tests/unit/khal-v2-tokens.test.ts`.
+- **BackgroundMesh aura and flow-gradient hero: PARKED.** Fondo stays B/W until the 21st.dev flow-gradient is integrated in-app. Do not re-add animated backgrounds on your own.
+- The v1/v2 sections above remain as history; where they contradict this addendum, THIS addendum wins.
+
+### v7 tokens (shipped, source: packages/ui/src/tokens.css)
+
+- **Dark (default, D12):** canvas `#000000`, foreground `#ffffff`, text `#a1a1aa` / `#71717a`; glass surfaces `rgba(255,255,255,0.06)` rest, `0.07` hover; hairlines `0.10` / `0.15`; glass inset top highlight `rgba(255,255,255,0.08)` (web `globals.css`).
+- **Light (paper):** canvas `#f6f4f1`, foreground `#101014`, text `#52525b` / `#6b6b74`; accent pill = ink `#0d0d0d` with white text; glass = ink at `0.04` rest / `0.08` hover; hairlines `0.14` / `0.22`; highlight `rgba(255,255,255,0.7)`.
+- **Glass recipe (owner-approved):** `backdrop-filter: blur(16–26px) saturate(150%)` + 1px hairline border + inset top highlight. Blur only over real content (iOS language), never decorative glow.
+- **Semantic-only colors survive:** `--status-pending` (#fbbf24 dark / #b45309 light), `--error` (#f87171 / #b91c1c). `::selection` keeps an emerald tint (app-level, web globals).
+
+### Typography (v7)
+
+- **TAN Nightingale: ONLY the "Khal" wordmark + the ghost watermark "KHAL"** (complete, never cut, pale, over the fondo). Capital K, lowercase rest.
+- Everything else: system font stack (iOS-strict, zero webfont weight). Kickers: mono (`ui-monospace / SF Mono / Consolas`), ~9px, letter-spacing 2–3px, uppercase. Prices/totals: mono.
+- Hierarchy = weight + ink level (ink / 68% / 44% via text-secondary/tertiary), never a second family.
+
+### Delicacy scale (v7 — owner-specified; "chunky = AI-look")
+
+- Linktree buttons: padding 11px 17px, font 13px, real pill. Cards: radius 16px, padding 13–14px. Rows: 10px 14px. Inputs: radius 12px, padding 10px 14px. Kicker: 8px, ls 2.5px. Day chips: 8px/7px with 12.5px number. Slot bar: 1.5px, no track. Arrows on buttons: own breathing room (`margin-left:auto; padding-left:16px`, 11px, ink-42%) — never glued to text.
+
+### Screens (v7 clienta)
+
+- Home = personal linktree: wordmark + tagline + only 4 pills (Agendá tu turno solid · Catálogo · Conocenos · WhatsApp ↗). Catálogo = 2-col photo grid with name chip overlay (price list removed; prices live in service detail). Conocenos = studio blurb + social rows. Servicio: photo slot, description, TOTAL in big mono, duración, seña (no "el resto al pagar al llegar"). Reservar: 7 day chips (dom off), 1.5px sliding bar, hourly slots (taken = strikethrough + dashed), "¿Sumás algo más?" add-on module with live total, button "Confirmar reserva" (never expose the 12h hold). Recibo: "Tu turno está reservado" (no ✓ check), alias + CBU with copy buttons, WhatsApp CTA. Estado: unique personal link only; 4 states; recordatorios numbered 1–4 (never bullet dots); vencida/cancelada end with "Si creés que fue un error, escribinos."
+
+### Anti-slop rules (standing, from the 2026-10 AI-look research)
+
+- Do: screenshot at 390px and 1280px before calling UI work done; one orchestrated motion moment per page; respect `prefers-reduced-motion`; real photos once available (initials-avatars and gray boxes are placeholders, replace before demo).
+- Don't: purple/blue gradients, gradient text, emoji as icons, three identical cards, side-tab colored borders, ALL-CAPS eyebrows (mono kickers are the approved exception), glow/neon/grid backgrounds, beige/cream+terracotta "anti-AI" drift.
+- Precedence: shipped components > preview HTML > this file's historical sections. An agent touching clienta UI reads this file first.
+
+### QA gates (run before merging UI work)
+
+- `npx -y -p @google/design.md designmd lint docs/DESIGN.md` — structure + WCAG contrast.
+- `node scripts/design-qa/validate-tokens.cjs --dir apps/web/src` — hardcoded hex/px detector (vendored from skill uupm-design-system, ORN-206).
+- `tests/unit/khal-v2-tokens.test.ts` — radius/accent contract; any token change re-anchors this test in the SAME work unit.

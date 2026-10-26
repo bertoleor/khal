@@ -27,14 +27,18 @@ Visual spec de referencia: E:/Hermes/scratch/khal-preview-v7/index.html (aprobad
 - T1 (S1,S12,S13): tokens B/W + radios 16/12/pill + re-anchor contratos de tokens. Route: inline. ✅ e6a37ad
 - T2 (S2,S4,S11): home linktree + conocenos + footer. Route: writer. ✅ a06e3f7
 - T3 (S3,S5): catálogo foto + detalle. Route: writer. ✅ a06e3f7
-- T4 (S6,S9): reservar + extras + recibo (con copy buttons). Route: writer. 🔄 en curso
-- T5 (S10): estado 4 estados. Route: writer. 🔄 en curso
-- T6 (S6): persistencia extras (migración 0016 addons jsonb + RPC + contracts). Route: writer. 🔄 en curso
+- T4 (S6,S9): reservar + extras + recibo (con copy buttons). Route: writer → cierre inline (parent). ✅ 5f5681b (focused 71/71 pre-commit; es/en parity; hook verde)
+- T5 (S10): estado 4 estados. Route: writer → cierre inline (parent). ✅ este commit (estado-v7 contract; ver Log L6)
+- T6 (S6): persistencia extras (migración 0016 addons jsonb + RPC + contracts). Route: writer → cierre inline (parent). ✅ 0ceefea — 0016 aplicada a prod vía Management API (HTTP 201) + read-back verificado (columna addons live, create_booking 10-arg single overload, ledger 0016) + smoke real por puerta anon (PostgREST: duration_minutes 60, hold_released_at set, addons null en turno real). Gap de ledger de T7 corregido: 0017 no tenía insert en su archivo → fila idempotente añadida; ledger ahora 0017,0016,0015,0014. Backups _backup_*_pre_v7_20261026 verificados; 0016 no toca datos; down restaura 0014/0015 verbatim (contract 10/10).
 - T7 (S7,S8,S14): data SQL con backup (seña fija, duración 1h, catálogo real). Route: inline. ✅ migración 0017 aplicada vía Management API + read-back verificado (23 servicios, 23/23 fixed $10k, 23/23 60min, 19 wired al provider nuevo; appointments intactas).
 - T8: e2e rewrite + warmup + contratos + VRT baselines. Route: writer. Pendiente (nota para T8: mocks/services.ts aún sirve el catálogo viejo al stub e2e — reconciliar con el catálogo real o dejar el stub como fixture).
-- T9: gates + merge + deploy + live check. Route: inline.
+- T9: gates + merge + deploy + live check. Route: inline. (Nota T9: los ratchet gates que sólo disparan en default branch nunca corrieron en esta feature branch — correrlos locales antes del merge.)
 
 ## Log
 
 - L1 (2026-10-26): dueña aprueba v7 completo: "por ahora todo aprobado. hazlo, testealo, chequealo, hay push deploy y vercel". Fuente: preview v7 (7 rondas de feedback v1→v7, skills cargadas, registro de gusto aplicado).
 - L2: licencia fondo 21st: "unknown" (página oficial) — decisión de la dueña: usarlo con créditos en Políticas cuando se integre; esta ronda va sin fondo animado (B/W).
+- L3 (26/10 ~16:30): dueña: "ok, prosigue con t4, t5 y tg" — retomada de T4-T6 con el tree a medias de los writers de la madrugada. Estado al retomar: suite 341/341 verde, typecheck 8/8, lint 0 warnings, pero todo sin commitear y 0016 sin aplicar.
+- L4 (26/10 19:14): T6 cerrado — 0ceefea. 0016 aplicada a prod vía Management API (HTTP 201) + read-back. Anon-smoke PostgREST sobre turno real confirma la forma v2 (el turno muestreado resultó ser un hold auto-liberado: status=cancelado + hold_released_at — exactamente el caso que S10 debe distinguir). Suite completa 341/341 + typecheck 8/8 + lint 0 warnings antes del commit; hook verde (gitleaks limpio).
+- L5 (26/10 19:18): T4 cerrado — 5f5681b. Focused 71/71 (payment-step, payment-settings, sena-receipt, a11y-p2, i18n-parity, 0016-contract, booking-input, duration) inmediatamente antes del commit; hook verde.
+- L6 (26/10 19:2x): T5 cerrado — este commit (estado-v7 contract). DESIGN.md re-anclado a la identidad B/W v7 (compañero tardío del trabajo de tokens de T1) viaja acá. Pendiente: T8 (e2e) y T9 (gates+merge+deploy+live check).
