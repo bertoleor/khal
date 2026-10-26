@@ -1,7 +1,7 @@
 'use server';
 
 import { createBookingSupabaseClient, readBookingSupabaseEnv } from '@/lib/supabase/booking-client';
-import { bookingInputSchema } from '@khal/validations';
+import { bookingInputSchema, serializeBookingAddons, type BookingAddonId } from '@khal/validations';
 import { z } from 'zod';
 
 export interface BookingState {
@@ -46,10 +46,41 @@ function slotStartToMinutes(slotStart: string): number | null {
   return hours * 60 + minutes;
 }
 
+/**
+ * S6 — the "¿Sumás algo más?" selection arrives as a JSON array of curated
+ * addon IDs (["kit_higiene"] | []). Absent = none (pre-0016 callers and the
+ * e2e happy path stay valid); anything malformed fails closed: the submit
+ * is rejected as invalid rather than silently dropping a selection.
+ */
+function parseAddonIds(raw: FormDataEntryValue | null): BookingAddonId[] | null {
+  if (raw === null) {
+    return [];
+  }
+  if (typeof raw !== 'string' || raw.length === 0) {
+    return null;
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(parsed)) {
+    return null;
+  }
+  return parsed as BookingAddonId[];
+}
+
 export async function createBooking(
   _prev: BookingState,
   formData: FormData
 ): Promise<BookingState> {
+  const addons = parseAddonIds(formData.get('addons'));
+  // Fail-close (S6): a malformed selection never falls back to "none" —
+  // the submit is rejected instead of silently dropping what she picked.
+  if (addons === null) {
+    return { ok: false, code: 'invalid' };
+  }
   const raw = {
     serviceId: formData.get('serviceId'),
     date: formData.get('date'),
@@ -59,6 +90,9 @@ export async function createBooking(
     email: formData.get('email'),
     // D3 — checkbox "¿venís con trabajo de otro lugar?": 'on' -> true.
     externalWork: formData.get('externalWork') === 'on',
+    // S6 — curated add-on selection; prices are resolved server-side by
+    // serializeBookingAddons (the form only ever posts IDs).
+    addons,
     // D1 — terms checkbox: the submit is rejected server-side without it.
     termsAccepted: formData.get('termsAccepted') === 'on',
   };
@@ -100,6 +134,7 @@ export async function createBooking(
     p_idempotency_key: idempotencyKey,
     p_client_ip: null,
     p_external_work: input.externalWork,
+    p_addons: serializeBookingAddons(input.addons),
   });
 
   if (error) {
