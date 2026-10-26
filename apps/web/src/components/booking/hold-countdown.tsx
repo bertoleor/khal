@@ -5,19 +5,28 @@ import { useTranslations } from 'next-intl';
 import { useSyncExternalStore } from 'react';
 
 /**
- * T-F2.5 — the live 12h hold countdown (D2). React 19 canonical shape:
- * useSyncExternalStore over a 30s interval (no effect-body setState — the
- * repo lint rejects it, the 3422052 lesson) + the useHydrated gate so the
- * hydration render is identical to SSR (Date.now() differs server/client).
+ * S10 — the pendiente data-box hero: "tiempo para confirmar" over a live
+ * HH:MM:SS clock (approved preview §5: 11:42:05). React 19 canonical shape:
+ * useSyncExternalStore over a 1s interval (no effect-body setState — the
+ * 3422052 lesson) + the useHydrated gate so the hydration render is
+ * identical to SSR (Date.now() differs server/client).
  *
- * 30s granularity: the display is minutes-level, so a ticking timer per
- * half-minute is plenty for a phone.
+ * What the clock DOESN'T say matters as much: no "12 h", no "reservado
+ * por" — the hold mechanic is never visible to the clienta (S6).
  */
-const THIRTY_SECONDS = 30_000;
+const ONE_SECOND = 1_000;
 
 function subscribe(onStoreChange: () => void): () => void {
-  const id = setInterval(onStoreChange, THIRTY_SECONDS);
+  const id = setInterval(onStoreChange, ONE_SECOND);
   return () => clearInterval(id);
+}
+
+function formatClock(remainingMs: number): string {
+  const totalSeconds = Math.floor(remainingMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
 export function HoldCountdown({ holdExpiresAt }: { holdExpiresAt: string }) {
@@ -31,32 +40,22 @@ export function HoldCountdown({ holdExpiresAt }: { holdExpiresAt: string }) {
     () => Number.MAX_SAFE_INTEGER
   );
 
-  // Pre-hydration (and for a malformed deadline): the static label carries
-  // the 12h rule without a ticking value — deterministic on server AND on
-  // the hydration render.
-  if (!mounted || Number.isNaN(deadline)) {
-    return (
-      <div>
-        <div aria-hidden="true" className="h-0.5 w-full bg-accent" />
-        <p className="mt-2 font-mono-khal text-[10px] uppercase tracking-[2px] text-accent-soft">
-          {t('holdLabel', { remaining: '—' })}
-        </p>
-      </div>
-    );
-  }
-
-  const hours = Math.floor(remainingMs / 3_600_000);
-  const minutes = Math.ceil((remainingMs % 3_600_000) / 60_000);
-  const expired = remainingMs === 0;
-  const remaining = expired ? t('holdExpired') : `${hours} h ${minutes} min`;
+  // Pre-hydration (and for a malformed deadline): a static placeholder —
+  // deterministic on server AND on the hydration render.
+  const clock = !mounted || Number.isNaN(deadline) ? '--:--:--' : formatClock(remainingMs);
 
   return (
-    <div>
-      <div aria-hidden="true" className="h-0.5 w-full bg-accent" />
-      <p className="mt-2 font-mono-khal text-[10px] uppercase tracking-[2px] text-accent-soft">
-        {t('holdLabel', { remaining })}
+    <div className="border-b border-hairline px-3.5 pb-[3px] pt-[13px]">
+      <p className="font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
+        {t('countdownLabel')}
       </p>
-      {expired ? <p className="mt-0.5 text-xs text-muted">{t('holdExpiredBody')}</p> : null}
+      <p
+        aria-hidden="true"
+        className="mt-1.5 font-mono-khal text-[22px] font-bold leading-none tracking-[-1px] tabular-nums text-foreground"
+      >
+        {clock}
+      </p>
+      <span className="sr-only">{clock}</span>
     </div>
   );
 }
