@@ -114,6 +114,34 @@ components:
 
 Khal is a lash-studio booking app with an iOS-strict, dark-first identity. The entire brand lives on one idea: a pure black canvas with a slow white particle aura (`BackgroundMesh`, canvas crossfade ~7s) that breathes behind everything. There is exactly one accent color — emerald — and it means one thing: action (book, confirm, pay, WhatsApp). No gradients, no glows, no second accent. The layout is a single centered app column (`max-w-lg`) that feels like a native app in a browser tab, mobile-first.
 
+## Deliberate Typography Exceptions — owner-approved sizes
+
+The following literal `text-[px]` sizes are flagged by `impeccable` but are **owner-approved deliberate choices** per the v7 Delicacy scale. Do not refactor these to default sizes unless the owner explicitly directs otherwise:
+
+- **7px**: used in skeleton geometries and subtle disabled states (`src/components/ui/Skeleton.tsx`)
+- **9px**: used in caption text and secondary labels (`src/components/shared/field.tsx`)
+- **10px**: used in header labels, field placeholders (`field.tsx`), and some body text
+- **10.5px**: used in border-radii calculations and compact spacing (`header.tsx`, `theme-toggle.tsx`)
+- **11px**: used in payment-step components and compact body text (`payment-step.tsx`)
+- **11.5px**: used in vertical rhythm and line-height calculations (`theme-toggle.tsx`)
+- **12.5px**: used in day chip number overlays and some spacing calculations (`khal-ui-preview`, day chips)
+- **13px**: used in medium weight text and admin micro-labels (`admin/` components)
+- **13.5px**: used in payment-result labels and price detail text (`pago-result.tsx`, `payment-step.tsx`)
+- **17px**: used in header bar spacing and some margin calculations (`header.tsx`)
+- **19px**: used in section dividers and spacing between groups (`src/components/catalog/`)
+
+- **20px**: used in section spacing and bottom padding calculations (`site-footer.tsx`)
+- **22px**: used in card padding and group spacing (`src/components/catalog/catalog-grid.tsx`)
+- **28px**: used in section spacing and bottom padding (`site-footer.tsx`, `pb-28` clears action bar)
+- **46px**: used in button heights and interactive target sizes (`src/components/shared/button.tsx`)
+- **52px**: used in header height and sticky bar dimensions (`header-bar.tsx`, `Shell.tsx`)
+- **72px**: used in site-footer large text block and copyright area (`site-footer.tsx`)
+
+These sizes are intentionally set to match the original design intent and the owner's brand voice. Refactoring them to system scale without owner direction would degrade the visual hierarchy.
+
+---
+*Generated from khal UI/UX anti-slop research 2026-10. `impeccable` will continue to flag these as `design-system-font-size` warnings; treat as informed decisions, not errors.*
+
 ## Colors
 
 - **Primary (#000000):** The canvas. Rendered by the BackgroundMesh particles' base color; pages are transparent above it.
