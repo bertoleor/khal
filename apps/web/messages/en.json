@@ -122,7 +122,7 @@
     "title": "Studio policies",
     "intro": "Clear rules so your appointment, and everyone else's, stays protected.",
     "depositTitle": "Deposit",
-    "depositBody": "Every booking is confirmed with a 30% deposit of the service price. The deposit reserves your slot exclusively and is deducted from the final price. It is paid by bank transfer (alias or CVU) and confirmed via WhatsApp.",
+    "depositBody": "Every booking is confirmed with a fixed $10,000 deposit. The deposit reserves your slot exclusively and is deducted from the final price. It is paid by bank transfer (alias or CVU) and confirmed via WhatsApp.",
     "cancellationTitle": "Cancellation and rescheduling",
     "cancellationBody": "You can cancel or reschedule free of charge up to 24 hours before your appointment. With less than 24 hours notice, the deposit is neither refunded nor rescheduled.",
     "noShowTitle": "No-shows",
