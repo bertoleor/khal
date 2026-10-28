@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           display: 'flex',
           marginTop: 24,
           fontSize: 36,
-          color: '#6ee7b7',
+          color: 'rgba(255, 255, 255, 0.68)',
         }}
       >
         Turnos online para estudios de pestañas

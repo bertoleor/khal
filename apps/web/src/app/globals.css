@@ -29,12 +29,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* v7: selection is ink-invert (accent over accent-contrast per mode) —
+   the emerald tint is retired with the v1 accent. */
 :root ::selection {
-  background: rgb(52 211 153 / 0.35);
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 
 html.light ::selection {
-  background: rgb(4 120 87 / 0.22);
-  color: #101014;
+  background: #0d0d0d;
+  color: #ffffff;
 }

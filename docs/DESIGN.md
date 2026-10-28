@@ -203,7 +203,7 @@ Three radii, locked: 12px (inputs, slots, day chips), 16px (cards, status boxes)
 - **Dark (default, D12):** canvas `#000000`, foreground `#ffffff`, text `#a1a1aa` / `#71717a`; glass surfaces `rgba(255,255,255,0.06)` rest, `0.07` hover; hairlines `0.10` / `0.15`; glass inset top highlight `rgba(255,255,255,0.08)` (web `globals.css`).
 - **Light (paper):** canvas `#f6f4f1`, foreground `#101014`, text `#52525b` / `#6b6b74`; accent pill = ink `#0d0d0d` with white text; glass = ink at `0.04` rest / `0.08` hover; hairlines `0.14` / `0.22`; highlight `rgba(255,255,255,0.7)`.
 - **Glass recipe (owner-approved):** `backdrop-filter: blur(16–26px) saturate(150%)` + 1px hairline border + inset top highlight. Blur only over real content (iOS language), never decorative glow.
-- **Semantic-only colors survive:** `--status-pending` (#fbbf24 dark / #b45309 light), `--error` (#f87171 / #b91c1c). `::selection` keeps an emerald tint (app-level, web globals).
+- **Semantic-only colors survive:** `--status-pending` (#fbbf24 dark / #b45309 light), `--error` (#f87171 / #b91c1c). `::selection` is ink-invert: white bg + black text on dark, ink bg + white text on light (the emerald tint retired 2026-10-26).
 
 ### Typography (v7)
 
