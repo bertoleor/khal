@@ -24,7 +24,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   if (skeleton === '1') {
     return (
       <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-4">
-        <h1 aria-hidden="true" className="skeleton-shimmer h-8 w-1/3 rounded bg-white/[0.1]"></h1>
+<h1><span className="sr-only">Iniciar sesión</span>
         <p className="skeleton-shimmer h-4 w-1/2 rounded bg-white/[0.06]"></p>
         <div className="skeleton-shimmer h-44 w-full rounded-2xl bg-white/[0.06]"></div>
       </main>

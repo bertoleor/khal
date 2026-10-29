@@ -19,7 +19,7 @@ function addonMessageKeys(id: BookingAddonId): { label: string; short: string } 
 export type AddonTranslator = (key: string) => string;
 
 /** Full module label — "Perfilado de cejas". */
-export function addonLabel(id: BookingAddonId, t: AddonTranslator): string {
+function addonLabel(id: BookingAddonId, t: AddonTranslator): string {
   return t(addonMessageKeys(id).label);
 }
 

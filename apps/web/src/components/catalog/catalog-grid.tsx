@@ -58,7 +58,7 @@ export function CatalogGrid({
                 src={service.photo_path}
                 alt={service.name}
                 fill
-                sizes="(max-width: 640px) 50vw, 320px"
+                sizes="(max-width: 390px) 50vw, 320px"
                 className="object-cover"
               />
             </div>

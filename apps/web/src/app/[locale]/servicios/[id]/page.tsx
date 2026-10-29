@@ -115,7 +115,7 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
               src={service.photo_path}
               alt={service.name}
               fill
-              sizes="(max-width: 640px) 100vw, 512px"
+              sizes="(max-width: 390px) 100vw, 512px"
               className="object-cover"
             />
           </div>

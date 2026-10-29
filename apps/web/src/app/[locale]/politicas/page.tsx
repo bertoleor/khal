@@ -21,7 +21,7 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
           className="mx-auto max-w-lg px-4 pb-16 pt-10 sm:max-w-6xl sm:px-6"
         >
           <div className="space-y-6">
-            <h1 aria-hidden="true" className="skeleton-shimmer h-10 w-1/2 rounded bg-zinc-800"></h1>
+<h1><span className="sr-only">Políticas</span></h1>
             <p className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></p>
             <div className="space-y-4">
               {['w-1/2', 'w-1/3', 'w-2/5', 'w-3/5'].map((titleWidth, sectionIndex) => (

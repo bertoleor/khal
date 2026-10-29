@@ -1,23 +1,18 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
 
 // Named RouteError (not Error): the component must not shadow the global
 // Error constructor. Next.js only requires the default export here — the
 // function name itself is free (sonarjs/no-globals-shadowing).
 export default function RouteError({
-  error,
+  _error,
   reset,
 }: {
-  error: Error & { digest?: string };
+  _error: Error & { digest?: string };
   reset: () => void;
 }) {
   const t = useTranslations('error');
-
-  useEffect(() => {
-    // Error reported via structured logger (OBS-01) — no console.log (CQ-07)
-  }, [error]);
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4">
