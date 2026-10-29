@@ -15,7 +15,7 @@ export default function RouteError({
   const t = useTranslations('error');
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-[#000000] px-4">
       <div className="max-w-md text-center">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t('title')}</h1>
         <p className="mt-2 text-muted">{t('description')}</p>

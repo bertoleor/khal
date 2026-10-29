@@ -81,9 +81,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
             <div className="text-center sm:basis-[230px] sm:shrink-0">
-              <h1 className="select-none font-wordmark text-[46px] leading-[0.95] text-foreground sm:text-[52px]">
-                Khal
-              </h1>
               <p className="mt-2.5 font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
                 {t('tagline')}
               </p>
