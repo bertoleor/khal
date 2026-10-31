@@ -132,7 +132,9 @@
     "externalWorkTitle": "Pestañas de otro lugar",
     "externalWorkBody": "Si venís con trabajo de otro estudio, avisá antes de reservar — el retiro y el retrabajo tienen costo extra y la dueña lo evalúa antes de confirmar.",
     "back": "volver",
-    "more": "…y las que la dueña sume — editables desde su panel."
+    "more": "…y las que la dueña sume — editables desde su panel.",
+    "creditsTitle": "Créditos",
+    "creditsBody": "El fondo animado de la página principal usa el componente «flow-gradient-hero-section» de Hardik Kashiyani, publicado en 21st.dev, conservando su enlace original «Made By Haik». Todos los derechos del componente pertenecen a su autor."
   },
   "pagoResult": {
     "exitoTitle": "¡Pago recibido!",

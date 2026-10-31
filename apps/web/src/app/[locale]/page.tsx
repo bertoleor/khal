@@ -1,5 +1,6 @@
 import { Header } from '@/components/shared/header';
 import SiteFooter from '@/components/shared/site-footer';
+import { FlowGradientBackground } from '@/components/shared/flow-gradient-background';
 import { Link } from '@/i18n/navigation';
 import { getPaymentSettings } from '@/lib/actions/settings';
 import { whatsappUrl } from '@/lib/socials';
@@ -13,6 +14,12 @@ import { getTranslations } from 'next-intl/server';
  * buttons 11px/17px padding, 13px text, 9px stack gap, real pills; arrows
  * are their own span with air (pl-4, 11px, 45% ink) — never glued to the
  * text. Desktop puts wordmark and doors side by side (preview v7 §2).
+ *
+ * Fondo (owner order, 2026-10-30): the verbatim 21st.dev flow-gradient
+ * component is a fixed full-page layer behind EVERYTHING — header, hero,
+ * nav and footer alike — and the clienta UI floats above it. The UI layer
+ * is pointer-events-none so the gradient keeps tracking the mouse (custom
+ * cursor + CTA stay live); interactive children opt back in.
  */
 type HomePageProps = {
   searchParams: Promise<{ skeleton?: string }>;
@@ -71,60 +78,74 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const arrowClass = 'ml-auto pl-4 text-[11px] font-normal opacity-45';
 
   return (
-    <div className="relative flex min-h-dvh flex-col">
-      <Header />
-      <main
-        id="main"
-        tabIndex={-1}
-        className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
-      >
-        <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
-            <div className="text-center sm:basis-[230px] sm:shrink-0">
-              <p className="mt-2.5 font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
-                {t('tagline')}
-              </p>
-            </div>
-            <nav
-              aria-label="Enlaces del estudio"
-              className="mt-[30px] flex w-full flex-col gap-[9px] sm:mt-0 sm:max-w-[360px] sm:flex-1"
-            >
-              <Link href="/catalogo" className={primeClass}>
-                {t('book')}
-                <span aria-hidden="true" className={arrowClass}>
-                  →
-                </span>
-              </Link>
-              <Link href="/catalogo" className={doorClass}>
-                {t('catalog')}
-                <span aria-hidden="true" className={arrowClass}>
-                  →
-                </span>
-              </Link>
-              <Link href="/conocenos" className={doorClass}>
-                {t('about')}
-                <span aria-hidden="true" className={arrowClass}>
-                  →
-                </span>
-              </Link>
-              {whatsappPhone ? (
-                <a
-                  href={whatsappUrl(whatsappPhone)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={doorClass}
-                >
-                  {t('whatsapp')}
+    <div className="relative min-h-dvh">
+      {/* Verbatim 21st.dev flow-gradient — fixed background behind the whole
+          page (header, hero, nav, footer). aria-hidden: purely decorative. */}
+      <div aria-hidden="true" className="fixed inset-0 z-0">
+        <FlowGradientBackground />
+      </div>
+
+      {/* Clienta UI above the background. pointer-events-none at the root
+          lets the gradient's custom cursor and CTA stay live; interactive
+          children opt back in with pointer-events-auto. */}
+      <div className="pointer-events-none relative z-10 flex min-h-dvh flex-col">
+        <Header />
+        <main
+          id="main"
+          tabIndex={-1}
+          className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
+        >
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
+              <div className="text-center sm:basis-[230px] sm:shrink-0">
+                <h1 className="select-none font-wordmark text-[46px] leading-[0.95] text-foreground sm:text-[52px]">
+                  Khal
+                </h1>
+                <p className="mt-2.5 font-mono-khal text-[8px] uppercase tracking-[2.5px] text-faint">
+                  {t('tagline')}
+                </p>
+              </div>
+              <nav
+                aria-label="Enlaces del estudio"
+                className="pointer-events-auto mt-[30px] flex w-full flex-col gap-[9px] sm:mt-0 sm:max-w-[360px] sm:flex-1"
+              >
+                <Link href="/catalogo" className={primeClass}>
+                  {t('book')}
                   <span aria-hidden="true" className={arrowClass}>
-                    ↗
+                    →
                   </span>
-                </a>
-              ) : null}
-            </nav>
+                </Link>
+                <Link href="/catalogo" className={doorClass}>
+                  {t('catalog')}
+                  <span aria-hidden="true" className={arrowClass}>
+                    →
+                  </span>
+                </Link>
+                <Link href="/conocenos" className={doorClass}>
+                  {t('about')}
+                  <span aria-hidden="true" className={arrowClass}>
+                    →
+                  </span>
+                </Link>
+                {whatsappPhone ? (
+                  <a
+                    href={whatsappUrl(whatsappPhone)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={doorClass}
+                  >
+                    {t('whatsapp')}
+                    <span aria-hidden="true" className={arrowClass}>
+                      ↗
+                    </span>
+                  </a>
+                ) : null}
+              </nav>
+            </div>
           </div>
-        </div>
-      </main>
-      <SiteFooter />
+        </main>
+        <SiteFooter />
+      </div>
     </div>
   );
 }

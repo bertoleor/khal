@@ -67,6 +67,7 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
               { title: t('noShowTitle'), body: t('noShowBody') },
               { title: t('punctualityTitle'), body: t('punctualityBody') },
               { title: t('externalWorkTitle'), body: t('externalWorkBody') },
+              { title: t('creditsTitle'), body: t('creditsBody') },
             ] as const
           ).map((term, index) => (
             <li key={term.title} className="flex gap-4 border-b border-hairline py-5">

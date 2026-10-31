@@ -132,7 +132,9 @@
     "externalWorkTitle": "Lash work from elsewhere",
     "externalWorkBody": "If you are coming with work from another studio, let us know before booking — removal and rework carry an extra cost the owner assesses before confirming.",
     "back": "back",
-    "more": "…and any the owner adds — editable from her panel."
+    "more": "…and any the owner adds — editable from her panel.",
+    "creditsTitle": "Credits",
+    "creditsBody": "The animated background on the home page uses the «flow-gradient-hero-section» component by Hardik Kashiyani, published on 21st.dev, keeping its original «Made By Haik» link. All component rights belong to its author."
   },
   "pagoResult": {
     "exitoTitle": "Payment received!",

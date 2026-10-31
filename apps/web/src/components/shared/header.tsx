@@ -18,8 +18,7 @@ export function Header() {
       </a>
       <div className="mx-auto flex w-full max-w-lg items-start justify-between px-4 pt-5 sm:max-w-6xl sm:px-6">
         <div>
-          <p className="font-wordmark text-[17px] leading-none text-foreground">Khal</p>
-          <p className="mt-1.5 font-mono-khal text-[10px] uppercase tracking-[3px] text-faint">
+          <p className="font-mono-khal text-[10px] uppercase tracking-[3px] text-faint">
             estudio de pestañas · VL
           </p>
         </div>

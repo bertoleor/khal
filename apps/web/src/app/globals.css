@@ -40,3 +40,201 @@ html.light ::selection {
   background: #0d0d0d;
   color: #ffffff;
 }
+
+/* ==========================================================================
+   21st.dev flow-gradient-hero-section - verbatim component styles.
+   The registry ships only the TSX; the 21st.dev preview injects these
+   classes. Recreated 1:1 to the published preview: full-bleed canvas,
+   kinetic title, ring+dot cursor, pill CTA, top-right pause, attribution
+   footer. The component appends `.dark` to its elements in dark mode, so
+   base rules are the light face and `.dark` overrides the dark face.
+   ========================================================================== */
+
+.liquid-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: none;
+  font-family: inherit;
+}
+
+.liquid-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.liquid-canvas-wrapper canvas {
+  display: block;
+}
+
+/* Kinetic title - center stage, huge, tight. Hidden when empty (khal passes
+   no title; the clienta wordmark renders in the UI layer above). */
+.title-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #0a0a0a;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.title-main:empty {
+  display: none;
+}
+
+.title-main.dark {
+  color: #ffffff;
+}
+
+/* CTA pill - bottom center. */
+.cta-btn {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.875rem 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(10, 10, 10, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #0a0a0a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cta-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.cta-btn.dark {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.cta-btn.dark:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Pause / play - top right. */
+.pause-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(10, 10, 10, 0.2);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #0a0a0a;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pause-btn:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.pause-btn.dark {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.pause-btn.dark:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Attribution - bottom center, whisper-quiet. */
+.footer-main {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.6875rem;
+  color: rgba(10, 10, 10, 0.45);
+}
+
+.footer-main a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-main a:hover {
+  color: rgba(10, 10, 10, 0.8);
+}
+
+.footer-main.dark {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.footer-main.dark a:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Custom cursor - ring trails lazily, dot snaps. Coordinates are relative
+   to the container (absolute positioning inside it). */
+.cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(10, 10, 10, 0.5);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 30;
+  will-change: transform;
+}
+
+.cursor-ring.dark {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.cursor-dot-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #0a0a0a;
+  pointer-events: none;
+  z-index: 30;
+  will-change: transform;
+}
+
+.cursor-dot-element.dark {
+  background: #ffffff;
+}
+
+/* Touch devices: no custom cursor, system cursor restored. */
+@media (hover: none) {
+  .cursor-ring,
+  .cursor-dot-element {
+    display: none;
+  }
+
+  .liquid-container {
+    cursor: auto;
+  }
+}

@@ -31,7 +31,7 @@ export default async function SiteFooter() {
       <div className="flex items-center justify-between gap-x-4 px-[5px] pb-[9px] pt-[3px] font-mono-khal text-[8px] uppercase tracking-[2px]">
         <nav
           aria-label="Redes del estudio"
-          className="flex flex-wrap items-center gap-x-[5px] gap-y-1 text-faint"
+          className="pointer-events-auto flex flex-wrap items-center gap-x-[5px] gap-y-1 text-faint"
         >
           {socials.map((social, index) => (
             <span key={social.label} className="flex items-center gap-x-[5px]">
