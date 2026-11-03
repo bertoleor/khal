@@ -1,29 +1,24 @@
-'use client';
+"use client";
 
 import dynamic from 'next/dynamic';
-import { useRouter } from '@/i18n/navigation';
 
-// The 21st.dev component reads window/matchMedia in its state initializers,
-// so it renders client-only (no SSR shell) — same as the 21st.dev preview.
+// The 21st.dev component (LiquidGradient) renders only the Three.js canvas
+// as a decorative background. No CTA, no pause, no cursor, no title, no footer.
+// All interactive elements live in the khal UI layer above.
 const LiquidGradient = dynamic(
   () => import('@/components/ui/flow-gradient-hero-section'),
   { ssr: false },
 );
 
 /**
- * Full-page background host for the verbatim 21st.dev flow-gradient
- * component. The only integration glue is the CTA wiring (catalogo door) —
- * the component file itself stays untouched apart from the theme-detection
- * isLight condition that lets khal's toggle force light mode.
+ * Full-page decorative gradient background.
+ * Renders the 21st.dev LiquidGradient component as a fixed layer behind everything.
+ * The component itself is aria-hidden and contains no interactive elements.
  */
 export function FlowGradientBackground() {
-  const router = useRouter();
-
   return (
-    <LiquidGradient
-      title=""
-      showPauseButton={false}
-      onCtaClick={() => router.push('/catalogo')}
-    />
+    <div aria-hidden="true" className="fixed inset-0 z-0">
+      <LiquidGradient />
+    </div>
   );
 }

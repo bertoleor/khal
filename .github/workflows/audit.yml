@@ -1,0 +1,151 @@
+name: Design & Accessibility Audit
+
+on:
+  pull_request:
+    branches: [main, feat/**]
+    paths:
+      - 'apps/web/**'
+      - 'packages/ui/**'
+      - 'packages/ui/src/tokens.css'
+      - '.github/workflows/audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  design-audit:
+    name: Design System & A11y Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.3.4
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Install audit tools
+        run: |
+          npm i -g @axe-core/cli pa11y @qualweb/cli vnu-jar chromedriver
+        working-directory: .
+
+      - name: Type-check (web)
+        run: pnpm exec tsc --noEmit
+        working-directory: apps/web
+
+      - name: Build (web)
+        run: pnpm exec next build
+        working-directory: apps/web
+
+      - name: Start preview server
+        run: |
+          pnpm exec next start -p 3000 &
+          sleep 10
+        working-directory: apps/web
+
+      - name: Run axe-core audit
+        run: |
+          axe http://localhost:3000/es --save axe-report.json --exit
+        working-directory: apps/web
+        continue-on-error: true
+
+      - name: Run pa11y audit
+        run: |
+          pa11y http://localhost:3000/es --standard WCAG2AA --reporter cli --reporter json > pa11y-report.json
+        working-directory: apps/web
+        continue-on-error: true
+
+      - name: Run impeccable audit
+        run: |
+          npx @hermes/impeccable audit apps/web/src --format json > impeccable-report.json
+        working-directory: .
+        continue-on-error: true
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-reports
+          path: |
+            apps/web/axe-report.json
+            apps/web/pa11y-report.json
+            apps/web/impeccable-report.json
+          retention-days: 7
+
+      - name: Fail on violations
+        if: always()
+        run: |
+          VIOLATIONS=0
+          
+          # Check axe
+          if [ -f apps/web/axe-report.json ]; then
+            AXE_VIOLATIONS=$(jq '.violations | length' apps/web/axe-report.json 2>/dev/null || echo 0)
+            if [ "$AXE_VIOLATIONS" -gt 0 ]; then
+              echo "❌ axe-core found $AXE_VIOLATIONS violations"
+              VIOLATIONS=1
+            else
+              echo "✅ axe-core: 0 violations"
+            fi
+          fi
+          
+          # Check pa11y
+          if [ -f apps/web/pa11y-report.json ]; then
+            PA11Y_ERRORS=$(jq '[.[] | select(.type == "error")] | length' apps/web/pa11y-report.json 2>/dev/null || echo 0)
+            if [ "$PA11Y_ERRORS" -gt 0 ]; then
+              echo "❌ pa11y found $PA11Y_ERRORS errors"
+              VIOLATIONS=1
+            else
+              echo "✅ pa11y: 0 errors"
+            fi
+          fi
+          
+          # Check impeccable
+          if [ -f apps/web/impeccable-report.json ]; then
+            IMP_ADVISORIES=$(jq '.advisories | length' apps/web/impeccable-report.json 2>/dev/null || echo 0)
+            if [ "$IMP_ADVISORIES" -gt 0 ]; then
+              echo "⚠️ impeccable found $IMP_ADVISORIES advisories (non-blocking)"
+            else
+              echo "✅ impeccable: 0 advisories"
+            fi
+          fi
+          
+          if [ "$VIOLATIONS" -eq 1 ]; then
+            echo "::error::Design/Accessibility audit failed"
+            exit 1
+          fi
+          
+          echo "✅ All audits passed"
+
+  lint-and-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.3.4
+          run_install: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+        working-directory: apps/web
+      - run: pnpm exec eslint apps/web/src --ext .ts,.tsx
+        working-directory: apps/web

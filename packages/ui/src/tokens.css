@@ -97,6 +97,17 @@
 }
 
 /* --- Light: warm editorial paper, ONE accent per mode (emerald-700 AA). --- */
+
+  /* Gradient accessibility tokens (2026-11-03) */
+  --ghost-opacity: 0.08;
+  --text-on-gradient: #ffffff;
+  --ghost-on-gradient: rgba(255, 255, 255, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --cursor-ring-size: 40px;
+  --cursor-dot-size: 8px;
+  --cursor-z: 30;
+  --focus-ring: 2px solid var(--accent);
+
 html.light {
   color-scheme: light;
   --background: #f6f4f1;

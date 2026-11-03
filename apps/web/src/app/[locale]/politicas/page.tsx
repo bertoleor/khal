@@ -67,10 +67,21 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
               { title: t('noShowTitle'), body: t('noShowBody') },
               { title: t('punctualityTitle'), body: t('punctualityBody') },
               { title: t('externalWorkTitle'), body: t('externalWorkBody') },
-              { title: t('creditsTitle'), body: t('creditsBody') },
+              { 
+              title: t('creditsTitle'), 
+              body: t('creditsBody'),
+              // This section gets contrast overlay via wrapper
+              _contrastOverlay: true 
+            },
             ] as const
           ).map((term, index) => (
-            <li key={term.title} className="flex gap-4 border-b border-hairline py-5">
+            <li key={term.title} className="flex gap-4 border-b border-hairline py-5 relative">
+              {(term as any)._contrastOverlay && (
+                <div
+                  className="absolute inset-0 bg-black/40 rounded-t-none rounded-b-2xl"
+                  aria-hidden="true"
+                />
+              )}
               <span
                 aria-hidden="true"
                 className="w-8 shrink-0 select-none text-right text-4xl font-bold leading-none text-foreground/[0.14]"

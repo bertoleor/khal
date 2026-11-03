@@ -11,7 +11,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/components/button": ["../../packages/ui/src/components/button"],
+      "@/components/cursor-trail": ["../../packages/ui/src/components/cursor-trail"]
     },
     "allowJs": false,
     "strict": true

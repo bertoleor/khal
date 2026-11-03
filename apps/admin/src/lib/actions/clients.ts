@@ -1,17 +1,15 @@
-'use server';
+"use server";
 
 import { requireAuth } from '@/lib/auth';
 import { clientsStore } from '@/lib/mocks/clients';
 import { revalidatePath } from 'next/cache';
+import { withAuthTransition } from '@/shared/action-base';
 
-export async function toggleBlacklisted(formData: FormData): Promise<{
-  error?: string;
-}> {
-  const auth = await requireAuth();
-  if (!auth.ok) return { error: auth.error };
-
-  const id = String(formData.get('id') ?? '');
-  clientsStore.toggleBlacklisted(id);
-  revalidatePath('/admin/clientes');
-  return {};
+export async function toggleBlacklisted(formData: FormData): Promise<{ error?: string }> {
+  return await withAuthTransition(
+    formData,
+    clientsStore,
+    'toggleBlacklisted',
+    '/admin/clientes'
+  );
 }
