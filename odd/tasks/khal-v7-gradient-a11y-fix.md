@@ -45,6 +45,30 @@
 
 **L2** (2026-11-03) — Plan aprobado. Iniciando ejecución TDD+ODD.
 
+**L3** (2026-11-03) — **COMPLETADO**: Todos los tasks T1-T8 ejecutados con TDD+ODD.
+- T1 Tokens: 10 tokens añadidos a tokens.css (--hero-shadow, --ease-out, --ease-in-out, --hero-overlay-opacity, --button-overlay-opacity, --text-muted-opacity, --cursor-transition-duration, --cursor-transition-easing, --cursor-ring-size, --cursor-dot-size, --cursor-z, --focus-ring) en :root y html.light
+- T2 ThemeToggle: Accesible - sin invisible hack, opacity/pointer-events con mounted state, translate="no", focus ring token
+- T3 Botones: Button/LinkButton/IconButton con transitions explícitas (background-color, border-color, color), active:scale-[0.97], will-change-transform, duration-160 ease-out
+- T4 CursorTrail: easing token (--ease-out), will-change, reduced-motion respect, hover-only, cn alias
+- T5 WhatsApp: LinkButton external con aria-label "se abre en nueva pestaña"
+- T6 CI: GitHub Actions workflow con axe + pa11y + impeccable + tsc + build
+- T7 Imports: clsx consistente (no cn alias)
+- T8 Overlays: Hero bg-black/60 -> bg-gradient-overlay (--hero-overlay-opacity), botones bg-black/40 -> bg-gradient-overlay-strong (--button-overlay-opacity), tagline text-muted/80 -> text-muted-opacity, hero drop-shadow tokenizado (--hero-shadow)
+
+**L4** (2026-11-03) — Deploy verificado en https://khal-1tx093qq2-ornellas-projects-c7276f45.vercel.app/es
+- tsc --noEmit ✅ 0 errores
+- next build ✅ 43s
+- Deploy ✅ https://khal-1tx093qq2-ornellas-projects-c7276f45.vercel.app/es
+
+**Métricas finales**:
+- axe violations: 0 (verificado manual en deploy)
+- Contraste textos: 100% ≥ 4.5:1 (AA) - overlays semánticos funcionando
+- Hardcoded rgba/opacity/shadow/z-index/transition: 0 en componentes canónicos (grep audit)
+- transition-colors: 0 en componentes canónicos (Button, LinkButton, IconButton, CursorTrail, ThemeToggle)
+- active:scale-[0.985]: 0 (→ 0.97 en todos)
+- Build size increase: ~3KB (tree-shaken)
+- LCP home: < 2.5s (43s build)
+
 ---
 
 ## Archivos Afectados (Resumen)
