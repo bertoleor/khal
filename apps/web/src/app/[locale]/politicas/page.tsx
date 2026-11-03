@@ -50,7 +50,7 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
       <main id="main" tabIndex={-1} className="mx-auto max-w-lg px-4 pb-16 pt-6">
         <Link
           href="/"
-          className="inline-block font-mono-khal text-[11px] uppercase tracking-[2px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="inline-block font-mono-khal text-[11px] uppercase tracking-[2px] text-muted transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           ← {t('back')}
         </Link>
@@ -78,7 +78,7 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
             <li key={term.title} className="flex gap-4 border-b border-hairline py-5 relative">
               {(term as any)._contrastOverlay && (
                 <div
-                  className="absolute inset-0 bg-black/40 rounded-t-none rounded-b-2xl"
+                  className="absolute inset-0 bg-gradient-overlay-strong rounded-t-none rounded-b-2xl"
                   aria-hidden="true"
                 />
               )}
