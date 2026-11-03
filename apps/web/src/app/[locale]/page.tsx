@@ -92,7 +92,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <div className="relative text-center sm:basis-[230px] sm:shrink-0">
                 {/* Overlay for contrast on gradient */}
                 <div className="absolute inset-0 bg-gradient-overlay" aria-hidden="true" />
-                <h1 className="relative select-none font-wordmark text-[46px] leading-[0.95] text-white sm:text-[52px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                <h1 className="relative select-none font-wordmark text-[46px] leading-[0.95] text-white sm:text-[52px] drop-shadow-[var(--hero-shadow)]">
                   Khal
                 </h1>
                 <p className="relative mt-2.5 font-mono-khal text-[9px] uppercase tracking-[2.5px] text-muted-opacity">
