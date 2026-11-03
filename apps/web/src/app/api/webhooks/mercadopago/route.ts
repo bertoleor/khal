@@ -1,3 +1,4 @@
+import type { MercadoPagoPayment } from '@/lib/mercadopago';
 import {
   getMercadoPagoPayment,
   readMercadoPagoEnv,
@@ -131,7 +132,7 @@ type PaymentLookup =
  * pending/rejected/unknown are acked (nothing to confirm).
  */
 async function fetchApprovedPayment(accessToken: string, dataId: string): Promise<PaymentLookup> {
-  let payment;
+let payment: MercadoPagoPayment | null;
   try {
     payment = await getMercadoPagoPayment(accessToken, dataId);
   } catch {

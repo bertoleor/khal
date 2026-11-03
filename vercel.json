@@ -1,0 +1,6 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "pnpm --filter=@khal/web run build",
+  "outputDirectory": ".next",
+  "installCommand": "pnpm install"
+}

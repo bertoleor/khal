@@ -5,9 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
-/**
- * Staff sign-in (khal-admin-100-operable T3).
- *
+/** Staff sign-in (khal-admin-100-operable T3).
  * Two flows, one component:
  *  - "code" (default): signInWithOtp -> 6-digit code by email -> verifyOtp.
  *    `shouldCreateUser: false` keeps strangers from minting accounts; only
@@ -30,6 +28,13 @@ export function LoginForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const inputClass =
+    'w-full rounded-lg border border-white/20 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
+  const buttonClass =
+    'w-full rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60';
+  const secondaryClass =
+    'text-sm font-medium text-zinc-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400';
+
   function mapError(err: { message: string }): string {
     const m = err.message.toLowerCase();
     if (m.includes('invalid login')) return t('errors.invalid');
@@ -42,6 +47,26 @@ export function LoginForm() {
       return t('errors.notStaff');
     return t('errors.generic');
   }
+
+  // Shared email input to prevent duplication
+  const EmailInput = () => (
+    <div>
+      <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="login-email">
+        {t('email')}
+      </label>
+      <input
+        id="login-email"
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        required
+        className={inputClass}
+        placeholder={t('emailPlaceholder')}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
+  );
 
   async function requestCode(e: FormEvent) {
     e.preventDefault();
@@ -112,13 +137,6 @@ export function LoginForm() {
     }
   }
 
-  const inputClass =
-    'w-full rounded-lg border border-white/20 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
-  const buttonClass =
-    'w-full rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60';
-  const secondaryClass =
-    'text-sm font-medium text-zinc-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400';
-
   return (
     <div className="w-full space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-sm">
       {error !== null && (
@@ -129,22 +147,7 @@ export function LoginForm() {
 
       {mode === 'code' && step === 'email' && (
         <form className="space-y-4" onSubmit={requestCode} noValidate>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-300" htmlFor="login-email">
-              {t('email')}
-            </label>
-            <input
-              id="login-email"
-              type="email"
-              autoComplete="email"
-              inputMode="email"
-              required
-              className={inputClass}
-              placeholder={t('emailPlaceholder')}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <EmailInput />
           <button type="submit" className={buttonClass} disabled={busy}>
             {busy ? t('sending') : t('sendCode')}
           </button>
@@ -200,6 +203,7 @@ export function LoginForm() {
 
       {mode === 'password' && (
         <form className="space-y-4" onSubmit={signInWithPassword} noValidate>
+          <EmailInput />
           <div>
             <label
               className="mb-1 block text-sm font-medium text-zinc-300"

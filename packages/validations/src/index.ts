@@ -14,6 +14,33 @@ export const emailSchema = z.string().trim().max(320).pipe(z.email());
 
 export const depositModeSchema = z.enum(['full', 'fixed', 'percentage']);
 
+// S6 — curated booking add-ons (odd/tasks/v7-clienta-bw-glass.md): the
+// reservar flow's "¿Sumás algo más?" module is a FIXED curated list, not a
+// cart — Perfilado de cejas (+$18.000) and Kit de higiene (+$5.000, precio
+// con servicio). Prices live HERE, server-side: the clienta only ever posts
+// IDs, so a tampered form can never invent a price (MONEY-01 cents).
+export const bookingAddonIdSchema = z.enum(['perfilado_cejas', 'kit_higiene']);
+
+export type BookingAddonId = z.infer<typeof bookingAddonIdSchema>;
+
+export interface BookingAddon {
+  id: BookingAddonId;
+  priceCents: number;
+}
+
+export const BOOKING_ADDON_CATALOG: readonly BookingAddon[] = [
+  { id: 'perfilado_cejas', priceCents: 1_800_000 },
+  { id: 'kit_higiene', priceCents: 500_000 },
+];
+
+export function bookingAddonPriceCents(id: BookingAddonId): number {
+  const addon = BOOKING_ADDON_CATALOG.find((entry) => entry.id === id);
+  if (!addon) {
+    throw new Error(`Unknown booking add-on: ${id}`);
+  }
+  return addon.priceCents;
+}
+
 export const serviceSchema = z.object({
   id: z.uuid(),
   name: z.string().min(1),
@@ -42,12 +69,37 @@ export const bookingInputSchema = z.object({
   // D3 — "¿venís con trabajo de otro lugar?": absent = false, so the v1 form
   // and the e2e happy path keep validating unchanged.
   externalWork: z.boolean().default(false),
+  // S6 — "¿Sumás algo más?": the curated add-on selection. IDs only — prices
+  // are resolved server-side from BOOKING_ADDON_CATALOG, never from the form.
+  // Absent = no add-ons, so every pre-0016 caller keeps validating unchanged.
+  addons: z.array(bookingAddonIdSchema).max(2).default([]),
   // D1 — the clienta must accept the studio terms at the review step
   // (literal true: unchecked or missing rejects the submit server-side).
   termsAccepted: z.literal(true),
 });
 
 export type BookingInput = z.infer<typeof bookingInputSchema>;
+
+// The shape persisted in appointments.addons (migration 0016): the price is
+// frozen at booking time so a later catalog change never rewrites history.
+const storedAddonSchema = z.object({
+  id: bookingAddonIdSchema,
+  price_cents: z.number().int().nonnegative(),
+});
+
+/** RPC payload for create_booking's p_addons — null when nothing was added. */
+export function serializeBookingAddons(ids: readonly BookingAddonId[]): string | null {
+  if (ids.length === 0) {
+    return null;
+  }
+  return JSON.stringify(ids.map((id) => ({ id, price_cents: bookingAddonPriceCents(id) })));
+}
+
+/** Narrowed read of the stored add-ons (CQ-06: unknown in, IDs out). */
+export function parseStoredBookingAddons(raw: unknown): BookingAddonId[] {
+  const parsed = z.array(storedAddonSchema).safeParse(raw);
+  return parsed.success ? parsed.data.map((addon) => addon.id) : [];
+}
 
 export const appointmentStatusSchema = z.enum([
   'pendiente',

@@ -1,14 +1,21 @@
 'use server';
 
 import { createBookingSupabaseClient, readBookingSupabaseEnv } from '@/lib/supabase/booking-client';
+import { parseStoredBookingAddons, type BookingAddonId } from '@khal/validations';
 import { z } from 'zod';
 
 /**
  * T-F2.5 — the estado door (migration 0015): reads the public-safe status of
  * a booking by UUID (the capability token the clienta holds from confirm
  * time). Zero PII crosses this door by contract — the RPC returns status,
- * service name and the two timestamps only, and the result is narrowed with
- * Zod (CQ-06) before it reaches the page.
+ * service name and timestamps only, and the result is narrowed with Zod
+ * (CQ-06) before it reaches the page.
+ *
+ * 0016 (S10): the door also answers hold_released_at (an auto-released hold
+ * reads status='cancelado' + hold_released_at — the "reserva no confirmada"
+ * state, distinct from a real cancellation), duration_minutes and the stored
+ * add-on jsonb so the estado renders the service exactly like the recibo
+ * ("Lifting + perfilado"). Still zero PII.
  */
 const bookingStatusResultSchema = z.object({
   ok: z.boolean(),
@@ -17,6 +24,9 @@ const bookingStatusResultSchema = z.object({
   service_name: z.string().nullable(),
   scheduled_at: z.string().nullable(),
   hold_expires_at: z.string().nullable(),
+  hold_released_at: z.string().nullable(),
+  duration_minutes: z.number().int().positive().nullable(),
+  addons: z.unknown().nullable(),
 });
 
 type BookingStatusValue = 'pendiente' | 'confirmado' | 'cancelado' | 'no_asistio';
@@ -27,6 +37,9 @@ export interface BookingStatus {
   serviceName?: string;
   scheduledAt?: string;
   holdExpiresAt?: string;
+  holdReleasedAt?: string;
+  durationMinutes?: number;
+  addons?: BookingAddonId[];
 }
 
 export async function getBookingStatus(bookingId: string): Promise<BookingStatus> {
@@ -66,5 +79,8 @@ export async function getBookingStatus(bookingId: string): Promise<BookingStatus
     serviceName: result.service_name ?? undefined,
     scheduledAt: result.scheduled_at ?? undefined,
     holdExpiresAt: result.hold_expires_at ?? undefined,
+    holdReleasedAt: result.hold_released_at ?? undefined,
+    durationMinutes: result.duration_minutes ?? undefined,
+    addons: parseStoredBookingAddons(result.addons),
   };
 }

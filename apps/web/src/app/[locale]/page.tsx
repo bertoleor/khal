@@ -1,95 +1,170 @@
-import { CatalogList } from '@/components/catalog/catalog-list';
-import { FlowGradientHero } from '@/components/home/flow-gradient-hero';
 import { Header } from '@/components/shared/header';
 import SiteFooter from '@/components/shared/site-footer';
-import { getCatalog } from '@/lib/actions/catalog';
+import { FlowGradientBackground } from '@/components/shared/flow-gradient-background';
+import { LinkButton } from '@/components/button';
+import { CursorTrail } from '@/components/cursor-trail';
+import { ArrowRight } from '@/components/ui/arrow-right';
 import { getPaymentSettings } from '@/lib/actions/settings';
+import { whatsappUrl } from '@/lib/socials';
 import { getTranslations } from 'next-intl/server';
 
+/**
+ * Home v7 (S2 — approved preview): a personal linktree, not a storefront.
+ * Wordmark "Khal" (TAN Nightingale) + tagline + ONLY four doors: Agendá tu
+ * turno (solid pill), Catálogo, Conocenos, WhatsApp ↗. Prices do NOT live
+ * here (S2) — the funnel starts at the catálogo. Delicacy scale (S12):
+ * buttons 11px/17px padding, 13px text, 9px stack gap, real pills; arrows
+ * are their own span with air (pl-4, 11px, 45% ink) — never glued to the
+ * text. Desktop puts wordmark and doors side by side (preview v7 §2).
+ *
+ * Fondo (owner order, 2026-10-30): the verbatim 21st.dev flow-gradient
+ * component is a fixed full-page layer behind EVERYTHING — header, hero,
+ * nav and footer alike — and the clienta UI floats above it. The UI layer
+ * uses canonical Button/LinkButton components with proper contrast overlays.
+ */
 type HomePageProps = {
   searchParams: Promise<{ skeleton?: string }>;
 };
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const { skeleton } = await searchParams;
-  const t = await getTranslations('catalog');
+  const t = await getTranslations('home');
+  const settings = await getPaymentSettings();
+  const whatsappPhone = settings?.whatsappPhone ?? '';
 
   // Presentation mode (?skeleton=1): placeholder-only layout for design review.
   if (skeleton === '1') {
     return (
-      <div className="relative min-h-dvh">
+      <div className="relative flex min-h-dvh flex-col">
         <Header />
+        <CursorTrail />
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-lg px-4 pb-16 pt-10 sm:max-w-6xl sm:px-6 sm:pt-16"
+          className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
         >
-          <section className="grid grid-cols-1 items-center gap-6 sm:grid-cols-12">
-            <div className="space-y-3 sm:col-span-8">
-              <h1
+          <div className="flex flex-1 flex-col items-center justify-center gap-8 sm:flex-row sm:gap-9">
+            <div className="text-center">
+              <div
                 aria-hidden="true"
-                className="skeleton-shimmer h-10 w-2/3 rounded bg-zinc-800 sm:h-12 lg:h-14"
-              ></h1>
-              <p className="skeleton-shimmer h-5 w-1/2 rounded bg-zinc-800/60 sm:h-6"></p>
+                className="skeleton-shimmer mx-auto h-[46px] w-32 rounded bg-zinc-800"
+              ></div>
+              <div
+                aria-hidden="true"
+                className="skeleton-shimmer mx-auto mt-3 h-2 w-40 rounded bg-zinc-800/60"
+              ></div>
             </div>
-            <div className="hidden justify-end sm:col-span-4 sm:flex">
-              <div className="skeleton-shimmer h-28 w-28 rounded-2xl bg-zinc-800 lg:h-36 lg:w-36"></div>
-            </div>
-          </section>
-          <section className="mt-10 sm:mt-12">
-            <h2
-              aria-hidden="true"
-              className="skeleton-shimmer mb-4 h-3 w-32 rounded bg-zinc-800/60"
-            ></h2>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-              {[0, 1, 2, 3].map((cardIndex) => (
+            <div className="flex w-full flex-col gap-[9px] sm:max-w-[360px]">
+              {[0, 1, 2, 3].map((buttonIndex) => (
                 <div
-                  key={cardIndex}
-                  className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-sm"
-                >
-                  <div className="skeleton-shimmer h-14 w-14 shrink-0 rounded-full bg-zinc-800"></div>
-                  <div className="min-w-0 flex-1">
-                    <div className="skeleton-shimmer h-5 w-2/3 rounded bg-zinc-800"></div>
-                    <div className="skeleton-shimmer mt-2 h-4 w-1/3 rounded bg-zinc-800/60"></div>
-                  </div>
-                </div>
+                  key={buttonIndex}
+                  aria-hidden="true"
+                  className="skeleton-shimmer h-10 w-full rounded-full bg-zinc-800"
+                ></div>
               ))}
             </div>
-          </section>
+          </div>
         </main>
         <SiteFooter />
       </div>
     );
   }
 
-  const services = await getCatalog();
-  const settings = await getPaymentSettings();
-
   return (
     <div className="relative min-h-dvh">
-      {/* v2 (D10/D12): la portada ES el hero interactivo aprobado — el
-          catálogo vive debajo en el mismo flujo vertical (sin navbar). */}
-      <FlowGradientHero />
-      <main
-        id="main"
-        tabIndex={-1}
-        className="mx-auto w-full max-w-lg px-4 pb-16 pt-14 sm:max-w-6xl sm:px-6"
-      >
-        {/* Catalog — el ancla del CTA del hero (#servicios). Filas, no cards
-            (board s1); la primera fila es el servicio firma. */}
-        <section id="servicios" className="scroll-mt-4">
-          <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-faint">
-            {t('title')}
-          </h2>
-          <CatalogList
-            services={services}
-            emptyMessage={t('empty')}
-            emptyCtaLabel={t('emptyCta')}
-            whatsappPhone={settings?.whatsappPhone ?? ''}
-          />
-        </section>
-      </main>
-      <SiteFooter />
+      {/* Verbatim 21st.dev flow-gradient — fixed background behind the whole
+          page (header, hero, nav, footer). aria-hidden: purely decorative. */}
+      <div aria-hidden="true" className="fixed inset-0 z-0">
+        <FlowGradientBackground />
+      </div>
+
+      {/* Clienta UI above the background. */}
+      <div className="relative z-10 flex min-h-dvh flex-col">
+        <Header />
+        <CursorTrail />
+        <main
+          id="main"
+          tabIndex={-1}
+          className="mx-auto flex w-full max-w-lg flex-1 flex-col px-5 pb-16 sm:max-w-6xl sm:px-6"
+        >
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
+              <div className="relative text-center sm:basis-[230px] sm:shrink-0">
+                {/* Overlay for contrast on gradient */}
+                <div className="absolute inset-0 bg-gradient-overlay" aria-hidden="true" />
+                <h1 className="relative select-none font-wordmark text-[46px] leading-[0.95] text-white sm:text-[52px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+                  Khal
+                </h1>
+                <p className="relative mt-2.5 font-mono-khal text-[9px] uppercase tracking-[2.5px] text-muted-opacity">
+                  {t('tagline')}
+                </p>
+              </div>
+              <nav
+                aria-label="Enlaces del estudio"
+                className="relative mt-[30px] flex w-full flex-col gap-[9px] sm:mt-0 sm:max-w-[360px] sm:flex-1"
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
+                  <LinkButton
+                    href="/catalogo"
+                    variant="primary"
+                    size="md"
+                    icon={<ArrowRight />}
+                    iconPosition="right"
+                    className="relative"
+                  >
+                    {t('book')}
+                  </LinkButton>
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
+                  <LinkButton
+                    href="/catalogo"
+                    variant="glass"
+                    size="md"
+                    icon={<ArrowRight />}
+                    iconPosition="right"
+                    className="relative"
+                  >
+                    {t('catalog')}
+                  </LinkButton>
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
+                  <LinkButton
+                    href="/conocenos"
+                    variant="glass"
+                    size="md"
+                    icon={<ArrowRight />}
+                    iconPosition="right"
+                    className="relative"
+                  >
+                    {t('about')}
+                  </LinkButton>
+                </div>
+                {whatsappPhone ? (
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
+                    <LinkButton
+                      href={whatsappUrl(whatsappPhone)}
+                      variant="glass"
+                      size="md"
+                      icon={<ArrowRight />}
+                      iconPosition="right"
+                      external
+                      className="relative"
+                      aria-label={t('whatsapp') + ' (se abre en nueva pestaña)'}
+                    >
+                      {t('whatsapp')}
+                    </LinkButton>
+                  </div>
+                ) : null}
+              </nav>
+            </div>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
     </div>
   );
 }

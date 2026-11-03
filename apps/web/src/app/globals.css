@@ -14,6 +14,14 @@
 /* D12: pure white foreground for the clienta (admin pins #fafafa, D13). */
 :root {
   --foreground: #ffffff;
+  /* v7 glass (S12): the 1px inset top highlight of every glass surface —
+     preview v7 --ghi: white 8% on dark, white 70% on paper. Consumed by the
+     shadow-[inset_0_1px_0_var(--glass-highlight)] utility on components. */
+  --glass-highlight: rgba(255, 255, 255, 0.08);
+}
+
+html.light {
+  --glass-highlight: rgba(255, 255, 255, 0.7);
 }
 
 body {
@@ -21,12 +29,125 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* v7: selection is ink-invert (accent over accent-contrast per mode) —
+   the emerald tint is retired with the v1 accent. */
 :root ::selection {
-  background: rgb(52 211 153 / 0.35);
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 
 html.light ::selection {
-  background: rgb(4 120 87 / 0.22);
-  color: #101014;
+  background: #0d0d0d;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   21st.dev flow-gradient-hero-section - verbatim component styles.
+   The registry ships only the TSX; the 21st.dev preview injects these
+   classes. Recreated 1:1 to the published preview: full-bleed canvas,
+   kinetic title, ring+dot cursor, pill CTA, top-right pause, attribution
+   footer. The component appends `.dark` to its elements in dark mode, so
+   base rules are the light face and `.dark` overrides the dark face.
+   ========================================================================== */
+
+.liquid-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: none;
+  font-family: inherit;
+}
+
+.liquid-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.liquid-canvas-wrapper canvas {
+  display: block;
+}
+
+.cursor-dot-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cursor-dot-size, 8px);
+  height: var(--cursor-dot-size, 8px);
+  border-radius: 9999px;
+  background: #0a0a0a;
+  pointer-events: none;
+  z-index: var(--cursor-z, 30);
+  will-change: transform;
+  transition: transform var(--cursor-transition-duration, 150ms) var(--cursor-transition-easing, var(--ease-out));
+}
+
+.cursor-dot-element.dark {
+  background: #ffffff;
+  transition: transform var(--cursor-transition-duration, 150ms) var(--cursor-transition-easing, var(--ease-out));
+}
+
+/* Touch devices: no custom cursor, system cursor restored. */
+@media (hover: none) {
+  .cursor-ring,
+  .cursor-dot-element {
+    display: none;
+  }
+
+  .liquid-container {
+    cursor: auto;
+  }
+}
+
+
+/* ==========================================================================
+   Reduced Motion Support (WCAG 2.3.3)
+   Disables all gradient animations, cursor trails, and transitions
+   when user prefers reduced motion.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-container * {
+    animation: none;
+    transition: none;
+  }
+  .liquid-canvas-wrapper canvas {
+    /* Three.js shader will also pause via JS, but this ensures CSS animations stop */
+  }
+  /* Hide custom cursor elements */
+  .cursor-ring,
+  .cursor-dot-element {
+    display: none;
+  }
+  /* Disable ripple and grain animations in shader (handled by JS too) */
+}
+
+/* Touch devices: no custom cursor, system cursor restored. */
+@media (hover: none) {
+  .cursor-ring,
+  .cursor-dot-element {
+    display: none;
+  }
+  .liquid-container {
+    cursor: auto;
+  }
+}
+
+
+/* ==========================================================================
+   Gradient Contrast Utilities
+   Semantic overlays for text legibility on animated gradient backgrounds.
+   ========================================================================== */
+.bg-gradient-overlay {
+  background-color: rgba(0, 0, 0, var(--hero-overlay-opacity, 0.6));
+}
+.bg-gradient-overlay-strong {
+  background-color: rgba(0, 0, 0, var(--button-overlay-opacity, 0.4));
+}
+.text-on-gradient {
+  color: var(--text-on-gradient, #ffffff);
+}
+.ghost-on-gradient {
+  color: var(--ghost-on-gradient, rgba(255, 255, 255, 0.08));
+}
+.text-muted-opacity {
+  opacity: var(--text-muted-opacity, 0.8);
 }

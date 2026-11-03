@@ -21,7 +21,7 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
           className="mx-auto max-w-lg px-4 pb-16 pt-10 sm:max-w-6xl sm:px-6"
         >
           <div className="space-y-6">
-            <h1 aria-hidden="true" className="skeleton-shimmer h-10 w-1/2 rounded bg-zinc-800"></h1>
+<h1><span className="sr-only">Políticas</span></h1>
             <p className="skeleton-shimmer h-5 w-1/3 rounded bg-zinc-800/60"></p>
             <div className="space-y-4">
               {['w-1/2', 'w-1/3', 'w-2/5', 'w-3/5'].map((titleWidth, sectionIndex) => (
@@ -67,9 +67,21 @@ export default async function PoliciesPage({ searchParams }: PoliciesPageProps) 
               { title: t('noShowTitle'), body: t('noShowBody') },
               { title: t('punctualityTitle'), body: t('punctualityBody') },
               { title: t('externalWorkTitle'), body: t('externalWorkBody') },
+              { 
+              title: t('creditsTitle'), 
+              body: t('creditsBody'),
+              // This section gets contrast overlay via wrapper
+              _contrastOverlay: true 
+            },
             ] as const
           ).map((term, index) => (
-            <li key={term.title} className="flex gap-4 border-b border-hairline py-5">
+            <li key={term.title} className="flex gap-4 border-b border-hairline py-5 relative">
+              {(term as any)._contrastOverlay && (
+                <div
+                  className="absolute inset-0 bg-black/40 rounded-t-none rounded-b-2xl"
+                  aria-hidden="true"
+                />
+              )}
               <span
                 aria-hidden="true"
                 className="w-8 shrink-0 select-none text-right text-4xl font-bold leading-none text-foreground/[0.14]"

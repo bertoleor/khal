@@ -24,26 +24,28 @@ type StatusAccent = { card: string; title: string; body: string };
 /**
  * Per-status accent classes — exhaustive switch over PagoStatus
  * (compile-checked named access, no dynamic key indexing).
+ * v7 B/W system: exito carries no semantic green (the accent IS the ink);
+ * pendiente/error keep the semantic tokens (status-pending / danger).
  */
 function statusAccent(status: PagoStatus): StatusAccent {
   switch (status) {
     case 'exito':
       return {
-        card: 'border-emerald-400/30 bg-emerald-400/10',
-        title: 'text-emerald-300',
-        body: 'text-emerald-200/90',
+        card: 'border-hairline bg-surface',
+        title: 'text-foreground',
+        body: 'text-muted',
       };
     case 'pendiente':
       return {
-        card: 'border-amber-400/30 bg-amber-400/10',
-        title: 'text-amber-300',
-        body: 'text-amber-200/90',
+        card: 'border-pending/30 bg-pending/10',
+        title: 'text-pending',
+        body: 'text-pending/90',
       };
     case 'error':
       return {
-        card: 'border-red-400/30 bg-red-400/10',
-        title: 'text-red-300',
-        body: 'text-red-200/90',
+        card: 'border-danger/30 bg-danger/10',
+        title: 'text-danger',
+        body: 'text-danger/90',
       };
   }
 }
@@ -62,15 +64,20 @@ export function PagoResult({
 
   return (
     <div className="space-y-4">
-      <div role="status" className={`rounded-2xl border p-5 backdrop-blur-sm ${accent.card}`}>
+      <div
+        role="status"
+        className={`rounded-lg border p-5 backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] ${accent.card}`}
+      >
         <h1 className={`text-xl font-semibold tracking-tight ${accent.title}`}>{title}</h1>
         <p className={`mt-2 text-sm leading-relaxed ${accent.body}`}>{body}</p>
-        {paymentLine ? <p className="mt-3 font-mono text-sm text-zinc-100">{paymentLine}</p> : null}
+        {paymentLine ? (
+          <p className="mt-3 font-mono-khal text-sm text-foreground">{paymentLine}</p>
+        ) : null}
       </div>
 
       <a
         href={backToCatalogHref}
-        className="block w-full rounded-full bg-emerald-600 px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 active:bg-emerald-800"
+        className="block w-full rounded-full bg-accent px-6 py-[13px] text-center text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {backToCatalogLabel}
       </a>
@@ -80,7 +87,7 @@ export function PagoResult({
           href={whatsappHref}
           target="_blank"
           rel="noreferrer"
-          className="block w-full rounded-full border border-white/20 px-6 py-3 text-center text-sm font-medium text-zinc-200 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 active:bg-white/20"
+          className="block w-full rounded-full border border-hairline bg-surface px-6 py-[13px] text-center text-[13.5px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {whatsappLabel}
         </a>

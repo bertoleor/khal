@@ -158,7 +158,7 @@ function parseSignatureHeader(header: string | null): { ts: string; v1: string }
     parts[token.slice(0, eq).trim()] = token.slice(eq + 1).trim();
   }
   // MP sends `ts=`; accept `t=` as an alias for forward-compat.
-  const ts = parts['ts'] ?? parts['t'];
+  const {ts: _ts, t} = parts; const ts = _ts ?? t;;
   const v1 = parts['v1'];
   if (!ts || !v1) {
     return null;

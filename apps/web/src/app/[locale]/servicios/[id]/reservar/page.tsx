@@ -2,21 +2,14 @@ import { BookingForm } from '@/components/booking/booking-form';
 import type { DaySlot } from '@/components/booking/slot-picker';
 import type { PaymentInfo } from '@/components/payment/payment-step';
 import { Header } from '@/components/shared/header';
+import { Link } from '@/i18n/navigation';
 import { getService } from '@/lib/actions/catalog';
 import { getPaymentSettings } from '@/lib/actions/settings';
 import { blockedPeriodsFor, businessHoursFor } from '@/lib/mocks/schedule';
 import { candidateSlots, computeAvailableSlots, parseClock } from '@khal/db';
-import { computeAmountDueCents, formatCents, toIsoDate } from '@khal/utils';
+import { computeAmountDueCents, toIsoDate } from '@khal/utils';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-
-function dayLabel(date: Date, locale: string): string {
-  return new Intl.DateTimeFormat(locale, {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  }).format(date);
-}
 
 type ReservarPageProps = {
   params: Promise<{ id: string; locale: string }>;
@@ -26,7 +19,7 @@ type ReservarPageProps = {
 export default async function ReservarPage({ params, searchParams }: ReservarPageProps) {
   const { id, locale } = await params;
   const { skeleton } = await searchParams;
-  const tCatalog = await getTranslations('catalog');
+  const t = await getTranslations('booking');
 
   // Presentation mode (?skeleton=1): placeholder-only layout for design review.
   if (skeleton === '1') {
@@ -80,6 +73,7 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
 
   const today = new Date();
   const days: DaySlot[] = [];
+  const weekdayFormat = new Intl.DateTimeFormat(locale, { weekday: 'short' });
 
   for (let i = 0; i < 7; i++) {
     const date = new Date(today);
@@ -106,7 +100,9 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
       : [];
     days.push({
       date: isoDate,
-      label: dayLabel(date, locale),
+      // v7 day chips (S6): big number + tiny weekday, domingos off.
+      dayNumber: String(date.getDate()),
+      weekday: weekdayFormat.format(date),
       closed: hours === null,
       slots,
       taken,
@@ -115,41 +111,41 @@ export default async function ReservarPage({ params, searchParams }: ReservarPag
 
   const isDeposit = service.deposit_mode === 'fixed' || service.deposit_mode === 'percentage';
   // [KHAL-A1] Real payment settings from global_settings (migration 0008 anon
-  // surface). Null -> no transfer details: the payment step hides the transfer
-  // section instead of rendering a copyable dummy CVU (the A1 failure mode).
+  // surface). Null -> no transfer details: the recibo hides the transfer
+  // rows instead of rendering a copyable dummy CVU (the A1 failure mode).
   const storePayment = await getPaymentSettings();
   const payment: PaymentInfo = {
     alias: storePayment?.alias ?? '',
     cvu: storePayment?.cvu ?? '',
     whatsappPhone: storePayment?.whatsappPhone ?? '',
+    // S7: the seña — whatever the service's deposit says. The add-ons (S6)
+    // move the live total inside the form; the seña is NEVER recalculated.
     amountDueCents: computeAmountDueCents(
       service.price_cents,
       service.deposit_mode,
       service.deposit_fixed_cents,
       service.deposit_percentage_bp
     ),
-    totalCents: service.price_cents,
     currencyCode: service.currency_code,
     isDeposit,
-    depositStatus: 'pending',
+    durationMinutes: service.duration_minutes,
   };
 
   return (
     <div className="relative min-h-dvh">
       <Header />
-      <main className="mx-auto max-w-lg px-4 py-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{service.name}</h1>
-        <p className="mt-1 text-lg font-semibold text-foreground">
-          {formatCents(service.price_cents, service.currency_code)}
-        </p>
-        {/* La seña se ve ANTES de entrar al flujo (board s3 — same call as the
-            detail page's sticky bar). */}
-        {isDeposit ? (
-          <p className="mt-0.5 font-mono-khal text-[9px] uppercase tracking-[1.5px] text-accent-soft">
-            {tCatalog('deposit')} {formatCents(payment.amountDueCents, service.currency_code)}
-          </p>
-        ) : null}
-        <div className="mt-6">
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-lg px-5 pb-16">
+        {/* "Atrás" tipográfico (S12): back to the service, no pills. */}
+        <Link
+          href={`/servicios/${service.id}`}
+          className="mt-3 inline-block font-mono-khal text-[8px] uppercase tracking-[2.5px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          ← {service.name}
+        </Link>
+        <h1 className="mt-3 text-[16px] font-bold tracking-[-0.02em] text-foreground">
+          {t('title')}
+        </h1>
+        <div className="mt-3.5">
           <BookingForm service={service} days={days} payment={payment} />
         </div>
       </main>

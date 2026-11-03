@@ -1,7 +1,8 @@
 // @vitest-environment node
-// Server-rendered component tests for the manual payment step (PaymentStep).
-// Rendered via ReactDOMServer (react-dom is already a dep) so no DOM/jsdom is
-// needed; next-intl is mocked to the Spanish `payment` namespace strings.
+// Server-rendered component tests for the v7 recibo (PaymentStep, S9 —
+// "Tu turno está reservado", copy rows, no resto, no 12h text).
+// Rendered via ReactDOMServer (react-dom is already a dep) so no DOM/jsdom
+// is needed; next-intl is mocked to the Spanish `payment`/`estado` strings.
 import { formatCents } from '@khal/utils';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -9,35 +10,28 @@ import { PaymentStep, type PaymentInfo } from '../src/components/payment/payment
 
 vi.mock('next-intl', () => {
   const pay: Record<string, string> = {
+    reservedTitle: 'Tu turno está reservado',
+    serviceRow: 'Servicio',
+    dateRow: 'Fecha',
+    depositAmountLabel: 'Seña a transferir',
     alias: 'Alias',
     cvu: 'CBU/CVU',
     copy: 'Copiar',
-    copied: '¡Copiado!',
-    amountDue: 'A pagar',
-    depositAmountLabel: 'Seña a transferir',
-    totalLabel: 'Total: {amount}',
-    remainderAtStore: 'Resto {amount} en el local',
-    transferTo: 'Transferir a',
-    receiptTitle: 'comprobante de seña',
-    holdBarLabel: 'Reservado por 12 h',
-    holdBarBody: 'Pasadas las 12 h sin tu comprobante, el turno se libera automáticamente.',
-    termsNonRefundable: 'La seña no se devuelve.',
-    termsReschedule: 'Para reprogramar, avisá con 24 h de anticipación.',
-    instructions:
-      'Transferí {amount} por CBU o alias y después enviá el comprobante por WhatsApp para confirmar tu turno.',
-    depositPendingTitle: 'Seña pendiente',
-    depositPendingBody:
-      'Tu turno está reservado. Transferí {amount} y enviá el comprobante por WhatsApp para confirmarlo.',
-    depositConfirmedTitle: 'Seña confirmada',
+    copied: '✓ copiado',
     sendComprobante: 'Enviar comprobante por WhatsApp',
-    whatsappMessage: 'Hola! Agendé para {service} el {date} a las {slot}.',
+    whatsappMessage:
+      '¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago.',
+  };
+  const estado: Record<string, string> = {
+    receiptLink: 'ver estado de mi turno',
   };
   return {
     useLocale: () => 'es',
     useTranslations:
-      () =>
+      (ns: string) =>
       (key: string, vars: Record<string, string | number> = {}) => {
-        let s = pay[key] ?? key;
+        const dict = ns === 'estado' ? estado : pay;
+        let s = dict[key] ?? key;
         for (const [k, v] of Object.entries(vars)) s = s.split(`{${k}}`).join(String(v));
         return s;
       },
@@ -45,58 +39,85 @@ vi.mock('next-intl', () => {
 });
 
 const payment: PaymentInfo = {
-  alias: 'KHAL.TURNOS.MP',
-  cvu: '00000031000485526',
+  alias: 'khal.estudio',
+  cvu: '0000003100000000000001',
   whatsappPhone: '5491122334455',
-  amountDueCents: 25000,
-  totalCents: 50000,
+  amountDueCents: 1_000_000,
   currencyCode: 'ARS',
   isDeposit: true,
-  depositStatus: 'pending',
+  durationMinutes: 60,
 };
 
-function renderPayment() {
+const bookingId = 'b76c8e0a-1a2b-4c3d-9e4f-5a6b7c8d9e0f';
+
+function renderRecibo() {
   return renderToStaticMarkup(
-    <PaymentStep payment={payment} serviceName="Lash lifting" date="2026-10-21" slot="14:00" />
+    <PaymentStep
+      payment={payment}
+      // S9: the recibo renders the service WITH its add-ons, pre-joined by
+      // the booking form (serviceWithAddons).
+      serviceName="Lifting + perfilado"
+      date="2026-11-03"
+      slot="11:00"
+      bookingId={bookingId}
+    />
   );
 }
 
-/** Strips all whitespace so currency strings with NBSP/regular spaces compare cleanly. */
+/** Strips all whitespace so currency strings with NBSP compare cleanly. */
 function clean(s: string): string {
   return s.replace(/\s/g, '');
 }
 
-describe('PaymentStep (manual payment UI)', () => {
-  it('A3: announces copy result via a dedicated live status region (not a plain button)', () => {
-    const html = renderPayment();
-    // A dedicated live region must exist to announce the copied value to SR.
-    // v2 receipt: single span carrying aria-live polite + role status —
-    // attribute order is irrelevant, both markers must be present.
+describe('PaymentStep — the v7 recibo (S9)', () => {
+  it('opens with "Tu turno está reservado" — no ✓, no 12h mechanic', () => {
+    const html = renderRecibo();
+    expect(html).toContain('Tu turno está reservado');
+    // S9: SIN ✓ on the title; the copy glyph swap is client-only, so the
+    // static receipt never carries a checkmark.
+    expect(html).not.toContain('✓');
+    // S6: the hold mechanic is never visible to the clienta.
+    expect(html).not.toMatch(/12\s*h/);
+  });
+
+  it('renders the glass card rows: service with add-ons, fecha, seña', () => {
+    const html = renderRecibo();
+    expect(html).toContain('Lifting + perfilado');
+    expect(html).toContain('mar 3 · 11:00 · 1 h');
+    expect(clean(html)).toContain(clean(formatCents(1_000_000, 'ARS')));
+  });
+
+  it('has NO "resto al llegar" row (the dueña called it redundant)', () => {
+    const html = renderRecibo();
+    expect(html).not.toMatch(/resto/i);
+    expect(html).not.toMatch(/remaining at the studio/i);
+  });
+
+  it('exposes the alias and CBU/CVU values with copy buttons beside them', () => {
+    const html = renderRecibo();
+    expect(html).toContain(payment.alias);
+    expect(html).toContain(payment.cvu);
+    expect(html).toContain(`aria-label="Copiar: ${payment.alias}"`);
+    expect(html).toContain(`aria-label="Copiar: ${payment.cvu}"`);
+    // The copy square glyph (the ✓ swap is client-only state).
+    expect(html).toContain('⧉');
+  });
+
+  it('announces the copied state via a dedicated live region (H4)', () => {
+    const html = renderRecibo();
     expect(html).toContain('role="status"');
     expect(html).toContain('aria-live="polite"');
   });
 
-  it('A3: copy button exposes the value being copied via aria-label', () => {
-    const html = renderPayment();
-    expect(html).toContain(`aria-label="Copiar: ${payment.alias}"`);
-  });
-
-  it('renders the alias and CVU values the client must see to transfer', () => {
-    const html = renderPayment();
-    expect(html).toContain(payment.alias);
-    expect(html).toContain(payment.cvu);
-  });
-
-  it('renders the deposit amount and remainder in formatted currency', () => {
-    const html = renderPayment();
-    expect(clean(html)).toContain(clean(formatCents(25000, 'ARS')));
-    expect(clean(html)).toContain(clean(formatCents(50000 - 25000, 'ARS')));
-  });
-
-  it('builds a wa.me deep link to the phone with the pre-filled comprobante message', () => {
-    const html = renderPayment();
+  it('builds a wa.me deep link with the pre-filled comprobante message', () => {
+    const html = renderRecibo();
     expect(html).toContain(`https://wa.me/${payment.whatsappPhone}?text=`);
-    // the pre-filled message is URL-encoded in the deep link
-    expect(html).toContain(encodeURIComponent('Agendé para Lash lifting'));
+    expect(html).toContain(encodeURIComponent('Agendé para Lifting + perfilado'));
+  });
+
+  it('links to the personal estado door', () => {
+    const html = renderRecibo();
+    expect(html).toContain(`/es/estado/${bookingId}`);
+    expect(html).toContain('ver estado de mi turno');
   });
 });

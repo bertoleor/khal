@@ -303,10 +303,11 @@ describe('[KHAL-A1] booking flow — payment settings source of truth', () => {
     const step = readApp(STEP_PATH);
     expect(step).toContain('hasTransferDetails');
     expect(step).toMatch(/\{hasTransferDetails \? \(/);
-    // v2 receipt (T-F2.4): the gated section carries the copy rows inside the
-    // hasTransferDetails conditional and opens with the receipt kicker —
-    // the rows never render without real settings.
-    expect(step).toContain("t('receiptTitle')");
+    // v7 recibo (S9): the gated copy rows live inside the glass card, right
+    // under the reserved title — the rows never render without real
+    // settings, and the title always does.
+    expect(step).toContain("t('reservedTitle')");
+    expect(step).toMatch(/\{hasTransferDetails \? \(\s*<>\s*<CopyRow/);
   });
 
   it('payment step hides the WhatsApp CTA without a real phone number', () => {

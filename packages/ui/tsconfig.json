@@ -1,7 +1,24 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2022"]
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../apps/web/src/*"],
+      "@/lib/*": ["../../apps/web/lib/*"]
+    },
+    "allowJs": false,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["src"]
+  "include": ["src/**/*", "*.ts", "*.tsx"],
+  "exclude": ["node_modules"]
 }
