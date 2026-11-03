@@ -1,4 +1,5 @@
 import { Link } from '@/i18n/navigation';
+import { LinkButton } from '@/components/button';
 import type { Service } from '@khal/validations';
 import Image from 'next/image';
 
@@ -28,17 +29,16 @@ export function CatalogGrid({
       <div className="pt-8">
         <p className="max-w-xs text-[12.5px] leading-[1.55] text-muted">{emptyMessage}</p>
         {whatsappPhone ? (
-          <a
+          <LinkButton
             href={`https://wa.me/${whatsappPhone}`}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center rounded-full border border-hairline bg-surface px-[17px] py-[11px] text-[13px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.985]"
+            variant="glass"
+            size="md"
+            external
+            className="mt-5"
+            aria-label={emptyCtaLabel + ' (se abre en nueva pestaña)'}
           >
             {emptyCtaLabel}
-            <span aria-hidden="true" className="pl-4 text-[11px] font-normal opacity-45">
-              ↗
-            </span>
-          </a>
+          </LinkButton>
         ) : null}
       </div>
     );
@@ -50,7 +50,7 @@ export function CatalogGrid({
         <Link
           key={service.id}
           href={`/servicios/${service.id}`}
-          className="relative block overflow-hidden rounded-md border border-hairline bg-surface backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.99]"
+          className="relative block overflow-hidden rounded-md border border-hairline bg-surface backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-[background-color,border-color] duration-160 ease-out will-change-transform hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97]"
         >
           {service.photo_path ? (
             <div className="relative aspect-[4/5]">
@@ -72,7 +72,7 @@ export function CatalogGrid({
           )}
           {/* Name chip over the photo (preview .pcard .lab): dark glass on
               dark mode, paper glass on light mode. */}
-          <span className="absolute inset-x-[7px] bottom-[7px] rounded-[9px] bg-black/45 px-2.5 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md light:bg-white/60 light:text-foreground">
+          <span className="absolute inset-x-[7px] bottom-[7px] rounded-[9px] bg-surface/60 px-2.5 py-1.5 text-[11px] font-semibold text-foreground backdrop-blur-md">
             {service.name}
           </span>
         </Link>
