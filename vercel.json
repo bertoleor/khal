@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "turbo run build --filter=apps/web",
+  "buildCommand": "cd apps/web && pnpm exec next build",
   "outputDirectory": ".next",
   "installCommand": "pnpm install"
 }
