@@ -91,11 +91,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             <div className="flex w-full flex-col items-center sm:flex-row sm:items-center sm:gap-9">
               <div className="relative text-center sm:basis-[230px] sm:shrink-0">
                 {/* Overlay for contrast on gradient */}
-                <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+                <div className="absolute inset-0 bg-gradient-overlay" aria-hidden="true" />
                 <h1 className="relative select-none font-wordmark text-[46px] leading-[0.95] text-white sm:text-[52px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
                   Khal
                 </h1>
-                <p className="relative mt-2.5 font-mono-khal text-[9px] uppercase tracking-[2.5px] text-muted/80">
+                <p className="relative mt-2.5 font-mono-khal text-[9px] uppercase tracking-[2.5px] text-muted-opacity">
                   {t('tagline')}
                 </p>
               </div>
@@ -104,7 +104,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 className="relative mt-[30px] flex w-full flex-col gap-[9px] sm:mt-0 sm:max-w-[360px] sm:flex-1"
               >
                 <div className="relative">
-                  <div className="absolute inset-0 bg-black/40 rounded-full" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
                   <LinkButton
                     href="/catalogo"
                     variant="primary"
@@ -117,7 +117,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   </LinkButton>
                 </div>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-black/40 rounded-full" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
                   <LinkButton
                     href="/catalogo"
                     variant="glass"
@@ -130,7 +130,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   </LinkButton>
                 </div>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-black/40 rounded-full" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
                   <LinkButton
                     href="/conocenos"
                     variant="glass"
@@ -144,16 +144,19 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 </div>
                 {whatsappPhone ? (
                   <div className="relative">
-                    <div className="absolute inset-0 bg-black/40 rounded-full" aria-hidden="true" />
-                    <a
+                    <div className="absolute inset-0 bg-gradient-overlay-strong rounded-full" aria-hidden="true" />
+                    <LinkButton
                       href={whatsappUrl(whatsappPhone)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="relative flex items-center rounded-full border border-hairline bg-surface/90 px-[17px] py-[11px] text-[13px] font-semibold tracking-[-0.005em] text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.985]"
+                      variant="glass"
+                      size="md"
+                      icon={<ArrowRight />}
+                      iconPosition="right"
+                      external
+                      className="relative"
+                      aria-label={t('whatsapp') + ' (se abre en nueva pestaña)'}
                     >
                       {t('whatsapp')}
-                      <ArrowRight className="ml-auto pl-4 text-[11px] font-normal opacity-45" aria-hidden="true" />
-                    </a>
+                    </LinkButton>
                   </div>
                 ) : null}
               </nav>

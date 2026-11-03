@@ -108,6 +108,26 @@
   --cursor-z: 30;
   --focus-ring: 2px solid var(--accent);
 
+  /* Gradient accessibility tokens (2026-11-03) - Extended */
+  --ghost-opacity: 0.08;
+  --text-on-gradient: #ffffff;
+  --ghost-on-gradient: rgba(255, 255, 255, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --cursor-ring-size: 40px;
+  --cursor-dot-size: 8px;
+  --cursor-z: 30;
+  --focus-ring: 2px solid var(--accent);
+  /* New tokens for gradient accessibility & micro-polish */
+  --hero-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --hero-overlay-opacity: 0.6;
+  --button-overlay-opacity: 0.4;
+  --text-muted-opacity: 0.8;
+  --cursor-transition-duration: 150ms;
+  --cursor-transition-easing: var(--ease-out);
+
+
 html.light {
   color-scheme: light;
   --background: #f6f4f1;
@@ -125,6 +145,26 @@ html.light {
   --hairline-strong: rgba(16, 16, 20, 0.22);
   --status-pending: #b45309;
   --error: #b91c1c;
+
+  /* Gradient accessibility tokens (light mode) */
+  --ghost-opacity: 0.08;
+  --text-on-gradient: #000000;
+  --ghost-on-gradient: rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --cursor-ring-size: 40px;
+  --cursor-dot-size: 8px;
+  --cursor-z: 30;
+  --focus-ring: 2px solid var(--accent);
+  /* New tokens for gradient accessibility & micro-polish */
+  --hero-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --hero-overlay-opacity: 0.6;
+  --button-overlay-opacity: 0.4;
+  --text-muted-opacity: 0.8;
+  --cursor-transition-duration: 150ms;
+  --cursor-transition-easing: var(--ease-out);
+
 }
 
 body {

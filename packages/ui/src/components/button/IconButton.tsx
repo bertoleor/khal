@@ -13,7 +13,7 @@ export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   children: React.ReactNode;
 }
 
-const baseStyles = 'inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none active:scale-[0.985]';
+const baseStyles = 'inline-flex items-center justify-center transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]';
 
 const variantStyles = {
   primary: 'rounded-full bg-accent text-accent-contrast hover:bg-accent-soft',

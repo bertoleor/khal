@@ -105,13 +105,13 @@ export function CursorTrail({ className, zIndex = 30 }: CursorTrailProps) {
         @media (prefers-reduced-motion: reduce) {
           .cursor-trail-ring,
           .cursor-trail-dot {
-            display: none !important;
+            display: none;
           }
         }
         @media (hover: none) {
           .cursor-trail-ring,
           .cursor-trail-dot {
-            display: none !important;
+            display: none;
           }
         }
       `}</style>

@@ -71,17 +71,19 @@ html.light ::selection {
   position: absolute;
   top: 0;
   left: 0;
-  width: 8px;
-  height: 8px;
+  width: var(--cursor-dot-size, 8px);
+  height: var(--cursor-dot-size, 8px);
   border-radius: 9999px;
   background: #0a0a0a;
   pointer-events: none;
-  z-index: 30;
+  z-index: var(--cursor-z, 30);
   will-change: transform;
+  transition: transform var(--cursor-transition-duration, 150ms) var(--cursor-transition-easing, var(--ease-out));
 }
 
 .cursor-dot-element.dark {
   background: #ffffff;
+  transition: transform var(--cursor-transition-duration, 150ms) var(--cursor-transition-easing, var(--ease-out));
 }
 
 /* Touch devices: no custom cursor, system cursor restored. */
@@ -104,8 +106,8 @@ html.light ::selection {
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .liquid-container * {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
   }
   .liquid-canvas-wrapper canvas {
     /* Three.js shader will also pause via JS, but this ensures CSS animations stop */
@@ -113,7 +115,7 @@ html.light ::selection {
   /* Hide custom cursor elements */
   .cursor-ring,
   .cursor-dot-element {
-    display: none !important;
+    display: none;
   }
   /* Disable ripple and grain animations in shader (handled by JS too) */
 }
@@ -135,14 +137,17 @@ html.light ::selection {
    Semantic overlays for text legibility on animated gradient backgrounds.
    ========================================================================== */
 .bg-gradient-overlay {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, var(--hero-overlay-opacity, 0.6));
 }
 .bg-gradient-overlay-strong {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, var(--button-overlay-opacity, 0.4));
 }
 .text-on-gradient {
   color: var(--text-on-gradient, #ffffff);
 }
 .ghost-on-gradient {
   color: var(--ghost-on-gradient, rgba(255, 255, 255, 0.08));
+}
+.text-muted-opacity {
+  opacity: var(--text-muted-opacity, 0.8);
 }

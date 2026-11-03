@@ -14,7 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right';
 }
 
-const baseStyles = 'inline-flex items-center justify-center font-semibold tracking-[-0.005em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none active:scale-[0.985]';
+const baseStyles = 'inline-flex items-center justify-center font-semibold tracking-[-0.005em] transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]';
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'rounded-full bg-accent text-accent-contrast hover:bg-accent-soft shadow-[0_4px_16px_var(--shadow-elevated)]',
