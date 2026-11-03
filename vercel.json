@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd apps/web && pnpm exec next build",
+  "buildCommand": "pnpm --filter=@khal/web run build",
   "outputDirectory": ".next",
   "installCommand": "pnpm install"
 }
