@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { depositModeSchema } from '@khal/validations';
 import type { Service } from '@khal/validations';
+import { auditService } from '@/lib/audit';
 
 // Full schema for create (with refinements)
 const serviceFormSchema = z
@@ -142,12 +143,15 @@ export async function createService(input: Omit<Service, 'id' | 'created_at' | '
     .single();
   const { error, data } = insertResult;
 
-  if (error || !data) {
-    return { ok: false, error: error?.message ?? 'No se pudo crear el servicio' };
-  }
+    if (error || !data) {
+      return { ok: false, error: error?.message ?? 'No se pudo crear el servicio' };
+    }
 
-  revalidatePath(SERVICES_PATH);
-  return { ok: true, data: normalizeRow(data) };
+    // Audit log
+    await auditService('create', data.id, null, normalizeRow(data));
+
+    revalidatePath(SERVICES_PATH);
+    return { ok: true, data: normalizeRow(data) };
 }
 
 /** Update an existing service */
@@ -169,46 +173,70 @@ export async function updateService(id: string, input: Partial<Omit<Service, 'id
   }
 
   const authResult = await requireAuth();
-  if (!authResult.ok) return { ok: false, error: authResult.error };
+    if (!authResult.ok) return { ok: false, error: authResult.error };
 
-  const supabase = await getSupabaseServerClient();
-  const updateResult = await supabase
-    .from('services')
-    .update({ ...parsed.data, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .eq('organization_id', authResult.ctx.orgId)
-    .select()
-    .single();
-  const { error, data } = updateResult;
+    const supabase = await getSupabaseServerClient();
 
-  if (error || !data) {
-    return { ok: false, error: error?.message ?? 'No se pudo actualizar el servicio' };
-  }
+    // Fetch current service for audit log (before snapshot)
+    const { data: beforeData } = await supabase
+      .from('services')
+      .select('*')
+      .eq('id', id)
+      .eq('organization_id', authResult.ctx.orgId)
+      .single();
 
-  revalidatePath(SERVICES_PATH);
-  return { ok: true, data: normalizeRow(data) };
+    const updateResult = await supabase
+      .from('services')
+      .update({ ...parsed.data, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .eq('organization_id', authResult.ctx.orgId)
+      .select()
+      .single();
+    const { error, data } = updateResult;
+
+    if (error || !data) {
+      return { ok: false, error: error?.message ?? 'No se pudo actualizar el servicio' };
+    }
+
+    // Audit log
+    await auditService('update', data.id, beforeData ? normalizeRow(beforeData) : null, normalizeRow(data));
+
+    revalidatePath(SERVICES_PATH);
+    return { ok: true, data: normalizeRow(data) };
 }
 
 /** Soft delete: sets deleted_at and is_visible=false */
 export async function deleteService(id: string): Promise<{ ok: boolean; error?: string; data?: { id: string } }> {
   const authResult = await requireAuth();
-  if (!authResult.ok) return { ok: false, error: authResult.error };
+    if (!authResult.ok) return { ok: false, error: authResult.error };
 
-  const supabase = await getSupabaseServerClient();
-  const { error, data } = await supabase
-    .from('services')
-    .update({ deleted_at: new Date().toISOString(), is_visible: false, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .eq('organization_id', authResult.ctx.orgId)
-    .select()
-    .single();
+    const supabase = await getSupabaseServerClient();
 
-  if (error || !data) {
-    return { ok: false, error: error?.message ?? 'No se pudo eliminar el servicio' };
-  }
+    // Fetch current service for audit log (before snapshot)
+    const { data: beforeData } = await supabase
+      .from('services')
+      .select('*')
+      .eq('id', id)
+      .eq('organization_id', authResult.ctx.orgId)
+      .single();
 
-  revalidatePath(SERVICES_PATH);
-  return { ok: true, data: { id: data.id } };
+    const { error, data } = await supabase
+      .from('services')
+      .update({ deleted_at: new Date().toISOString(), is_visible: false, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .eq('organization_id', authResult.ctx.orgId)
+      .select()
+      .single();
+
+    if (error || !data) {
+      return { ok: false, error: error?.message ?? 'No se pudo eliminar el servicio' };
+    }
+
+    // Audit log
+    await auditService('delete', data.id, beforeData ? normalizeRow(beforeData) : null, null);
+
+    revalidatePath(SERVICES_PATH);
+    return { ok: true, data: { id: data.id } };
 }
 
 /** Toggle visibility: sets is_visible to the desired state */
@@ -217,6 +245,15 @@ export async function toggleVisibility(id: string, next: boolean): Promise<{ ok:
   if (!authResult.ok) return { ok: false, error: authResult.error };
 
   const supabase = await getSupabaseServerClient();
+
+  // Fetch current service for audit log (before snapshot)
+  const { data: beforeData } = await supabase
+    .from('services')
+    .select('*')
+    .eq('id', id)
+    .eq('organization_id', authResult.ctx.orgId)
+    .single();
+
   const { error, data } = await supabase
     .from('services')
     .update({ is_visible: next, updated_at: new Date().toISOString() })
@@ -228,6 +265,9 @@ export async function toggleVisibility(id: string, next: boolean): Promise<{ ok:
   if (error || !data) {
     return { ok: false, error: error?.message ?? 'No se pudo cambiar la visibilidad' };
   }
+
+  // Audit log
+  await auditService('toggle_visibility', data.id, beforeData ? normalizeRow(beforeData) : null, normalizeRow(data));
 
   revalidatePath(SERVICES_PATH);
   return { ok: true, data: normalizeRow(data) };

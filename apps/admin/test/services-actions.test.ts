@@ -144,12 +144,17 @@ describe('createService (T1·write path)', () => {
   it('inserts with the real schema columns AND organization_id from the session claims', async () => {
     const res: AnyRecord = (await createService(validInput)) as AnyRecord;
     expect(res?.ok).toBe(true);
-    expect(mock.calls.insert).toHaveLength(1);
-    const payload = mock.calls.insert[0].args[0] as AnyRecord;
-    expect(payload.organization_id).toBe(ORG);
-    expect(payload.duration_minutes).toBe(60);
-    expect(payload.buffer_minutes).toBe(15);
-    expect(payload.name).toBe('Lifting de Pestañas');
+    // Two inserts: service + audit_logs
+    expect(mock.calls.insert).toHaveLength(2);
+    const servicePayload = mock.calls.insert[0].args[0] as AnyRecord;
+    expect(servicePayload.organization_id).toBe(ORG);
+    expect(servicePayload.duration_minutes).toBe(60);
+    expect(servicePayload.buffer_minutes).toBe(15);
+    expect(servicePayload.name).toBe('Lifting de Pestañas');
+    // Second insert is audit_logs
+    const auditPayload = mock.calls.insert[1].args[0] as AnyRecord;
+    expect(auditPayload.action).toBe('service_create');
+    expect(auditPayload.entity).toBe('service');
   });
 
   it('rejects an empty name BEFORE touching Supabase (zod gate)', async () => {
@@ -214,13 +219,19 @@ describe('deleteService (T1·soft delete — FK appointments.service_id has NO c
 });
 
 describe('toggleVisibility (T1·no read-then-flip race)', () => {
-  it('issues exactly ONE update with the desired state and never pre-reads (race-free: first op is update)', async () => {
+  it('issues exactly ONE update with the desired state; pre-read for audit log is acceptable', async () => {
     const res: AnyRecord = (await toggleVisibility(seededRow.id, false)) as AnyRecord;
     expect(res?.ok).toBe(true);
+    // One select (before snapshot) + one update + one insert (audit_logs)
+    expect(mock.calls.select.length).toBeGreaterThanOrEqual(1);
     expect(mock.calls.update).toHaveLength(1);
-    expect(mock.ops[0]).toBe('update');
+    expect(mock.calls.insert).toHaveLength(1);
     const payload = mock.calls.update[0].args[0] as AnyRecord;
     expect(payload.is_visible).toBe(false);
+    // Verify audit log
+    const auditPayload = mock.calls.insert[0].args[0] as AnyRecord;
+    expect(auditPayload.action).toBe('service_toggle_visibility');
+    expect(auditPayload.entity).toBe('service');
   });
 });
 
