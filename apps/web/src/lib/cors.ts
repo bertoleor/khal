@@ -36,9 +36,8 @@ export function handleCorsPreflight(request: NextRequest): NextResponse | null {
     return null;
   }
 
-  // Check if origin is allowed
-  const isAllowed = allowedOrigins.includes(origin);
-  if (!isAllowed) {
+  // Check if origin is allowed (origin can be null)
+  if (!origin || !allowedOrigins.includes(origin)) {
     return null;
   }
 
@@ -68,13 +67,12 @@ export function applyCorsHeaders(
     return response;
   }
 
-  // Check if origin is allowed
-  const isAllowed = origin && allowedOrigins.includes(origin);
-  if (!isAllowed) {
+  // Check if origin is allowed (origin can be null)
+  if (!origin || !allowedOrigins.includes(origin)) {
     return response;
   }
 
-  response.headers.set('Access-Control-Allow-Origin', origin!);
+  response.headers.set('Access-Control-Allow-Origin', origin);
   Object.entries(CORS_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });

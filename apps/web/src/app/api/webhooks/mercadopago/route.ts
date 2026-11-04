@@ -398,17 +398,17 @@ export const POST = withCors(async (req: NextRequest): Promise<NextResponse> => 
   const confirmation = await confirmAppointment(client, appointmentId);
     if (!confirmation.ok) {
       await claim.release();
-      const response = NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
-      await logFailedWebhook('mercadopago', { event: read.event }, 500, 'confirm_failed');
-      addRateLimitHeaders(response, rateLimitHeaders);
-      return response;
-    }
+            const response = NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
+            await logFailedWebhook('mercadopago', { event: read.event }, 500, 'confirm_failed');
+            addRateLimitHeaders(response, rateLimitHeaders);
+            return response;
+          }
 
-  if (confirmation.count > 0) {
-    await sendConfirmNotifications(client, appointmentId, read.event.dataId);
-  }
+        if (confirmation.count > 0) {
+          await sendConfirmNotifications(client, appointmentId, read.event.dataId);
+        }
 
-  const response = NextResponse.json({ received: true, confirmed: confirmation.count > 0 });
-    addRateLimitHeaders(response, rateLimitHeaders);
-    return response;
-}
+        const response = NextResponse.json({ received: true, confirmed: confirmation.count > 0 });
+        addRateLimitHeaders(response, rateLimitHeaders);
+        return response;
+      });

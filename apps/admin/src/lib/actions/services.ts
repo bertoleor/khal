@@ -148,7 +148,7 @@ export async function createService(input: Omit<Service, 'id' | 'created_at' | '
     }
 
     // Audit log
-    await auditService('create', data.id, null, normalizeRow(data));
+        await auditService('create', data.id, null, normalizeRow(data) as Record<string, unknown>);
 
     revalidatePath(SERVICES_PATH);
     return { ok: true, data: normalizeRow(data) };
@@ -199,7 +199,7 @@ export async function updateService(id: string, input: Partial<Omit<Service, 'id
     }
 
     // Audit log
-    await auditService('update', data.id, beforeData ? normalizeRow(beforeData) : null, normalizeRow(data));
+        await auditService('update', data.id, beforeData ? normalizeRow(beforeData) as Record<string, unknown> : null, normalizeRow(data) as Record<string, unknown>);
 
     revalidatePath(SERVICES_PATH);
     return { ok: true, data: normalizeRow(data) };
@@ -233,7 +233,7 @@ export async function deleteService(id: string): Promise<{ ok: boolean; error?: 
     }
 
     // Audit log
-    await auditService('delete', data.id, beforeData ? normalizeRow(beforeData) : null, null);
+        await auditService('delete', data.id, beforeData ? normalizeRow(beforeData) as Record<string, unknown> : null, null);
 
     revalidatePath(SERVICES_PATH);
     return { ok: true, data: { id: data.id } };
@@ -267,7 +267,7 @@ export async function toggleVisibility(id: string, next: boolean): Promise<{ ok:
   }
 
   // Audit log
-  await auditService('toggle_visibility', data.id, beforeData ? normalizeRow(beforeData) : null, normalizeRow(data));
+    await auditService('toggle_visibility', data.id, beforeData ? normalizeRow(beforeData) as Record<string, unknown> : null, normalizeRow(data) as Record<string, unknown>);
 
   revalidatePath(SERVICES_PATH);
   return { ok: true, data: normalizeRow(data) };

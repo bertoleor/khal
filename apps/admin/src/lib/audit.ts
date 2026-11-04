@@ -5,8 +5,8 @@ export interface AuditLogEntry {
   action: string;
   entity: string;
   entityId?: string;
-  beforeSnapshot?: Record<string, unknown>;
-  afterSnapshot?: Record<string, unknown>;
+  beforeSnapshot?: Record<string, unknown> | null;
+  afterSnapshot?: Record<string, unknown> | null;
 }
 
 /**
@@ -49,8 +49,8 @@ export async function writeAuditLog(entry: AuditLogEntry): Promise<boolean> {
 export async function auditService(
   action: 'create' | 'update' | 'delete' | 'toggle_visibility',
   serviceId: string,
-  before?: Record<string, unknown>,
-  after?: Record<string, unknown>
+  before?: Record<string, unknown> | null,
+  after?: Record<string, unknown> | null
 ): Promise<void> {
   await writeAuditLog({
     action: 'service_' + action,
