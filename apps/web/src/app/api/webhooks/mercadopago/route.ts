@@ -9,6 +9,18 @@ import { sendBookingReminder } from '@/lib/send-reminder';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
+import { checkRateLimit, createRateLimitHeaders, RATE_LIMIT_CONFIGS } from '@/lib/rate-limit';
+
+// Helper to safely add rate limit headers to a response
+function addRateLimitHeaders(response: NextResponse, headers: Record<string, string>): void {
+  if (response.headers && typeof response.headers.set === 'function') {
+    Object.entries(headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+  }
+}
+
+
 
 // Mercado Pago webhook (G3): payment -> pending→confirmed + email notify.
 // HMAC-SHA256 verified on every call (x-signature / x-request-id headers).
@@ -276,8 +288,27 @@ async function sendConfirmNotifications(
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  // Rate limiting for webhook endpoint
+  const rateLimitResult = checkRateLimit(req, 'api');
+  const rateLimitHeaders = createRateLimitHeaders(rateLimitResult, RATE_LIMIT_CONFIGS.api);
+
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json(
+      {
+        error: 'rate_limit_exceeded',
+        message: 'Too many requests. Please try again later.',
+        retryAfter: rateLimitResult.retryAfter,
+      },
+      { status: 429, headers: rateLimitHeaders }
+    );
+  }
+
   const read = await readWebhookEvent(req);
-  if (!read.ok) return read.response;
+    if (!read.ok) {
+      const response = read.response;
+      addRateLimitHeaders(response, rateLimitHeaders);
+      return response;
+    }
 
   const mpEnv = readMercadoPagoEnv();
   if (!mpEnv) {
@@ -292,36 +323,52 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     dataId: read.event.dataId,
   });
   if (!signatureOk) {
-    return NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
+    const response = NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
+    addRateLimitHeaders(response, rateLimitHeaders);
+    return response;
   }
 
   const payment = await fetchApprovedPayment(mpEnv.accessToken, read.event.dataId);
-  if (!payment.ok) return payment.response;
+  if (!payment.ok) {
+    addRateLimitHeaders(payment.response, rateLimitHeaders);
+    return payment.response;
+  }
 
   const appointmentId = parseAppointmentId(payment.externalReference);
   if (appointmentId === null) {
-    return NextResponse.json({ error: 'unknown_booking' }, { status: 200 });
+    const response = NextResponse.json({ error: 'unknown_booking' }, { status: 200 });
+    addRateLimitHeaders(response, rateLimitHeaders);
+    return response;
   }
 
   const serviceEnv = readServiceEnv();
   if (!serviceEnv) {
-    return NextResponse.json({ received: true, confirmed: false, reason: 'db_not_configured' });
+    const response = NextResponse.json({ received: true, confirmed: false, reason: 'db_not_configured' });
+    addRateLimitHeaders(response, rateLimitHeaders);
+    return response;
   }
 
   const client = createClient(serviceEnv.url, serviceEnv.serviceKey);
 
   const claim = await claimProcessedEvent(client, read.event.eventKey);
-  if (claim.outcome !== 'claimed') return claim.response;
+  if (claim.outcome !== 'claimed') {
+    addRateLimitHeaders(claim.response, rateLimitHeaders);
+    return claim.response;
+  }
 
   const confirmation = await confirmAppointment(client, appointmentId);
   if (!confirmation.ok) {
     await claim.release();
-    return NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
+    const response = NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
+    addRateLimitHeaders(response, rateLimitHeaders);
+    return response;
   }
 
   if (confirmation.count > 0) {
     await sendConfirmNotifications(client, appointmentId, read.event.dataId);
   }
 
-  return NextResponse.json({ received: true, confirmed: confirmation.count > 0 });
+  const response = NextResponse.json({ received: true, confirmed: confirmation.count > 0 });
+    addRateLimitHeaders(response, rateLimitHeaders);
+    return response;
 }
