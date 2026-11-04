@@ -10,6 +10,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 import { checkRateLimit, createRateLimitHeaders, RATE_LIMIT_CONFIGS } from '@/lib/rate-limit';
+import { withCors } from '@/lib/cors';
 
 // Helper to safely add rate limit headers to a response
 function addRateLimitHeaders(response: NextResponse, headers: Record<string, string>): void {
@@ -287,7 +288,7 @@ async function sendConfirmNotifications(
   }
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export const POST = withCors(async (req: NextRequest): Promise<NextResponse> => {
   // Rate limiting for webhook endpoint
   const rateLimitResult = checkRateLimit(req, 'api');
   const rateLimitHeaders = createRateLimitHeaders(rateLimitResult, RATE_LIMIT_CONFIGS.api);
