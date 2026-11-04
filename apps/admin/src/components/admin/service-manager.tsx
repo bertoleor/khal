@@ -615,11 +615,12 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4"
           >
             <input
+              id={`select-service-${service.id}`}
               type="checkbox"
               aria-label={service.name}
               checked={selected.has(service.id)}
               onChange={() => toggleSelected(service.id)}
-              className="mt-12 h-4 w-4 shrink-0 rounded border-white/20"
+              className="mt-1 h-4 w-4 shrink-0 rounded border-white/20"
             />
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.06]">
               {service.photo_path !== undefined ? (
