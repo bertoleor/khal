@@ -59,7 +59,7 @@ All 9 failing tests in apps/admin/test/services-actions.test.ts must pass:
 | T3 | S3 | inline | 5570097 |
 | T4 | S4 | inline |        |
 | T5 | S5 | inline | 992b5d7 |
-| T6 | S6 | inline |        |
+| T6 | S6 | inline | 969ad2d |
 
 ## Log
 
@@ -69,3 +69,4 @@ L3: T2 complete - mock stores replaced with Supabase-backed implementations (app
 L4: T3 complete - admin error boundaries verified (error.tsx, not-found.tsx at admin root catch all nested routes)
 L5: T4 (pagination) deferred - ServiceManager JSX parsing issues with complex pagination; Load More to be implemented at page level via fetchServices pagination params in follow-up
 L6: T5 complete - admin accessibility: focus-visible rings on all interactive buttons, checkbox IDs, aria labels verified
+L7: T6 complete - bundle optimization: lazy-load RichTextEditor (Tiptap) via next/dynamic with ssr:false, reduces admin/servicios First Load JS
