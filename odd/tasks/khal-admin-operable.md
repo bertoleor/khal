@@ -58,7 +58,7 @@ All 9 failing tests in apps/admin/test/services-actions.test.ts must pass:
 | T2 | S2 | inline | 0d8954a |
 | T3 | S3 | inline | 5570097 |
 | T4 | S4 | inline |        |
-| T5 | S5 | inline |        |
+| T5 | S5 | inline | 992b5d7 |
 | T6 | S6 | inline |        |
 
 ## Log
@@ -67,3 +67,5 @@ L1: User requested all improvements with ODD+TDD
 L2: T1 complete - services actions contract tests pass (13/13), TS clean
 L3: T2 complete - mock stores replaced with Supabase-backed implementations (appointments, clients), Store interface async
 L4: T3 complete - admin error boundaries verified (error.tsx, not-found.tsx at admin root catch all nested routes)
+L5: T4 (pagination) deferred - ServiceManager JSX parsing issues with complex pagination; Load More to be implemented at page level via fetchServices pagination params in follow-up
+L6: T5 complete - admin accessibility: focus-visible rings on all interactive buttons, checkbox IDs, aria labels verified
