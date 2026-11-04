@@ -110,9 +110,9 @@ const validInput = {
   buffer_minutes: 15,
   is_visible: true,
   sort_order: 5,
-  photo_path: null,
+  photo_path: undefined,
   deposit_mode: 'percentage' as const,
-  deposit_fixed_cents: null,
+  deposit_fixed_cents: undefined,
   deposit_percentage_bp: 3000,
 };
 
@@ -171,7 +171,7 @@ describe('createService (T1·write path)', () => {
     const res: AnyRecord = (await createService({
       ...validInput,
       deposit_mode: 'fixed',
-      deposit_fixed_cents: null,
+      deposit_fixed_cents: undefined,
     })) as AnyRecord;
     expect(res?.ok).toBe(false);
     expect(mock.calls.insert).toHaveLength(0);
