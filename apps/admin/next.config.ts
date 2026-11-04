@@ -26,10 +26,6 @@ const nextConfig = {
   compress: true,
   // Performance: enable React strict mode for development
   reactStrictMode: true,
-  // Performance: SWC minification (enabled by default in Next 16)
-  swcMinify: true,
-  // Performance: optimize fonts
-  optimizeFonts: true,
 };
 
 export default withNextIntl(nextConfig);

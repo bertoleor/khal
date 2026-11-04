@@ -12,6 +12,13 @@ import {
 import { serviceFormSchema } from '@/lib/schemas';
 import { formatCents } from '@khal/utils';
 import type { Service } from '@khal/validations';
+import type { Appointment } from '@khal/validations';
+// Local Service type for admin (matches @khal/validations Service but avoids type conflicts)
+// Use Service type from @khal/validations directly to avoid type conflicts
+import type { Service } from '@khal/validations';
+
+type AdminService = Service;
+
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -143,7 +150,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
   const t = useTranslations('Admin.services');
   const router = useRouter();
 
-  const [services, setServices] = useState<Service[]>(initialServices);
+  const [services, setServices] = useState<Service[]>(initialServices as Service[]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortKey>('order');
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -219,14 +226,14 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
     setBusy(false);
 
     if (!res.ok) {
-      setBanner(res.error);
+      setBanner(res.error ?? null);
       return;
     }
 
     const saved = res.data;
     setServices((prev) =>
       dialog.mode === 'create'
-        ? [...prev, saved].sort((a, b) => a.sort_order - b.sort_order)
+        ? [...prev, saved].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
         : prev.map((s) => (s.id === saved.id ? saved : s))
     );
     closeDialog();
@@ -239,7 +246,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
     if (res.ok) {
       setServices((prev) => prev.map((s) => (s.id === service.id ? res.data : s)));
     } else {
-      setListError(res.error);
+      setListError(res.error ?? null);
     }
   }
 
@@ -255,7 +262,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
         return next;
       });
     } else {
-      setListError(res.error);
+      setListError(res.error ?? null);
     }
   }
 
@@ -274,7 +281,7 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
       );
       setSelected(new Set());
     } else {
-      setListError(res.error);
+      setListError(res.error ?? null);
     }
   }
 

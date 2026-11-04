@@ -8,7 +8,7 @@ import { withAuthTransition } from '@/shared/action-base';
 export async function toggleBlacklisted(formData: FormData): Promise<{ error?: string }> {
   return await withAuthTransition(
     formData,
-    clientsStore,
+    clientsStore as unknown as Store<unknown>
     'toggleBlacklisted',
     '/admin/clientes'
   );

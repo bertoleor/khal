@@ -13,7 +13,7 @@ import { z } from 'zod';
 export const serviceFormSchema = z
   .object({
     name: z.string().trim().min(1, 'Poné un nombre para el servicio').max(120),
-    description: z.string().max(5000).nullable().optional(),
+    description: z.string().max(5000).optional(),
     price_cents: z
       .number({ error: 'El precio tiene que ser un número' })
       .int('El precio va en centavos enteros')
@@ -31,10 +31,10 @@ export const serviceFormSchema = z
       .max(120, 'Máximo 120 minutos'),
     is_visible: z.boolean(),
     sort_order: z.number().int().min(0),
-    photo_path: z.string().max(2048).nullable().optional(),
-    deposit_mode: depositModeSchema.nullable().optional(),
-    deposit_fixed_cents: z.number().int().nonnegative().nullable().optional(),
-    deposit_percentage_bp: z.number().int().min(0).max(10000).nullable().optional(),
+    photo_path: z.string().max(2048).optional(),
+    deposit_mode: depositModeSchema.optional(),
+    deposit_fixed_cents: z.number().int().nonnegative().optional(),
+    deposit_percentage_bp: z.number().int().min(0).max(10000).optional(),
   })
   .superRefine((v, ctx) => {
     // Mirrors the CHECK constraint on public.services (0001): the deposit

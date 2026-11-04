@@ -9,7 +9,7 @@ import { withAuthTransition } from '@/shared/action-base';
 export async function transitionAppointment(formData: FormData): Promise<{ error?: string }> {
   return await withAuthTransition(
     formData,
-    appointmentsStore,
+    appointmentsStore as unknown as Store<unknown>,
     'transition',
     '/admin',
     appointmentStatusSchema

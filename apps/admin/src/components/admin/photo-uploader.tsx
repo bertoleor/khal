@@ -40,11 +40,13 @@ export function PhotoUploader({
     if (!file) return;
     setBusy(true);
     setError(null);
-    const res = await uploadServicePhoto(file);
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await uploadServicePhoto(formData);
     if (res.ok) {
-      onPhotoChange(res.data.url);
+      onPhotoChange(res.data?.url ?? null);
     } else {
-      setError(res.error);
+      setError(res.error ?? null);
     }
     setBusy(false);
   }

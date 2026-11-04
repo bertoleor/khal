@@ -1,160 +1,152 @@
 {
-  "Admin": {
-    "nav": {
-      "brand": "Khal Admin",
-      "agenda": "Agenda",
-      "clientes": "Clientes",
-      "servicios": "Servicios",
-      "bloqueos": "Bloqueos"
-    },
-    "appointments": {
-      "title": "Agenda de hoy",
-      "empty": "No hay turnos para hoy.",
-      "confirm": "Confirmar",
-      "cancel": "Cancelar",
-      "noShow": "No asistió",
-      "status": {
-        "pendiente": "Pendiente",
-        "confirmado": "Confirmado",
-        "cancelado": "Cancelado",
-        "no_asistio": "No asistió"
-      }
-    },
-    "services": {
-      "title": "Servicios",
-      "subtitle": "Tu catálogo: editá textos, subí fotos y ajustá precios.",
-      "new": "Nuevo servicio",
-      "search": {
-        "label": "Buscar servicio",
-        "placeholder": "Buscar por nombre…"
-      },
-      "sort": {
-        "label": "Ordenar",
-        "order": "Orden del catálogo",
-        "name": "Nombre",
-        "price": "Precio"
-      },
-      "count": "{count} servicios",
-      "bulkIncrease": "Subir 10% a {count} seleccionados",
-      "empty": "No hay servicios todavía. Creá el primero con «Nuevo servicio».",
-      "visible": "Visible",
-      "hidden": "Oculto",
-      "duration": "{count} min",
-      "confirmDelete": "¿Eliminar «{name}»? Va a dejar de verse en el catálogo (los turnos ya agendados se conservan).",
-      "dialog": {
-        "newTitle": "Nuevo servicio",
-        "editTitle": "Editar servicio"
-      },
-      "fields": {
-        "name": "Nombre",
-        "price": "Precio",
-        "priceHint": "En pesos (ej. 25000)",
-        "duration": "Duración",
-        "durationHint": "Minutos de la sesión",
-        "description": "Descripción",
-        "photo": "Foto del catálogo",
-        "deposit": "Seña",
-        "buffer": "Margen",
-        "bufferHint": "Minutos de limpieza después",
-        "sort": "Orden",
-        "sortHint": "Número de posición (menor = antes)",
-        "visible": "Visible en el catálogo"
-      },
-      "deposit": {
-        "none": "Sin seña",
-        "fixed": "Monto fijo",
-        "percentage": "Porcentaje",
-        "fixedAmount": "Monto de la seña (pesos)",
-        "percentageAmount": "Porcentaje (%)",
-        "badge": "Seña {count}%",
-        "fixedBadge": "Seña {amount}"
-      },
-      "editor": {
-        "bold": "Negrita",
-        "italic": "Cursiva",
-        "underline": "Subrayado",
-        "strike": "Tachado",
-        "bulletList": "Lista con viñetas",
-        "orderedList": "Lista numerada",
-        "undo": "Deshacer",
-        "redo": "Rehacer"
-      },
-      "photo": {
-        "upload": "Subir foto",
-        "uploading": "Subiendo…",
-        "remove": "Quitar foto",
-        "empty": "Sin foto"
-      },
-      "actions": {
-        "edit": "Editar",
-        "hide": "Ocultar",
-        "show": "Mostrar",
-        "delete": "Eliminar",
-        "cancel": "Cancelar",
-        "create": "Crear",
-        "save": "Guardar",
-        "saving": "Guardando…"
-      }
-    },
-    "clients": {
-      "title": "Clientes",
-      "empty": "No hay clientas aún.",
-      "ltv": "LTV",
-      "noShow": "No asistió ×{count}",
-      "removeBlacklist": "Quitar de lista negra",
-      "blacklist": "Bloquear"
-    },
-    "exceptions": {
-      "title": "Bloqueos de agenda",
-      "description": "Feriados, vacaciones o cierres que se restan de la disponibilidad.",
-      "empty": "No hay bloqueos definidos.",
-      "addTitle": "Motivo (ej. Feriado)",
-      "typeLabel": "Tipo de bloqueo",
-      "dateLabel": "Fecha del bloqueo",
-      "addType": {
-        "holiday": "Feriado",
-        "vacation": "Vacaciones",
-        "event": "Evento",
-        "block": "Bloqueo"
-      },
-      "addButton": "Bloquear día"
-    },
+  "home": {
+    "tagline": "tu mirada, nuestra prioridad",
+    "book": "Agendá tu turno",
+    "catalog": "Catálogo",
+    "about": "Conocenos",
+    "whatsapp": "WhatsApp"
+  },
+  "catalog": {
+    "title": "Catálogo",
+    "empty": "Todavía no hay servicios disponibles. Volvé pronto.",
+    "emptyCta": "Escribinos por WhatsApp",
+    "book": "Agendar cita",
+    "duration": "Duración",
+    "deposit": "Seña",
+    "back": "volver",
+    "backCatalog": "catálogo",
+    "photoFallback": "foto",
+    "photoSlot": "foto del servicio",
+    "total": "total",
+    "depositToBook": "Seña para reservar"
+  },
+  "conocenos": {
+    "back": "volver",
+    "title": "Conocenos",
+    "blurb": "Estudio de pestañas y cejas en Vicente López. Mirada cuidada, higiene de ley, tiempos que se respetan.",
+    "social": "redes"
+  },
+  "booking": {
+    "title": "Reservar turno",
+    "pickDay": "Elegí el día",
+    "pickSlot": "Elegí el horario",
+    "noSlots": "No hay horarios disponibles ese día.",
+    "closed": "Cerrado.",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "dataTitle": "tus datos",
+    "confirm": "Confirmar reserva",
+    "externalWorkLabel": "Vengo con trabajo de otro lugar",
+    "termsLabel": "Acepto los términos del estudio",
+    "termsLink": "ver todo",
+    "slotTaken": "No disponible",
+    "submitting": "Enviando…",
+    "holdNote": "te guardamos el turno mientras confirmás la seña",
+    "addonsTitle": "¿sumás algo más?",
+    "addonsOptional": "(opcional)",
+    "addonAdd": "+ agregar",
+    "addonAdded": "✓ agregado",
+    "total": "total",
     "error": {
-      "title": "Algo salió mal",
-      "description": "Ocurrió un error inesperado. Intentá de nuevo.",
-      "retry": "Intentar de nuevo",
-      "home": "Ir al panel"
-    },
-    "notFound": {
-      "title": "Página no encontrada",
-      "description": "La página que buscás no existe o fue movida.",
-      "home": "Ir al panel"
-    },
-    "login": {
-      "title": "Khal · Admin",
-      "subtitle": "Entrá con tu email de staff y te enviamos un código de acceso.",
-      "email": "Email",
-      "emailPlaceholder": "tu@email.com",
-      "sendCode": "Enviarme el código",
-      "sending": "Enviando…",
-      "codeSent": "Te enviamos un código de 6 dígitos por email.",
-      "code": "Código",
-      "codePlaceholder": "000000",
-      "verify": "Entrar",
-      "verifying": "Entrando…",
-      "back": "Cambiar email",
-      "usePassword": "Entrar con contraseña",
-      "password": "Contraseña",
-      "signIn": "Entrar",
-      "useCode": "Entrar con código",
-      "errors": {
-        "invalid": "Email o contraseña incorrectos.",
-        "notConfirmed": "Todavía no confirmaste tu email.",
-        "badCode": "El código no es válido o venció. Pedí uno nuevo.",
-        "rateLimit": "Demasiados intentos. Esperá un momento y probá de nuevo.",
-        "notStaff": "Esa cuenta no tiene acceso al panel del estudio.",
-        "generic": "No pudimos iniciar sesión. Probá de nuevo en un rato."
-      }
+      "invalid": "Revisá los datos ingresados.",
+      "duplicate": "Ya tenés un turno pendiente. Completalo antes de agendar otro.",
+      "blacklisted": "Comunicate por WhatsApp para gestionar tu próximo turno.",
+      "conflict": "Ese horario ya no está disponible. Elegí otro.",
+      "unavailable": "Ese horario no está disponible. Elegí otro."
     }
+  },
+  "addons": {
+    "perfilado_cejas": "Perfilado de cejas",
+    "perfilado_cejas_short": "perfilado",
+    "kit_higiene": "Kit de higiene",
+    "kit_higiene_short": "kit"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Intentá de nuevo.",
+    "retry": "Intentar de nuevo",
+    "home": "Ir al inicio"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscás no existe o fue movida.",
+    "home": "Ir al inicio"
+  },
+  "payment": {
+    "reservedTitle": "Tu turno está reservado",
+    "serviceRow": "Servicio",
+    "dateRow": "Fecha",
+    "depositAmountLabel": "Seña a transferir",
+    "alias": "Alias",
+    "cvu": "CBU/CVU",
+    "copy": "Copiar",
+    "copied": "✓ copiado",
+    "sendComprobante": "Enviar comprobante por WhatsApp",
+    "whatsappMessage": "¡Hola! Agendé para {service} el {date} a las {slot}. Adjunto el comprobante de pago."
+  },
+  "estado": {
+    "title": "estado del turno",
+    "pendiente": "pendiente de confirmación",
+    "confirmado": "turno confirmado",
+    "cancelado": "turno cancelado",
+    "no_asistio": "no asistió",
+    "noConfirmado": "reserva no confirmada",
+    "countdownLabel": "tiempo para confirmar",
+    "step1": "Envianos el comprobante de la seña por WhatsApp.",
+    "step2": "Lo validamos y tu turno queda confirmado.",
+    "step3": "Te llega el recordatorio antes de la cita.",
+    "heroWaitLabel": "te esperamos",
+    "remindersTitle": "para que quede perfecto",
+    "reminder1": "Te llega la notificación el día de tu turno.",
+    "reminder2": "Llegá a tiempo: el turno arranca a la hora.",
+    "reminder3": "Venite sin maquillaje en la zona de los ojos.",
+    "reminder4": "Avisanos si traés servicio hecho de otro estudio.",
+    "serviceRow": "Servicio",
+    "dateRow": "Fecha",
+    "durationRow": "Duración",
+    "placeRow": "Lugar",
+    "placeValue": "Vicente López",
+    "heroWhatHappened": "qué pasó",
+    "noConfirmadoHeroBody": "La reserva se guardó unas horas y venció sin la seña.",
+    "noConfirmadoBody": "El horario vuelve a estar disponible.",
+    "statusHeroLabel": "estado",
+    "canceladoLead": "Si fue un despiste, guardá un nuevo turno cuando quieras.",
+    "errorLine": "Si creés que fue un error, escribinos.",
+    "rebook": "Reservar otra vez",
+    "backHome": "Volver al inicio",
+    "notFound": "No encontramos ese turno. Revisá el link de tu comprobante.",
+    "receiptLink": "ver estado de mi turno"
+  },
+  "policies": {
+    "title": "Políticas del estudio",
+    "intro": "Reglas claras para que tu turno y el de todas estén siempre protegidos.",
+    "depositTitle": "Seña",
+    "depositBody": "Todas las reservas se confirman con una seña fija de $10.000. La seña reserva tu turno de forma exclusiva y se descuenta del precio final. Se abona por transferencia (alias o CVU) y se confirma por WhatsApp.",
+    "cancellationTitle": "Cancelación y reprogramación",
+    "cancellationBody": "Podés cancelar o reprogramar sin costo hasta 24 horas antes de tu turno. Con menos de 24 horas de anticipación, la seña no se devuelve ni se reprograma.",
+    "noShowTitle": "Inasistencia",
+    "noShowBody": "Si no asistís a tu turno sin avisar, la seña se pierde. Avisanos con tiempo por WhatsApp y lo reprogramamos.",
+    "punctualityTitle": "Puntualidad",
+    "punctualityBody": "Llegá 5 minutos antes de tu turno. Los retrasos acortan la sesión para no demorar a la clienta siguiente.",
+    "externalWorkTitle": "Pestañas de otro lugar",
+    "externalWorkBody": "Si venís con trabajo de otro estudio, avisá antes de reservar — el retiro y el retrabajo tienen costo extra y la dueña lo evalúa antes de confirmar.",
+    "back": "volver",
+    "more": "…y las que la dueña sume — editables desde su panel.",
+    "creditsTitle": "Créditos",
+    "creditsBody": "El fondo animado de la página principal usa el componente «flow-gradient-hero-section» de Hardik Kashiyani, publicado en 21st.dev, conservando su enlace original «Made By Haik». Todos los derechos del componente pertenecen a su autor."
+  },
+  "pagoResult": {
+    "exitoTitle": "¡Pago recibido!",
+    "exitoBody": "Tu pago quedó registrado. Estamos confirmando la seña de tu turno: en cuanto se acredite te avisamos. Tu turno ya está reservado.",
+    "pendienteTitle": "Pago pendiente de acreditación",
+    "pendienteBody": "Tu pago quedó pendiente (por ejemplo, una transferencia recién enviada o un pago en efectivo). En cuanto se acredite te avisamos. Si tarda en reflejarse, escribinos por WhatsApp.",
+    "errorTitle": "No se pudo completar el pago",
+    "errorBody": "El pago no se concretó. Podés reintentarlo desde tu reserva o coordinar la seña por transferencia. Si el cobro aparece igual en tu cuenta, escribinos por WhatsApp antes de reintentar.",
+    "paymentLabel": "Pago N.º {id}",
+    "backToCatalog": "Volver al catálogo",
+    "whatsappHelp": "Consultanos por WhatsApp",
+    "whatsappMessage": "¡Hola! Hice un pago online para mi turno (pago {paymentId}) y tengo una consulta.",
+    "whatsappMessageNoId": "¡Hola! Vengo de la pantalla de pago online y tengo una consulta."
   }
 }
