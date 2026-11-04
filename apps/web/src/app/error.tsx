@@ -23,13 +23,13 @@ export default function RouteError({
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center justify-center rounded-full bg-accent px-[17px] py-[11px] text-[13px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="inline-flex items-center justify-center rounded-full bg-accent px-[17px] py-[11px] text-[13px] font-semibold text-accent-contrast transition-[background-color] duration-160 ease-out will-change-transform hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {t('retry')}
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-full border border-hairline bg-surface px-[17px] py-[11px] text-[13px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="inline-flex items-center justify-center rounded-full border border-hairline bg-surface/90 px-[17px] py-[11px] text-[13px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-[background-color,border-color] duration-160 ease-out will-change-transform hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {t('home')}
           </a>

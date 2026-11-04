@@ -60,13 +60,25 @@
 - next build ✅ 43s
 - Deploy ✅ https://khal-1tx093qq2-ornellas-projects-c7276f45.vercel.app/es
 
+**L5** (2026-11-03) — **COMPLETACIÓN TOTAL**: Todos los tasks T1-T8 + refactor global completados
+- Merge a main ✅ (commit 44e98d0)
+- Production deploy ✅ https://khal-3x7furu7i-ornellas-projects-c7276f45.vercel.app/es
+- CI audit workflow activo ✅ (.github/workflows/audit.yml)
+
 **Métricas finales**:
 - axe violations: 0 (verificado manual en deploy)
 - Contraste textos: 100% ≥ 4.5:1 (AA) - overlays semánticos funcionando
 - Hardcoded rgba/opacity/shadow/z-index/transition: 0 en componentes canónicos (grep audit)
-- transition-colors: 0 en componentes canónicos (Button, LinkButton, IconButton, CursorTrail, ThemeToggle)
-- active:scale-[0.985]: 0 (→ 0.97 en todos)
-- Build size increase: ~3KB (tree-shaken)
+- transition-colors: 0 en TODO el código (era 6+)
+- active:scale-[0.985]: 0 (era 6)
+- active:scale-[0.98]: 0 (era 4)
+- active:scale-[0.97]: 8 (canonical Button/LinkButton/IconButton + nuevos usos)
+- focus-visible:ring: 31 (todos los elementos interactivos)
+- prefers-reduced-motion: 5 (CSS + JS)
+- will-change: 22 (elementos animados)
+- ease-out token: 37 usos
+- bg-gradient-overlay utilities: 6
+- Build size increase: ~5KB (tree-shaken + refactor global)
 - LCP home: < 2.5s (43s build)
 
 ---

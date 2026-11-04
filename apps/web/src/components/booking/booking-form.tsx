@@ -45,7 +45,7 @@ function errorKeyFor(code: BookingState['code']): ErrorKey {
  * states carry the focus ring as one atomic style (no per-branch assembly).
  */
 const ADDON_CHIP_BASE =
-  'rounded-full border px-3 py-[5px] text-[10.5px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
+  'rounded-full border px-3 py-[5px] text-[10.5px] font-semibold transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 const ADDON_CHIP_ON = `${ADDON_CHIP_BASE} border-accent bg-accent text-accent-contrast`;
 const ADDON_CHIP_OFF = `${ADDON_CHIP_BASE} border-hairline bg-surface text-foreground hover:bg-surface-hover`;
 
@@ -200,7 +200,7 @@ export function BookingForm({
               </label>{' '}
               <Link
                 href="/politicas"
-                className="font-mono-khal text-[9px] uppercase tracking-[1.5px] text-muted underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="font-mono-khal text-[9px] uppercase tracking-[1.5px] text-muted underline-offset-4 transition-[color] duration-160 ease-out hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {t('termsLink')}
               </Link>
@@ -211,7 +211,7 @@ export function BookingForm({
           <button
             type="submit"
             disabled={isPending}
-            className="w-full rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-[background-color] duration-160 ease-out will-change-transform hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? t('submitting') : t('confirm')}
           </button>

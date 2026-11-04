@@ -58,7 +58,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
       <main id="main" tabIndex={-1} className="mx-auto w-full max-w-lg flex-1 px-5 pb-16">
         <Link
           href="/"
-          className="mt-3 inline-block font-mono-khal text-[8px] uppercase tracking-[2.5px] text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="mt-3 inline-block font-mono-khal text-[8px] uppercase tracking-[2.5px] text-muted transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           ← {t('back')}
         </Link>

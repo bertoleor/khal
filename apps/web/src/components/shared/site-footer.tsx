@@ -44,7 +44,7 @@ export default async function SiteFooter() {
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {social.label}
               </a>
@@ -55,7 +55,7 @@ export default async function SiteFooter() {
           </span>
           <Link
             href="/politicas"
-            className="transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             Políticas
           </Link>

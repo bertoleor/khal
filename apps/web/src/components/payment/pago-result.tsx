@@ -77,7 +77,7 @@ export function PagoResult({
 
       <a
         href={backToCatalogHref}
-        className="block w-full rounded-full bg-accent px-6 py-[13px] text-center text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="block w-full rounded-full bg-accent px-6 py-[13px] text-center text-[13.5px] font-semibold text-accent-contrast transition-[background-color] duration-160 ease-out will-change-transform hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         {backToCatalogLabel}
       </a>
@@ -87,7 +87,7 @@ export function PagoResult({
           href={whatsappHref}
           target="_blank"
           rel="noreferrer"
-          className="block w-full rounded-full border border-hairline bg-surface px-6 py-[13px] text-center text-[13.5px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="block w-full rounded-full border border-hairline bg-surface/90 px-6 py-[13px] text-center text-[13.5px] font-semibold text-foreground backdrop-blur-lg shadow-[inset_0_1px_0_var(--glass-highlight)] transition-[background-color,border-color] duration-160 ease-out will-change-transform hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {whatsappLabel}
         </a>

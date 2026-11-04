@@ -53,7 +53,7 @@ async function copyToClipboard(value: string): Promise<boolean> {
 
 /** Precomputed copy-button states (S9): 22px glass square, 7px radius. */
 const COPY_BUTTON_BASE =
-  'ml-2.5 flex size-[22px] shrink-0 items-center justify-center rounded-[7px] border text-[11px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
+  'ml-2.5 flex size-[22px] shrink-0 items-center justify-center rounded-[7px] border text-[11px] transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 const COPY_BUTTON_IDLE = `${COPY_BUTTON_BASE} border-hairline bg-surface text-muted hover:bg-surface-hover`;
 const COPY_BUTTON_DONE = `${COPY_BUTTON_BASE} border-accent bg-accent text-accent-contrast`;
 
@@ -181,7 +181,7 @@ export function PaymentStep({
           href={link}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 flex w-full items-center justify-center rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
+          className="mt-3 flex w-full items-center justify-center rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-[background-color] duration-160 ease-out will-change-transform hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97]"
         >
           {t('sendComprobante')}
         </a>
@@ -192,7 +192,7 @@ export function PaymentStep({
       {bookingId ? (
         <Link
           href={`/${locale}/estado/${bookingId}`}
-          className="mt-3 block text-center font-mono-khal text-[10px] uppercase tracking-[2px] text-muted underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="mt-3 block text-center font-mono-khal text-[10px] uppercase tracking-[2px] text-muted underline-offset-4 transition-[color] duration-160 ease-out hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {tEstado('receiptLink')}
           <span aria-hidden="true" className="pl-1">

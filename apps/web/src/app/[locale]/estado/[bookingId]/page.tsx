@@ -94,7 +94,7 @@ async function EstadoNotFound() {
         <p className="mt-3 text-[12.5px] text-muted">{t('notFound')}</p>
         <Link
           href="/"
-          className="mt-4 flex w-full items-center justify-center rounded-full border border-hairline bg-surface px-6 py-3 text-[13px] font-semibold text-foreground backdrop-blur-lg transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="flex w-full items-center justify-center rounded-full border border-hairline bg-surface/90 px-6 py-3 text-[13px] font-semibold text-foreground backdrop-blur-lg transition-[background-color,border-color] duration-160 ease-out will-change-transform hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {t('backHome')}
         </Link>
@@ -303,7 +303,7 @@ async function EstadoFound({ status, locale }: { status: FoundBooking; locale: s
             </p>
             <Link
               href="/catalogo"
-              className="mt-3 flex w-full items-center justify-center rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
+              className="flex w-full items-center justify-center rounded-full bg-accent px-6 py-[13px] text-[13.5px] font-semibold text-accent-contrast transition-[background-color] duration-160 ease-out will-change-transform hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97]"
             >
               {t('rebook')}
             </Link>
@@ -311,7 +311,7 @@ async function EstadoFound({ status, locale }: { status: FoundBooking; locale: s
         ) : (
           <Link
             href="/"
-            className="mt-3 flex w-full items-center justify-center rounded-full border border-hairline bg-surface px-6 py-3 text-[13px] font-semibold text-foreground backdrop-blur-lg transition-colors hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="flex w-full items-center justify-center rounded-full border border-hairline bg-surface/90 px-6 py-3 text-[13px] font-semibold text-foreground backdrop-blur-lg transition-[background-color,border-color] duration-160 ease-out will-change-transform hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {t('backHome')}
           </Link>

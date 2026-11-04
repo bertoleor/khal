@@ -100,7 +100,7 @@ export function SlotPicker({
                     : `${day.weekday} ${day.dayNumber}`
                 }
                 className={cn(
-                  'flex-1 rounded-full border pb-[7px] pt-2 text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                  'flex-1 rounded-full border pb-[7px] pt-2 text-center transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                   dayChipClass(day, isActive)
                 )}
               >
@@ -156,7 +156,7 @@ export function SlotPicker({
                     aria-pressed={isSelected}
                     aria-label={isTaken ? `${slot} — ${t('slotTaken')}` : slot}
                     className={cn(
-                      'rounded-full border py-2 text-[11.5px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                      'rounded-full border py-2 text-[11.5px] font-medium transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                       slotChipClass(isTaken, isSelected)
                     )}
                   >

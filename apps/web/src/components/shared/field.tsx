@@ -26,7 +26,7 @@ export function Field({
         type={type}
         autoComplete={autoComplete}
         required
-        className="w-full rounded-sm border border-hairline bg-surface px-3.5 py-2.5 text-[12.5px] text-foreground outline-none backdrop-blur-lg transition-colors placeholder:text-faint focus:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="w-full rounded-sm border border-hairline bg-surface px-3.5 py-2.5 text-[12.5px] text-foreground outline-none backdrop-blur-lg transition-[background-color,border-color,color] duration-160 ease-out placeholder:text-faint focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       />
     </label>
   );
