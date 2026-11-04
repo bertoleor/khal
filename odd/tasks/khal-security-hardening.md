@@ -64,7 +64,7 @@ pnpm test (vitest)
 | T2 | S2 | inline |        |
 | T3 | S3 | inline | (already done) |
 | T4 | S4 | inline | 05001e7 |
-| T5 | S5 | inline |        |
+| T5 | S5 | inline | 41e7c99 |
 | T6 | S6 | inline |        |
 | T7 | S7 | inline |        |
 | T8 | S8 | inline |        |
