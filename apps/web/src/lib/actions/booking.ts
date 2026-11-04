@@ -104,6 +104,10 @@ export async function createBooking(
 
   const input = parsed.data;
 
+  // Idempotency key: accept client-provided key (stable across retries) or generate one.
+  // Client should generate a UUID on initial render and resend it on retries.
+  const idempotencyKey = (formData.get('idempotencyKey') as string) || crypto.randomUUID();
+
   const env = readBookingSupabaseEnv();
   if (!env) {
     // No in-memory mock: without Supabase there is no booking backend, so the
@@ -115,13 +119,6 @@ export async function createBooking(
   if (slotMinutes === null) {
     return { ok: false, code: 'invalid' };
   }
-
-  // Idempotency key is generated client-side per submission; a user retry after
-  // a network error must resend the SAME key to replay, not a fresh one. The
-  // current form submits once per render, so a fresh UUID per call keeps the
-  // duplicate-pending guard (RPC step 7) as the multi-submit defence until the
-  // form carries a stable key across renders.
-  const idempotencyKey = crypto.randomUUID();
 
   const client = createBookingSupabaseClient(env);
   const { data, error } = await client.rpc('create_booking', {
