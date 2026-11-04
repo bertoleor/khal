@@ -56,7 +56,7 @@ All 9 failing tests in apps/admin/test/services-actions.test.ts must pass:
 |----|-------|-------|--------|
 | T1 | S1 | inline | 59f87d0 |
 | T2 | S2 | inline | 0d8954a |
-| T3 | S3 | inline |        |
+| T3 | S3 | inline | 5570097 |
 | T4 | S4 | inline |        |
 | T5 | S5 | inline |        |
 | T6 | S6 | inline |        |
@@ -66,3 +66,4 @@ All 9 failing tests in apps/admin/test/services-actions.test.ts must pass:
 L1: User requested all improvements with ODD+TDD
 L2: T1 complete - services actions contract tests pass (13/13), TS clean
 L3: T2 complete - mock stores replaced with Supabase-backed implementations (appointments, clients), Store interface async
+L4: T3 complete - admin error boundaries verified (error.tsx, not-found.tsx at admin root catch all nested routes)
