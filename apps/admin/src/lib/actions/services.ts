@@ -6,10 +6,17 @@ import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { Service } from '@khal/validations';
 
+// Service with timestamps from DB
+type ServiceWithTimestamps = Service & {
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+};
+
 const SERVICES_PATH = '/admin/servicios';
 
-/** Normalize DB row to Service type */
-function normalizeRow(row: any): Service {
+/** Normalize DB row to ServiceWithTimestamps type */
+function normalizeRow(row: any): ServiceWithTimestamps {
   return {
     id: row.id,
     name: row.name,

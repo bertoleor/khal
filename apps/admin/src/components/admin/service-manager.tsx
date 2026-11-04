@@ -13,11 +13,12 @@ import { serviceFormSchema } from '@/lib/schemas';
 import { formatCents } from '@khal/utils';
 import type { Service } from '@khal/validations';
 import type { Appointment } from '@khal/validations';
-// Local Service type for admin (matches @khal/validations Service but avoids type conflicts)
-// Use Service type from @khal/validations directly to avoid type conflicts
-import type { Service } from '@khal/validations';
 
-type AdminService = Service;
+// AdminService extends Service with optional created_at/updated_at from DB
+type AdminService = Service & {
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
+};
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -230,12 +231,13 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
       return;
     }
 
-    const saved = res.data;
-    setServices((prev) =>
-      dialog.mode === 'create'
-        ? [...prev, saved].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-        : prev.map((s) => (s.id === saved.id ? saved : s))
-    );
+    const saved = res.data as AdminService;
+    if (!saved) return;
+    if (dialog.mode === 'create') {
+      setServices((prev: AdminService[]) => [...prev, saved].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)));
+    } else {
+      setServices((prev: AdminService[]) => prev.map((s) => (s.id === saved.id ? saved : s)));
+    }
     closeDialog();
     router.refresh();
   }
@@ -243,8 +245,8 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
   async function onToggle(service: Service) {
     setListError(null);
     const res = await toggleVisibility(service.id, !service.is_visible);
-    if (res.ok) {
-      setServices((prev) => prev.map((s) => (s.id === service.id ? res.data : s)));
+    if (res.ok && res.data) {
+      setServices((prev: AdminService[]) => prev.map((s) => (s.id === service.id ? res.data! : s)));
     } else {
       setListError(res.error ?? null);
     }

@@ -4,7 +4,7 @@ import { requireAuth } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import type { z } from 'zod';
 
-type Store<T> = {
+export type Store<T> = {
   list: () => T[];
   get: (id: string) => T | undefined;
   create: (data: Omit<T, 'id'>) => T;
@@ -18,7 +18,7 @@ type ActionFn<T> = (
   ...args: any[]
 ) => Promise<{ error?: string; data?: any }>;
 
-export async function withAuthTransition<T, TData extends Record<string, any>>(
+export async function withAuthTransition<T, TData>(
   formData: FormData,
   store: Store<T>,
   actionName: string,
