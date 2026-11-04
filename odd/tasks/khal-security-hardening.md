@@ -67,7 +67,7 @@ pnpm test (vitest)
 | T5 | S5 | inline | 41e7c99 |
 | T6 | S6 | inline | 5d189f1 |
 | T7 | S7 | inline | e35f381 |
-| T8 | S8 | inline |        |
+| T8 | S8 | inline | 38e290d |
 
 ## Log
 
