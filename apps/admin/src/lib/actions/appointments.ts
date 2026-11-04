@@ -1,7 +1,7 @@
 "use server";
 
 import { requireAuth } from '@/lib/auth';
-import { appointmentsStore } from '@/lib/mocks/appointments';
+import { appointmentsStore } from '@/lib/stores/appointments';
 import { appointmentStatusSchema } from '@khal/validations';
 import { revalidatePath } from 'next/cache';
 import { withAuthTransition } from '@/shared/action-base';

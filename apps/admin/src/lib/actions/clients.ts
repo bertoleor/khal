@@ -1,7 +1,7 @@
 "use server";
 
 import { requireAuth } from '@/lib/auth';
-import { clientsStore } from '@/lib/mocks/clients';
+import { clientsStore } from '@/lib/stores/clients';
 import { revalidatePath } from 'next/cache';
 import { withAuthTransition } from '@/shared/action-base';
 import type { Store } from '@/shared/action-base';

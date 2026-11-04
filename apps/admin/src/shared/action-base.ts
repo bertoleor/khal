@@ -5,11 +5,11 @@ import { revalidatePath } from 'next/cache';
 import type { z } from 'zod';
 
 export type Store<T> = {
-  list: () => T[];
-  get: (id: string) => T | undefined;
-  create: (data: Omit<T, 'id'>) => T;
-  update: (id: string, data: Partial<T>) => T;
-  delete: (id: string) => void;
+  list: () => Promise<T[]>;
+  get: (id: string) => Promise<T | undefined>;
+  create: (data: Omit<T, 'id'>) => Promise<T>;
+  update: (id: string, data: Partial<T>) => Promise<T>;
+  delete: (id: string) => Promise<void>;
   [key: string]: any;
 };
 
