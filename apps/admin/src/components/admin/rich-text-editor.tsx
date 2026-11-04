@@ -1,5 +1,6 @@
 'use client';
 
+import DOMPurify from 'dompurify';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor, type Editor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -82,7 +83,12 @@ export function RichTextEditor({
       const html = current.getHTML();
       // Collapse Tiptap's empty-doc markup so the DB stores '' not '<p></p>'.
       const empty = html === '<p></p>' || html === '<p><br></p>';
-      onChange(empty ? '' : html);
+      // Sanitize HTML before saving to prevent XSS (T6 — HTML sanitization)
+      const sanitized = empty ? '' : DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ['p', 'b', 'i', 'u', 'strike', 'ul', 'ol', 'li', 'br', 'strong', 'em'],
+        ALLOWED_ATTR: [],
+      });
+      onChange(sanitized);
     },
   });
 
