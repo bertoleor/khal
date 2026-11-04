@@ -21,6 +21,34 @@ function addRateLimitHeaders(response: NextResponse, headers: Record<string, str
   }
 }
 
+/**
+ * Logs a failed webhook to the dead letter queue (failed_webhooks_log table).
+ * Fail-closed: never throws, logs error and continues.
+ */
+async function logFailedWebhook(
+  provider: string,
+  payload: unknown,
+  status: number | null,
+  errorMessage: string
+): Promise<void> {
+  try {
+    const serviceEnv = readServiceEnv();
+    if (!serviceEnv) return;
+
+    const client = createClient(serviceEnv.url, serviceEnv.serviceKey);
+    await client.from('failed_webhooks_log').insert({
+      provider,
+      payload: payload as any,
+      status: status?.toString() ?? null,
+      error_message: errorMessage,
+      retry_count: 0,
+    });
+  } catch {
+    // Best-effort: DLQ logging must never fail the webhook path
+    console.error('[DLQ] Failed to log failed webhook:', { provider, errorMessage });
+  }
+}
+
 
 
 // Mercado Pago webhook (G3): payment -> pending→confirmed + email notify.
@@ -294,7 +322,8 @@ export const POST = withCors(async (req: NextRequest): Promise<NextResponse> => 
   const rateLimitHeaders = createRateLimitHeaders(rateLimitResult, RATE_LIMIT_CONFIGS.api);
 
   if (!rateLimitResult.allowed) {
-    return NextResponse.json(
+      await logFailedWebhook('mercadopago', await req.json().catch(() => ({})), 429, 'rate_limit_exceeded');
+      return NextResponse.json(
       {
         error: 'rate_limit_exceeded',
         message: 'Too many requests. Please try again later.',
@@ -305,16 +334,20 @@ export const POST = withCors(async (req: NextRequest): Promise<NextResponse> => 
   }
 
   const read = await readWebhookEvent(req);
-    if (!read.ok) {
-      const response = read.response;
+      if (!read.ok) {
+        const response = read.response;
+        await logFailedWebhook('mercadopago', read.event, response.status, 'webhook_event_read_failed');
+        addRateLimitHeaders(response, rateLimitHeaders);
+        return response;
+      }
+
+  const mpEnv = readMercadoPagoEnv();
+    if (!mpEnv) {
+      const response = NextResponse.json({ error: 'mp_not_configured' }, { status: 500 });
+      await logFailedWebhook('mercadopago', { event: read.event }, 500, 'mp_not_configured');
       addRateLimitHeaders(response, rateLimitHeaders);
       return response;
     }
-
-  const mpEnv = readMercadoPagoEnv();
-  if (!mpEnv) {
-    return NextResponse.json({ error: 'mp_not_configured' }, { status: 500 });
-  }
 
   // Step 2 — HMAC-SHA256 verification on every call (x-signature / x-request-id).
   const signatureOk = verifyMercadoPagoSignature({
@@ -324,46 +357,52 @@ export const POST = withCors(async (req: NextRequest): Promise<NextResponse> => 
     dataId: read.event.dataId,
   });
   if (!signatureOk) {
-    const response = NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
-    addRateLimitHeaders(response, rateLimitHeaders);
-    return response;
-  }
+      const response = NextResponse.json({ error: 'invalid_signature' }, { status: 401 });
+      await logFailedWebhook('mercadopago', { event: read.event }, 401, 'invalid_signature');
+      addRateLimitHeaders(response, rateLimitHeaders);
+      return response;
+    }
 
   const payment = await fetchApprovedPayment(mpEnv.accessToken, read.event.dataId);
-  if (!payment.ok) {
-    addRateLimitHeaders(payment.response, rateLimitHeaders);
-    return payment.response;
-  }
+    if (!payment.ok) {
+      await logFailedWebhook('mercadopago', { event: read.event }, payment.response.status, 'payment_fetch_failed');
+      addRateLimitHeaders(payment.response, rateLimitHeaders);
+      return payment.response;
+    }
 
   const appointmentId = parseAppointmentId(payment.externalReference);
-  if (appointmentId === null) {
-    const response = NextResponse.json({ error: 'unknown_booking' }, { status: 200 });
-    addRateLimitHeaders(response, rateLimitHeaders);
-    return response;
-  }
+    if (appointmentId === null) {
+      const response = NextResponse.json({ error: 'unknown_booking' }, { status: 200 });
+      await logFailedWebhook('mercadopago', { event: read.event }, 200, 'unknown_booking');
+      addRateLimitHeaders(response, rateLimitHeaders);
+      return response;
+    }
 
   const serviceEnv = readServiceEnv();
-  if (!serviceEnv) {
-    const response = NextResponse.json({ received: true, confirmed: false, reason: 'db_not_configured' });
-    addRateLimitHeaders(response, rateLimitHeaders);
-    return response;
-  }
+    if (!serviceEnv) {
+      const response = NextResponse.json({ received: true, confirmed: false, reason: 'db_not_configured' });
+      await logFailedWebhook('mercadopago', { event: read.event }, 500, 'db_not_configured');
+      addRateLimitHeaders(response, rateLimitHeaders);
+      return response;
+    }
 
   const client = createClient(serviceEnv.url, serviceEnv.serviceKey);
 
   const claim = await claimProcessedEvent(client, read.event.eventKey);
-  if (claim.outcome !== 'claimed') {
-    addRateLimitHeaders(claim.response, rateLimitHeaders);
-    return claim.response;
-  }
+    if (claim.outcome !== 'claimed') {
+      await logFailedWebhook('mercadopago', { event: read.event }, claim.response.status, 'event_already_processed');
+      addRateLimitHeaders(claim.response, rateLimitHeaders);
+      return claim.response;
+    }
 
   const confirmation = await confirmAppointment(client, appointmentId);
-  if (!confirmation.ok) {
-    await claim.release();
-    const response = NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
-    addRateLimitHeaders(response, rateLimitHeaders);
-    return response;
-  }
+    if (!confirmation.ok) {
+      await claim.release();
+      const response = NextResponse.json({ error: 'confirm_failed' }, { status: 500 });
+      await logFailedWebhook('mercadopago', { event: read.event }, 500, 'confirm_failed');
+      addRateLimitHeaders(response, rateLimitHeaders);
+      return response;
+    }
 
   if (confirmation.count > 0) {
     await sendConfirmNotifications(client, appointmentId, read.event.dataId);
