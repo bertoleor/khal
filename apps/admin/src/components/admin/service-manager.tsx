@@ -1,7 +1,12 @@
 'use client';
 
 import { PhotoUploader } from '@/components/admin/photo-uploader';
-import { RichTextEditor } from '@/components/admin/rich-text-editor';
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(
+  () => import('@/components/admin/rich-text-editor').then((mod) => mod.RichTextEditor),
+  { ssr: false, loading: () => <div className="min-h-24 animate-pulse rounded-lg border border-white/10 bg-white/[0.04]" aria-hidden="true" /> }
+);
 import {
   bulkIncrease,
   createService,
