@@ -37,15 +37,15 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 | ID | Tarea | Descripción | Esfuerzo | Archivos |
 |----|-------|-------------|----------|----------|
 | E2-T1 | Auditoría touch targets | Buscar `<button>`, `<a>`, `<input>` con `< 44px` | 2h | Grep global |
-| E2-T2 | Botones primarios | `min-h-[44px] min-w-[44px]` en `Button` base | 2h | `apps/web/src/components/ui/button.tsx` |
-| E2-T3 | Links en nav/footer | `py-3 px-4` mínimo, `touch-manipulation` | 2h | `Header.tsx`, `SiteFooter.tsx` |
-| E2-T4 | Form inputs | `min-h-[44px] text-base` (evita zoom iOS) | 2h | `Field.tsx`, `PhotoUploader` |
-| E2-T5 | Rich text toolbar | Botones `min-h-[44px] min-w-[44px]` en móvil | 2h | `RichTextEditor.tsx` |
-| E2-T6 | Focus visible rings | Verificar `focus-visible:ring-2` en todos (T5 done) | 1h | Tests AA |
-| E2-T7 | Skip links | Verificar `href="#main"` funciona en mobile | 1h | `layout.tsx` |
-| E2-T8 | ARIA en mobile menu | `aria-expanded`, `aria-controls`, `role="dialog"` | 2h | `MobileNav.tsx` |
+| E2-T2 | ~~Botones primarios~~ | ~~`min-h-[44px] min-w-[44px]` en `Button` base~~ | ~~2h~~ | `packages/ui/src/components/button/Button.tsx` | ✅ DONE
+| E2-T3 | ~~Links en nav/footer~~ | ~~`py-3 px-4` mínimo, `touch-manipulation`~~ | ~~2h~~ | `Header.tsx` (ThemeToggle), `packages/ui LinkButton` | ✅ DONE
+| E2-T4 | ~~Form inputs~~ | ~~`min-h-[44px] text-base` (evita zoom iOS)~~ | ~~2h~~ | `Field.tsx`, `PhotoUploader.tsx`, `login-form.tsx` | ✅ DONE
+| E2-T5 | ~~Rich text toolbar~~ | ~~Botones `min-h-[44px] min-w-[44px]` en móvil~~ | ~~2h~~ | `RichTextEditor.tsx` | ✅ DONE
+| E2-T6 | ~~Focus visible rings~~ | ~~Verificar `focus-visible:ring-2` en todos (T5 done)~~ | ~~1h~~ | Tests AA | ✅ DONE (verified in T5)
+| E2-T7 | ~~Skip links~~ | ~~Verificar `href="#main"` funciona en mobile~~ | ~~1h~~ | `layout.tsx` | ✅ DONE (existing)
+| E2-T8 | ~~ARIA en mobile menu~~ | ~~`aria-expanded`, `aria-controls`, `role="dialog"`~~ | ~~2h~~ | `MobileNav.tsx` | ⏳ DEFERRED (no mobile nav yet)
 
-**Total E2:** ~16h | **Entregable:** Componentes base actualizados + tests a11y
+**Total E2:** ~16h | **Entregable:** Componentes base actualizados + tests a11y | ✅ MOSTLY DONE (E2-T8 deferred)
 
 ---
 
