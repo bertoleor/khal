@@ -89,21 +89,21 @@ export function SlotPicker({
             const isActive = day.date === selectedDate;
             return (
               <button
-                key={day.date}
-                type="button"
-                onClick={() => onSelectDate(day.date)}
-                disabled={day.closed}
-                aria-pressed={isActive}
-                aria-label={
-                  day.closed
-                    ? `${day.weekday} ${day.dayNumber} — ${t('closed')}`
-                    : `${day.weekday} ${day.dayNumber}`
-                }
-                className={cn(
-                  'flex-1 rounded-full border pb-[7px] pt-2 text-center transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                  dayChipClass(day, isActive)
-                )}
-              >
+                              key={day.date}
+                              type="button"
+                              onClick={() => onSelectDate(day.date)}
+                              disabled={day.closed}
+                              aria-pressed={isActive}
+                              aria-label={
+                                day.closed
+                                  ? `${day.weekday} ${day.dayNumber} — ${t('closed')}`
+                                  : `${day.weekday} ${day.dayNumber}`
+                              }
+                              className={cn(
+                                'flex-1 rounded-full border pb-[7px] pt-2 text-center transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation',
+                                dayChipClass(day, isActive)
+                              )}
+                            >
                 <span
                   className={cn(
                     'block text-[12.5px] font-semibold',
@@ -149,19 +149,19 @@ export function SlotPicker({
                 const isSelected = selectedSlot === slot;
                 return (
                   <button
-                    key={slot}
-                    type="button"
-                    onClick={() => onSelectSlot(slot)}
-                    disabled={isTaken}
-                    aria-pressed={isSelected}
-                    aria-label={isTaken ? `${slot} — ${t('slotTaken')}` : slot}
-                    className={cn(
-                      'rounded-full border py-2 text-[11.5px] font-medium transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                      slotChipClass(isTaken, isSelected)
-                    )}
-                  >
-                    {slot}
-                  </button>
+                                      key={slot}
+                                      type="button"
+                                      onClick={() => onSelectSlot(slot)}
+                                      disabled={isTaken}
+                                      aria-pressed={isSelected}
+                                      aria-label={isTaken ? `${slot} — ${t('slotTaken')}` : slot}
+                                      className={cn(
+                                        'rounded-full border py-2 text-[11.5px] font-medium transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation',
+                                        slotChipClass(isTaken, isSelected)
+                                      )}
+                                    >
+                                      {slot}
+                                    </button>
                 );
               })}
             </div>

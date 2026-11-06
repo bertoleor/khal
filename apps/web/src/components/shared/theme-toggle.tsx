@@ -21,7 +21,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(nextMode)}
       aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
-      className="pointer-events-auto font-mono-khal text-[10px] uppercase tracking-[3px] text-faint transition-[color] duration-160 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="pointer-events-auto font-mono-khal text-[10px] uppercase tracking-[3px] text-faint transition-[color] duration-160 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] min-w-[44px] touch-manipulation flex items-center justify-center px-2"
       style={{ opacity: mounted ? 1 : 0, pointerEvents: mounted ? 'auto' : 'none' }}
     >
       <span translate="no">{nextMode}</span> mode

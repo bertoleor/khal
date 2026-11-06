@@ -44,7 +44,7 @@ function ToolbarButton({ label, active = false, disabled, onClick, children }: T
       aria-pressed={active}
       disabled={disabled}
       onClick={onClick}
-      className={`h-8 min-w-8 rounded-md border px-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 ${
+      className={`h-11 min-w-11 rounded-md border px-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] min-w-[44px] touch-manipulation ${
         active
           ? 'border-emerald-400 bg-emerald-400 text-black'
           : 'border-white/20 bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08]'
