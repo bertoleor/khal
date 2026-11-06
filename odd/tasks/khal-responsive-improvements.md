@@ -23,7 +23,7 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 | E1-T2 | ~~Definir API y tipos~~ | ~~TypeScript interfaces para eventos, slots, selección~~ | ~~2h~~ | E1-T1 | ✅ DONE
 | E1-T3 | ~~Implementar vista mes~~ | ~~Grid 7 columnas, navegación prev/next, today~~ | ~~8h~~ | E1-T2 | ✅ DONE
 | E1-T4 | Implementar vista semana | 7 columnas, horas en Y, drag-to-create (opcional) | 6h | E1-T2 |
-| E1-T5 | Implementar vista día | Lista vertical, scroll temporal | 4h | E1-T2 |
+| E1-T5 | ~~Implementar vista día~~ | ~~Lista vertical, scroll temporal~~ | ~~4h~~ | E1-T2 | ✅ DONE
 | E1-T6 | ~~Responsive breakpoints~~ | ~~Mobile: stack lista; Tablet: 2 cols; Desktop: grid completa~~ | ~~4h~~ | E1-T3, E1-T4 | ✅ DONE (SlotPicker responsive)
 | E1-T7 | Integración booking | Conectar con `createBooking` action, idempotency key | 4h | E1-T6, T5 done |
 | E1-T8 | Tests | Unit (date math), integration (selection → booking) | 4h | E1-T7 |
@@ -123,12 +123,12 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 ## Priorización y Secuencia
 
 ### Sprint 1 (Semana 1-2): Core UX Blockers
-1. ✅ **E1** - Calendario base completado (E1-T1 a T3, T6) → ~18h done
-2. **E1-T4, T5, T7, T8** - Vista semana/día, integración booking, tests → ~18h pending
+1. ✅ **E1** - Calendario base + vistas semana/día completado (E1-T1 a T6) → ~28h done
+2. **E1-T7, T8** - Integración booking + tests → ~8h pending
 3. **E2-T1 a E2-T4** - Touch targets críticos → 8h
 4. **E4-T1, E4-T2** - Formularios mobile-first → 5h
 
-**Total Sprint 1 restante:** ~49h | **Entregable:** Reserva funcional en móvil
+**Total Sprint 1 restante:** ~31h | **Entregable:** Reserva funcional en móvil
 
 ### Sprint 2 (Semana 3): Polish Visual
 1. **E3** - Imágenes optimizadas → 12h
