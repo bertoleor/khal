@@ -151,3 +151,52 @@ html.light ::selection {
 .text-muted-opacity {
   opacity: var(--text-muted-opacity, 0.8);
 }
+
+/* Calendar Animations */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+/* Calendar scrollbar */
+.calendar-grid::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.calendar-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calendar-grid::-webkit-scrollbar-thumb {
+  background: rgb(75 85 99 / 0.5);
+  border-radius: 3px;
+}
+
+.calendar-grid::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99 / 0.8);
+}
+
