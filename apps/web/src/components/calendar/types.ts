@@ -39,6 +39,7 @@ export interface CalendarCellProps {
   disabled: boolean;
   onClick: () => void;
   className?: string;
+  locale?: 'es-AR' | 'en';
 }
 
 export interface CalendarHeaderProps {
@@ -46,7 +47,7 @@ export interface CalendarHeaderProps {
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
-  locale?: string;
+  locale?: 'es-AR' | 'en';
   className?: string;
 }
 
@@ -55,7 +56,27 @@ export interface CalendarGridProps {
   slots: CalendarSlot[];
   selectedDate?: Date;
   onDayClick: (date: Date, slots: CalendarSlot[]) => void;
-  locale?: string;
+  locale?: 'es-AR' | 'en';
+  className?: string;
+}
+
+export interface CalendarWeekProps {
+  weekStart: Date;
+  slots: CalendarSlot[];
+  selectedDate?: Date;
+  onDayClick: (date: Date, slots: CalendarSlot[]) => void;
+  onWeekChange: (weekStart: Date) => void;
+  locale?: 'es-AR' | 'en';
+  className?: string;
+}
+
+export interface CalendarDayProps {
+  date: Date;
+  slots: CalendarSlot[];
+  selectedDate?: Date;
+  onDayClick: (date: Date, slots: CalendarSlot[]) => void;
+  onDateChange: (date: Date) => void;
+  locale?: 'es-AR' | 'en';
   className?: string;
 }
 
@@ -70,4 +91,9 @@ export interface CalendarProps extends Omit<DayPickerProps, 'components' | 'clas
   // View mode
   view?: 'month' | 'week' | 'day';
   onViewChange?: (view: 'month' | 'week' | 'day') => void;
+  // Week/Day view callbacks
+  weekStart?: Date;
+  onWeekChange?: (weekStart: Date) => void;
+  dayDate?: Date;
+  onDayChange?: (date: Date) => void;
 }
