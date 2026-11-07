@@ -1,10 +1,10 @@
-import { DayPickerProps } from 'react-day-picker';
+import type { DayPickerProps } from 'react-day-picker';
 
 export interface CalendarSlot {
   id: string;
   serviceId: string;
-  date: string;           // YYYY-MM-DD
-  startMinutes: number;   // 0-1439
+  date: string;
+  startMinutes: number;
   durationMinutes: number;
   isAvailable: boolean;
   providerId?: string;
@@ -12,17 +12,17 @@ export interface CalendarSlot {
 
 export interface CalendarMonth {
   year: number;
-  month: number;          // 0-11
-  slots: CalendarSlot[];  // Para pintar disponibilidad
+  month: number;
+  slots: CalendarSlot[];
 }
 
 export interface CalendarSelection {
-  date: string;           // Día seleccionado (YYYY-MM-DD)
-  slotId?: string;        // Slot elegido (opcional)
+  date: string;
+  slotId?: string;
 }
 
 export interface SlotPickerProps {
-  date: string;           // YYYY-MM-DD
+  date: string;
   serviceId: string;
   slots: CalendarSlot[];
   onSelect: (slot: CalendarSlot) => void;
@@ -80,18 +80,15 @@ export interface CalendarDayProps {
   className?: string;
 }
 
-// Extend react-day-picker props for our customization
-export interface CalendarProps extends Omit<DayPickerProps, 'components' | 'classNames'> {
+export interface CalendarProps {
   serviceId: string;
   slots: CalendarSlot[];
   onDateSelect?: (date: Date, slots: CalendarSlot[]) => void;
   onSlotSelect?: (slot: CalendarSlot) => void;
   locale?: 'es-AR' | 'en';
   className?: string;
-  // View mode
   view?: 'month' | 'week' | 'day';
   onViewChange?: (view: 'month' | 'week' | 'day') => void;
-  // Week/Day view callbacks
   weekStart?: Date;
   onWeekChange?: (weekStart: Date) => void;
   dayDate?: Date;

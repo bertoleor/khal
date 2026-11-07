@@ -1,4 +1,4 @@
-import { CalendarCellProps } from './types';
+import type { CalendarCellProps } from './types';
 import { format, isSameDay } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 
@@ -19,7 +19,6 @@ export function CalendarCell({
   const isFullyBooked = slots.length > 0 && slots.every(s => !s.isAvailable);
   const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
-  // Determine cell state
   let stateClass = '';
   let ariaLabel = format(date, 'EEEE, d MMMM yyyy', { locale: dateFnsLocale });
 
@@ -60,17 +59,15 @@ export function CalendarCell({
       aria-label={ariaLabel}
       aria-selected={isSelected}
       aria-disabled={disabled || isPast}
-      className={\`
+      className={`
         relative flex flex-col items-center justify-center min-h-[80px] w-full
         rounded-lg border transition-all duration-150
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
         touch-manipulation active:scale-[0.98]
-        \${stateClass} \${className}
-      \`}
+        ${stateClass} ${className}`}
     >
       <span className="text-lg font-medium">{dayNumber}</span>
       
-      {/* Availability indicator */}
       {!disabled && !isPast && !isOutsideMonth && (
         <div className="mt-1.5 flex items-center justify-center gap-1">
           {hasAvailability && !isFullyBooked && (
@@ -87,7 +84,6 @@ export function CalendarCell({
         </div>
       )}
 
-      {/* Selected indicator */}
       {isSelected && (
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true" />
       )}

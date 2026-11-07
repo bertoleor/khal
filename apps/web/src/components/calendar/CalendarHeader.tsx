@@ -1,4 +1,4 @@
-import { CalendarHeaderProps } from './types';
+import type { CalendarHeaderProps } from './types';
 import { format } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 
@@ -15,7 +15,7 @@ export function CalendarHeader({
   const isCurrentMonth = format(month, 'yyyy-MM') === format(new Date(), 'yyyy-MM');
 
   return (
-    <header className={\`flex items-center justify-between px-4 py-3 border-b border-white/10 \${className}\`} role="heading" aria-level="2">
+    <header className={`flex items-center justify-between px-4 py-3 border-b border-white/10 ${className}`} role="heading" aria-level={2}>
       <button
         type="button"
         onClick={onPrev}

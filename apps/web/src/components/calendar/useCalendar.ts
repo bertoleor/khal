@@ -1,5 +1,4 @@
 import { useState, useCallback, useMemo } from 'react';
-import { subWeeks, addWeeks, startOfWeek } from 'date-fns';
 import { 
   addMonths, 
   subMonths, 
@@ -7,6 +6,11 @@ import {
   endOfMonth, 
   startOfWeek, 
   endOfWeek,
+  startOfDay,
+  addDays,
+  addWeeks,
+  subWeeks,
+  isSameWeek,
   eachDayOfInterval,
   isSameMonth,
   isSameDay,
@@ -18,17 +22,12 @@ import { es, enUS } from 'date-fns/locale';
 import type { CalendarSlot, CalendarMonth, CalendarSelection } from './types';
 
 export interface UseCalendarReturn {
-  // State
   currentMonth: Date;
   selectedDate: Date | null;
   selection: CalendarSelection | null;
-  
-  // Computed
   monthSlots: CalendarSlot[];
   days: Date[];
   monthLabel: string;
-  
-  // Actions
   goToPrevMonth: () => void;
   goToNextMonth: () => void;
   goToToday: () => void;
@@ -45,12 +44,10 @@ export function useCalendar(
 ): UseCalendarReturn {
   const dateFnsLocale = locale === 'es-AR' ? es : enUS;
   
-  // State
   const [currentMonth, setCurrentMonth] = useState(initialMonth ?? new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   
-  // Filter slots for current month
   const monthSlots = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
@@ -61,22 +58,19 @@ export function useCalendar(
     });
   }, [slots, currentMonth]);
   
-  // Generate calendar days (including padding days from prev/next month)
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(currentMonth);
-    const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1, locale: dateFnsLocale }); // Monday start for AR
+    const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1, locale: dateFnsLocale });
     const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 1, locale: dateFnsLocale });
     
     return eachDayOfInterval({ start: calendarStart, end: calendarEnd });
   }, [currentMonth, locale]);
   
-  // Month label for header
   const monthLabel = useMemo(() => {
     return format(currentMonth, 'LLLL yyyy', { locale: dateFnsLocale });
   }, [currentMonth, locale]);
   
-  // Navigation
   const goToPrevMonth = useCallback(() => {
     setCurrentMonth(prev => subMonths(prev, 1));
   }, []);
@@ -93,7 +87,6 @@ export function useCalendar(
     setCurrentMonth(date);
   }, []);
   
-  // Selection
   const selectDate = useCallback((date: Date) => {
     setSelectedDate(date);
     setSelectedSlotId(null);
@@ -108,7 +101,6 @@ export function useCalendar(
     setSelectedSlotId(null);
   }, []);
   
-  // Build selection object
   const selection = useMemo((): CalendarSelection | null => {
     if (!selectedDate) return null;
     return {
@@ -134,7 +126,6 @@ export function useCalendar(
   };
 }
 
-// Helper to get slots for a specific day
 export function getSlotsForDay(
   slots: CalendarSlot[],
   date: Date
@@ -143,7 +134,6 @@ export function getSlotsForDay(
   return slots.filter(slot => slot.date === dateStr && slot.isAvailable);
 }
 
-// Helper to check if day has available slots
 export function dayHasAvailability(
   slots: CalendarSlot[],
   date: Date
@@ -151,7 +141,6 @@ export function dayHasAvailability(
   return getSlotsForDay(slots, date).length > 0;
 }
 
-// Helper to check if day is fully booked
 export function dayIsFullyBooked(
   slots: CalendarSlot[],
   date: Date
@@ -160,7 +149,6 @@ export function dayIsFullyBooked(
   return daySlots.length > 0 && daySlots.every(s => !s.isAvailable);
 }
 
-// Helper to check if day is in the past
 export function dayIsPast(date: Date): boolean {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -168,3 +156,24 @@ export function dayIsPast(date: Date): boolean {
   checkDate.setHours(0, 0, 0, 0);
   return checkDate < today;
 }
+
+// Export date-fns helpers for components
+export { 
+  subMonths, 
+  addMonths, 
+  startOfWeek, 
+  endOfWeek, 
+  startOfMonth, 
+  endOfMonth, 
+  eachDayOfInterval, 
+  isSameMonth, 
+  isSameDay, 
+  isToday, 
+  format, 
+  parseISO,
+  startOfDay,
+  addDays,
+  addWeeks,
+  subWeeks,
+  isSameWeek
+} from 'date-fns';

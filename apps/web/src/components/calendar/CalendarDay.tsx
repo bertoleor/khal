@@ -1,4 +1,3 @@
-import { CalendarDayProps } from './types';
 import { 
   startOfDay,
   addDays,
@@ -10,17 +9,23 @@ import {
   dayIsFullyBooked,
   dayIsPast
 } from './useCalendar';
+import type { CalendarDayProps, CalendarSlot } from './types';
 import { es, enUS } from 'date-fns/locale';
 
-interface CalendarDayProps {
-  date: Date;
-  slots: CalendarSlot[];
-  selectedDate?: Date;
-  onDayClick: (date: Date, slots: CalendarSlot[]) => void;
-  onDateChange: (date: Date) => void;
-  locale?: 'es-AR' | 'en';
-  className?: string;
-}
+const formatTime = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+};
+
+const formatDuration = (minutes: number) => {
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`;
+  }
+  return `${minutes}min`;
+};
 
 export function CalendarDay({
   date,
@@ -42,24 +47,8 @@ export function CalendarDay({
   const dayLabel = format(date, 'EEEE, d MMMM yyyy', { locale: dateFnsLocale });
   const shortLabel = format(date, 'EEE d', { locale: dateFnsLocale });
 
-  const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-  };
-
-  const formatDuration = (minutes: number) => {
-    if (minutes >= 60) {
-      const hours = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`;
-    }
-    return `${minutes}min`;
-  };
-
   return (
-    <div className={\`bg-zinc-900/50 rounded-2xl border border-white/10 overflow-hidden \${className}\`} role="region" aria-label="Vista día">
-      {/* Header with navigation */}
+    <div className={`bg-zinc-900/50 rounded-2xl border border-white/10 overflow-hidden ${className}`} role="region" aria-label="Vista día">
       <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
         <button
           type="button"
@@ -94,7 +83,6 @@ export function CalendarDay({
         </button>
       </div>
 
-      {/* Time slots list */}
       <div className="p-4 space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto">
         {daySlots.length === 0 ? (
           <div className="text-center py-12 text-zinc-500">
@@ -129,20 +117,13 @@ export function CalendarDay({
                     type="button"
                     onClick={() => !slot.isAvailable ? undefined : onDayClick(date, [slot])}
                     disabled={!slot.isAvailable || isPast}
-                    className={\`
-                      w-full flex items-center justify-between p-4 rounded-xl border
-                      transition-all duration-150
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
-                      touch-manipulation active:scale-[0.98]
-                      \${slot.isAvailable 
+                    className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 touch-manipulation active:scale-[0.98] ${slot.isAvailable 
                         ? 'bg-white/5 border-white/10 text-white hover:bg-white/10' 
-                        : 'bg-red-500/10 border-red-500/20 text-red-300 cursor-not-allowed opacity-60'
-                      }\`}
-                    aria-label={\`\${formatTime(slot.startMinutes)}, \${formatDuration(slot.durationMinutes)} \${slot.isAvailable ? '' : 'ocupado'}\`}
+                        : 'bg-red-500/10 border-red-500/20 text-red-300 cursor-not-allowed opacity-60'}`}
+                    aria-label={`${formatTime(slot.startMinutes)}, ${formatDuration(slot.durationMinutes)} ${slot.isAvailable ? '' : 'ocupado'}`}
                     aria-disabled={!slot.isAvailable || isPast}
                   >
                     <div className="flex items-center gap-4">
-                      {/* Time */}
                       <div className="flex flex-col items-start min-w-[80px]">
                         <span className="text-xl font-mono-khal font-semibold tabular-nums text-white">
                           {formatTime(slot.startMinutes)}
@@ -152,7 +133,6 @@ export function CalendarDay({
                         </span>
                       </div>
 
-                      {/* Status indicator */}
                       <div className="flex items-center gap-2 flex-1">
                         {slot.isAvailable ? (
                           <>
@@ -171,7 +151,6 @@ export function CalendarDay({
                         )}
                       </div>
 
-                      {/* Chevron */}
                       <svg className="w-5 h-5 text-zinc-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -190,7 +169,6 @@ export function CalendarDay({
         )}
       </div>
 
-      {/* Quick nav to month view hint */}
       <div className="px-4 py-3 border-t border-white/10 bg-white/5">
         <p className="text-xs text-zinc-500 text-center">
           {locale === 'es-AR' 

@@ -1,4 +1,4 @@
-import { CalendarWeekProps } from './types';
+import type { CalendarWeekProps, CalendarSlot } from './types';
 import { 
   startOfWeek, 
   endOfWeek, 
@@ -17,16 +17,6 @@ import {
 } from './useCalendar';
 import { es, enUS } from 'date-fns/locale';
 
-interface CalendarWeekProps {
-  weekStart: Date;
-  slots: CalendarSlot[];
-  selectedDate?: Date;
-  onDayClick: (date: Date, slots: CalendarSlot[]) => void;
-  onWeekChange: (weekStart: Date) => void;
-  locale?: 'es-AR' | 'en';
-  className?: string;
-}
-
 export function CalendarWeek({
   weekStart,
   slots,
@@ -38,12 +28,10 @@ export function CalendarWeek({
 }: CalendarWeekProps) {
   const dateFnsLocale = locale === 'es-AR' ? es : enUS;
   
-  // Weekday labels (Monday start for AR)
   const weekdays = locale === 'es-AR' 
     ? ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
     : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   
-  // Generate days for this week
   const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1, locale: dateFnsLocale });
   const days: Date[] = [];
   let currentDay = startOfDay(weekStart);
@@ -52,13 +40,11 @@ export function CalendarWeek({
     currentDay = addDays(currentDay, 1);
   }
 
-  // Week label
   const weekLabel = `${format(weekStart, 'd MMM', { locale: dateFnsLocale })} - ${format(weekEnd, 'd MMM yyyy', { locale: dateFnsLocale })}`;
   const isCurrentWeek = isSameWeek(weekStart, new Date(), { weekStartsOn: 1, locale: dateFnsLocale });
 
   return (
-    <div className={\`bg-zinc-900/50 rounded-2xl border border-white/10 overflow-hidden \${className}\`} role="region" aria-label="Vista semana">
-      {/* Header with navigation */}
+    <div className={`bg-zinc-900/50 rounded-2xl border border-white/10 overflow-hidden ${className}`} role="region" aria-label="Vista semana">
       <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
         <button
           type="button"
@@ -92,7 +78,6 @@ export function CalendarWeek({
         </button>
       </div>
 
-      {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-0 border-b border-white/10 px-2 py-2">
         {weekdays.map((day, i) => (
           <div
@@ -106,7 +91,6 @@ export function CalendarWeek({
         ))}
       </div>
 
-      {/* Day columns */}
       <div className="grid grid-cols-7 gap-0 p-2 min-h-[400px]" role="rowgroup">
         {days.map((day, dayIndex) => {
           const daySlots = getSlotsForDay(slots, day);
@@ -118,7 +102,6 @@ export function CalendarWeek({
           const isFullyBooked = dayIsFullyBooked(slots, day);
           const isPast = dayIsPast(day);
 
-          // Determine column state
           let stateClass = '';
           let ariaLabel = format(day, 'EEEE, d MMMM yyyy', { locale: dateFnsLocale });
 
@@ -147,8 +130,7 @@ export function CalendarWeek({
           }
 
           return (
-            <div key={\`\${day.toISOString()}-\${dayIndex}\`} className="flex flex-col min-w-0" role="gridcell">
-              {/* Day header */}
+            <div key={`${day.toISOString()}-${dayIndex}`} className="flex flex-col min-w-0" role="gridcell">
               <button
                 type="button"
                 onClick={() => !disabled && onDayClick(day, daySlots)}
@@ -156,13 +138,7 @@ export function CalendarWeek({
                 aria-label={ariaLabel}
                 aria-selected={isSelected}
                 aria-disabled={disabled}
-                className={\`
-                  flex flex-col items-center justify-start min-h-[120px] w-full p-2
-                  rounded-lg border transition-all duration-150
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
-                  touch-manipulation active:scale-[0.98]
-                  \${stateClass}
-                \`}
+                className={`flex flex-col items-center justify-start min-h-[120px] w-full p-2 rounded-lg border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 touch-manipulation active:scale-[0.98] ${stateClass}`}
               >
                 <div className="flex items-center justify-between w-full mb-2">
                   <span className="text-sm font-medium">{format(day, 'd', { locale: dateFnsLocale })}</span>
@@ -173,7 +149,6 @@ export function CalendarWeek({
                   )}
                 </div>
 
-                {/* Slots list for this day */}
                 <div className="flex-1 overflow-y-auto w-full space-y-1.5 min-h-0">
                   {daySlots.length === 0 ? (
                     <span className="text-xs text-zinc-600 text-center w-full py-4">
@@ -190,24 +165,20 @@ export function CalendarWeek({
                           onDayClick(day, [slot]);
                         }}
                         disabled={!slot.isAvailable || disabled}
-                        className={\`
-                          w-full px-2 py-1.5 text-left rounded-lg text-xs
-                          transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400
-                          touch-manipulation
-                          \${slot.isAvailable 
+                        className={`w-full px-2 py-1.5 text-left rounded-lg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 touch-manipulation ${slot.isAvailable 
                             ? 'bg-white/5 text-white hover:bg-white/10 border border-white/10' 
                             : 'bg-red-500/10 text-red-300 border border-red-500/20 cursor-not-allowed opacity-60'
-                          }\`}
-                        aria-label={\`\${format(slot.startMinutes / 60, '00')}: \${slot.durationMinutes}min \${slot.isAvailable ? '' : 'no disponible'}\`}
+                          }`}
+                        aria-label={`${format(slot.startMinutes / 60, '00')}: ${slot.durationMinutes}min ${slot.isAvailable ? '' : ' no disponible'}`}
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-mono-khal tabular-nums">
-                            {format(slot.startMinutes, '00', { locale: dateFnsLocale })}:{format((slot.startMinutes % 60), '00', { locale: dateFnsLocale })}
+                            ${format(slot.startMinutes, '00', { locale: dateFnsLocale })}:${format((slot.startMinutes % 60), '00', { locale: dateFnsLocale })}
                           </span>
                           <span className="text-[10px] text-zinc-500">
-                            {slot.durationMinutes >= 60 
-                              ? \`\${Math.floor(slot.durationMinutes / 60)}h \${slot.durationMinutes % 60}min\`
-                              : \`\${slot.durationMinutes}min\`}
+                            ${slot.durationMinutes >= 60 
+                              ? `${Math.floor(slot.durationMinutes / 60)}h ${slot.durationMinutes % 60}min`
+                              : `${slot.durationMinutes}min`}
                           </span>
                         </div>
                         {!slot.isAvailable && (

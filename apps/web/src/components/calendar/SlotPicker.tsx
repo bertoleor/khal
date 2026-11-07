@@ -1,4 +1,4 @@
-import { SlotPickerProps } from './types';
+import type { SlotPickerProps } from './types';
 import { format, parseISO } from 'date-fns';
 import { es, enUS } from 'date-fns/locale';
 import { useEffect, useRef } from 'react';
@@ -11,11 +11,10 @@ export function SlotPicker({
   onClose,
   className = '',
 }: SlotPickerProps) {
-  const dateFnsLocale = date.includes('-AR') ? es : enUS; // fallback, actual locale from parent
+  const dateFnsLocale = date.includes('-AR') ? es : enUS;
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Focus trap and close on overlay click
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -26,7 +25,6 @@ export function SlotPicker({
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
     
-    // Focus first slot button
     const firstSlot = contentRef.current?.querySelector('button');
     (firstSlot as HTMLElement)?.focus();
 
@@ -52,9 +50,7 @@ export function SlotPicker({
     if (minutes >= 60) {
       const hours = Math.floor(minutes / 60);
       const mins = minutes % 60;
-      return mins > 0 
-        ? `${hours}h ${mins}min` 
-        : `${hours}h`;
+      return mins > 0 ? `${hours}h ${mins}min` : `${hours}h`;
     }
     return `${minutes}min`;
   };
@@ -99,7 +95,7 @@ export function SlotPicker({
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 px-4 py-2 text-sm font-medium text-emerald-300 hover:text-emerald-200"
+              className="mt-4 px-4 py-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 min-h-[44px] touch-manipulation"
             >
               Elegir otro día
             </button>
@@ -120,13 +116,8 @@ export function SlotPicker({
     >
       <div 
         ref={contentRef}
-        className={\`
-          bg-zinc-900 rounded-t-2xl sm:rounded-2xl border border-white/10 w-full max-w-sm mx-4
-          overflow-hidden animate-slide-up sm:animate-fade-in
-          \${className}
-        \`}
+        className={`bg-zinc-900 rounded-t-2xl sm:rounded-2xl border border-white/10 w-full max-w-sm mx-4 overflow-hidden animate-slide-up sm:animate-fade-in ${className}`}
       >
-        {/* Header */}
         <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
           <h2 id="slot-picker-title" className="text-lg font-semibold text-white">
             {formattedDate}
@@ -143,20 +134,13 @@ export function SlotPicker({
           </button>
         </div>
 
-        {/* Slots list */}
         <div className="max-h-[60vh] overflow-y-auto px-4 py-4 space-y-2">
           {availableSlots.map((slot) => (
             <button
               key={slot.id}
               type="button"
               onClick={() => onSelect(slot)}
-              className={\`
-                w-full flex items-center justify-between p-4 rounded-xl border
-                transition-all duration-150
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900
-                touch-manipulation active:scale-[0.98]
-                bg-white/5 border-white/10 text-white hover:bg-white/10
-              \`}
+              className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 touch-manipulation active:scale-[0.98] bg-white/5 border-white/10 text-white hover:bg-white/10`}
             >
               <div className="flex flex-col items-start gap-1">
                 <span className="text-lg font-mono-khal font-semibold tabular-nums">
@@ -173,7 +157,6 @@ export function SlotPicker({
           ))}
         </div>
 
-        {/* Footer */}
         <div className="px-4 py-3 border-t border-white/10">
           <button
             type="button"
