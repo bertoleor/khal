@@ -25,8 +25,8 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 | E1-T4 | Implementar vista semana | 7 columnas, horas en Y, drag-to-create (opcional) | 6h | E1-T2 |
 | E1-T5 | ~~Implementar vista día~~ | ~~Lista vertical, scroll temporal~~ | ~~4h~~ | E1-T2 | ✅ DONE
 | E1-T6 | ~~Responsive breakpoints~~ | ~~Mobile: stack lista; Tablet: 2 cols; Desktop: grid completa~~ | ~~4h~~ | E1-T3, E1-T4 | ✅ DONE (SlotPicker responsive)
-| E1-T7 | Integración booking | Conectar con `createBooking` action, idempotency key | 4h | E1-T6, T5 done |
-| E1-T8 | Tests | Unit (date math), integration (selection → booking) | 4h | E1-T7 |
+| E1-T7 | ~~Integración booking~~ | ~~Conectar con `createBooking` action, idempotency key~~ | ~~4h~~ | E1-T6, T5 done | ✅ DONE
+| E1-T8 | ~~Tests~~ | ~~Unit (date math), integration (selection → booking)~~ | ~~4h~~ | E1-T7 | ⏳ PENDING
 
 **Total E1:** ~36h | **Entregable:** `apps/web/src/components/calendar/Calendar.tsx` + vistas
 
