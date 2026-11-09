@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation';
 import { LinkButton } from '@/components/button';
 import type { Service } from '@khal/validations';
 import Image from 'next/image';
+import { getBlurDataURL } from '@/lib/image-utils';
 
 /**
  * Catálogo v7 (S3 — approved preview): PHOTOS ONLY. A 2-column grid of 4/5
@@ -60,6 +61,9 @@ export function CatalogGrid({
                 fill
                 sizes="(max-width: 390px) 50vw, 320px"
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL={service.photo_path ? getBlurDataURL(service.photo_path) : undefined}
+                loading="lazy"
               />
             </div>
           ) : (

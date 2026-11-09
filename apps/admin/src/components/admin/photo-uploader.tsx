@@ -3,6 +3,7 @@
 import { uploadServicePhoto } from '@/lib/actions/services';
 import Image from 'next/image';
 import { useRef, useState, type ChangeEvent } from 'react';
+import { getBlurDataURL } from '@/lib/image-utils';
 
 /**
  * Catalog photo uploader (khal-admin-100-operable T4).
@@ -56,8 +57,8 @@ export function PhotoUploader({
       <div className="flex items-start gap-3">
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.06]">
           {url !== null ? (
-            <Image src={url} alt={altLabel} fill sizes="96px" className="object-cover" />
-          ) : (
+                      <Image src={url} alt={altLabel} fill sizes="96px" className="object-cover" placeholder="blur" blurDataURL={getBlurDataURL(url)} />
+                    ) : (
             <span className="absolute inset-0 flex items-center justify-center px-1 text-center text-[10px] leading-tight text-zinc-400">
               {labels.empty}
             </span>

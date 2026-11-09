@@ -7,6 +7,7 @@ import type { Service } from '@khal/validations';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { getBlurDataURL } from '@/lib/image-utils';
 
 /** Monto de la seña en centavos (percentage → proporcional, fixed → fijo). */
 function depositAmountCents(service: Service): number | null {
@@ -110,16 +111,19 @@ export default async function ServiceDetailPage({ params, searchParams }: Servic
         {/* Foto del servicio (S5): slot con borde punteado hasta que
             lleguen las fotos reales de la dueña. */}
         {service.photo_path ? (
-          <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-md">
-            <Image
-              src={service.photo_path}
-              alt={service.name}
-              fill
-              sizes="(max-width: 390px) 100vw, 512px"
-              className="object-cover"
-            />
-          </div>
-        ) : (
+                  <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-md">
+                    <Image
+                      src={service.photo_path}
+                      alt={service.name}
+                      fill
+                      sizes="(max-width: 390px) 100vw, 512px"
+                      className="object-cover"
+                      placeholder="blur"
+                      blurDataURL={service.photo_path ? getBlurDataURL(service.photo_path) : undefined}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
           <div className="mt-3 flex aspect-[4/3] flex-col items-center justify-center gap-1.5 rounded-md border border-dashed border-hairline bg-surface text-faint backdrop-blur-lg">
             <span aria-hidden="true" className="text-[20px] leading-none opacity-40">
               ◉
