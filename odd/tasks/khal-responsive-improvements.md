@@ -53,13 +53,13 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 
 | ID | Tarea | Descripción | Esfuerzo | Archivos |
 |----|-------|-------------|----------|----------|
-| E3-T1 | Hero sections | Migrar `<img>` → `next/image` con `fill`, `priority` | 4h | `Hero.tsx`, `HeroSection.tsx` |
-| E3-T2 | Service photos | `object-cover aspect-video` consistente | 2h | `ServiceCard.tsx`, `ServicePhoto.tsx` |
-| E3-T3 | Placeholder blur | `placeholder="blur"` + `blurDataURL` generado | 3h | Utils + build script |
-| E3-T4 | Admin photo upload | Preview con `next/image` antes de subir | 2h | `PhotoUploader.tsx` |
-| E3-T4 | WebP/AVIF | Configurar `next.config.ts` `images.formats` | 1h | Config |
+| E3-T1 | ~~Hero sections~~ | ~~Migrar `<img>` → `next/image` con `fill`, `priority`~~ | ~~4h~~ | `Hero.tsx`, `HeroSection.tsx` | ✅ DONE (already using next/image)
+| E3-T2 | ~~Service photos~~ | ~~`object-cover aspect-video` consistente~~ | ~~2h~~ | `ServiceCard.tsx`, `ServicePhoto.tsx` | ✅ DONE (already using next/image + object-cover)
+| E3-T3 | ~~Placeholder blur~~ | ~~`placeholder="blur"` + `blurDataURL` generado~~ | ~~3h~~ | Utils + build script | ✅ DONE (image-utils.ts + blurDataURL)
+| E3-T4 | ~~Admin photo upload~~ | ~~Preview con `next/image` antes de subir~~ | ~~2h~~ | `PhotoUploader.tsx` | ✅ DONE (placeholder + blur)
+| E3-T4 | ~~WebP/AVIF~~ | ~~Configurar `next.config.ts` `images.formats`~~ | ~~1h~~ | Config | ✅ DONE (next.config.ts)
 
-**Total E3:** ~12h | **Entregable:** Imágenes responsivas, LCP mejorado
+**Total E3:** ~12h | **Entregable:** Imágenes responsivas, LCP mejorado ✅ COMPLETO
 
 ---
 
