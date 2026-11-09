@@ -98,9 +98,9 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 |----|-------|-------------|----------|----------|
 | E6-T1 | Mobile nav drawer | Sheet/Dialog con `animate-in`, backdrop blur | 4h | `MobileNavDrawer.tsx` |
 | E6-T2 | Header sticky | `sticky top-0 z-50` + shadow en scroll | 2h | `Header.tsx` |
-| E6-T3 | Footer responsive | Grid 1-col mobile, 2-col tablet, 4-col desktop | 2h | `SiteFooter.tsx` |
+| E6-T3 | ✅ Footer responsive | flex-col mobile, flex-row desktop | 2h | SiteFooter.tsx |
 | E6-T4 | Admin sidebar | Collapsible en tablet, drawer en mobile | 4h | `AdminNav.tsx`, `AdminLayout.tsx` |
-| E6-T5 | Breadcrumbs | `hidden sm:flex` + mobile back button | 2h | `Breadcrumbs.tsx` |
+| E6-T5 | ✅ Breadcrumbs | hidden lg:flex + mobile back button | 2h | Breadcrumbs.tsx |
 
 **Total E6:** ~14h | **Entregable:** Navegación consistente en todos breakpoints
 

@@ -3,42 +3,26 @@ import { unstable_cache } from 'next/cache';
 /**
  * Generates a low-quality base64 data URL for use as a blur placeholder.
  * Uses a simple solid color based on the URL hash for consistent, fast placeholders.
- * In production, this could be replaced with a proper image processing service
- * that generates actual low-quality previews.
+ * Synchronous version for use with Next.js Image blurDataURL prop.
  */
-export const getBlurDataURL = unstable_cache(
-  async (url: string): Promise<string> => {
-    // Simple hash-based color for consistent placeholder
-    let hash = 0;
-    for (let i = 0; i < url.length; i++) {
-      hash = url.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    
-    // Generate a muted color from hash
-    const r = (hash & 0xFF) / 255;
-    const g = ((hash >> 8) & 0xFF) / 255;
-    const b = ((hash >> 16) & 0xFF) / 255;
-    
-    // Create a tiny 10x10 PNG as base64 data URL
-    const canvas = typeof document !== 'undefined' ? document.createElement('canvas') : null;
-    if (!canvas) {
-      // Server-side fallback: return a simple SVG data URL
-      const color = `rgb(${Math.round(r * 200)}, ${Math.round(g * 200)}, ${Math.round(b * 200)})`;
-      return `data:image/svg+xml;base64,${Buffer.from(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="${color}"/></svg>`
-      ).toString('base64')}`;
-    }
-    
-    canvas.width = 10;
-    canvas.height = 10;
-    const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = `rgb(${Math.round(r * 200)}, ${Math.round(g * 200)}, ${Math.round(b * 200)})`;
-    ctx.fillRect(0, 0, 10, 10);
-    return canvas.toDataURL('image/png');
-  },
-  ['blur-data-url'],
-  { revalidate: 31536000 } // 1 year
-);
+export function getBlurDataURL(url: string): string {
+  // Simple hash-based color for consistent placeholder
+  let hash = 0;
+  for (let i = 0; i < url.length; i++) {
+    hash = url.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  // Generate a muted color from hash
+  const r = (hash & 0xFF) % 200;
+  const g = ((hash >> 8) & 0xFF) % 200;
+  const b = ((hash >> 16) & 0xFF) % 200;
+  
+  // Return a simple SVG data URL (synchronous)
+  const color = `rgb(${r}, ${g}, ${b})`;
+  return `data:image/svg+xml;base64,${Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="${color}"/></svg>`
+  ).toString('base64')}`;
+}
 
 /**
  * Generates responsive sizes attribute for common breakpoints.
