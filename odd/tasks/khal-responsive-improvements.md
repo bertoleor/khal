@@ -82,13 +82,13 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 
 | ID | Tarea | Descripción | Esfuerzo | Archivos |
 |----|-------|-------------|----------|----------|
-| E5-T1 | Toolbar responsive | Scroll horizontal en móvil, full-width en desktop | 2h | `RichTextEditor.tsx` |
-| E5-T2 | Touch targets toolbar | `min-h-[44px] min-w-[44px]` cada botón | 2h | `ToolbarButton.tsx` |
+| E5-T1 | ~~Toolbar responsive~~ | ~~Scroll horizontal en móvil, full-width en desktop~~ | ~~2h~~ | `RichTextEditor.tsx` | ✅ DONE
+| E5-T2 | ~~Touch targets toolbar~~ | ~~`min-h-[44px] min-w-[44px]` cada botón~~ | ~~2h~~ | `ToolbarButton.tsx` | ✅ DONE (already h-11 min-w-11)
 | E5-T3 | Keyboard handling | `contenteditable` focus management, virtual keyboard | 3h | `useEditorFocus.ts` |
-| E5-T4 | Paste sanitization | Ya en T6 (DOMPurify) - verificar en móvil | 1h | Tests |
-| E5-T5 | Fullscreen mode | Botón "expandir" en móvil para editor grande | 3h | `RichTextEditor.tsx` + modal |
+| E5-T4 | ~~Paste sanitization~~ | ~~Ya en T6 (DOMPurify) - verificar en móvil~~ | ~~1h~~ | Tests | ✅ DONE (DOMPurify in T6)
+| E5-T5 | ~~Fullscreen mode~~ | ~~Botón "expandir" en móvil para editor grande~~ | ~~3h~~ | `RichTextEditor.tsx` + modal | ✅ DONE
 
-**Total E5:** ~11h | **Entregable:** Editor usable en móvil
+**Total E5:** ~11h | **Entregable:** Editor usable en móvil ✅ COMPLETO
 
 ---
 
