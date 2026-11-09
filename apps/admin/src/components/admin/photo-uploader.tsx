@@ -3,7 +3,21 @@
 import { uploadServicePhoto } from '@/lib/actions/services';
 import Image from 'next/image';
 import { useRef, useState, type ChangeEvent } from 'react';
-import { getBlurDataURL } from '@/lib/image-utils';
+
+/**
+ * Simple hash-based blur placeholder (local copy to avoid cross-app import).
+ * Generates a consistent muted color based on the URL hash.
+ */
+function getBlurDataURL(url: string): string {
+  let hash = 0;
+  for (let i = 0; i < url.length; i++) {
+    hash = url.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const r = (hash & 0xFF) % 200;
+  const g = ((hash >> 8) & 0xFF) % 200;
+  const b = ((hash >> 16) & 0xFF) % 200;
+  return `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="rgb(${r},${g},${b})"/></svg>`)}`;
+}
 
 /**
  * Catalog photo uploader (khal-admin-100-operable T4).
