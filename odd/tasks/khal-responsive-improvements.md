@@ -67,8 +67,8 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 
 | ID | Tarea | Descripción | Esfuerzo | Archivos |
 |----|-------|-------------|----------|----------|
-| E4-T1 | Stack labels mobile | `flex-col gap-1` en `<FormField>`, `w-full` inputs | 2h | `Field.tsx` |
-| E4-T2 | Error messages | `fixed bottom-0` toast en mobile, inline en desktop | 3h | `FormError.tsx` nuevo |
+| E4-T1 | ~~Stack labels mobile~~ | ~~`flex-col gap-1` en `<FormField>`, `w-full` inputs~~ | ~~2h~~ | `Field.tsx` | ✅ DONE
+| E4-T2 | ~~Error messages~~ | ~~`fixed bottom-0` toast en mobile, inline en desktop~~ | ~~3h~~ | `FormError.tsx` nuevo | ✅ DONE
 | E4-T3 | Keyboard avoidance | `scrollIntoView` en focus error + `inputmode` | 3h | `useFormFocus.ts` hook |
 | E4-T4 | Date/time pickers | Native `<input type="date">` + polyfill fallback | 4h | `DatePicker.tsx` |
 | E4-T5 | Phone input | `inputmode="tel"` + mask lib (cleave/imask) | 3h | `PhoneField.tsx` |
