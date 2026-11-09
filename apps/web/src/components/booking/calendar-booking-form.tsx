@@ -1,6 +1,7 @@
 import { Calendar } from '@/components/calendar';
 import { PaymentStep, type PaymentInfo } from '@/components/payment/payment-step';
 import { Field } from '@/components/shared/field';
+import { FormError } from '@/components/form-error';
 import { Link } from '@/i18n/navigation';
 import { createBooking, type BookingState } from '@/lib/actions/booking';
 import { serviceWithAddons } from '@/lib/booking/addons';
@@ -212,7 +213,7 @@ export function CalendarBookingForm({
             </p>
           </div>
 
-          {error ? <p className="text-xs text-danger">{error}</p> : null}
+          <FormError error={error} />
           <button
             type="submit"
             disabled={isPending}
