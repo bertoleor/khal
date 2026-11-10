@@ -35,12 +35,11 @@ export function Breadcrumbs({
       </Link>
 
       {/* Desktop breadcrumbs */}
-            <ol 
-              data-testid="desktop-breadcrumbs"
-              className="hidden lg:flex items-center gap-1.5" 
-              role="navigation" 
-              aria-label="Breadcrumb"
-            >
+                  <ol 
+                    data-testid="desktop-breadcrumbs"
+                    className="hidden lg:flex items-center gap-1.5" 
+                    aria-label="Breadcrumb"
+                  >
         {items.map((item, index) => (
           <li key={item.href || item.label}>
             {index > 0 && (
