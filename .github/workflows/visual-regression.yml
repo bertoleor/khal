@@ -1,0 +1,150 @@
+name: Visual Regression (E7)
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/web/**'
+      - '.github/workflows/visual-regression.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: visual-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for baseline comparison
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'apps/web/pnpm-lock.yaml'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12
+          run_install: false
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: apps/web
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+        working-directory: apps/web
+      
+      - name: Build Next.js app
+        run: pnpm build
+        working-directory: apps/web
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      
+      - name: Start preview server
+        run: |
+          pnpm dev &
+          sleep 10
+          curl -f http://localhost:3000 || exit 1
+        working-directory: apps/web
+        shell: bash
+      
+      - name: Run visual regression tests
+        run: npx playwright test
+        working-directory: apps/web
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+      
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report
+          retention-days: 7
+      
+      - name: Upload diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-diff
+          path: apps/web/playwright/diff
+          retention-days: 7
+      
+      - name: Upload baseline screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-baseline
+          path: apps/web/playwright/baseline
+          retention-days: 7
+
+  update-baselines:
+    name: Update Baselines (manual)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'apps/web/pnpm-lock.yaml'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12
+          run_install: false
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: apps/web
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      
+      - name: Build Next.js app
+        run: pnpm build
+        working-directory: apps/web
+      
+      - name: Start preview server
+        run: |
+          pnpm dev &
+          sleep 10
+        working-directory: apps/web
+        shell: bash
+      
+      - name: Update snapshots
+        run: npx playwright test --update-snapshots
+        working-directory: apps/web
+        env:
+          CI: true
+      
+      - name: Commit updated baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/web/playwright/baseline
+          git diff --staged --quiet || git commit -m "chore: update visual regression baselines [skip ci]"
+          git push
