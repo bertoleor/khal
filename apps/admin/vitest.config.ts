@@ -15,6 +15,12 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      thresholds: {
+        lines: 75,
+        functions: 65,
+        branches: 65,
+        statements: 75,
+      },
     },
     transformMode: {
       web: [/\.[jt]sx$/],
