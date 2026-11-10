@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import React from 'react';
 
 /**
  * Breadcrumbs responsive:
@@ -34,7 +35,12 @@ export function Breadcrumbs({
       </Link>
 
       {/* Desktop breadcrumbs */}
-      <ol className="hidden lg:flex items-center gap-1.5" role="navigation" aria-label="Breadcrumb">
+            <ol 
+              data-testid="desktop-breadcrumbs"
+              className="hidden lg:flex items-center gap-1.5" 
+              role="navigation" 
+              aria-label="Breadcrumb"
+            >
         {items.map((item, index) => (
           <li key={item.href || item.label}>
             {index > 0 && (

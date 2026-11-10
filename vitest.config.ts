@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
   test: {
@@ -13,6 +14,14 @@ export default defineConfig({
     // Transform JSX for tests
     transformMode: {
       web: [/\.[jt]sx$/],
+    },
+    // Path aliases for @/ imports
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './apps/web/src'),
+        '@/components/button': path.resolve(__dirname, './packages/ui/src/components/button'),
+        '@/components/cursor-trail': path.resolve(__dirname, './packages/ui/src/components/cursor-trail'),
+      },
     },
   },
 });

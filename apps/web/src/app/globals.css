@@ -230,3 +230,33 @@ html.light ::selection {
   }
 }
 
+/* Scrollbar hide utility for mobile toolbars */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fullscreen editor styles */
+.rich-editor-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #0a0e27;
+}
+
+/* Focus styles for editor toolbar buttons */
+.toolbar-button:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+
+/* Mobile keyboard spacer */
+@media (max-width: 639px) {
+  .mobile-keyboard-spacer {
+    height: 100px;
+  }
+}
+

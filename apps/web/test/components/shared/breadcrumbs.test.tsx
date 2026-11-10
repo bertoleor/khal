@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Breadcrumbs } from '@/components/shared/breadcrumbs';
@@ -72,13 +73,13 @@ describe('Breadcrumbs (E6 — responsive breadcrumbs)', () => {
   });
 
   it('renders desktop breadcrumbs (hidden lg:flex)', () => {
-    render(<Breadcrumbs items={items} />);
+      render(<Breadcrumbs items={items} />);
     
-    const ol = screen.getByRole('navigation', { name: 'Breadcrumb' }).querySelector('ol');
-    expect(ol).toBeInTheDocument();
-    expect(ol).toHaveClass('hidden');
-    expect(ol).toHaveClass('lg:flex');
-  });
+      const ol = screen.getByTestId('desktop-breadcrumbs');
+      expect(ol).toBeInTheDocument();
+      expect(ol).toHaveClass('hidden');
+      expect(ol).toHaveClass('lg:flex');
+    });
 
   it('desktop breadcrumbs show all items with separators', () => {
     render(<Breadcrumbs items={items} />);
