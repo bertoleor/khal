@@ -138,12 +138,20 @@ El hardening de seguridad (P0-P3) está completo. Las mejoras responsive identif
 
 **Total Sprint 2:** ~39h | **Entregable:** UI consistente mobile/desktop
 
-### Sprint 3 (Semana 4): Admin + QA
-1. **E6-T4, E6-T5** - Admin sidebar/breadcrumbs → 6h
-2. **E7** - Tests visual regression + Lighthouse → 19h
-3. **Bug bash** - Fixes de regresiones encontradas → 8h
+### Sprint 3 (Semana 4): Admin + QA ✅ COMPLETO
+1. ✅ **E6-T4, E6-T5** - Admin sidebar/breadcrumbs → 6h **DONE**
+2. ✅ **E7** - Tests visual regression + Lighthouse → 19h **DONE** (Playwright + CI)
+3. ✅ **Bug bash** - Fixes de regresiones → 8h **DONE**
 
-**Total Sprint 3:** ~33h | **Entregable:** CI/CD + baseline métricas
+**Total Sprint 3:** ~33h | **Entregable:** CI/CD + baseline métricas ✅ COMPLETO
+
+### Sprint 4 (Semana 5): Test Stabilization ✅ COMPLETO
+1. ✅ **E9-T3** - site-footer test (Playwright) | 4h **DONE** (E7)
+2. ✅ **E9-T4** - Admin tests passing | 3h **DONE** (66/66 pass)
+3. ✅ **E9-T5** - CI gate unit tests | 2h **DONE** (GitHub Actions ready)
+4. ✅ **E9-T6** - Coverage thresholds | 2h **DONE** (web 90%, admin 75/65/65/75%)
+
+**Total Sprint 4:** ~11h | **Entregable:** Tests 100% passing + CI ✅ COMPLETO
 
 ---
 
