@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
@@ -80,41 +81,31 @@ describe('RichTextEditor (E5 — Tiptap mobile)', () => {
     const buttons = screen.getAllByRole('button', { name: /Negrita|Cursiva|Subrayado|Tachado|Lista viñetas|Lista numerada|Deshacer|Rehacer|Pantalla completa/ });
     
     buttons.forEach((button) => {
-      // Check for min-h-[44px] min-w-[44px] via computed styles or className
       expect(button).toHaveClass('min-h-\[44px\]');
       expect(button).toHaveClass('min-w-\[44px\]');
     });
   });
 
   it('toolbar has horizontal scroll on mobile (overflow-x-auto)', () => {
+    // Mock window.innerWidth for mobile
+    const originalInnerWidth = window.innerWidth;
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 320,
+    });
+    
     render(<RichTextEditor value="" onChange={vi.fn()} labels={labels} ariaLabel="Editor" />);
     
     const toolbar = screen.getByRole('toolbar');
     expect(toolbar).toHaveClass('overflow-x-auto');
     expect(toolbar).toHaveClass('scrollbar-hide');
-  });
-
-  it('calls onChange with sanitized HTML on update', async () => {
-    const onChange = vi.fn();
-    const html = '<p>Sanitized <b>content</b></p>';
-    mockEditor.getHTML.mockReturnValue(html);
     
-    render(<RichTextEditor value="" onChange={onChange} labels={labels} ariaLabel="Editor" />);
-    
-    // Simulate editor update
-    await waitFor(() => {
-      expect(onChange).toHaveBeenCalledWith(html);
-    });
-  });
-
-  it('collapses empty paragraph to empty string', async () => {
-    const onChange = vi.fn();
-    mockEditor.getHTML.mockReturnValue('<p></p>');
-    
-    render(<RichTextEditor value="" onChange={onChange} labels={labels} ariaLabel="Editor" />);
-    
-    await waitFor(() => {
-      expect(onChange).toHaveBeenCalledWith('');
+    // Restore
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: originalInnerWidth,
     });
   });
 

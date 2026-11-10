@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AdminNav } from '@/components/admin/admin-nav';
@@ -77,15 +78,17 @@ describe('AdminNav (E6 — responsive admin navigation)', () => {
   });
 
   it('icons have w-5 h-5 and flex-shrink-0', () => {
-    render(<AdminNav links={links} />);
+      render(<AdminNav links={links} />);
     
-    const icons = screen.getAllByTestId(/icon-/);
-    icons.forEach((icon) => {
-      expect(icon).toHaveClass('w-5');
-      expect(icon).toHaveClass('h-5');
-      expect(icon).toHaveClass('flex-shrink-0');
+      const icons = screen.getAllByTestId(/icon-/);
+      icons.forEach((icon) => {
+        // Classes are on the parent span, not the SVG itself
+        const parent = icon.parentElement;
+        expect(parent).toHaveClass('w-5');
+        expect(parent).toHaveClass('h-5');
+        expect(parent).toHaveClass('flex-shrink-0');
+      });
     });
-  });
 
   it('collapsed mode shows only icons (justify-center)', () => {
     render(<AdminNav links={links} isCollapsed={true} />);

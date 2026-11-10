@@ -112,7 +112,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <ThemeToggle />
         </div>
       </header>
-      <main id="main" className="lg:ml-64 lg:ml-[calc(16rem+1rem)] transition-all duration-300 min-h-[calc(100vh-56px)]">
+      <main id="main" role="main" className="lg:ml-64 lg:ml-[calc(16rem+1rem)] transition-all duration-300 min-h-[calc(100vh-56px)]">
         {children}
       </main>
     </div>

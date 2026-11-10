@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import DOMPurify from 'dompurify';
 import { Underline } from '@tiptap/extension-underline';
 import { EditorContent, useEditor, type Editor } from '@tiptap/react';

@@ -1,0 +1,173 @@
+npm warn Unknown user config "store-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm warn Unknown user config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm notice run @khal/web@0.0.0 npx
+npm notice run vitest run --isolate=false test/components/shared/header.test.tsx
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.1.0 [39m[90mE:/Hermes/projects/khal/apps/web[39m
+
+Not implemented: navigation to another Document
+ [31m❯[39m test/components/shared/header.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 3346[2mms[22m[39m
+   [31m❯[39m Header (E6 — mobile nav drawer) [2m(13)[22m
+     [32m✓[39m renders skip link for accessibility[32m 48[2mms[22m[39m
+     [32m✓[39m renders wordmark kicker[32m 8[2mms[22m[39m
+     [32m✓[39m renders ThemeToggle[32m 7[2mms[22m[39m
+     [32m✓[39m shows mobile hamburger menu button[32m 8[2mms[22m[39m
+     [32m✓[39m opens mobile drawer on hamburger click[32m 88[2mms[22m[39m
+[31m     [31m×[31m mobile drawer has backdrop blur[39m[33m 3034[2mms[22m[39m
+     [32m✓[39m mobile drawer panel has shadow[32m 20[2mms[22m[39m
+     [32m✓[39m mobile drawer contains navigation links[32m 38[2mms[22m[39m
+     [32m✓[39m closes drawer on close button click[32m 32[2mms[22m[39m
+     [32m✓[39m closes drawer when navigation link clicked[32m 29[2mms[22m[39m
+     [32m✓[39m mobile drawer links have 44px touch targets[32m 14[2mms[22m[39m
+     [32m✓[39m includes ThemeToggle in mobile drawer[32m 12[2mms[22m[39m
+     [32m✓[39m hides hamburger on desktop (sm breakpoint)[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/components/shared/header.test.tsx[2m > [22mHeader (E6 — mobile nav drawer)[2m > [22mmobile drawer has backdrop blur
+[31m[1mSyntaxError[22m[39m: Invalid selector
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"relative z-10"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-20 focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-contrast"[39m
+          [33mhref[39m=[32m"#main"[39m
+        [36m>[39m
+          [0mIr al contenido[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mx-auto flex w-full max-w-lg items-start justify-between px-4 pt-5 sm:max-w-6xl sm:px-6"[39m
+        [36m>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"font-mono-khal text-[10px] uppercase tracking-[3px] text-faint"[39m
+            [36m>[39m
+              [0mestudio de pestañas · VL[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-4"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Toggle theme"[39m
+              [33mdata-testid[39m=[32m"theme-toggle"[39m
+            [36m/>[39m
+            [36m<button[39m
+              [33maria-controls[39m=[32m"mobile-menu"[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Abrir menú"[39m
+              [33mclass[39m=[32m"sm:hidden p-2 rounded-lg text-zinc-300 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] min-w-[44px] touch-manipulation"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"w-6 h-6"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 6h16M4 12h16M4 18h16"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33maria-labelledby[39m=[32m"mobile-menu-title"[39m
+          [33maria-modal[39m=[32m"true"[39m
+          [33mclass[39m=[32m"fixed inset-0 z-50 sm:hidden"[39m
+          [33mid[39m=[32m"mobile-menu"[39m
+          [33mrole[39m=[32m"dialog"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"fixed inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-zinc-950 animate-slide-in shadow-xl"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex items-center justify-between p-4 border-b border-white/10"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mclass[39m=[32m"font-mono-khal text-[10px] uppercase tracking-[2px] text-white"[39m
+                [33mid[39m=[32m"mobile-menu-title"[39m
+              [36m>[39m
+                [0mMenú[0m
+              [36m</h2>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Cerrar menú"[39m
+                [33mclass[39m=[32m"p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] min-w-[44px] touch-manipulation"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-x w-6 h-6"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M18 6 6 18"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m6 6 12 12"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Navegación principal"[39m
+              [33mclass[39m=[32m"p-4 space-y-2"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mclass[39m=[32m"block px-3 py-3 rounded-lg text-base font-medium text-zinc-300 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation"[39m
+                [33mhref[39m=[32m"/catalogo"[39m
+              [36m>[39m
+                [0mCatálogo[0m
+              [36m</a>[39m
+              [36m<a[39m
+                [33mclass[39m=[32m"block px-3 py-3 rounded-lg text-base font-medium text-zinc-300 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation"[39m
+                [33mhref[39m=[32m"/conocenos"[39m
+              [36m>[39m
+                [0mConocenos[0m
+              [36m</a>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"pt-4 border-t border-white/10"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33maria-label[39m=[32m"Toggle theme"[39m
+                  [33mdata-testid[39m=[32m"theme-toggle"[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</nav>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 02:17:21
+[2m   Duration [22m 10.12s[2m (environment 42%, tests 35%, setup 17%, import 5%)[22m
+
