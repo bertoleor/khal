@@ -29,11 +29,11 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
 
   const inputClass =
-    'w-full rounded-lg border border-white/20 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40';
+    'w-full rounded-lg border border-white/20 px-3 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-[44px] touch-manipulation';
   const buttonClass =
-    'w-full rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60';
+    'w-full rounded-lg bg-emerald-400 px-4 py-3 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 min-h-[44px] touch-manipulation';
   const secondaryClass =
-    'text-sm font-medium text-zinc-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400';
+    'text-sm font-medium text-zinc-400 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center py-2';
 
   function mapError(err: { message: string }): string {
     const m = err.message.toLowerCase();

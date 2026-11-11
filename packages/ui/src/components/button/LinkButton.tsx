@@ -16,7 +16,7 @@ export interface LinkButtonProps extends Omit<React.AnchorHTMLAttributes<HTMLAnc
   external?: boolean;
 }
 
-const baseStyles = 'inline-flex items-center justify-center font-semibold tracking-[-0.005em] transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97]';
+const baseStyles = 'inline-flex items-center justify-center font-semibold tracking-[-0.005em] transition-[background-color,border-color,color] duration-160 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.97] min-h-[44px] touch-manipulation';
 
 const variantStyles = {
   primary: 'rounded-full bg-accent text-accent-contrast hover:bg-accent-soft shadow-[0_4px_16px_var(--shadow-elevated)]',

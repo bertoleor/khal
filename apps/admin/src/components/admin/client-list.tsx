@@ -58,8 +58,8 @@ export function ClientList({ rows }: { rows: ClientRow[] }) {
               type="submit"
               className={
                 client.isBlacklisted
-                  ? 'rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400'
-                  : 'rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400'
+                  ? 'rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center'
+                  : 'rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400 min-h-[44px] touch-manipulation flex items-center justify-center'
               }
             >
               {client.isBlacklisted ? t('clients.removeBlacklist') : t('clients.blacklist')}

@@ -9,6 +9,7 @@ import { INSTAGRAM_URL, TIKTOK_URL, whatsappUrl } from '@/lib/socials';
  * Under it, one mono line of the four doors: instagram · tiktok · whatsapp ·
  * políticas, separated by hairline middots; vicente lópez closes on the
  * right. Hierarchy comes from scale and air (no boxes, no border-top).
+ * Responsive: 1-col mobile, 2-col tablet, 4-col desktop.
  */
 export default async function SiteFooter() {
   const settings = await getPaymentSettings();
@@ -28,10 +29,10 @@ export default async function SiteFooter() {
       >
         Khal
       </div>
-      <div className="flex items-center justify-between gap-x-4 px-[5px] pb-[9px] pt-[3px] font-mono-khal text-[8px] uppercase tracking-[2px]">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between gap-x-4 sm:gap-x-0 sm:pb-[9px] sm:pt-[3px] font-mono-khal text-[8px] uppercase tracking-[2px]">
         <nav
           aria-label="Redes del estudio"
-          className="pointer-events-auto flex flex-wrap items-center gap-x-[5px] gap-y-1 text-faint"
+          className="flex flex-wrap items-center gap-x-[5px] gap-y-1 text-faint w-full sm:w-auto"
         >
           {socials.map((social, index) => (
             <span key={social.label} className="flex items-center gap-x-[5px]">
@@ -44,7 +45,7 @@ export default async function SiteFooter() {
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation flex items-center py-1"
               >
                 {social.label}
               </a>
@@ -55,12 +56,12 @@ export default async function SiteFooter() {
           </span>
           <Link
             href="/politicas"
-            className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="transition-[color] duration-160 ease-out hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] touch-manipulation flex items-center py-1"
           >
             Políticas
           </Link>
         </nav>
-        <span className="text-faint">vicente lópez</span>
+        <span className="text-faint self-center sm:self-auto">vicente lópez</span>
       </div>
     </footer>
   );

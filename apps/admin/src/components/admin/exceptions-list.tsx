@@ -53,7 +53,7 @@ export function ExceptionsList({ exceptions }: { exceptions: CalendarException[]
         </div>
         <button
           type="submit"
-          className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-medium text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+          className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-medium text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation"
         >
           {t('exceptions.addButton')}
         </button>

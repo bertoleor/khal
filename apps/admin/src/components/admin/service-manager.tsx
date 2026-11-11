@@ -532,21 +532,21 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
             </label>
 
             <div className="flex justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={closeDialog}
-                className="rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-              >
-                {t('actions.cancel')}
-              </button>
-              <button
-                type="submit"
-                disabled={busy}
-                className="rounded-lg bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {busy ? t('actions.saving') : idleSubmitLabel}
-              </button>
-            </div>
+                          <button
+                            type="button"
+                            onClick={closeDialog}
+                            className="rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation"
+                          >
+                            {t('actions.cancel')}
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={busy}
+                            className="rounded-lg bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 disabled:cursor-not-allowed disabled:opacity-60 min-h-[44px] touch-manipulation"
+                          >
+                            {busy ? t('actions.saving') : idleSubmitLabel}
+                          </button>
+                        </div>
           </form>
         </div>
       </div>
@@ -586,26 +586,26 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
           </div>
         </div>
         <button
-          type="button"
-          onClick={openCreate}
-          className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-        >
-          {t('new')}
-        </button>
-      </div>
+                  type="button"
+                  onClick={openCreate}
+                  className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation"
+                >
+                  {t('new')}
+                </button>
+              </div>
 
-      <div className="mt-2 flex items-center justify-between">
-        <p className="text-sm text-zinc-400">{t('count', { count: filtered.length })}</p>
-        {selected.size > 0 && (
-          <button
-            type="button"
-            onClick={onBulkIncrease}
-            className="rounded-full border border-emerald-400 px-3 py-1 text-xs font-medium text-emerald-400 hover:bg-emerald-400 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-          >
-            {t('bulkIncrease', { count: selected.size })}
-          </button>
-        )}
-      </div>
+              <div className="mt-2 flex items-center justify-between">
+                <p className="text-sm text-zinc-400">{t('count', { count: filtered.length })}</p>
+                {selected.size > 0 && (
+                  <button
+                    type="button"
+                    onClick={onBulkIncrease}
+                    className="rounded-full border border-emerald-400 px-3 py-1 text-xs font-medium text-emerald-400 hover:bg-emerald-400 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center"
+                  >
+                    {t('bulkIncrease', { count: selected.size })}
+                  </button>
+                )}
+              </div>
 
       {listError !== null && (
         <p role="alert" className="mt-3 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">
@@ -679,28 +679,28 @@ export function ServiceManager({ initialServices }: { initialServices: Service[]
                 />
               )}
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => openEdit(service)}
-                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-                >
-                  {t('actions.edit')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void onToggle(service)}
-                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-                >
-                  {service.is_visible ? t('actions.hide') : t('actions.show')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void onDelete(service)}
-                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-400 transition-colors hover:border-red-500/30 hover:bg-red-500/15 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
-                >
-                  {t('actions.delete')}
-                </button>
-              </div>
+                              <button
+                                type="button"
+                                onClick={() => openEdit(service)}
+                                className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center"
+                              >
+                                {t('actions.edit')}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => void onToggle(service)}
+                                className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center"
+                              >
+                                {service.is_visible ? t('actions.hide') : t('actions.show')}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => void onDelete(service)}
+                                className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-zinc-400 transition-colors hover:border-red-500/30 hover:bg-red-500/15 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 min-h-[44px] touch-manipulation flex items-center justify-center"
+                              >
+                                {t('actions.delete')}
+                              </button>
+                            </div>
             </div>
           </article>
         ))}
